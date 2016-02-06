@@ -1,0 +1,35 @@
+%h1.page
+  #{@import.import_type.titleize} Import
+
+
+.panel.panel-default
+  .panel-body
+    - unless @import.import_file.file.nil?
+      %p
+        %b Import file:
+        = link_to "Download", @import.import_file.url
+    - unless @import.error_file.file.nil?
+      %p
+        %b Error file:
+        = link_to "Download", @import.error_file.url
+    %p
+      %b Number of records:
+      = @import.number_of_records
+    %p
+      %b Number of records with errors:
+      = @import.number_of_records_with_errors
+    %p
+      %b Imported by:
+      = @import.user.name
+    %p
+      %b Created at:
+      = @import.created_at.to_s(:us_time)
+    %p
+      %b Updated at:
+      = @import.updated_at.to_s(:us_time)
+    %p
+      %b Status:
+      = @import.status
+    %p
+      %b Records processed:
+      = @import.records_processed

@@ -1,0 +1,11 @@
+- unless fields.empty?
+  %h3.subtitle
+    = header
+
+  - fields.each do |field|
+    - description = @import.column_descriptions[field]
+    .filed_name
+      %strong
+        = field
+      - if description.present?
+        = " - #{description}"

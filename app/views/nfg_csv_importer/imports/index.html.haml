@@ -1,0 +1,21 @@
+#imports
+  %h1.page
+    Imports
+
+  .panel.panel-default
+    .panel-body
+
+      - if @imports.empty?
+        There are no Imports
+      -else
+        .table-responsive
+          %table.table.table-striped
+            %thead
+              %tr
+                %th.first Admin
+                %th No. of Records
+                %th No. of Records with errors
+                %th Completed at
+                %th.last Status
+            = render :partial => 'import', :collection => @imports
+        = page_navigation_links(@imports)
