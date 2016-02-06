@@ -47,7 +47,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_entity
-    @entity = NfgCsvImporter.entity_class.constantize.find_by(subdomain: request.subdomain)
+    @entity = NfgCsvImporter.configuration.entity_class.constantize.find_by(subdomain: request.subdomain)
   end
 
   def set_import_type

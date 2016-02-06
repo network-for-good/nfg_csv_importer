@@ -1,4 +1,4 @@
 module NfgCsvImporter
-  class ApplicationController < NfgCsvImporter.inherited_controller.constantize
+  class ApplicationController < NfgCsvImporter.configuration.base_controller_class.constantize
   end
 end

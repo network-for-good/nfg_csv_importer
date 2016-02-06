@@ -6,8 +6,8 @@ module NfgCsvImporter
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
-    belongs_to :user, class_name: NfgCsvImporter.user_class.to_s
-    belongs_to :entity, class_name: NfgCsvImporter.entity_class.to_s
+    belongs_to :user, class_name: NfgCsvImporter.configuration.user_class
+    belongs_to :entity, class_name: NfgCsvImporter.configuration.entity_class
     validates_presence_of :import_file, :import_type, :entity_id, :user_id
     validate :import_validation
 
