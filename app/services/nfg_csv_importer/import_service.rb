@@ -1,6 +1,7 @@
 class NfgCsvImporter::ImportService
   include ActiveModel::Model
   require 'roo'
+  require 'roo-xls'
 
   attr_accessor :entity, :type, :file, :user, :errors_list, :import_id
 
@@ -149,7 +150,7 @@ class NfgCsvImporter::ImportService
   def assign_defaults(attributes)
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
-    attributes.merge!( { entity_id: entity.id } ) if model.new.has_attribute?(:entity_id)
+    attributes.merge!( { entity_id: entity.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_class.downcase + "_id")
     attributes.merge(blank_attributes)
   end
 

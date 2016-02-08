@@ -3,7 +3,7 @@ class ImportDefinition
     {
       required_columns: %w{ email },
       optional_columns: %w{first_name last_name},
-      default_values: { },
+      default_values: { "first_name" => lambda { |row| row["email"][/[^@]+/] } },
       class_name: "User",
       alias_attributes: [],
       column_descriptions: {},
