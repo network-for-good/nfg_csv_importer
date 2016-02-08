@@ -3,7 +3,6 @@ require "roo"
 require "carrierwave"
 require "haml"
 require "simple_form"
-require "will_paginate"
 
 module NfgCsvImporter
   class Configuration

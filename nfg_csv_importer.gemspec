@@ -25,10 +25,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2"
   s.add_dependency "roo"
+  s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml"
   s.add_dependency "simple_form"
-  s.add_dependency "will_paginate"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
