@@ -3,10 +3,11 @@ require "roo"
 require "carrierwave"
 require "haml"
 require "simple_form"
+require "will_paginate"
 
 module NfgCsvImporter
   class Configuration
-    attr_accessor :entity_class, :user_class, :base_controller_class, :user_method
+    attr_accessor :entity_class, :user_class, :base_controller_class, :user_method, :from_address, :reply_to_address
   end
 
   class << self

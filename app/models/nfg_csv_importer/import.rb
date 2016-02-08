@@ -11,7 +11,7 @@ module NfgCsvImporter
     validates_presence_of :import_file, :import_type, :entity_id, :user_id
     validate :import_validation
 
-    scope :order_by_recent, lambda { order("imports.updated_at DESC") }
+    scope :order_by_recent, lambda { order("updated_at DESC") }
 
     delegate :description, :required_columns,:optional_columns,:column_descriptions, :transaction_id,
       :header, :missing_required_columns,:import_class_name, :headers_valid?, :valid_file_extension?,
@@ -30,12 +30,12 @@ module NfgCsvImporter
     end
 
     def self.perform(import_id)
-      import = Import.find(import_id)
+      import = NfgCsvImporter::Import.find(import_id)
       import.process_import
     end
 
     def service
-      service_class = Object.const_get(service_name) rescue ImportService
+      service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
       service_class.new(user: user, entity: entity, type: import_type, file: import_file)
     end
 
@@ -63,7 +63,7 @@ module NfgCsvImporter
       end
 
       def send_import_result
-        ImportMailer.send_import_result(self).deliver
+        NfgCsvImporter::ImportMailer.send_import_result(self).deliver
       end
 
       def update_stats_and_status(import_service)

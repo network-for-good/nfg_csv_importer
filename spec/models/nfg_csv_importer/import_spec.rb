@@ -13,8 +13,8 @@ describe NfgCsvImporter::Import do
     it { should validate_presence_of(:import_file) }
   end
 
-  let(:entity) { Entity.first }
-  let(:import_type) { "subscriber" }
+  let(:entity) { create(:entity) }
+  let(:import_type) { "user" }
   let(:file_type) { 'csv' }
 
   let(:file) do
@@ -23,8 +23,8 @@ describe NfgCsvImporter::Import do
 
   let(:header_data) { ["email" ,"first_name","last_name"] }
   let(:file_name) { "/subscribers.csv" }
-  let(:admin) {  FactoryGirl.create(:supervisor_admin, :entity => entity) }
-  let(:import) { FactoryGirl.build(:import, entity: entity, import_type: import_type, admin: admin, import_file: file) }
+  let(:admin) {  create(:user) }
+  let(:import) { FactoryGirl.build(:import, entity: entity, import_type: import_type, user: admin, import_file: file) }
 
   it { expect(import.save).to be }
 
@@ -33,7 +33,7 @@ describe NfgCsvImporter::Import do
     before(:each) do
       csv_data = mock
       csv_data.stubs(:row).with(1).returns(header_data)
-      ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
+      NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
     end
 
     subject { import.valid? }
@@ -116,22 +116,16 @@ describe NfgCsvImporter::Import do
     context "when service_name is defined" do
 
       context "and import_type is project" do
-        let(:import_type) { "project" }
+        let(:import_type) { "another_importer" }
 
-        it { expect(subject).to be_an_instance_of(ProjectImportService) }
-      end
-
-      context "and import_type is assign_donor_unique_identifier" do
-        let(:import_type) { "assign_donor_unique_identifier" }
-
-        it { expect(subject).to be_an_instance_of(AssignDonorUniqueIdentifierImportService) }
+        it { expect(subject).to be_an_instance_of(AnotherImporterImportService) }
       end
     end
 
     context "when service_name is not defined" do
       let(:import_type) { "subscriber" }
 
-      it { expect(subject).to be_an_instance_of(ImportService) }
+      it { expect(subject).to be_an_instance_of(NfgCsvImporter::ImportService) }
     end
   end
 
@@ -162,10 +156,10 @@ describe NfgCsvImporter::Import do
     end
 
     it "should send the mail to admin with imported result" do
-      ImportService.any_instance.stubs(:import).returns(nil)
+      NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver: true))
       subject
-      email = ActionMailer::Base.deliveries.select { |em| em.subject == I18n.t('subject', scope: [:import_mailer, :send_import_result], import_type: import.import_type)  }[0]
-      expect(email).to be_present
+      #email = ActionMailer::Base.deliveries.select { |em| em.subject == "Your #{import.import_type} import has completed!" }[0]
     end
 
     it { expect { subject }.to change { import.status }.from(nil).to("complete") }
@@ -176,13 +170,13 @@ describe NfgCsvImporter::Import do
     end
 
     it "should call import on import service" do
-      ImportService.any_instance.expects(:import)
+      NfgCsvImporter::ImportService.any_instance.expects(:import)
       subject
     end
 
     it "should set import_id for import service" do
       import.id = 1
-      ImportService.any_instance.expects(:import_id=).with(1)
+      NfgCsvImporter::ImportService.any_instance.expects(:import_id=).with(1)
       subject
     end
 

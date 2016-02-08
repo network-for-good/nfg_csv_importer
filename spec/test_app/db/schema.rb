@@ -19,20 +19,6 @@ ActiveRecord::Schema.define(version: 20160207002609) do
     t.datetime "updated_at"
   end
 
-  create_table "imports", force: :cascade do |t|
-    t.string   "import_type"
-    t.string   "import_file"
-    t.string   "error_file"
-    t.integer  "number_of_records"
-    t.integer  "number_of_records_with_errors"
-    t.integer  "entity_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "status"
-    t.integer  "records_processed"
-  end
-
   create_table "nfg_csv_importer_imported_records", force: :cascade do |t|
     t.integer  "entity_id"
     t.integer  "user_id"
@@ -61,6 +47,7 @@ ActiveRecord::Schema.define(version: 20160207002609) do
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

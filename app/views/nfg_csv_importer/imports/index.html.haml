@@ -1,5 +1,5 @@
 #imports
-  %h1.page
+  %h1
     Imports
 
   .panel.panel-default
@@ -18,4 +18,4 @@
                 %th Completed at
                 %th.last Status
             = render :partial => 'import', :collection => @imports
-        = page_navigation_links(@imports)
+        = will_paginate(@imports)

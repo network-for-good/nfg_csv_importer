@@ -21,7 +21,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
 	def index
-    @imports = @entity.imports.order_by_recent#.paginate(page: params[:page])
+    @imports = @entity.imports.order_by_recent.paginate(page: params[:page])
 	end
 
 	def show

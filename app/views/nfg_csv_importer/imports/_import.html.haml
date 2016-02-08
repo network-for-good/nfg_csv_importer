@@ -1,5 +1,5 @@
 %tr[import]
-  %td= import.admin ? import.admin.name : 'Admin deleted'
+  %td= import.user ? import.user.name : 'Admin deleted'
   %td= import.number_of_records
   %td= import.number_of_records_with_errors
   %td= import.updated_at.to_s(:us_time) if import.complete?

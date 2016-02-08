@@ -10,6 +10,8 @@
       config.user_class = "Admin"
       config.base_controller_cass = "ApplicationController"
       config.user_method = :current_user
+      config.from_address = Rails.configuration.default_from_address
+      config.reply_to_address = Rails.configuration.default_from_address
     end
     ````
 
@@ -21,3 +23,6 @@
       has_many :imports, class_name: "NfgCsvImporter::Import"
     end
     ````
+
+4. Add importer definitions in app/imports
+5. Configure uploaders
