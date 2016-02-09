@@ -9,10 +9,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_filter :load_new_import, only: [:create, :new]
 
   def create
-    @import.user = self.send(NfgCsvImporter.user_method)
+    @import.user = self.send(NfgCsvImporter.configuration.user_method)
     @import.entity = @entity
     if @import.save
-      #Resque.enqueue(Import, import.id)
+      NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
       flash[:notice] = t('flash_messages.import.create.notice')
       redirect_to import_path(@import)
     else
@@ -27,8 +27,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 	def show
     @import = @entity.imports.find(params[:id])
 	end
-
-
 
 	protected
 	# the standard event tracking (defined in application controller) attempts to include

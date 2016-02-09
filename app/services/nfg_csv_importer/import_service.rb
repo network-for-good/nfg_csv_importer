@@ -11,7 +11,7 @@ class NfgCsvImporter::ImportService
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    OpenStruct.new ::ImportDefinition.send(type)
+    OpenStruct.new ImportDefinition.send(type)
   end
 
   def import

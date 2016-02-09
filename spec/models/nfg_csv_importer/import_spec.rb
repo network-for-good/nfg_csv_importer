@@ -96,20 +96,6 @@ describe NfgCsvImporter::Import do
     end
   end
 
-  describe "#self.perform(import_id)" do
-    before(:each) do
-      import.save
-      NfgCsvImporter::Import.expects(:find).with(import.id).returns(import)
-    end
-
-    subject{ NfgCsvImporter::Import.perform(import.id) }
-
-    specify do
-      import.expects(:process_import).once
-      subject
-    end
-  end
-
   describe "#service" do
     subject { import.service }
 
@@ -143,44 +129,4 @@ describe NfgCsvImporter::Import do
     end
 
   end
-
-  describe "#process_import" do
-    subject { import.process_import }
-
-    it "should update the number_of_records_with_errors" do
-      expect{ subject }.to change{ import.number_of_records_with_errors }
-    end
-
-    it "should update the number_of_records" do
-      expect{ subject }.to change{ import.number_of_records }
-    end
-
-    it "should send the mail to admin with imported result" do
-      NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
-      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver: true))
-      subject
-      #email = ActionMailer::Base.deliveries.select { |em| em.subject == "Your #{import.import_type} import has completed!" }[0]
-    end
-
-    it { expect { subject }.to change { import.status }.from(nil).to("complete") }
-
-    it "should set status to processing" do
-      import.expects(:processing!)
-      subject
-    end
-
-    it "should call import on import service" do
-      NfgCsvImporter::ImportService.any_instance.expects(:import)
-      subject
-    end
-
-    it "should set import_id for import service" do
-      import.id = 1
-      NfgCsvImporter::ImportService.any_instance.expects(:import_id=).with(1)
-      subject
-    end
-
-
-  end
-
 end

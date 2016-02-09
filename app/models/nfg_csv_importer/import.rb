@@ -29,26 +29,9 @@ module NfgCsvImporter
       true
     end
 
-    def self.perform(import_id)
-      import = NfgCsvImporter::Import.find(import_id)
-      import.process_import
-    end
-
     def service
       service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(user: user, entity: entity, type: import_type, file: import_file)
-    end
-
-    def process_import
-      processing!
-      import_service = service
-      import_service.import_id = self.id
-      errors_csv = import_service.import
-      unless errors_csv.nil?
-        upload_error_file(errors_csv)
-      end
-      update_stats_and_status(import_service)
-      send_import_result
+      service_class.new(user: user, entity: entity, type: import_type, file: import_file, import_id: self.id)
     end
 
     private
@@ -60,17 +43,6 @@ module NfgCsvImporter
       def collect_header_errors
         errors.add :base, "The file contains columns that do not have a corresponding value on the #{import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: #{unknown_columns.join(',')}" unless unknown_columns.empty?
         errors.add :base, "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
-      end
-
-      def send_import_result
-        NfgCsvImporter::ImportMailer.send_import_result(self).deliver
-      end
-
-      def update_stats_and_status(import_service)
-        self.number_of_records = import_service.no_of_records
-        self.number_of_records_with_errors = import_service.no_of_error_records
-        self.status = :complete
-        self.save!
       end
 
       def upload_error_file(errors_csv)

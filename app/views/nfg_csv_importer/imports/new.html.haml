@@ -5,7 +5,7 @@
 #spinner.spinner
   = image_tag "admin/spinner.gif", :style => "border: 0;"
   %p Processing, please wait...
-= simple_form_for(@import, :url => imports_path, :html => { :class => 'form-horizontal' }) do |f|
+= simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
 
   = f.error_notification
   -#= render partial: 'layouts/bootstrap_errors', locals: { errors: @import.errors[:base]}
@@ -20,9 +20,9 @@
         .list-group-item
           = simple_format(@import.description)
         .list-group-item
-          = render partial: 'import_fields', locals: { fields: @import.required_columns, header: 'Required Fields' }
+          = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.required_columns, header: 'Required Fields' }
         .list-group-item
-          = render partial: 'import_fields', locals: { fields: @import.optional_columns, header: 'Optional Fields' }
+          = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.optional_columns, header: 'Optional Fields' }
 
 
   .panel.panel-default
