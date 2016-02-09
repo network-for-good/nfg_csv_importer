@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe NfgCsvImporter::ProcessImportJob do
-  let(:import) { create(:import) }
+  let!(:user) { create(:user) }
+  let(:import) { create(:import, user: user) }
   let(:process_import_job) { NfgCsvImporter::ProcessImportJob.new }
 
   subject { process_import_job.perform(import.id) }
@@ -36,5 +37,9 @@ describe NfgCsvImporter::ProcessImportJob do
   it "should set import_id for import service" do
     subject
     expect(import.service.import_id).to eql(import.id)
+  end
+
+  it "creates a record for each row" do
+    expect { subject }.to change { User.count }.by(2)
   end
 end

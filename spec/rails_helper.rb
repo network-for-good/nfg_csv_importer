@@ -4,6 +4,8 @@ require 'rspec/rails/mocha'
 require 'factory_girl_rails'
 
 Rails.backtrace_cleaner.remove_silencers!
+ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
+
 #
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
@@ -17,6 +19,7 @@ RSpec.configure do |config|
   config.order = "random"
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.include FactoryGirl::Syntax::Methods
   config.mock_with :mocha
 end
 
