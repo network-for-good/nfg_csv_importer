@@ -10,7 +10,9 @@ FactoryGirl.define do
   factory :import, class: NfgCsvImporter::Import do
     association :entity
     association :user
+    import_file { File.open("spec/fixtures/subscribers.csv") }
     import_type 'user'
+    status nil
   end
 
   factory :entity do

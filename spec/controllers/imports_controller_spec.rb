@@ -54,9 +54,8 @@ describe NfgCsvImporter::ImportsController do
     end
 
     it "should add import job to queue" do
-      NfgCsvImporter::ProcessImportJob.expects(:perform_later)
+      NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
       subject
-      #expect(NfgCsvImporter::Import).not_to have_queued(:imports_queue, import.id)
     end
 
     it "should display success message" do

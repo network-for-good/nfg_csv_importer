@@ -1,7 +1,5 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
-    @queue = :imports_queue
-
     enum status: [:queued, :processing, :complete]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
