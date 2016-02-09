@@ -70,7 +70,7 @@ class MyImport
   # do stuff
 
   def save
-    MyRealMode.create(attributes)
+    MyRealModel.create(attributes)
   end
 end
 ````
