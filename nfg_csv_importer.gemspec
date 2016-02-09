@@ -7,8 +7,8 @@ require "nfg_csv_importer/version"
 Gem::Specification.new do |s|
   s.name        = "nfg_csv_importer"
   s.version     = NfgCsvImporter::VERSION
-  s.authors     = ["Timothy King"]
-  s.email       = ["timothy.king@networkforgood.com"]
+  s.authors     = ["Pavan Kuttagula", "Timothy King"]
+  s.email       = ["pavan.kuttagula@effone.com", "timothy.king@networkforgood.com"]
   s.homepage    = "http://www.networkforgood.com"
   s.summary     = "A CSV importer for NFG Rails applications."
 
