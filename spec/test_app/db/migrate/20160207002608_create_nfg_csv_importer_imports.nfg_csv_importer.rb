@@ -8,7 +8,7 @@ class CreateNfgCsvImporterImports < ActiveRecord::Migration
       t.integer  "number_of_records"
       t.integer  "number_of_records_with_errors"
       t.integer  "entity_id"
-      t.integer  "user_id"
+      t.integer  "imported_by_id"
       t.integer  "status"
       t.integer  "records_processed"
       t.timestamps

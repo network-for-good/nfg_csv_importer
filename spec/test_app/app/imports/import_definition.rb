@@ -1,4 +1,4 @@
-class ImportDefinition
+class ImportDefinition < NfgCsvImporter::ImportDefinition
   def self.user
     {
       required_columns: %w{ email },

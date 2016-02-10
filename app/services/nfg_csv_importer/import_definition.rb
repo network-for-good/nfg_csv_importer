@@ -1,0 +1,2 @@
+class NfgCsvImporter::ImportDefinition
+end

@@ -3,7 +3,7 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
-  attr_accessor :entity, :type, :file, :user, :errors_list, :import_id
+  attr_accessor :entity, :type, :file, :imported_by, :errors_list, :import_id
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions, :description, :to => :import_definition
 
@@ -11,7 +11,7 @@ class NfgCsvImporter::ImportService
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    OpenStruct.new ImportDefinition.send(type)
+    OpenStruct.new ::ImportDefinition.send(type)
   end
 
   def import
@@ -79,7 +79,7 @@ class NfgCsvImporter::ImportService
     if validate_object(model_obj)
       model_obj.save
       NfgCsvImporter::ImportedRecord.create!(
-        user_id:user.id,
+        imported_by_id: imported_by.id,
         transaction_id:transaction_id,
         importable_id: model_obj.id,
         importable_type: model_obj.class.table_name,

@@ -34,9 +34,9 @@
 5. Set any neccessary storage options for Carrierwave in `config/initializers/carrierwave.rb`.
 
 ## Create Importer Definitions
-Create the file `app/imports/import_definition.rb` containing a class called `ImportDefinition`. Within this class, define a class method for each import type. This class method should contain a hash of options that pertain to that particular import type.
+Create the file `app/imports/import_definition.rb` containing a class called `ImportDefinition` inheriting from NfgCsvImporter::ImportDefinition`. Within this class, define a class method for each import type. This class method should contain a hash of options that pertain to that particular import type.
 ````
-class ImportDefinition
+class ImportDefinition << NfgCsvImporter::ImportDefinition
   class << self
     def my_new_import
       {
@@ -52,7 +52,6 @@ class ImportDefinition
   end
 end
 ````
-
 
 ## Create Optional Import Services
 For more fine grained control over the import business logic, you can write your own import service class. It should use the name of the model and inherit from `NfgCsvImporter::ImportService`.

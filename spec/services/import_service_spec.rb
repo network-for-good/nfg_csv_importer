@@ -15,7 +15,7 @@ describe NfgCsvImporter::ImportService do
 	let(:header_data) {["email" ,"first_name","last_name"]}
 	let(:file_name) {"/subscribers.csv"}
 	let(:admin) {  FactoryGirl.create(:user)}
-	let(:import_service) { NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,user:admin)}
+	let(:import_service) { NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by:admin)}
 	let(:import) { FactoryGirl.build(:import, import_file: File.open("spec/fixtures#{file_name}"))}
 
 	describe "subscriber" do
@@ -25,7 +25,7 @@ describe NfgCsvImporter::ImportService do
 
 		it { expect(subject.entity).to be entity }
 		it { expect(subject.type).to be import_type }
-		it { expect(subject.user).to be admin }
+		it { expect(subject.imported_by).to be admin }
 
 		before(:each) do
 			NfgCsvImporter::ImportService.any_instance.stubs(:file).returns(file)
@@ -103,7 +103,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { "not provided" }
 
 				it "should assign default values for blank fields and not change non-blank values" do
-					NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,user:admin).import
+					NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by: admin).import
 					expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("not provided")
 					expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 				end
@@ -114,7 +114,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { lambda { |row| row["email"][/[^@]+/] } }
 
 			  it "should assign default values for blank fields and not change non-blank values" do
-			  	NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,user:admin).import
+			  	NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by: admin).import
           expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("pavan")
 			  	expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 			  end

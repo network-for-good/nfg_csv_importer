@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20160208203919) do
 
   create_table "nfg_csv_importer_imported_records", force: :cascade do |t|
     t.integer  "entity_id"
-    t.integer  "user_id"
+    t.integer  "imported_by_id"
     t.string   "action"
     t.integer  "importable_id"
     t.string   "importable_type"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20160208203919) do
     t.integer  "number_of_records"
     t.integer  "number_of_records_with_errors"
     t.integer  "entity_id"
-    t.integer  "user_id"
+    t.integer  "imported_by_id"
     t.integer  "status"
     t.integer  "records_processed"
     t.datetime "created_at"

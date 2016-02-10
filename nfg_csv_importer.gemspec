@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", "~> 4.2"
+  s.add_dependency "rails"
   s.add_dependency "roo"
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe NfgCsvImporter::ProcessImportJob do
   let!(:user) { create(:user) }
-  let(:import) { create(:import, user: user) }
+  let(:import) { create(:import, imported_by: user) }
   let(:process_import_job) { NfgCsvImporter::ProcessImportJob.new }
 
   subject { process_import_job.perform(import.id) }

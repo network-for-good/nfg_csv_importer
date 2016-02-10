@@ -5,8 +5,18 @@ require "haml"
 require "simple_form"
 
 module NfgCsvImporter
+  module ApplicationHelper
+    def method_missing(method, *args, &block)
+      if (method.to_s.end_with?('_path') || method.to_s.end_with?('_url')) && main_app.respond_to?(method)
+        main_app.send(method, *args)
+      else
+        super
+      end
+    end
+  end
+
   class Configuration
-    attr_accessor :entity_class, :user_class, :base_controller_class, :user_method, :from_address, :reply_to_address
+    attr_accessor :entity_class, :user_class, :base_controller_class, :from_address, :reply_to_address
   end
 
   class << self

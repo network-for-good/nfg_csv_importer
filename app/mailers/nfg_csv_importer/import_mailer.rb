@@ -1,7 +1,7 @@
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
   def send_import_result(import)
     @import     = import
-    @recipient = import.user
+    @recipient = import.imported_by
     mail(
       to: @recipient.email,
       subject: "Your #{@import.import_type} import has completed!",

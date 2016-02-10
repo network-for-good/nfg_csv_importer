@@ -6,10 +6,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   before_filter :load_entity
   before_filter :set_import_type
-  before_filter :load_new_import, only: [:create, :new]
+  before_filter :load_new_import, only: [:create, :new, :show]
 
   def create
-    @import.user = self.send(NfgCsvImporter.configuration.user_method)
+    @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.user_class.downcase}")
     @import.entity = @entity
     if @import.save
       NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
@@ -31,8 +31,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   protected
   # the standard event tracking (defined in application controller) attempts to include
   # the imported file, which crashes the write to the db. So here we only track the type of import
-  def track_action
-    ahoy.track "Processed #{controller_name}##{action_name}", { import_type: import_type }
+  def filtered_params
+    { import_type: @import_type }
   end
 
   def import_params
@@ -45,13 +45,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_entity
-    raise Entity.all.inspect
-    raise NfgCsvImporter.configuration.entity_class.constantize.inspect
-    @entity = NfgCsvImporter.configuration.entity_class.constantize.find_by(subdomain: request.subdomain)
+    @entity ||= self.send "#{NfgCsvImporter.configuration.entity_class.downcase}".to_sym
   end
 
   def set_import_type
-    @import_type = params[:import_type]
+    @import_type ||= params[:import_type]
   end
 
 end
