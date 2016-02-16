@@ -14,8 +14,7 @@
     NfgCsvImporter.configure do |config|
       config.entity_class = "Entity"
       config.user_class = "Admin"
-      config.base_controller_cass = "ApplicationController"
-      config.user_method = :current_user
+      config.base_controller_class = "ApplicationController"
       config.from_address = Rails.configuration.default_from_address
       config.reply_to_address = Rails.configuration.default_from_address
     end
@@ -30,13 +29,23 @@
     end
     ````
 
-4. Configure your ActiveJob backend (use ankane/activejob_backport for Rails < 4.2)
-5. Set any neccessary storage options for Carrierwave in `config/initializers/carrierwave.rb`.
+5. Copy and run migrations to create the import and import_records tables:
+    ````
+    rake nfg_csv_importer:install:migrations && rake db:migrate
+    ````
+
+6. Mount the uploader in `config/routes.rb`:
+    ````
+    mount NfgCsvImporter::Engine => "/admin"
+    ````
+
+7. Configure your ActiveJob backend (use ankane/activejob_backport for Rails < 4.2)
+8. Set any neccessary storage options for Carrierwave in `config/initializers/carrierwave.rb`.
 
 ## Create Importer Definitions
 Create the file `app/imports/import_definition.rb` containing a class called `ImportDefinition` inheriting from NfgCsvImporter::ImportDefinition`. Within this class, define a class method for each import type. This class method should contain a hash of options that pertain to that particular import type.
 ````
-class ImportDefinition << NfgCsvImporter::ImportDefinition
+class ImportDefinition < NfgCsvImporter::ImportDefinition
   class << self
     def my_new_import
       {
