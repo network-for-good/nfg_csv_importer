@@ -150,7 +150,8 @@ class NfgCsvImporter::ImportService
   def assign_defaults(attributes)
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
-    attributes.merge!( { entity_id: entity.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_class.downcase + "_id")
+    attributes.merge!( { NfgCsvImporter.configuration.entity_field.to_sym => entity.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_field)
+    attributes.merge!( { NfgCsvImporter.configuration.entity_class.downcase => entity } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_class.downcase)
     attributes.merge(blank_attributes)
   end
 
