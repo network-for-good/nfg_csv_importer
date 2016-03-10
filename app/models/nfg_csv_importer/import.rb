@@ -6,7 +6,7 @@ module NfgCsvImporter
 
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.user_class
     belongs_to :entity, class_name: NfgCsvImporter.configuration.entity_class
-    validates_presence_of :import_file, :import_type, :entity_id, :imported_by_id
+    validates_presence_of :import_file, :import_type, :imported_by_id, NfgCsvImporter.configuration.entity_field
     validate :import_validation
 
     scope :order_by_recent, lambda { order("updated_at DESC") }

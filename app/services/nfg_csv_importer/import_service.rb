@@ -83,8 +83,8 @@ class NfgCsvImporter::ImportService
         transaction_id:transaction_id,
         importable_id: model_obj.id,
         importable_type: model_obj.class.table_name,
-        entity_id: entity.id,
-        action: get_action(model_obj)
+        action: get_action(model_obj),
+        NfgCsvImporter.configuration.entity_field => entity.id
       )
     else
       NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors,import_id)

@@ -6,7 +6,7 @@ class CreateNfgCsvImporterImports < ActiveRecord::Migration
       t.string   "error_file"
       t.integer  "number_of_records"
       t.integer  "number_of_records_with_errors"
-      t.integer  NfgCsvImporter.configuration.entity_class.downcase + "_id"
+      t.integer  NfgCsvImporter.configuration.entity_field
       t.integer  "imported_by_id"
       t.integer  "status"
       t.integer  "records_processed"

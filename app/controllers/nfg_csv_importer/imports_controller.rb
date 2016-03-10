@@ -10,7 +10,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.user_class.downcase}")
-    @import.entity = @entity
+    @import.send(NfgCsvImporter.configuration.entity_field + "=", @entity)
     if @import.save
       NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
       flash[:notice] = t('flash_messages.import.create.notice')
