@@ -7,7 +7,7 @@
   %p Processing, please wait...
 = simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
 
-  = f.error_notification
+  = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
   -#= render partial: 'layouts/bootstrap_errors', locals: { errors: @import.errors[:base]}
 
   #required_fields.panel.panel-default
