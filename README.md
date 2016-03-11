@@ -20,12 +20,17 @@
     end
     ````
 
-3. Add has_many relationships to any relevant models.
+3. Add has_many relationships to any relevant models. Make sure you specify the foreign key.
 
     ````
     # app/models/entity.rb
     class Entity < ActiveRecord::Base
-      has_many :imports, class_name: "NfgCsvImporter::Import"
+      has_many :imports, class_name: "NfgCsvImporter::Import", foreign_key: :imported_for_id
+    end
+
+    # app/models/user.rb
+    class User
+      has_many :imports, class_name: "NfgCsvImporter::Import", foreign_key: :imported_by_id
     end
     ````
 
