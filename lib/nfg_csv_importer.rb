@@ -16,14 +16,10 @@ module NfgCsvImporter
   end
 
   class Configuration
-    attr_accessor :entity_class, :user_class, :base_controller_class, :from_address, :reply_to_address
+    attr_accessor :imported_for_class, :imported_by_class, :base_controller_class, :from_address, :reply_to_address
 
-    def entity_field
-      (entity_class.downcase + "_id")
-    end
-
-    def user_field
-      (user_class.downcase + "_id")
+    def imported_for_field
+      (imported_for_class.downcase + "_id")
     end
   end
 

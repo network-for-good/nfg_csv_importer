@@ -4,9 +4,9 @@ module NfgCsvImporter
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
-    belongs_to :imported_by, class_name: NfgCsvImporter.configuration.user_class
-    belongs_to :entity, class_name: NfgCsvImporter.configuration.entity_class
-    validates_presence_of :import_file, :import_type, :imported_by_id, NfgCsvImporter.configuration.entity_field
+    belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
+    belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
+    validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
     validate :import_validation
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
@@ -29,10 +29,10 @@ module NfgCsvImporter
 
     def service
       service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(imported_by: imported_by, entity: entity, type: import_type, file: import_file, import_id: self.id)
+      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_id: self.id)
     end
 
-    def user_name
+    def imported_by_name
       imported_by.try(:name)
     end
 

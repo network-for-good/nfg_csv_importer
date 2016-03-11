@@ -15,7 +15,7 @@ describe NfgCsvImporter::ImportService do
 	let(:header_data) {["email" ,"first_name","last_name"]}
 	let(:file_name) {"/subscribers.csv"}
 	let(:admin) {  FactoryGirl.create(:user)}
-	let(:import_service) { NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by:admin)}
+	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by:admin)}
 	let(:import) { FactoryGirl.build(:import, import_file: File.open("spec/fixtures#{file_name}"))}
 
 	describe "subscriber" do
@@ -23,8 +23,8 @@ describe NfgCsvImporter::ImportService do
 
 		subject { import_service }
 
-		it { expect(subject.entity).to be entity }
 		it { expect(subject.type).to be import_type }
+		it { expect(subject.imported_for).to be entity }
 		it { expect(subject.imported_by).to be admin }
 
 		before(:each) do
@@ -103,7 +103,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { "not provided" }
 
 				it "should assign default values for blank fields and not change non-blank values" do
-					NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by: admin).import
+					NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin).import
 					expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("not provided")
 					expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 				end
@@ -114,7 +114,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { lambda { |row| row["email"][/[^@]+/] } }
 
 			  it "should assign default values for blank fields and not change non-blank values" do
-			  	NfgCsvImporter::ImportService.new(entity:entity,type:import_type,file:file,imported_by: admin).import
+			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin).import
           expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("pavan")
 			  	expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 			  end
@@ -164,7 +164,7 @@ describe NfgCsvImporter::ImportService do
 	end
 
 	describe "#assign_defaults" do
-		let(:obj) { NfgCsvImporter::ImportService.new(entity:entity,type:import_type) }
+		let(:obj) { NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type) }
 
 		context "when model is subscriber" do
 			let(:attributes) { { email: "first@mail.com", first_name: 'fname', last_name: 'lname' } }

@@ -1,16 +1,13 @@
 class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
-  #expose(:import) do
-  #im = (params[:id].nil? ? Import.queued.new(import_params) : entity.imports.find_by_id(params[:id])).tap { |im| im.attributes = import_params unless request.get? }
-  #end
 
-  before_filter :load_entity
+  before_filter :load_imported_for
   before_filter :set_import_type
   before_filter :load_new_import, only: [:create, :new, :show]
 
   def create
-    @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.user_class.downcase}")
-    @import.send("#{NfgCsvImporter.configuration.entity_field}=", @entity.id)
+    @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
+    @import.imported_for = @imported_for
     if @import.save
       NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
       flash[:notice] = t('flash_messages.import.create.notice')
@@ -21,11 +18,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def index
-    @imports = @entity.imports.order_by_recent
+    @imports = @imported_for.imports.order_by_recent
   end
 
   def show
-    @import = @entity.imports.find(params[:id])
+    @import = @imported_for.imports.find(params[:id])
   end
 
   protected
@@ -44,8 +41,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import ||= NfgCsvImporter::Import.queued.new(import_params)
   end
 
-  def load_entity
-    @entity ||= self.send "#{NfgCsvImporter.configuration.entity_class.downcase}".to_sym
+  def load_imported_for
+    @imported_for ||= self.send "#{NfgCsvImporter.configuration.imported_for_class.downcase}".to_sym
   end
 
   def set_import_type

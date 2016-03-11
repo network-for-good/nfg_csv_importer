@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208203919) do
+ActiveRecord::Schema.define(version: 20160311183551) do
 
   create_table "entities", force: :cascade do |t|
     t.string   "subdomain"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20160208203919) do
   end
 
   create_table "nfg_csv_importer_imported_records", force: :cascade do |t|
-    t.integer  "entity_id"
+    t.integer  "imported_for_id"
     t.integer  "imported_by_id"
     t.string   "action"
     t.integer  "importable_id"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20160208203919) do
     t.string   "error_file"
     t.integer  "number_of_records"
     t.integer  "number_of_records_with_errors"
-    t.integer  "entity_id"
+    t.integer  "imported_for_id"
     t.integer  "imported_by_id"
     t.integer  "status"
     t.integer  "records_processed"

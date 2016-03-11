@@ -11,7 +11,7 @@ describe NfgCsvImporter::ImportMailer, type: :feature do
 
   let(:import) { FactoryGirl.create(:import, import_file: file,
     number_of_records: 100, number_of_records_with_errors: number_of_records_with_errors,
-    entity: entity, imported_by: admin) }
+    imported_for: entity, imported_by: admin) }
   let(:admin) {  FactoryGirl.create(:user) }
   let(:entity) { create(:entity) }
   let(:number_of_records_with_errors) { 0 }

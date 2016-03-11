@@ -3,7 +3,7 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
-  attr_accessor :entity, :type, :file, :imported_by, :errors_list, :import_id
+  attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_id
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions, :description, :to => :import_definition
 
@@ -80,11 +80,11 @@ class NfgCsvImporter::ImportService
       model_obj.save
       NfgCsvImporter::ImportedRecord.create!(
         imported_by_id: imported_by.id,
+        imported_for_id: imported_for.id,
         transaction_id:transaction_id,
         importable_id: model_obj.id,
         importable_type: model_obj.class.table_name,
         action: get_action(model_obj),
-        NfgCsvImporter.configuration.entity_field => entity.id
       )
     else
       NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors,import_id)
@@ -150,8 +150,8 @@ class NfgCsvImporter::ImportService
   def assign_defaults(attributes)
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
-    attributes.merge!( { NfgCsvImporter.configuration.entity_field.to_sym => entity.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_field)
-    attributes.merge!( { NfgCsvImporter.configuration.entity_class.downcase => entity } ) if model.new.has_attribute?(NfgCsvImporter.configuration.entity_class.downcase)
+    attributes.merge!( { NfgCsvImporter.configuration.imported_for_field.to_sym => imported_for.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_field)
+    attributes.merge!( { NfgCsvImporter.configuration.imported_for_class.downcase => imported_for } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_class.downcase)
     attributes.merge(blank_attributes)
   end
 

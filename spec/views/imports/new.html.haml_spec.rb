@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe "imports/new.html.haml" do
   before do
-    view.stubs(:entity).returns(entity)
+    view.stubs(:imported_for).returns(entity)
     assign(:import, import)
     view.stubs(:import_type).returns(import.import_type)
     render template: 'nfg_csv_importer/imports/new'
   end
 
   let(:entity) { create(:entity) }
-  let(:import) { FactoryGirl.build(:import, entity:entity)}
+  let(:import) { FactoryGirl.build(:import, imported_for:entity)}
 
   it "should contain form with file input" do
     within("form") do |form_element|

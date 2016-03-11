@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe "admin/imports/_import_fields.html.haml" do
   before do
-    view.stubs(:entity).returns(entity)
+    view.stubs(:imported_for).returns(entity)
     assign(:import, import)
   end
 
   subject { render :partial => 'nfg_csv_importer/imports/import_fields', :locals => { header: 'Test header', fields: fields } }
 
   let(:entity) { create(:entity) }
-  let(:import) { FactoryGirl.build(:import, entity:entity)}
+  let(:import) { FactoryGirl.build(:import, imported_for:entity)}
   let(:fields) { [] }
 
   context "when fields empty" do

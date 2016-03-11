@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe NfgCsvImporter::Import do
   it { should validate_presence_of(:imported_by_id) }
-  it { should validate_presence_of(:entity_id) }
+  it { should validate_presence_of(:imported_for_id) }
   it { should validate_presence_of(:import_type)}
-  it { should belong_to(:entity) }
+  it { should belong_to(:imported_for) }
   it { should belong_to(:imported_by) }
 
   context "when file is nil" do
@@ -24,7 +24,7 @@ describe NfgCsvImporter::Import do
   let(:header_data) { ["email" ,"first_name","last_name"] }
   let(:file_name) { "/subscribers.csv" }
   let(:admin) {  create(:user) }
-  let(:import) { FactoryGirl.build(:import, entity: entity, import_type: import_type, imported_by: admin, import_file: file) }
+  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file) }
 
   it { expect(import.save).to be }
 

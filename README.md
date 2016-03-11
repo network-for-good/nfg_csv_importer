@@ -12,8 +12,8 @@
     ````
     # config/initializers/nfg_csv_importer.rb
     NfgCsvImporter.configure do |config|
-      config.entity_class = "Entity"
-      config.user_class = "Admin"
+      config.imported_for_class = "Entity"
+      config.imported_by_class = "Admin"
       config.base_controller_class = "ApplicationController"
       config.from_address = Rails.configuration.default_from_address
       config.reply_to_address = Rails.configuration.default_from_address
