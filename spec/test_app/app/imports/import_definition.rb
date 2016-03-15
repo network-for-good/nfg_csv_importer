@@ -1,5 +1,6 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
-  def self.user
+  attr_accessor :imported_for
+  def user
     {
       required_columns: %w{ email },
       optional_columns: %w{first_name last_name},

@@ -88,7 +88,7 @@ describe NfgCsvImporter::ImportService do
 
 		context "when default values present" do
 			before do
-				ImportDefinition
+				ImportDefinition.any_instance
 								.stubs(:user)
 								.returns({
 								required_columns: %w{email first_name last_name},
@@ -171,7 +171,7 @@ describe NfgCsvImporter::ImportService do
 
 
 			before do
-				ImportDefinition.stubs(:user)
+				ImportDefinition.any_instance.stubs(:user)
 					.returns({
 					default_values: { },
 					alias_attributes: [],
@@ -195,7 +195,7 @@ describe NfgCsvImporter::ImportService do
 			let(:import_type) { 'project' }
 
 			before do
-				ImportDefinition.stubs(:project)
+				ImportDefinition.any_instance.stubs(:project)
 					.returns({
 					default_values: { project_type: 'basic' },
 					alias_attributes: [ ],

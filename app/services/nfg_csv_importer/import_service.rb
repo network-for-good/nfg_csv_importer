@@ -11,7 +11,9 @@ class NfgCsvImporter::ImportService
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    OpenStruct.new ::ImportDefinition.send(type)
+    service = ::ImportDefinition.new
+    service.imported_for = imported_for
+    OpenStruct.new service.send(type)
   end
 
   def import
@@ -67,6 +69,9 @@ class NfgCsvImporter::ImportService
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row = strip_data(row)
+      # this record lookup conflicts with DM, where the ID field is assumed
+      # to be an external id. Also, by including an ID field in the file
+      # the user may be updated records they did not intend to
       object = row["id"].present? ? model.find_by_id(row["id"]) : model.new
       set_obj_attributes(row,object)
       additional_class_attributes(row,object)
@@ -132,6 +137,7 @@ class NfgCsvImporter::ImportService
   end
 
   def set_obj_attributes(row,object)
+    # this requires that the object have a attributes= method, which ActiveModel classes do not
     object.attributes = assign_defaults(striped_attributes(row,object))
   end
 
@@ -152,6 +158,9 @@ class NfgCsvImporter::ImportService
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
     attributes.merge!( { NfgCsvImporter.configuration.imported_for_field.to_sym => imported_for.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_field)
     attributes.merge!( { NfgCsvImporter.configuration.imported_for_class.downcase => imported_for } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_class.downcase)
+    # In DM, campaigns need to have a user attached to them. Does it make sense to have this user be the admin
+    # that is importing the record
+    attributes.merge!( { NfgCsvImporter.configuration.imported_by_class.downcase => imported_by } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_by_class.downcase)
     attributes.merge(blank_attributes)
   end
 
