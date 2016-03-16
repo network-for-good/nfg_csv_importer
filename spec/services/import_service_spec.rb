@@ -15,7 +15,7 @@ describe NfgCsvImporter::ImportService do
 	let(:header_data) {["email" ,"first_name","last_name"]}
 	let(:file_name) {"/subscribers.csv"}
 	let(:admin) {  FactoryGirl.create(:user)}
-	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by:admin)}
+	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin)}
 	let(:import) { FactoryGirl.build(:import, import_file: File.open("spec/fixtures#{file_name}"))}
 
 	describe "subscriber" do
@@ -103,7 +103,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { "not provided" }
 
 				it "should assign default values for blank fields and not change non-blank values" do
-					NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin).import
+					NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin).import
 					expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("not provided")
 					expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 				end
@@ -181,10 +181,6 @@ describe NfgCsvImporter::ImportService do
 
 			subject { obj.send(:assign_defaults,attributes) }
 
-			it "should merge entity in attributes" do
-				expect(subject).to include(:entity_id)
-			end
-
 			it "should merge project_type in attributes" do
 				expect(subject).not_to include(project_type: 'basic')
 			end
@@ -213,6 +209,30 @@ describe NfgCsvImporter::ImportService do
 				expect(subject).to include(project_type: 'basic')
 			end
 
+		end
+	end
+
+	describe "#new_model" do
+		let(:obj) { NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type) }
+
+		context "when model is subscriber" do
+			let(:attributes) { { email: "first@mail.com", first_name: 'fname', last_name: 'lname' } }
+
+
+			before do
+				ImportDefinition.any_instance.stubs(:user)
+					.returns({
+					default_values: { },
+					alias_attributes: [],
+					class_name: "User"
+					})
+			end
+
+			subject { obj.send(:new_model) }
+
+			it "should assign the entity id" do
+				expect(subject.entity_id).to eq(entity.id)
+			end
 		end
 	end
 

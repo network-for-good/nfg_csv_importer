@@ -72,7 +72,7 @@ class NfgCsvImporter::ImportService
       # this record lookup conflicts with DM, where the ID field is assumed
       # to be an external id. Also, by including an ID field in the file
       # the user may be updated records they did not intend to
-      object = row["id"].present? ? model.find_by_id(row["id"]) : model.new
+      object = row["id"].present? ? model.find_by_id(row["id"]) : new_model
       set_obj_attributes(row,object)
       additional_class_attributes(row,object)
       persist_valid_record(object, i,row)
@@ -133,7 +133,7 @@ class NfgCsvImporter::ImportService
   end
 
   def all_valid_columns
-    (model.new.attributes.keys + required_columns + optional_columns).uniq!
+    (new_model.attributes.keys + required_columns + optional_columns).uniq!
   end
 
   def set_obj_attributes(row,object)
@@ -156,11 +156,6 @@ class NfgCsvImporter::ImportService
   def assign_defaults(attributes)
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
-    attributes.merge!( { NfgCsvImporter.configuration.imported_for_field.to_sym => imported_for.id } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_field)
-    attributes.merge!( { NfgCsvImporter.configuration.imported_for_class.downcase => imported_for } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_for_class.downcase)
-    # In DM, campaigns need to have a user attached to them. Does it make sense to have this user be the admin
-    # that is importing the record
-    attributes.merge!( { NfgCsvImporter.configuration.imported_by_class.downcase => imported_by } ) if model.new.has_attribute?(NfgCsvImporter.configuration.imported_by_class.downcase)
     attributes.merge(blank_attributes)
   end
 
@@ -174,6 +169,15 @@ class NfgCsvImporter::ImportService
 
   def model
     import_definition.class_name.classify.constantize
+  end
+
+  def new_model
+    new_model = model.new
+    # assign values for the mountable's imported for and imported by if the import model responds to them
+    new_model.send("#{NfgCsvImporter.configuration.imported_for_field}=", imported_for.id) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_for_field)
+    new_model.send("#{NfgCsvImporter.configuration.imported_for_class.downcase}=", imported_for) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_for_class.downcase)
+    new_model.send("#{NfgCsvImporter.configuration.imported_by_class.downcase}=", imported_by) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_by_class.downcase)
+    new_model
   end
 
   def generate_errors_csv
