@@ -34,7 +34,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def import_params
     # params.require(:import).permit!
-    params.fetch(:import, {}).merge(import_type: @import_type).permit!
+    params.fetch(:import, {}).merge(import_type: @import_type, imported_for: @imported_for).permit!
   end
 
   def load_new_import
