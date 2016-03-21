@@ -34,7 +34,8 @@ class NfgCsvImporter::ImportService
   end
 
   def unknown_columns
-    stripped_headers - all_valid_columns
+    # The [''] removes empty headers
+    stripped_headers - all_valid_columns - ['']
   end
 
   def missing_required_columns
@@ -116,7 +117,7 @@ class NfgCsvImporter::ImportService
   end
 
   def header
-    @header ||= spreadsheet.row(1).map(&:strip).map(&:downcase)
+    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip).map(&:downcase)
   end
 
   def get_action(record)
