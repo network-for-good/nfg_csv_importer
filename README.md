@@ -87,3 +87,21 @@ class MyImport
   end
 end
 ````
+
+## Set the Time.zone used on imports
+By default, the importer gem will use Eastern Time as the time zone for date time fields when importing. You can override this by providing a time_zone method on the import_for object. If that method exists and returns something, the importer will set the Time.zone equal to the returned value for the duration of the import
+
+## Provide links to all of the imports on the import index page
+If you add a class method called import_types to your import definition file, the engine will display links to each of those imports new page at the top of the import index page
+````
+  def self.import_types
+    [:user, :donation]
+  end
+````
+The above will cause the imports/index page to display links to new?import_type=user and new?import_type=donation
+
+## Styling the imports new page
+To improve the styling of the imports new page, add a require statement to your application.css (or scss) file
+````
+*= require nfg_csv_importer/application
+````
