@@ -36,6 +36,11 @@ describe NfgCsvImporter::ImportService do
 			expect(subject.import_definition.class_name).to eq import_type.camelize
 		end
 
+		it "should set the time zone value" do
+			Time.expects("zone=").with(import.time_zone)
+			subject.import
+		end
+
 		describe "subscriber import" do
 			before(:each) do
 				csv_data.stubs(:row).with(1).returns(header_data)
@@ -51,11 +56,6 @@ describe NfgCsvImporter::ImportService do
 
 			it "should create importedrecord" do
 				expect {subject.import }.to change(NfgCsvImporter::ImportedRecord, :count)
-			end
-
-			it "should set the time zone value" do
-				Time.expects("zone=").with(import.time_zone)
-				subject.import
 			end
 
 			context "when the header data contains extra spaces and capitalizations" do
