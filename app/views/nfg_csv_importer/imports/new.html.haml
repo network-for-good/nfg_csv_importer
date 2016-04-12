@@ -1,38 +1,35 @@
-%h1.page
-  Import #{params[:import_type].humanize if params[:import_type]}
+.import_new
+  %h1.page
+    Import #{params[:import_type].humanize if params[:import_type]}
+  = simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
 
+    = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
-#spinner.spinner
-  = image_tag "admin/spinner.gif", :style => "border: 0;"
-  %p Processing, please wait...
-= simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
+    #required_fields.panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Description
 
-  = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
-  -#= render partial: 'layouts/bootstrap_errors', locals: { errors: @import.errors[:base]}
+      .panel-body
+        .list-group
+          .list-group-item
+            = simple_format(@import.description)
+          .list-group-item
+            = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.required_columns, header: 'Required Fields' }
+          .list-group-item
+            = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.optional_columns, header: 'Optional Fields' }
+          .list-group-item
+            %strong
+              IMPORTANT:
+            All date/time fields will be assumed to be in #{ @import.time_zone }
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Import
+      .panel-body
 
-  #required_fields.panel.panel-default
-    .panel-heading
-      %h3.panel-title
-        Description
-
-    .panel-body
-      .list-group
-        .list-group-item
-          = simple_format(@import.description)
-        .list-group-item
-          = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.required_columns, header: 'Required Fields' }
-        .list-group-item
-          = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.optional_columns, header: 'Optional Fields' }
-
-
-  .panel.panel-default
-    .panel-heading
-      %h3.panel-title
-        Import
-    .panel-body
-
-      = f.input :import_file , :hint => "Select either csv,xls or xlsx file" do
-        = f.file_field :import_file
-      = hidden_field_tag 'import_type', @import_type
-    .panel-footer
-      = f.button :submit, 'Import', :class => 'btn btn-primary', :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes."
+        = f.input :import_file , :hint => "Select either csv,xls or xlsx file" do
+          = f.file_field :import_file
+        = hidden_field_tag 'import_type', @import_type
+      .panel-footer
+        = f.button :submit, 'Import', :class => 'btn btn-primary', :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..."
