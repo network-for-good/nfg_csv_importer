@@ -129,4 +129,31 @@ describe NfgCsvImporter::Import do
     end
 
   end
+
+  describe "time_zone" do
+    subject { import.time_zone }
+    context 'when imported_for does not respond to time_zone' do
+      it "should return 'Eastern Time (US & Canada)'" do
+        expect(subject).to eq('Eastern Time (US & Canada)')
+      end
+    end
+
+    context "when imported_for responds to time_zone but time_zone is null" do
+      before do
+        Entity.any_instance.stubs(:time_zone).returns(nil)
+      end
+      it "should return 'Eastern Time (US & Canada)'" do
+        expect(subject).to eq('Eastern Time (US & Canada)')
+      end
+    end
+
+    context 'when imported_for responds to time_zone and returns a value' do
+      before do
+        Entity.any_instance.stubs(:time_zone).returns("Indiana (East)")
+      end
+      it "should return imported_for's time_zone" do
+        expect(subject).to eq("Indiana (East)")
+      end
+    end
+  end
 end
