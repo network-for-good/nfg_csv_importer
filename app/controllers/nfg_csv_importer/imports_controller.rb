@@ -2,7 +2,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
 
   before_filter :load_imported_for
-  before_filter :set_import_type
+  before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new, :show]
 
   def create
@@ -45,6 +45,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def set_import_type
+    redirect_to imports_path unless params[:import_type]
     @import_type ||= params[:import_type]
   end
 
