@@ -15,7 +15,7 @@ describe NfgCsvImporter::ImportService do
 	let(:header_data) {["email" ,"first_name","last_name"]}
 	let(:file_name) {"/subscribers.csv"}
 	let(:admin) {  FactoryGirl.create(:user)}
-	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin)}
+	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
 	let(:import) { FactoryGirl.build(:import, import_file: File.open("spec/fixtures#{file_name}"))}
 
 	describe "subscriber" do
@@ -109,7 +109,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { "not provided" }
 
 				it "should assign default values for blank fields and not change non-blank values" do
-					NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin).import
+					NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import).import
 					expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("not provided")
 					expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 				end
@@ -120,7 +120,7 @@ describe NfgCsvImporter::ImportService do
 			  let(:default_value) { lambda { |row| row["email"][/[^@]+/] } }
 
 			  it "should assign default values for blank fields and not change non-blank values" do
-			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin).import
+			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
           expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("pavan")
 			  	expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
 			  end
@@ -371,7 +371,6 @@ describe NfgCsvImporter::ImportService do
 	describe "#persist_valid_record(model_obj, index, row)" do
 
 		before do
-			import_service.import_id = 1
 			import_service.errors_list = []
 		end
 
@@ -379,7 +378,7 @@ describe NfgCsvImporter::ImportService do
 		subject { import_service.send(:persist_valid_record, model_obj, 2,{}) }
 
 		it "should call increment_counter for import records_processed field" do
-			NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed,1)
+			NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed, import.id)
 			subject
 		end
 
@@ -387,8 +386,8 @@ describe NfgCsvImporter::ImportService do
 			let(:model_obj) { FactoryGirl.build(:user, first_name: '') }
 
 			it "should call increment_counter for import number_of_records_with_errors & records_processed fields" do
-				NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed,1)
-				NfgCsvImporter::Import.expects(:increment_counter).with(:number_of_records_with_errors,1)
+				NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed, import.id)
+				NfgCsvImporter::Import.expects(:increment_counter).with(:number_of_records_with_errors, import.id)
 				subject
 			end
 		end

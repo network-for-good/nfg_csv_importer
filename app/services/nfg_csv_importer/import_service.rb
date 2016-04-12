@@ -3,7 +3,7 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
-  attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_id
+  attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions, :description, :to => :import_definition
 
