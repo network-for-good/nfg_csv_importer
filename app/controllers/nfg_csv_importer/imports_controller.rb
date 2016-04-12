@@ -9,7 +9,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
     if @import.save
       NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
-      flash[:notice] = t('flash_messages.import.create.notice')
+      flash[:notice] = t(:notice, scope: [:import, :create])
       redirect_to import_path(@import)
     else
       render :action => 'new'
