@@ -30,7 +30,7 @@ module NfgCsvImporter
 
     def service
       service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_id: self.id)
+      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
     end
 
     def imported_by_name

@@ -36,7 +36,7 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it "should set import_id for import service" do
     subject
-    expect(import.service.import_id).to eql(import.id)
+    expect(import.service.import_record).to eql(import)
   end
 
   it "creates a record for each row" do

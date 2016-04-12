@@ -21,7 +21,7 @@ describe "imports/index.html.haml" do
     end
 
     it "should not have any links to a new import" do
-      expect(subject).not_to have_selector("#import_links a")
+      expect(subject).not_to have_selector(".panel-heading a")
     end
   end
 
@@ -31,8 +31,8 @@ describe "imports/index.html.haml" do
     end
 
     it "should display a link to each of the types" do
-      expect(subject).to have_selector("#import_links a[href$='/new?import_type=user']")
-      expect(subject).to have_selector("#import_links a[href$='/new?import_type=donation']")
+      expect(subject).to have_selector(".panel-heading a[href$='/new?import_type=user']")
+      expect(subject).to have_selector(".panel-heading a[href$='/new?import_type=donation']")
     end
   end
 end

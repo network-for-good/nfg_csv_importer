@@ -60,7 +60,7 @@ describe NfgCsvImporter::ImportsController do
 
     it "should display success message" do
       subject
-      expect(flash[:notice]).to eq I18n.t('flash_messages.import.create.notice')
+      expect(flash[:notice]).to eq I18n.t('import.create.notice')
     end
   end
 
