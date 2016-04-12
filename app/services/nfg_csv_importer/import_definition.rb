@@ -6,4 +6,8 @@ class NfgCsvImporter::ImportDefinition
     service.imported_for = imported_for
     OpenStruct.new service.send(import_type)
   end
+
+  def self.import_types
+    []
+  end
 end
