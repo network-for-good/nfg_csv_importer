@@ -1,4 +1,5 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
+  IMPORT_TYPES = [:user]
   attr_accessor :imported_for
   def user
     {
