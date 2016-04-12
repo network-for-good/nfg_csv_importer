@@ -66,11 +66,11 @@ class NfgCsvImporter::ImportService
   private
 
   def load_and_persist_imported_objects
-    Time.zone = import_record.time_zone
     self.errors_list = Array.new
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row = strip_data(row)
+      row = set_zone_for_date_fields(row)
       # this record lookup conflicts with DM, where the ID field is assumed
       # to be an external id. Also, by including an ID field in the file
       # the user may be updated records they did not intend to
@@ -101,6 +101,7 @@ class NfgCsvImporter::ImportService
   end
 
   def open_spreadsheet
+    Time.zone = import_record.time_zone
     file_path = File.exists?(file.path) ? file.path : file.url
     case file_extension
     when ".csv" then Roo::CSV.new(file_path)
@@ -141,6 +142,12 @@ class NfgCsvImporter::ImportService
   def set_obj_attributes(row,object)
     # this requires that the object have a attributes= method, which ActiveModel classes do not
     object.attributes = assign_defaults(striped_attributes(row,object))
+  end
+
+  def set_zone_for_date_fields(data)
+    data.each do |k,v|
+      data[k] = Time.zone.local_to_utc(v) if v.is_a?(DateTime) or v.is_a?(Time)
+    end
   end
 
   def strip_data(data)
@@ -192,7 +199,7 @@ class NfgCsvImporter::ImportService
     end
   end
 
-  def import_record
-    NfgCsvImporter::Import.find(import_id)
+  def import_id
+    import_record.id
   end
 end
