@@ -66,6 +66,7 @@ class NfgCsvImporter::ImportService
   private
 
   def load_and_persist_imported_objects
+    Time.zone = import_record.time_zone
     self.errors_list = Array.new
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
@@ -189,5 +190,9 @@ class NfgCsvImporter::ImportService
         csv << error_hash.values
       end
     end
+  end
+
+  def import_record
+    NfgCsvImporter::Import.find(import_id)
   end
 end
