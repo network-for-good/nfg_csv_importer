@@ -29,4 +29,8 @@ describe "imports/new.html.haml" do
     expect(rendered).to match(/#{import.description}/)
   end
 
+  it "should display a message about what time_zone the date/times will use" do
+    expect(rendered).to match(/All date\/time fields will be assumed to be in Eastern Time/)
+  end
+
 end
