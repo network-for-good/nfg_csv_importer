@@ -43,6 +43,14 @@ module NfgCsvImporter
       self.save!
     end
 
+    def time_zone
+      if imported_for.respond_to?(:time_zone) && imported_for.time_zone
+        imported_for.time_zone
+      else
+        'Eastern Time (US & Canada)'
+      end
+    end
+
     private
 
     def service_name
