@@ -2,10 +2,11 @@
   %h1
     Imports
   .panel.panel-default
+    .panel-heading
+      - ImportDefinition.import_types.each do |import_type|
+        = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
     .panel-body
-      #import_links
-        - ImportDefinition.import_types.each do |import_type|
-          = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary pull-right margin-left"
+      #import_links.import_links
       - if @imports.empty?
         There are no Imports
       -else
