@@ -69,7 +69,7 @@ class NfgCsvImporter::ImportService
     (2..spreadsheet.last_row).map do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row = strip_data(row)
-      row = set_zone_for_date_fields(row)
+      set_zone_for_date_fields(row)
       # this record lookup conflicts with DM, where the ID field is assumed
       # to be an external id. Also, by including an ID field in the file
       # the user may be updated records they did not intend to
