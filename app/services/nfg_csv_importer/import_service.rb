@@ -89,8 +89,7 @@ class NfgCsvImporter::ImportService
         imported_by_id: imported_by.id,
         imported_for_id: imported_for.id,
         transaction_id:transaction_id,
-        importable_id: model_obj.id,
-        importable_type: model_obj.class.table_name,
+        importable: model_obj,
         action: get_action(model_obj),
       )
     else
