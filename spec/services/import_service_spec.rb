@@ -56,6 +56,9 @@ describe NfgCsvImporter::ImportService do
 
 			it "should create importedrecord" do
 				expect {subject.import }.to change(NfgCsvImporter::ImportedRecord, :count)
+				expect(NfgCsvImporter::ImportedRecord.last.importable_id).to be
+
+				# expect(NfgCsvImporter::ImportedRecord.last.importable).to eq(User.last)
 			end
 
 			context "when the header data contains extra spaces and capitalizations" do
