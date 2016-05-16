@@ -21,7 +21,8 @@ module NfgCsvImporter
         collect_header_errors and return false unless headers_valid?
       rescue  => e
         errors.add :base, "File import failed: #{e.message}"
-        Rails.logger.info "Error when reading file: #{e}"
+        Rails.logger.error e.message
+        Rails.logger.error e.backtrace.join("\n")
         return false
       end
       true
