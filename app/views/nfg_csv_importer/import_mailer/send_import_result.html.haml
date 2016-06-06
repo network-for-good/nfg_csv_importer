@@ -6,4 +6,4 @@
   %p
     Since there were errors encountered, we have included a link for the file containing those records with the errors listed in the last column. You can fix the errors, delete the last column, and reimport this file.
   %p
-    You can download the error file here: #{link_to('Link to error file', @import.error_file.url)}
+    You can download the error file here: #{link_to('Link to error file', import_url(@import, @url_options))}
