@@ -3,7 +3,7 @@ require "rails_helper"
 shared_examples_for "an import notification with an errors file link" do
   it "shows the error link" do
     expect(subject.body).to match("Link to error file")
-    expect(subject.body).to match(%Q{href="http://test.com/test.csv"})
+    expect(subject.body).to match(%Q{href="http://test.com:3000/nfg_csv_importer/1"})
   end
 end
 
@@ -30,8 +30,6 @@ describe NfgCsvImporter::ImportMailer, type: :feature do
     it { expect(subject.body).to match("you imported a #{import.import_type} file") }
 
     describe "when the import have errors" do
-      before { import.stubs(:error_file).returns(mock(url: 'http://test.com/test.csv')) }
-
       context "With multiple errors" do
         let(:number_of_records_with_errors) { 20 }
         it_behaves_like "an import notification with an errors file link"
