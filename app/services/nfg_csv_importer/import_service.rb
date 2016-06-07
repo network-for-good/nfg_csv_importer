@@ -152,7 +152,7 @@ class NfgCsvImporter::ImportService
 
   def strip_data(data)
     data.inject({}) { |hash, (key, value)|
-      hash[key] = value.is_a?(String) ? value.strip : value
+      hash[key] = value.is_a?(String) ? value.gsub(/<\/?[^>]*>/, "").strip : value
       hash
     }
   end
