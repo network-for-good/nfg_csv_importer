@@ -3,7 +3,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   before_filter :load_imported_for
   before_filter :set_import_type, only: [:create, :new]
-  before_filter :load_new_import, only: [:create, :new, :show]
+  before_filter :load_new_import, only: [:create, :new]
+  before_filter :load_import, only: [:show, :destroy]
 
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
@@ -21,7 +22,13 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def show
-    @import = @imported_for.imports.find(params[:id])
+  end
+
+  def destroy
+    number_of_records = @import.imported_records.size
+    @import.destroy
+    flash[:success] = t(:success, number_of_records: number_of_records, import_type: @import.import_type, scope: [:import, :destroy])
+    redirect_to imports_path
   end
 
   protected
@@ -49,4 +56,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import_type ||= params[:import_type]
   end
 
+  def load_import
+    @import = @imported_for.imports.find(params[:id])
+  end
 end

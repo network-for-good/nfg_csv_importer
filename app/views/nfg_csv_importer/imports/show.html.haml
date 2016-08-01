@@ -4,6 +4,7 @@
 
 .panel.panel-default
   .panel-body
+    = render 'flash_messages'
     - unless @import.import_file.file.nil?
       %p
         %b Import file:
@@ -33,3 +34,6 @@
     %p
       %b Records processed:
       = @import.records_processed
+    - if @import.imported_records.any?
+      %p
+        = link_to 'Delete Import', import_path(@import), method: :delete, data: { confirm: t(:delete_confirmation, number_of_records: @import.imported_records.size, import_type: @import.import_type, scope: [:import, :show]) }, class: 'btn btn-secondary'

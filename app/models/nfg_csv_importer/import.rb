@@ -4,8 +4,10 @@ module NfgCsvImporter
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
+    has_many :imported_records, dependent: :destroy
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
+
     validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
     validate :import_validation
 
