@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -28,8 +29,9 @@ ActiveRecord::Schema.define(version: 20160801130356) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "import_id"
-    t.index ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
   end
+
+  add_index "nfg_csv_importer_imported_records", ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
 
   create_table "nfg_csv_importer_imports", force: :cascade do |t|
     t.string   "import_type"
