@@ -6,7 +6,7 @@
       - ImportDefinition.import_types.each do |import_type|
         = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
     .panel-body
-      = render 'flash_messages'
+      = render partial: 'nfg_csv_importer/imports/flash_messages'
       #import_links.import_links
       - if @imports.empty?
         There are no Imports
