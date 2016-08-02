@@ -4,7 +4,7 @@
 
 .panel.panel-default
   .panel-body
-    = render 'flash_messages'
+    = render 'shared/flash_messages'
     - unless @import.import_file.file.nil?
       %p
         %b Import file:
