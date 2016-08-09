@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311183551) do
+ActiveRecord::Schema.define(version: 20160801130356) do
 
   create_table "entities", force: :cascade do |t|
     t.string   "subdomain"
@@ -28,7 +28,10 @@ ActiveRecord::Schema.define(version: 20160311183551) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "import_id"
   end
+
+  add_index "nfg_csv_importer_imported_records", ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
 
   create_table "nfg_csv_importer_imports", force: :cascade do |t|
     t.string   "import_type"

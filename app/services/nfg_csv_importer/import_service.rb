@@ -82,10 +82,11 @@ class NfgCsvImporter::ImportService
   end
 
   def persist_valid_record(model_obj, index, row)
-    NfgCsvImporter::Import.increment_counter(:records_processed,import_id)
+    NfgCsvImporter::Import.increment_counter(:records_processed, import_id)
     if validate_object(model_obj)
       model_obj.save
       NfgCsvImporter::ImportedRecord.create!(
+        import_id: import_id,
         imported_by_id: imported_by.id,
         imported_for_id: imported_for.id,
         transaction_id: transaction_id,
@@ -94,7 +95,7 @@ class NfgCsvImporter::ImportService
         action: get_action(model_obj),
       )
     else
-      NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors,import_id)
+      NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors, import_id)
       row['Errors'] = "#{model_obj.errors.full_messages.join(', ')}"
       errors_list << row
     end
