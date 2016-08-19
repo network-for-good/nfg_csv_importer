@@ -7,4 +7,14 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   validates_presence_of :imported_by_id, :imported_for_id, :transaction_id, :action, :importable_id, :importable_type
 
   scope :by_transaction_id,lambda { |transaction_id| includes(:importable).where(transaction_id:transaction_id)}
+
+  def destroy
+    self.importables.each do |importable|
+      if importable.responds_to?(:can_be_deleted?)
+        importable.destroy if importable.can_be_deleted?
+      else
+        importable.destroy
+      end
+    end
+  end
 end
