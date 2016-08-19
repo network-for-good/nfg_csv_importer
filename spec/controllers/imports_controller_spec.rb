@@ -12,9 +12,7 @@ describe NfgCsvImporter::ImportsController do
     fixture_file_upload(file_name, 'text/csv')
   end
 
-  before do
-    controller.stubs(:current_user).returns(user)
-  end
+  before { controller.stubs(:current_user).returns(user) }
 
   render_views
 
@@ -39,8 +37,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
 
-  context "#create" do
-
+  describe "#create" do
     before do
       NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
       NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
@@ -64,5 +61,26 @@ describe NfgCsvImporter::ImportsController do
     end
   end
 
+  describe "#destroy" do
+    let!(:import) { create(:import, imported_for: entity) }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let!(:imported_records) { create_list(:imported_record, 1000, import: import) }
 
+    before do
+      NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
+      controller.stubs(:entity).returns(entity)
+    end
+
+    subject { delete :destroy, params }
+
+    it "adds the job to the queue" do
+      NfgCsvImporter::DestroyImportJob.expects(:perform_later).twice
+      subject
+    end
+
+    it "does not delete the imported records" do
+      NfgCsvImporter::ImportedRecord.any_instance.expects(:destroy).never
+      subject
+    end
+  end
 end
