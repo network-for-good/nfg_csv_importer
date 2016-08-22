@@ -13,12 +13,12 @@
         There are no Imports
       -else
         .table-responsive
-          %table.table.table-striped
+          %table.table.table-striped#imports_table
             %thead
               %tr
                 %th.first Admin
                 %th No. of Records
                 %th No. of Records with errors
-                %th Completed at
+                %th Last updated
                 %th.last Status
             = render :partial => 'import', :collection => @imports
