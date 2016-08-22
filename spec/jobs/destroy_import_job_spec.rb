@@ -6,6 +6,8 @@ describe NfgCsvImporter::DestroyImportJob do
   let!(:destroy_import_job) { NfgCsvImporter::DestroyImportJob.new }
   let!(:imported_records) { create_list(:imported_record, number_of_imported_records, import: import) }
 
+  subject { destroy_import_job.perform(batch, import.id) }
+
   before { NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2) }
 
   shared_examples_for "destroying the imported record" do
@@ -21,7 +23,6 @@ describe NfgCsvImporter::DestroyImportJob do
     let(:number_of_imported_records) { 2 }
     let(:batch) { imported_records.map(&:id)}
 
-  subject { destroy_import_job.perform(batch, import.id) }
     it "sends the notification email" do
       NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).returns(mock("mailer", deliver: true))
       subject
@@ -38,7 +39,6 @@ describe NfgCsvImporter::DestroyImportJob do
   describe "For previous batches" do
     let(:number_of_imported_records) { 4 }
     let(:batch) { imported_records[0..1].map(&:id) }
-  subject { destroy_import_job.perform(batch, import.id) }
 
     it "does not send the email" do
       NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).never
