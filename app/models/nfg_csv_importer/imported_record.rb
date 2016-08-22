@@ -11,10 +11,15 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   def destroy
     if importable.respond_to?(:can_be_destroyed?)
-      importable.destroy if importable.can_be_destroyed?
+      if importable.can_be_destroyed?
+        importable.destroy
+        super
+      else
+        return
+      end
     else
       importable.destroy
+      super
     end
-    super
   end
 end
