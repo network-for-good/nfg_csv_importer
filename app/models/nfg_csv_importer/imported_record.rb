@@ -9,6 +9,10 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   scope :by_transaction_id,lambda { |transaction_id| includes(:importable).where(transaction_id:transaction_id)}
   scope :created, -> { where(action: 'create') }
 
+  def self.batch_size
+    500
+  end
+
   def destroy
     if importable.respond_to?(:can_be_destroyed?)
       if importable.can_be_destroyed?

@@ -13,7 +13,7 @@ module NfgCsvImporter
       end
 
       if processing_final_batch
-        NfgCsvImporter::ImportMailer.send_destroy_result(import)
+        NfgCsvImporter::ImportMailer.send_destroy_result(import).deliver
         import.deleted!
       end
     end

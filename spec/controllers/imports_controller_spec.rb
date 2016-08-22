@@ -64,9 +64,10 @@ describe NfgCsvImporter::ImportsController do
   describe "#destroy" do
     let!(:import) { create(:import, imported_for: entity) }
     let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
-    let!(:imported_records) { create_list(:imported_record, 1000, import: import) }
+    let!(:imported_records) { create_list(:imported_record, 3, import: import) }
 
     before do
+      NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
       NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
     end
