@@ -26,4 +26,8 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
       super
     end
   end
+
+  def created?
+    action == 'create'
+  end
 end

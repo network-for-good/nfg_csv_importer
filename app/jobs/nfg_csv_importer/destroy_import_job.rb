@@ -9,6 +9,7 @@ module NfgCsvImporter
       processing_final_batch = import.imported_records.size == batch.size
       batch.each do |imported_record_id|
         imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id)
+        next unless imported_record.created?
         imported_record.destroy
       end
 
