@@ -62,6 +62,10 @@ class NfgCsvImporter::ImportService
     max_run_time && run_time >= max_run_time
   end
 
+  def starting_row
+    @starting_row ||= 2
+  end
+
   protected
 
   def additional_class_attributes(row, object)

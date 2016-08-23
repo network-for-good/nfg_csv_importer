@@ -361,7 +361,7 @@ describe NfgCsvImporter::ImportService do
 	describe "#no_of_records" do
 		subject { import_service.no_of_records }
 
-		it { expect(subject).to eq(2) }
+		it { expect(subject).to eq(3) }
 	end
 
 	describe "#no_of_error_records" do
@@ -397,5 +397,3 @@ describe NfgCsvImporter::ImportService do
 
 	end
 end
-
-

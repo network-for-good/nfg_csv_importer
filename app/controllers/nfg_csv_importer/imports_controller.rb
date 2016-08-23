@@ -8,6 +8,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
+    @import.number_of_records_with_errors = 0
     if @import.save
       NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
       flash[:notice] = t(:notice, scope: [:import, :create])
