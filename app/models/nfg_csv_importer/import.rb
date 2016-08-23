@@ -55,7 +55,7 @@ module NfgCsvImporter
     end
 
     def can_be_deleted?
-      imported_records.created.any? && !(deleted? or deleting?)
+      imported_records.created.any? && complete?
     end
 
     private
