@@ -45,5 +45,12 @@ describe NfgCsvImporter::ImportedRecord do
         expect(imported_record.destroyed?).to be_falsey
       end
     end
+
+    context "when the importable no longer exists" do
+      it "does not raise an exception" do
+        importable.destroy
+        expect { imported_record.reload.destroy }.not_to raise_exception
+      end
+    end
   end
 end
