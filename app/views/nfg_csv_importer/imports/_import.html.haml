@@ -2,5 +2,5 @@
   %td= import.imported_by_name
   %td= import.number_of_records
   %td= import.number_of_records_with_errors.to_i
-  %td= import.updated_at.to_s(:us_time) if import.complete?
+  %td= import.updated_at.to_s(:us_time)
   %td= link_to import.status, import_path(import)
