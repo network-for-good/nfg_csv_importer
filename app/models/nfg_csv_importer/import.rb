@@ -1,6 +1,6 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
-    enum status: [:queued, :processing, :complete]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
@@ -52,6 +52,10 @@ module NfgCsvImporter
       else
         'Eastern Time (US & Canada)'
       end
+    end
+
+    def can_be_deleted?
+      imported_records.created.any? && complete?
     end
 
     private

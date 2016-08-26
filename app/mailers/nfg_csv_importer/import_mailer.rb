@@ -13,6 +13,19 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
     )
   end
 
+  def send_destroy_result(import)
+    @import = import
+    @recipient = import.imported_by
+    @imported_for = imported_for(@import)
+
+    mail(
+      to: @recipient.email,
+      subject: "Your #{@import.import_type} import has been deleted.",
+      from: NfgCsvImporter.configuration.from_address,
+      reply_to: NfgCsvImporter.configuration.reply_to_address
+    )
+  end
+
   private
 
   def imported_for(import)
