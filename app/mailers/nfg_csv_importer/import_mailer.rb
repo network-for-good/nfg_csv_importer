@@ -1,6 +1,6 @@
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
   def send_import_result(import)
-    @import = import
+    @import = import.reload
     @recipient = import.imported_by
     @imported_for = imported_for(@import)
     @url_options = url_options(@imported_for)
