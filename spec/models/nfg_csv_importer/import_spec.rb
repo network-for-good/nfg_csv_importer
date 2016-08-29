@@ -24,7 +24,8 @@ describe NfgCsvImporter::Import do
   let(:header_data) { ["email" ,"first_name","last_name"] }
   let(:file_name) { "/subscribers.csv" }
   let(:admin) {  create(:user) }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file) }
+  let(:error_file) { nil }
+  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file) }
 
   it { expect(import.save).to be }
 
@@ -153,6 +154,28 @@ describe NfgCsvImporter::Import do
       end
       it "should return imported_for's time_zone" do
         expect(subject).to eq("Indiana (East)")
+      end
+    end
+  end
+
+  describe "maybe_append_to_existing_errors" do
+    let(:errors_csv) { "email\tfirst_name\tlast_name\tErrors\npavan@gmail.com\tArnold\tGilbert\tEmail is invalid\n" }
+    let(:subject) { import.maybe_append_to_existing_errors(errors_csv) }
+
+    context 'when error_file is blank' do
+      it 'return errors_csv unchanged' do
+        expect(subject).to eq errors_csv
+      end
+    end
+
+    context 'when error_file is present' do
+      let(:error_file) { File.open("spec/fixtures/errors.xls") }
+
+      it 'appends to existing errors_csv' do
+        csv = CSV.parse(subject, col_sep: "\t")
+        expect(csv.size).to eq 3
+        expect(subject).to include 'pavan@gmail.com' # new errors
+        expect(subject).to include 'ajporterfield@gmail' # existing errors
       end
     end
   end

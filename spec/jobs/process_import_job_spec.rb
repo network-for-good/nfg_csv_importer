@@ -11,6 +11,10 @@ describe NfgCsvImporter::ProcessImportJob do
     expect{ subject }.to change{ import.reload.number_of_records_with_errors }
   end
 
+  it "show update import record's error_file" do
+    expect{ subject }.to change{ import.reload.error_file.url }
+  end
+
   it "should update the number_of_records" do
     expect{ subject }.to change{ import.reload.number_of_records }
   end
@@ -41,5 +45,9 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it "creates a record for each row" do
     expect { subject }.to change { User.count }.by(2)
+  end
+
+  it 'allows you to start at a specific row in the file' do
+    expect { process_import_job.perform(import.id, 3) }.to change { User.count }.by(1)
   end
 end

@@ -50,7 +50,7 @@ module NfgCsvImporter
     def maybe_append_to_existing_errors(errors_csv)
       if error_file.present?
         errors_csv = CSV.generate(col_sep: "\t") do |csv|
-          CSV.parse(error_file.read, col_sep: "\t") { |row| csv << row }
+          CSV.parse(error_file.read, col_sep: "\t") { |row| puts row; csv << row }
           CSV.parse(errors_csv, headers: true, col_sep: "\t") { |row| csv << row }
         end
       end
