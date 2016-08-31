@@ -361,7 +361,7 @@ describe NfgCsvImporter::ImportService do
 	describe "#no_of_records" do
 		subject { import_service.no_of_records }
 
-		it { expect(subject).to eq(2) }
+		it { expect(subject).to eq(3) }
 	end
 
 	describe "#no_of_error_records" do
@@ -372,7 +372,6 @@ describe NfgCsvImporter::ImportService do
 	end
 
 	describe "#persist_valid_record(model_obj, index, row)" do
-
 		before do
 			import_service.errors_list = []
 		end
@@ -394,8 +393,57 @@ describe NfgCsvImporter::ImportService do
 				subject
 			end
 		end
+	end
 
+	describe "#run_time_limit_reached?" do
+		subject { import_service.run_time_limit_reached? }
+		before do
+			import_service.stubs(:max_run_time).returns(max_run_time)
+			import_service.stubs(:run_time).returns(run_time)
+		end
+
+		context 'when run_time > max_run_time' do
+			let(:max_run_time) { 100}
+			let(:run_time) { 110}
+
+			it 'returns true' do
+				expect(subject).to be
+			end
+		end
+
+		context 'when run_time = max_run_time' do
+			let(:max_run_time) { 100}
+			let(:run_time) { 100}
+
+			it 'returns true' do
+				expect(subject).to be
+			end
+		end
+
+		context 'when run_time < max_run_time' do
+			let(:max_run_time) { 110}
+			let(:run_time) { 100}
+
+			it 'returns false' do
+				expect(subject).not_to be
+			end
+		end
+	end
+
+	describe "#run_time" do
+		before { import_service.stubs(:start_timestamp).returns(10.seconds.ago.to_i) }
+		subject { import_service.send(:run_time) }
+
+		it 'returns seconds since starting timestamp' do
+			expect(subject).to eq 10
+		end
+	end
+
+	describe "#mark_start_time" do
+		subject { import_service.send(:mark_start_time) }
+
+		it 'sets start_timestamp to current timestamp' do
+			expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
+		end
 	end
 end
-
-

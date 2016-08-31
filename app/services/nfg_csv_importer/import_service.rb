@@ -3,9 +3,11 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
-  attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record
+  attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record,
+                :starting_row, :start_timestamp, :current_row
 
-  delegate :class_name, :required_columns, :optional_columns, :column_descriptions, :description, :to => :import_definition
+  delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
+           :description, :to => :import_definition
 
   alias_attribute :import_model, :model
   alias_attribute :import_class_name, :class_name
@@ -17,6 +19,8 @@ class NfgCsvImporter::ImportService
   end
 
   def import
+    mark_start_time
+    maybe_set_import_number_of_records
     load_and_persist_imported_objects
     generate_errors_csv
   end
@@ -54,9 +58,17 @@ class NfgCsvImporter::ImportService
     missing_required_columns.empty?
   end
 
+  def run_time_limit_reached?
+    max_run_time && run_time >= max_run_time
+  end
+
+  def starting_row
+    @starting_row ||= 2
+  end
+
   protected
 
-  def additional_class_attributes(row,object)
+  def additional_class_attributes(row, object)
   end
 
   def validate_object(object)
@@ -65,9 +77,18 @@ class NfgCsvImporter::ImportService
 
   private
 
+  def maybe_set_import_number_of_records
+    unless import_record.number_of_records
+      import_record.update(number_of_records: no_of_records)
+    end
+  end
+
   def load_and_persist_imported_objects
-    self.errors_list = Array.new
-    (2..spreadsheet.last_row).map do |i|
+    self.errors_list = []
+    (starting_row..spreadsheet.last_row).map do |i|
+      self.current_row = i
+      break if run_time_limit_reached?
+
       row = Hash[[header, spreadsheet.row(i)].transpose]
       row = strip_data(row)
       set_zone_for_date_fields(row)
@@ -77,8 +98,20 @@ class NfgCsvImporter::ImportService
       object = row["id"].present? ? model.find_by_id(row["id"]) : new_model
       set_obj_attributes(row,object)
       additional_class_attributes(row,object)
-      persist_valid_record(object, i,row)
+      persist_valid_record(object, i, row)
     end
+  end
+
+  def run_time
+    Time.now.to_i - self.start_timestamp
+  end
+
+  def max_run_time
+    NfgCsvImporter.configuration.max_run_time
+  end
+
+  def mark_start_time
+    self.start_timestamp = Time.now.to_i
   end
 
   def persist_valid_record(model_obj, index, row)
@@ -161,7 +194,6 @@ class NfgCsvImporter::ImportService
   def striped_attributes(row,object)
     row.slice( *(object.attributes.keys + import_definition.alias_attributes) )
   end
-
 
   def assign_defaults(attributes)
     blank_attributes = attributes.select{|key, value| value.blank? }

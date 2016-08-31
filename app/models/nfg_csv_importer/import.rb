@@ -40,10 +40,22 @@ module NfgCsvImporter
     end
 
     def set_upload_error_file(errors_csv)
+      errors_csv = maybe_append_to_existing_errors(errors_csv)
       csv_file = FilelessIO.new(errors_csv)
       csv_file.original_filename = "import_error_file.xls"
       self.error_file = csv_file
       self.save!
+    end
+
+    def maybe_append_to_existing_errors(errors_csv)
+      if error_file.present?
+        errors_csv = CSV.generate(col_sep: "\t") do |csv|
+          CSV.parse(error_file.read, col_sep: "\t") { |row| puts row; csv << row }
+          CSV.parse(errors_csv, headers: true, col_sep: "\t") { |row| csv << row }
+        end
+      end
+
+      errors_csv
     end
 
     def time_zone
