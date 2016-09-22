@@ -5,7 +5,6 @@ module NfgCsvImporter
     def perform(*args)
       batch = args.first
       import = NfgCsvImporter::Import.find(args.last)
-      import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
       processing_final_batch = import.imported_records.size == batch.size
       batch.each do |imported_record_id|
         imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) rescue next
