@@ -1,0 +1,21 @@
+%p
+  Use the fields below to select the mappings for your import
+= simple_form_for @import, class: "form form-horizontal" do |f|
+  %table
+    %tbody
+      %tr
+        = f.simple_fields_for :fields_mapping do |id|
+          - @headers.each do |header_name|
+            %td
+              %table
+                %thead
+                  %tr
+                    %th= header_name
+                %tbody
+                  %tr
+                    %td
+                      = id.input header_name, as: :select, collection: @all_valid_columns, label: false
+                  - (0..(@first_x_rows.length - 1)).each do |i|
+                    %tr
+                      %td= @first_x_rows[i][header_name]
+  = button_tag "Save", type: :submit

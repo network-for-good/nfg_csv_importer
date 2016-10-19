@@ -4,18 +4,31 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_filter :load_imported_for
   before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new]
-  before_filter :load_import, only: [:show, :destroy]
+  before_filter :load_import, only: [:show, :destroy, :edit, :update]
 
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
-    @import.number_of_records_with_errors = 0
+    @import.uploaded!
+    @import.type = @import_type
+    @import.imported_for = @imported_for
     if @import.save
-      NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
-      flash[:notice] = t(:notice, scope: [:import, :create])
-      redirect_to import_path(@import)
+      render action: 'edit'
     else
       render :action => 'new'
     end
+  end
+
+  def update
+    if @import.update(import_params)
+      redirect_to @import
+    else
+      setup_edit
+      render "edit"
+    end
+  end
+
+  def edit
+    setup_edit
   end
 
   def index
@@ -27,10 +40,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def destroy
     number_of_records = @import.imported_records.size
-    @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
-    @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
-      NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
-    end
+    @import.destroy
     flash[:success] = t(:success, number_of_records: number_of_records, import_type: @import.import_type, scope: [:import, :destroy])
     redirect_to imports_path
   end
@@ -44,7 +54,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def import_params
     # params.require(:import).permit!
-    params.fetch(:import, {}).merge(import_type: @import_type, imported_for: @imported_for).permit!
+    params.fetch(:import, {}).permit!
   end
 
   def load_new_import
@@ -62,5 +72,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def load_import
     @import = @imported_for.imports.find(params[:id])
+  end
+
+  def setup_edit
+    @first_x_rows = @import.first_x_rows
+    @all_valid_columns = @import.all_valid_columns
+    @headers = @import.header
   end
 end

@@ -66,6 +66,20 @@ class NfgCsvImporter::ImportService
     @starting_row ||= 2
   end
 
+  def header
+    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip).map(&:downcase)
+  end
+
+  def all_valid_columns
+    @all_valid_columns ||= (new_model.attributes.keys + required_columns + optional_columns).uniq!
+  end
+
+  def first_x_rows(x = 10)
+    @first_x_rows ||= (starting_row..x).map do |i|
+                      Hash[[header, spreadsheet.row(i)].transpose]
+                    end
+  end
+
   protected
 
   def additional_class_attributes(row, object)
@@ -152,10 +166,6 @@ class NfgCsvImporter::ImportService
     @spreadsheet ||= open_spreadsheet
   end
 
-  def header
-    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip).map(&:downcase)
-  end
-
   def get_action(record)
     record.new_record? ? "create" : "update"
   end
@@ -167,10 +177,6 @@ class NfgCsvImporter::ImportService
 
   def stripped_headers
     (all_headers_are_string_type? ? header.collect(&:strip) : header )
-  end
-
-  def all_valid_columns
-    (new_model.attributes.keys + required_columns + optional_columns).uniq!
   end
 
   def set_obj_attributes(row,object)
