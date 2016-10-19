@@ -7,10 +7,11 @@
         = f.simple_fields_for :fields_mapping do |id|
           - @headers.each do |header_name|
             %td
-              %table
+              %table{ border: "1"}
                 %thead
                   %tr
-                    %th= header_name
+                    %th
+                      = header_name
                 %tbody
                   %tr
                     %td
