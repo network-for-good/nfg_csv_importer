@@ -1,17 +1,10 @@
-// CSS Declaration Order:
-// https://github.com/network-for-good/donor_management/wiki/CSS-Declaration-Order
-/*
- *= require nfg_csv_importer/application
- *= require mousetrap
-*/
-
 
 // App Vendors
 .nfg-csv-importer{
   @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
   @import 'font-awesome';
-  @import 'redactor';
-  @import 'select2.min';
+  // @import 'redactor';
+  // @import 'select2.min';
 
 
   // Variables and mixins

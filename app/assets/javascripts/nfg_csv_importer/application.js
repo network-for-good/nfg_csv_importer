@@ -1,5 +1,5 @@
 //= require jquery
-// jquery_ujs
+//= require jquery_ujs
 // mousetrap
 // keybindings
 // turbolinks
@@ -7,7 +7,7 @@
 // jquery.ui.datepicker
 // jquery.ui.sortable
 // readmore.min
-// _tree ../../../vendor/assets/javascripts/redactor
+// tree ../../../vendor/assets/javascripts/redactor
 // Chart.min
 // twitter/typeahead
 // select2.min
@@ -17,7 +17,7 @@
 //= require tether.min
 // accountingjs
 // jquery.sticky
-// _directory ../../../vendor/assets/javascripts/linkify
+// directory ../../../vendor/assets/javascripts/linkify
 
 // Bootstrap4
 //= require bootstrap4/bootstrap.min
@@ -26,9 +26,11 @@
 //= require_tree .
 
 $(document).ready(function() {
+
   $('#new_import_service').submit(function() {
     $('<div id="overlay"> </div>').appendTo(document.body);
     $("#spinner").show();
   });
   $("#spinner").hide();
+
 });
