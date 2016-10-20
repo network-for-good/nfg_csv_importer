@@ -1,22 +1,30 @@
-%p
-  Use the fields below to select the mappings for your import
-= simple_form_for @import, class: "form form-horizontal" do |f|
-  %table
-    %tbody
-      %tr
-        = f.simple_fields_for :fields_mapping do |id|
-          - @headers.each do |header_name|
-            %td
-              %table{ border: "1"}
-                %thead
-                  %tr
-                    %th
-                      = header_name
-                %tbody
-                  %tr
-                    %td
-                      = id.input header_name, as: :select, collection: @all_valid_columns, label: false
+.nfg-csv-importer
+  %p
+    Use the fields below to select the mappings for your import
+
+  .container-fluid
+    = form_for @import do |f|
+      .row.row-no-wrap
+        = f.fields_for :fields_mapping do |id|
+          - @headers.each_with_index do |header_name, index|
+            .col-importer
+              .row
+                .col-xs-12
+                  = id.select header_name, options_for_select(@all_valid_columns), include_blank: true
+              .row
+                .col-xs-12
+                  = header_name
+              .row
+                .col-xs-12
+                  = index_alphabetize[index]
+              .row
+                .col-xs-12
                   - (0..(@first_x_rows.length - 1)).each do |i|
-                    %tr
-                      %td= @first_x_rows[i][header_name]
-  = button_tag "Save", type: :submit
+                    .row
+                      .col-xs-12
+                        =@first_x_rows[i][header_name]
+    .row
+      .col-xs-12
+        = button_tag type: :submit, class: "btn btn-primary btn-lg" do
+          = fa_icon "floppy-o"
+          Save
