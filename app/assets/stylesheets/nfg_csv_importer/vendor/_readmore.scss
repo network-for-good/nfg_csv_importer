@@ -1,0 +1,26 @@
+// Powers the readmore.js plugin
+
+.expandable,
+.readmore-js-section {
+  @include transition(height 200ms ease);
+  z-index: 10;
+  position: relative;
+}
+
+.readmore-js-collapsed:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  @include gradient-vertical(transparentize($white, 1), transparentize($white, 0));
+  content: '';
+  z-index: 20;
+}
+
+.readmore-js-toggle {
+  z-index:30;
+  @include rem(margin-top, 10px);
+  @include media-breakpoint-down(lg) { @include rem(margin-bottom, 12px); }
+  #{$icon} { @include rem(margin-right, 4px); }
+}

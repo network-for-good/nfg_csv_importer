@@ -1,0 +1,92 @@
+// Grayscale (in BS predefined variables)
+$black                : #000000 !default;
+$gray-dark            : #4D4D4D !default;
+$gray                 : #9A9A9A !default;
+$gray-light           : #D8D8D8 !default;
+$gray-lighter         : #E5E5E5 !default;
+$gray-lightest        : #F7F7F7 !default;
+$gray-darkest         : #222222 !default;
+$white                : #ffffff !default;
+
+
+// NFG colors
+$nfg-blue             : #25aceb !default;
+$nfg-green            : #59bf22 !default;
+$nfg-orange           : #ffaa00 !default;
+$nfg-red              : #ff6d33 !default;
+
+
+// Primary colors
+$blue-primary         : $nfg-blue !default;
+$blue-secondary       : #46B8EE !default;
+$blue-tertiary        : #1299E6 !default;
+$blue-quaternary      : #006D9D !default;
+$green-primary        : $nfg-green !default;
+$green-secondary      : #68D92B !default;
+$orange-primary       : $nfg-orange !default;
+$orange-secondary     : #FFB624 !default;
+$red-primary          : $nfg-red !default;
+$red-secondary        : #FF8757 !default;
+
+
+// Typography
+$icon-font-family     : FontAwesome !default;
+$icon                 : ".fa" !default;
+$font-weight-light    : 300 !default;
+$font-weight-normal   : 400 !default;
+$font-weight-medium   : 600 !default;
+$font-weight-bold     : 700 !default;
+$font-color-lightest  : $gray-lightest !default;
+$font-color-lighter   : $gray-lighter !default;
+$font-color-light     : $gray-light !default;
+$font-color-default   : $gray !default;
+$font-color-dark      : $gray-dark !default;
+$font-color-primary   : $font-color-dark !default;
+$font-color-secondary : $font-color-dark !default;
+$font-color-tertiary  : $font-color-default !default;
+$font-color-quaternary: $font-color-lightest !default;
+$body-font-color      : $font-color-dark !default;
+$heading-font-color   : $font-color-dark !default;
+$font-color-disabled  : $font-color-light !default;
+
+// Border colors
+$border-color-lightest: $gray-lightest !default;
+$border-color-lighter : $gray-lighter !default;
+$border-color-light   : $gray-light !default;
+$border-color-dark    : $gray-dark !default;
+
+
+// Background colors
+$bg-color-white       : $white !default;
+$bg-color-lightest    : $gray-lightest !default;
+$bg-color-lighter     : $gray-lighter !default;
+$bg-color-light       : $gray-light !default;
+$bg-color-default     : $gray !default;
+$bg-color-dark        : $gray-dark !default;
+$bg-color-darkest     : $gray-darkest !default;
+$bg-color-primary     : $bg-color-lightest !default;
+$bg-color-secondary   : $bg-color-white !default;
+$bg-color-tertiary    : $bg-color-darkest !default;
+$body-bg-color        : $gray-lightest !default;
+
+
+// Social media colors
+$facebook-color       : #3b5998;
+$twitter-color        : #55acee;
+$google-color         : #dd4b39;
+$instagram-color      : #3f729b;
+$linkedin-color       : #0077b5;
+$youtube-color        : #cd201f;
+$pinterest-color      : #cc2127;
+$rss-color            : #f26522;
+
+
+// Primary color list
+$primary-colors-list: (
+  'blue'      $blue-primary       $blue-secondary,
+  'green'     $green-primary      $green-secondary,
+  'yellow'    $orange-primary     $orange-secondary,
+  'orange'    $orange-primary     $orange-secondary,
+  'red'       $red-primary        $red-secondary,
+  'gray'      $body-font-color    $blue-primary
+);

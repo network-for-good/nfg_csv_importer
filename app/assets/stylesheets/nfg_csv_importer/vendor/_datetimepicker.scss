@@ -1,0 +1,299 @@
+//*****************************//
+// DATEPICKER -- based on http://eonasdan.github.io/bootstrap-datetimepicker/
+//*****************************//
+
+
+//** Base styles
+  .bootstrap-datetimepicker-widget {
+    display: block;
+    top: 0 !important;
+    padding: 0;
+    min-width: 280px;
+    max-width: 280px;
+    background-color: $white;
+    border: 1px solid $border-color-light;
+    @include border-radius(0);
+    z-index: 110;
+    &.dropdown-menu {
+      position: absolute !important;
+      top: 100% !important;
+      left: auto;
+      opacity: 1;
+      pointer-events: auto;
+      @include transform(none);
+      &:after, &:before { display: none; }
+    }
+
+    //** Base date and time styles
+      ul { margin: 0; }
+      .datepicker, .timepicker { @include center-block(); }
+      a[data-action] { display: block; }
+
+    //** Icons from bootstrap adapted to fontawesome that we use
+      .glyphicon {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-weight: normal;
+        z-index: 0;
+        &:after {
+          position: absolute;
+          top: 50%;
+          right: 50%;
+          display: block;
+          margin-top: -10px;
+          margin-right: -10px;
+          width: 20px;
+          height: 20px;
+          font-family: $icon-font-family;
+          @include rem(font-size, 20px);
+          line-height: 1;
+          text-align: center;
+          cursor: pointer;
+          z-index: 30;
+        }
+      }
+
+    //** Table defaults
+      table {
+        width: 100%;
+        td, th {
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+
+    //** Time/Date Toggle
+      .collapse.in {
+        .timepicker-picker {
+          tr:first-child a, tr:last-child a { @include border-radius(0); }
+        }
+        + .picker-switch { border-top: 1px solid $border-color-light; }
+      }
+      .picker-switch {
+        + .collapse.in { border-top: 1px solid $border-color-light; }
+      }
+
+    //** Accessbility
+      .prev,
+      .next {
+        &:after {
+          position: absolute;
+          margin: -1px;
+          padding: 0;
+          width: 1px;
+          height: 1px;
+          border: 0;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+        }
+      }
+      .prev:after { content: 'Previous Month'; }
+      .next:after { content: 'Next Month'; }
+  }
+
+//** Shared datepicker and timepicker styles
+  .datepicker, .timepicker {
+
+    //** Default states for actions
+      [data-action^='select'],
+      [data-action^='picker'],
+      .prev,
+      .next,
+      .timepicker-picker a.btn {
+        cursor: pointer;
+        background-color: $white;
+        @include transition(color 250ms ease, background-color 250ms ease);
+        &:hover, &:active, &.active {
+          color: $white;
+          background-color: $link-color;
+        }
+      }
+      [data-action^='select'],
+      [data-action^='picker'] {
+        font-weight: $font-weight-bold;
+        @include rem(font-size, $font-size-sm);
+        line-height: 1;
+        color: $font-color-primary;
+        border-left: 1px solid $border-color-light;
+        border-top: 1px solid $border-color-light;
+      }
+
+      //** Disabled or unavailable states
+        .unavailable, .old, .new, .disabled, .disabled:hover {
+          @include rem(font-size, $font-size-xs);
+          color: $font-color-tertiary;
+          background-color: $bg-color-lightest;
+        }
+        .unavailable, .disabled { cursor: not-allowed; }
+
+      //** Today's state
+        .today {
+          color: $white;
+          background-color: $bg-color-dark;
+          &.active {
+            &:hover, &:active { background-color: $link-color; }
+          }
+        }
+
+    //** Default sizing for select cells
+      [data-action^='select'] {
+        display: inline-block;
+        @include rem(height, $spacer-triple);
+        @include rem(line-height, $spacer-triple);
+      }
+  }
+
+//** Datepicker specific
+  .datepicker {
+
+      //** Top picker switcher for month, year, decade
+        [data-action^='picker'] {
+          @include rem(padding-top, $spacer-half);
+          @include rem(padding-bottom, $spacer-half);
+          width: 200px;
+          border-right: 1px solid $border-color-light;
+          border-left: 1px solid $border-color-light;
+          border-top: none;
+        }
+
+      //** Day of the week
+        .dow {
+          @include rem(padding, $spacer-half);
+          font-weight: $font-weight-bold;
+          @include rem(font-size, $font-size-xs);
+          line-height: 1;
+          border-top: 1px solid $border-color-light;
+        }
+
+      //** Previous/Next buttons
+        .prev, .next {
+          color: $link-color;
+          width: 40px;
+          height: 100%;
+        }
+        .prev {
+          .glyphicon:after { content: '\f104'; }
+        }
+        .next {
+          .glyphicon:after { content: '\f105'; }
+        }
+
+    //** Body
+      .datepicker-days {
+        [data-action^='select'] {
+          display: table-cell;
+          width: $spacer-base-half;
+          height: $spacer-base-half;
+          line-height: $spacer-base-half;
+          &:first-child { border-left: none; }
+        }
+      }
+      .datepicker-months,
+      .datepicker-years,
+      .datepicker-decades {
+        [data-action^='select'] {
+          width: 33.3333333%;
+          &:nth-child(3n + 1) { border-left: none; }
+        }
+      }
+  }
+
+//** Timepicker specific
+  .timepicker {
+    [data-action^='select'] {
+      width: 25%;
+      &:nth-child(4n + 1) { border-left: none; }
+    }
+    [class^='timepicker-'] {
+      tr:first-child td { border-top: none; }
+    }
+  }
+
+  //** Timepicker picker section
+    .timepicker-picker {
+      @include rem(padding-right, $spacer-half);
+      td {
+        width: 35%;
+        &:nth-child(2) { width: $spacer-half; }
+        &:nth-child(4) {
+          @include rem(padding-left, $spacer-half);
+          @include rem(width, $spacer-double);
+        }
+        a { color: $link-color; }
+      }
+      [class^='timepicker-'] {
+        display: block;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        font-weight: $font-weight-bold;
+        @include rem(font-size, $font-size-lg);
+        cursor: pointer;
+        @include transition(background-color 250ms ease);
+        &:hover, &:active { background-color: $bg-color-lightest; }
+      }
+      .btn {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 40px;
+        .glyphicon-chevron-up:after { content: '\f106'; }
+        .glyphicon-chevron-down:after { content: '\f107'; }
+      }
+    }
+
+//** Time/Date Toggle
+  .picker-switch.accordion-toggle {
+    a {
+      display: block;
+      height: 40px;
+      color: $link-color;
+      background-color: $white;
+      cursor: pointer;
+      @include transition(color 250ms ease, background-color 250ms ease);
+      &:hover, &:active {
+        color: $white;
+        background-color: $link-color;
+      }
+    }
+    .glyphicon-time:after { content: '\f017'; } // Clock icon
+    .glyphicon-calendar:after { content: '\f073'; } // Calendar icon
+    .glyphicon-screenshot:after { content: '\f274'; } // Today icon
+    .glyphicon-trash:after { content: '\f0e2'; } // Clear icon
+    .glyphicon-remove:after { content: '\f00d'; } // Close icon
+  }
+
+//** Accessbility
+  [data-action='togglePicker'],
+  [data-action='incrementHours'],
+  [data-action='incrementMinutes'],
+  [data-action='decrementHours'],
+  [data-action='decrementMinutes'],
+  [data-action='showHours'],
+  [data-action='showMinutes'],
+  [data-action='togglePeriod'],
+  [data-action='clear'],
+  [data-action='today'] {
+    &:after {
+      position: absolute;
+      margin: -1px;
+      padding: 0;
+      width: 1px;
+      height: 1px;
+      border: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+  }
+  [data-action='togglePicker']:after { content: 'Toggle Date and Time Screens'; }
+  [data-action='incrementHours']:after { content: 'Increment Hours'; }
+  [data-action='incrementMinutes']:after { content: 'Increment Minutes'; }
+  [data-action='decrementHours']:after { content: 'Decrement Hours'; }
+  [data-action='decrementMinutes']:after { content: 'Decrement Minutes'; }
+  [data-action='showHours']:after { content: 'Show Hours'; }
+  [data-action='showMinutes']:after { content: 'Show Minutes'; }
+  [data-action='togglePeriod']:after { content: 'Toggle AM/PM'; }
+  [data-action='clear']:after { content: 'Clear the picker'; }
+  [data-action='today']:after { content: 'Set the date to today'; }

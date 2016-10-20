@@ -1,0 +1,124 @@
+//
+// Base styles
+//
+
+.alert {
+  position: relative;
+  // margin-bottom: $spacer-y;
+  @include rem(margin-bottom, $spacer-base);
+  // padding: $alert-padding;
+  @include rem(padding, $alert-padding);
+  // border: $alert-border-width solid transparent;
+  // @include border-radius($alert-border-radius);
+  font-weight: $font-weight-medium;
+  // // Improve alignment and spacing of inner content
+  // > p,
+  // > ul {
+  //   margin-bottom: 0;
+  // }
+  // > p + p {
+  //   margin-top: 5px;
+  // }
+  #{$icon} { color: $white; }
+}
+
+// // Headings for larger alerts
+// .alert-heading {
+//   // Specified to prevent conflicts of changing $headings-color
+//   color: inherit;
+// }
+
+// // Provide class for links that match alerts
+.alert-link,
+.alert a {
+  font-weight: $alert-link-font-weight;
+  color: $white !important; // due to resource color links, this is needed to override a colored link
+  border-bottom: 1px solid $white;
+  @include transition(border .15s linear);
+  @include hover-focus { border-color: transparent; }
+}
+
+
+// Dismissible alerts
+//
+// Expand the right padding and account for the close button's positioning.
+
+.alert-dismissible {
+  // padding-right: ($alert-padding + 20);
+  @include rem(padding-right, ($alert-padding + $spacer-half));
+
+  // Adjust close link position
+  .close {
+    // position: relative;
+    position: absolute;
+    // top: -2px;
+    @include rem(top, $spacer-half);
+    // right: -21px;
+    @include rem(right, $spacer-half);
+    @include rem(font-size, $font-size-sm);
+    border: none;
+    text-shadow: none;
+    opacity: 1;
+    @include hover-focus { opacity: 1; }
+    // color: inherit;
+  }
+}
+
+// Alerts used inline forms
+.alert-form-inline {
+  position: relative;
+  @include rem(margin-top, $spacer-half);
+  margin-bottom: 0;
+  @include rem(padding, $spacer-half);
+  &:after {
+    position: absolute;
+    bottom: 100%;
+    left: $alert-arrow-width * 2;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    pointer-events: none;
+    border-color: transparent;
+    border-bottom-color: $gray;
+    border-width: $alert-arrow-width;
+    margin-left: -$alert-arrow-width;
+  }
+  &:first-letter{
+    text-transform: uppercase;
+  }
+}
+
+// Alternate styles
+//
+// Generate contextual modifier classes for colorizing the alert.
+
+.alert-success {
+  // @include alert-variant($alert-success-bg, $alert-success-border, $alert-success-text);
+  &:after { border-bottom-color: $alert-success-bg; }
+}
+.alert-info {
+  // @include alert-variant($alert-info-bg, $alert-info-border, $alert-info-text);
+  &:after { border-bottom-color: $alert-info-bg; }
+}
+.alert-warning {
+  // @include alert-variant($alert-warning-bg, $alert-warning-border, $alert-warning-text);
+  &:after { border-bottom-color: $alert-warning-bg; }
+}
+.alert-danger {
+  // @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+  &:after { border-bottom-color: $alert-danger-bg; }
+}
+.alert-gray, .alert-notice {
+  @include alert-variant($gray, $gray, #fff);
+  &:after { border-bottom-color: $gray; }
+}
+
+// Absolute Positioning Alerts
+.alert[data-position-absolute='true'] {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  @include box-shadow(0px 0px 20px 0px rgba(0,0,0,0.2));
+}

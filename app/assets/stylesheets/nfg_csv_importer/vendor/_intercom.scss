@@ -1,0 +1,76 @@
+//*****************************//
+// INTERCOM -- override styles for https://www.intercom.io/ integration
+//*****************************//
+
+
+//** Puts the intercom icon behind modals
+  body > .intercom-container {
+    z-index: 999 !important;
+    @include media-breakpoint-down(sm) { display: none; }
+  }
+
+
+//** Basic overriding styles
+  #intercom-container {
+    #intercom-launcher {
+      &.intercom-launcher {
+        width: 104px !important;
+        height: 44px !important;
+        @include media-breakpoint-down(lg) {
+          @include rem(bottom, 60px);
+          @include rem(right, $spacer-half);
+        }
+        @include media-breakpoint-up(lg) {
+          @include rem(right, $spacer-base);
+          @include rem(bottom, $spacer-base);
+        }
+      }
+      .intercom-launcher-button {
+        width: 100px !important;
+        height: 40px !important;
+        background: $bg-color-dark !important;
+        border: 2px solid $white !important;
+        @include border-radius(40px);
+        @include transition(background-color 300ms ease);
+        @include box-shadow(0, 0, 20px, 0, transparentize($gray-darkest, 0.7), false);
+        &:hover, &:active { background-color: $bg-color-default !important; }
+        &:before, &:after {
+          position: absolute;
+          top: 0; right: 0; bottom: 0; left: 0;
+          @include rem(font-size, $font-size-sm);
+          line-height: 40px;
+          color: $white;
+        }
+        &:before {
+          @include rem(padding-left, $spacer-base);
+          font-family: $icon-font-family;
+          content: '\f059';
+        }
+        &:after {
+          @include rem(padding-right, $spacer-base);
+          font-weight: $font-weight-bold;
+          font-family: $font-family-sans-serif;
+          text-align: right;
+          content: 'Help';
+        }
+        .intercom-launcher-initials { display: none !important; }
+      }
+      .intercom-launcher-badge {
+        top: -2px !important;
+        right: -8px !important;
+        @include rem(padding-right, $spacer-quarter);
+        @include rem(padding-left, $spacer-quarter);
+        min-width: 10px !important;
+        width: auto !important;
+        height: 20px !important;
+        font-weight: $font-weight-bold;
+        line-height: 20px !important;
+        font-family: $font-family-sans-serif;
+        background-color: $red-primary !important;
+        border: 2px solid $white;
+        @include border-radius(20px);
+        @include box-shadow(0, 0, 20px, 0, transparentize($gray-darkest, 0.7), false);
+      }
+      .intercom-launcher-preview { display: none !important; }
+    }
+  }

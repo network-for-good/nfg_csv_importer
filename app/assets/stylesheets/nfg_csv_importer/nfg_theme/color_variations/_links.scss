@@ -1,0 +1,14 @@
+@each $color in $primary-colors-list {
+  .#{nth($color, 1)} a,
+  a.#{nth($color, 1)} {
+    &:not(.btn):not(.dropdown-item):not(.avatar) {
+      color: nth($color, 2);
+      @include transition(color .2s ease-in-out, background-color .2s ease-in-out);
+      @include hover-focus { color: nth($color, 3); }
+    }
+    &.no-link-color {
+      color: inherit !important;
+      @include hover-focus { color: nth($color, 3) !important; }
+    }
+  }
+}

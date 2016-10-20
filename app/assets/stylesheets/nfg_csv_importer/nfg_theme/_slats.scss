@@ -1,0 +1,87 @@
+// Slats are used on listing pages
+
+// Sort
+.sort {
+  #{$icon} { color: $font-color-tertiary !important; }
+}
+
+// Slat header
+.slat-header {
+  @include rem(padding-bottom, $spacer-y / 2);
+  border-bottom: 1px solid $border-color-light;
+}
+
+// List layout
+.slat-list .slat {
+  background-color: $bg-color-white;
+  @include media-breakpoint-down(sm) {
+    @include rem(padding-top, $spacer-y * 1.5);
+    @include rem(padding-bottom, $spacer-y * 1.5);
+  }
+  @include media-breakpoint-up(sm) {
+    @include rem(padding-top, $spacer-y);
+    @include rem(padding-bottom, $spacer-y);
+  }
+  &:first-child {
+    @include media-breakpoint-down(md) { padding-top: 0; }
+  }
+  &:last-child { padding-bottom: 0; }
+  + .slat { border-top: 1px solid $border-color-light; }
+
+  // Various slat states
+  &.pending {
+    background-color: transparentize($state-warning-bg, .8);
+    &:first-child {
+      @include media-breakpoint-down(md) { @include rem(padding-top, $spacer-y * 1.5); }
+    }
+  }
+  &.ui-sortable-placeholder {
+    visibility: visible !important;
+    background: $bg-color-lightest;
+    border: 1px dashed $border-color-light;
+    + .slat { border-top: none; }
+    + &.ui-sortable-helper {
+      border-top-style: dashed;
+      + &.slat { border-top: none; }
+    }
+  }
+  &.ui-sortable-helper {
+    border-top: none;
+    opacity: .5;
+    border-top: none;
+    + &.ui-sortable-placeholder { border-top: 1px dashed $border-color-light; }
+  }
+}
+
+// Grid layout to fix bs4 card flexbox layouts
+.slat-grid {
+  &.card-deck {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: flex-start;
+    .card-wrapper {
+      display: flex;
+      flex-grow: 0;
+      width: 100%;
+      @include media-breakpoint-up(sm) {
+        @include rem(padding-right, $spacer-half);
+        @include rem(padding-left, $spacer-half);
+        width: 50%;
+      }
+      @include media-breakpoint-up(lg) { width: 33.3333333%; }
+      .card {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+        margin-right: 0;
+        margin-left: 0;
+        width: 100%;
+        .card-block {
+          display: flex;
+          flex: 1 0 auto;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

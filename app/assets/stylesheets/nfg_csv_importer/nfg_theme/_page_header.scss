@@ -1,0 +1,11 @@
+// Page header specific styles
+.page-header {
+  h1, .h1 {
+    #{$icon} {
+      @include rem(top, -3px);
+      display: inline-block;
+      position: relative;
+      font-size: 70%;
+    }
+  }
+}

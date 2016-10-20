@@ -1,0 +1,60 @@
+// Activity feed list items
+.activity-feed-item,
+.activity-feed-item-lg {
+  position: relative;
+  @include rem(font-size, 13px);
+  z-index: 0;
+  &::after{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+    border-left: solid 1px $gray-light;
+    content: "";
+  }
+  &:last-child {
+    padding-bottom: 0;
+    &::after { display: none; }
+  }
+  .activity-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    z-index: 1;
+    text-align: center;
+    @include border-radius(50%);
+    box-shadow: 0 0 0 2px rgba(255,255,255,1);
+    .fa { color: $white; }
+  }
+
+  @each $color in $primary-colors-list{
+    &.#{nth($color, 1)} {
+      .activity-icon { background-color: #{nth($color, 2)}; }
+    }
+  }
+}
+
+.activity-feed-item{
+  &::after{ @include rem(left, 12px); }
+
+  .activity-icon {
+    @include rem(width, $spacer-base);
+    @include rem(height, $spacer-base);
+    @include rem(font-size, 12px);
+    @include rem(line-height, $spacer-base);
+  }
+}
+
+.activity-feed-item-lg{
+  &::after{ @include rem(left, 17px); }
+
+  .activity-icon{
+    @include rem(width, $spacer-base * 1.5);
+    @include rem(height, $spacer-base * 1.5);
+    @include rem(font-size, 16px);
+    @include rem(line-height, $spacer-base * 1.5);
+  }
+}
+
+

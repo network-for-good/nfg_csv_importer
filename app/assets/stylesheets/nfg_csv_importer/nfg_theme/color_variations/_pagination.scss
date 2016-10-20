@@ -1,0 +1,13 @@
+@each $color in $primary-colors-list {
+  .#{nth($color, 1)} {
+    .page-item {
+      &.active .page-link {
+        @include plain-hover-focus {
+          background-color: nth($color, 2) !important;
+          border-color: nth($color, 2) !important;
+        }
+      }
+    }
+    .page-link { color: nth($color, 2) !important; }
+  }
+}

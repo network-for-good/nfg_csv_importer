@@ -1,0 +1,6 @@
+// Turbolink progress bar
+.turbolinks-progress-bar {
+  background-color: $green-primary !important;
+  @include rem(height, $spacer-quarter);
+  z-index: 1040; // top bar is 1030
+}

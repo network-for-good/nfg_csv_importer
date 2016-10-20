@@ -1,0 +1,160 @@
+// Container widths
+//
+// Set the container width, and override it for fixed navbars in media queries.
+
+// .container {
+//   @include make-container();
+//   @include make-container-max-widths();
+
+// }
+.body-container { height: 100%; } // needs to be 100% height for side nav
+
+.container-wrap {
+  position: relative;
+  z-index: 0;
+  @include media-breakpoint-down(md) { @include rem(padding-bottom, $spacer-double); }
+  @include media-breakpoint-up(lg) {
+    @include rem(padding-top, $spacer-double);
+    @include rem(padding-left, 200px);
+  }
+  @include media-breakpoint-down(md) {
+    &.nav-slide {
+      .site-navbar { @include rem(left, 200px); }
+      .container-main { @include rem(margin-left, 200px); }
+    }
+  }
+}
+
+.container-main {
+  margin-left: 0;
+  width: 100%;
+  @include transition(margin-left .15s linear);
+  // @include media-breakpoint-down(sm) {
+  //   overflow-x: hidden;
+  // }
+  @include media-breakpoint-up(sm) {
+    @include rem(padding-right, $spacer-half);
+    @include rem(padding-left, $spacer-half);
+  }
+  @include media-breakpoint-up(lg) {
+    @include rem(padding-right, $spacer-base);
+    @include rem(padding-left, $spacer-base);
+  }
+}
+// Fluid container
+//
+// Utilizes the mixin meant for fixed width containers, but without any defined
+// width for fluid, full width layouts.
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+  > .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+// Used in page header for most situations
+.container-narrow {
+  @include media-breakpoint-down(sm) {
+    @include rem(padding-right, $spacer-half);
+    @include rem(padding-left, $spacer-half);
+  }
+}
+
+// Fluid container with thematic padding to be used when a white content section / division is needed
+.container-division, .container-division-sm {
+  @include center-block();
+  background-color: $bg-color-white;
+  border-top: 1px solid $border-color-light;
+  border-bottom: 1px solid $border-color-light;
+  @include media-breakpoint-down(sm) {
+    margin-right: -$spacer-half;
+    margin-left: -$spacer-half;
+  }
+  @include media-breakpoint-up(sm) {
+    border-right: 1px solid $border-color-light;
+    border-left: 1px solid $border-color-light;
+  }
+  @if not $enable-flex { @include clearfix(); }
+  & + & { border-top: none; }
+}
+.container-division {
+  @include rem(padding, $spacer-base-half $spacer-base);
+  @include media-breakpoint-up(sm) { @include rem(padding, $spacer-base-half); }
+}
+.container-division-sm {
+  @include rem(padding, $spacer-half $spacer-base);
+  @include media-breakpoint-up(sm) { @include rem(padding, $spacer-base); }
+}
+
+
+// Specifically for use when nested within a container-division to indicate and divide major content sections
+.container-subdivision {
+  @include center-block();
+  @include media-breakpoint-down(sm) { @include rem(padding-bottom, $spacer-base-half); }
+  @include media-breakpoint-up(sm) { @include rem(padding-bottom, $spacer-double); }
+  &:last-child { padding-bottom: 0; }
+  + .container-subdivision {
+    border-top: 1px solid $border-color-light;
+    @include media-breakpoint-down(sm) { @include rem(padding-top, $spacer-base-half); }
+    @include media-breakpoint-up(sm) { @include rem(padding-top, $spacer-double); }
+  }
+  @if not $enable-flex { @include clearfix(); }
+}
+
+
+// // Row
+// //
+// // Rows contain and clear the floats of your columns.
+
+// @if $enable-grid-classes {
+//   .row {
+//     @include make-row();
+//   }
+// }
+
+
+// // Columns
+// //
+// // Common styles for small and large grid columns
+
+// @if $enable-grid-classes {
+//   @include make-grid-columns();
+// }
+
+
+// // Flex variation
+// //
+// // Custom styles for additional flex alignment options.
+
+// @if $enable-flex and $enable-grid-classes {
+
+//   // Flex column reordering
+
+//   @each $breakpoint in map-keys($grid-breakpoints) {
+//     @include media-breakpoint-up($breakpoint) {
+//       .col-#{$breakpoint}-first { order: -1; }
+//       .col-#{$breakpoint}-last  { order: 1; }
+//     }
+//   }
+
+//   // Alignment for every column in row
+
+//   @each $breakpoint in map-keys($grid-breakpoints) {
+//     @include media-breakpoint-up($breakpoint) {
+//       .row-#{$breakpoint}-top    { align-items: flex-start; }
+//       .row-#{$breakpoint}-center { align-items: center; }
+//       .row-#{$breakpoint}-bottom { align-items: flex-end; }
+//     }
+//   }
+
+//   // Alignment per column
+
+//   @each $breakpoint in map-keys($grid-breakpoints) {
+//     @include media-breakpoint-up($breakpoint) {
+//       .col-#{$breakpoint}-top    { align-self: flex-start; }
+//       .col-#{$breakpoint}-center { align-self: center; }
+//       .col-#{$breakpoint}-bottom { align-self: flex-end; }
+//     }
+//   }
+// }

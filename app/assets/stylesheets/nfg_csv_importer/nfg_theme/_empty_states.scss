@@ -1,0 +1,10 @@
+// Onboarder on dashboard
+.empty-state-dashboard {
+  height: 100%;
+  .container-wrap {
+    position: relative;
+    height: 100%;
+    background: $body-bg image-url("ux/empty-state-bg.jpg") 50% 0;
+    background-size: cover;
+  }
+}
