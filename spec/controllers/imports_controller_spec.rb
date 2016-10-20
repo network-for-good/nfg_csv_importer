@@ -83,5 +83,10 @@ describe NfgCsvImporter::ImportsController do
       NfgCsvImporter::ImportedRecord.any_instance.expects(:destroy).never
       subject
     end
+
+    it "sets the import's status to deleting" do
+      subject
+      expect(import.reload.status).to eql("deleting")
+    end
   end
 end

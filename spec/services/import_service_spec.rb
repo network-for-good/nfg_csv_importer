@@ -37,7 +37,6 @@ describe NfgCsvImporter::ImportService do
 		end
 
 		it "should set the time zone value" do
-			Time.expects("zone=").with(import.time_zone)
 			subject.import
 		end
 

@@ -45,11 +45,6 @@ describe NfgCsvImporter::DestroyImportJob do
       subject
     end
 
-    it "sets the import's status to deleting" do
-      subject
-      expect(import.reload.status).to eql("deleting")
-    end
-
     it_behaves_like "destroying the imported record"
   end
 end
