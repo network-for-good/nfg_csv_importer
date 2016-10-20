@@ -5,8 +5,6 @@
  *= require mousetrap
 */
 
-// File is commented out if the BS4 element is not used but part of the BS4 default package.
-// If a style from BS4 default package needs an override, the corresponding file is listed immediately after the BS4 default file.
 
 // App Vendors
 .nfg-csv-importer{
@@ -125,4 +123,10 @@
 
   // Vendor styles
   @import "vendor/*";
+
+  // Feature
+  @import 'importer/*';
+
 }
+
+
