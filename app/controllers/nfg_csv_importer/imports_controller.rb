@@ -9,9 +9,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
     @import.uploaded!
-    @import.type = @import_type
+    @import.import_type = @import_type
     @import.imported_for = @imported_for
     if @import.save
+      setup_edit
       render action: 'edit'
     else
       render :action => 'new'
@@ -58,7 +59,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_new_import
-    @import ||= NfgCsvImporter::Import.queued.new(import_params)
+    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for))
   end
 
   def load_imported_for
