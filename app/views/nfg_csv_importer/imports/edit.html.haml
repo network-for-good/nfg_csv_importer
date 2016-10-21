@@ -1,30 +1,29 @@
 .nfg-csv-importer
+  -# TODO: Need this to be the stored file_name for edit and new; always shows.
+  %p=@import.import_file.filename
+  %hr
+  %p
+    -# Not expecting this to be used, but keeping here for design balancing.
+    %label.c-input.c-checkbox
+      %input{ :name => "option-checkbox", :type => "checkbox", :value => 1 }
+      %span.c-indicator
+      Show skipped columns
+  %hr
+
+
   %p
     Use the fields below to select the mappings for your import
 
+
+
   .container-fluid
     = form_for @import do |f|
-      .row.row-no-wrap
+      .row.row-no-wrap.p-a-half.m-b-base-half{ style: "background-color:#fff;" }
         = f.fields_for :fields_mapping do |id|
-          - @headers.each_with_index do |header_name, index|
-            .col-importer
-              .row
-                .col-xs-12
-                  = id.select header_name, options_for_select(@all_valid_columns), include_blank: true
-              .row
-                .col-xs-12
-                  = header_name
-              .row
-                .col-xs-12
-                  = index_alphabetize[index]
-              .row
-                .col-xs-12
-                  - (0..(@first_x_rows.length - 1)).each do |i|
-                    .row
-                      .col-xs-12
-                        =@first_x_rows[i][header_name]
+          = render partial: "nfg_csv_importer/imports/self_importer_tool/importer_column", locals: { id: id, f: f }
     .row
       .col-xs-12
         = button_tag type: :submit, class: "btn btn-primary btn-lg" do
-          = fa_icon "floppy-o"
           Save
+          = fa_icon "chevron-right"
+

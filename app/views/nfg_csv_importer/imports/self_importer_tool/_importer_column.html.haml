@@ -1,0 +1,26 @@
+- @headers.each_with_index do |header_name, index|
+  .col-importer{ data: { id: index } }
+    -# temporary placement of the ignore column checkbox
+    %p
+      -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
+      %label.c-input.c-checkbox
+        %input{ :name => "option-checkbox", :type => "checkbox", :value => header_name }
+        %span.c-indicator
+        Ignore Column
+
+    = id.hidden_field index
+    .row
+      .col-xs-12
+        = id.select header_name, options_for_select(@all_valid_columns), include_blank: true
+    .row
+      .col-xs-12
+        = header_name
+    .row
+      .col-xs-12
+        = index_alphabetize[index]
+    .row
+      .col-xs-12
+        - (0..(@first_x_rows.length - 1)).each do |i|
+          .row
+            .col-xs-12
+              =@first_x_rows[i][header_name]
