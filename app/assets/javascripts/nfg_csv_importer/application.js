@@ -23,8 +23,8 @@
 //= require bootstrap4/bootstrap.min
 
 // NFG_CSV_IMPORTER Coffee
-//= require ignore_column
-//= require import_spinner
+//= require nfg_csv_importer/ignore_column
+//= require nfg_csv_importer/import_spinner
 
 //= require_self
 
