@@ -21,8 +21,11 @@
 
 // Bootstrap4
 //= require bootstrap4/bootstrap.min
+
+// NFG_CSV_IMPORTER Coffee
+//= require ignore_column
+//= require import_spinner
+
 //= require_self
-//= require_directory ./
-//= require_tree .
 
 window.NfgCsvImporter = {};

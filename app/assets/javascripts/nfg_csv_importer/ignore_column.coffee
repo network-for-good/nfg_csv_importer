@@ -1,6 +1,6 @@
 class NfgCsvImporter.IgnoreColumn
   constructor: (@column) ->
-    alert 'sup'
+
 
 
 $(document).ready ->

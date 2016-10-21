@@ -1,6 +1,7 @@
 .nfg-csv-importer
-  -# TODO: Need this to be the stored file_name for edit and new; always shows.
+  -# TODO: This works on a new import but doesn't when editing the import (the assumption is that this is being edited before it's been "committed" to the DMS)
   %p=@import.import_file_name
+
   %hr
   %p
     -# Not expecting this to be used, but keeping here for design balancing.
@@ -14,8 +15,6 @@
   %p
     Use the fields below to select the mappings for your import
 
-
-
   .container-fluid
     = form_for @import do |f|
       .row.row-no-wrap.p-a-half.m-b-base-half{ style: "background-color:#fff;" }
@@ -26,4 +25,3 @@
         = button_tag type: :submit, class: "btn btn-primary btn-lg" do
           Save
           = fa_icon "chevron-right"
-
