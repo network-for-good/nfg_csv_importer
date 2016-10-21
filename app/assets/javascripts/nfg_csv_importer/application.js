@@ -25,12 +25,4 @@
 //= require_directory ./
 //= require_tree .
 
-$(document).ready(function() {
-
-  $('#new_import_service').submit(function() {
-    $('<div id="overlay"> </div>').appendTo(document.body);
-    $("#spinner").show();
-  });
-  $("#spinner").hide();
-
-});
+window.NfgCsvImporter = {};
