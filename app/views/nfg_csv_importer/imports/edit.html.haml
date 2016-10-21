@@ -20,8 +20,8 @@
       .row.row-no-wrap.p-a-half.m-b-base-half{ style: "background-color:#fff;" }
         = f.fields_for :fields_mapping do |id|
           = render partial: "nfg_csv_importer/imports/self_importer_tool/importer_column", locals: { id: id, f: f }
-    .row
-      .col-xs-12
-        = button_tag type: :submit, class: "btn btn-primary btn-lg" do
-          Save
-          = fa_icon "chevron-right"
+      .row
+        .col-xs-12
+          = button_tag type: :submit, class: "btn btn-primary btn-lg" do
+            Save
+            = fa_icon "chevron-right"
