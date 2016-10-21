@@ -1,5 +1,5 @@
 - @headers.each_with_index do |header_name, index|
-  .col-importer{ data: { id: index } }
+  .col-importer{ id: [header_name, index].join("_"), data: { id: index } }
     -# temporary placement of the ignore column checkbox
     %p
       -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
