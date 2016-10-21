@@ -28,9 +28,8 @@ ActiveRecord::Schema.define(version: 20161021144417) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "import_id"
+    t.index ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
   end
-
-  add_index "nfg_csv_importer_imported_records", ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
 
   create_table "nfg_csv_importer_imports", force: :cascade do |t|
     t.string   "import_type"
