@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160801130356) do
+ActiveRecord::Schema.define(version: 20161021144417) do
 
   create_table "entities", force: :cascade do |t|
     t.string   "subdomain"
@@ -45,6 +44,7 @@ ActiveRecord::Schema.define(version: 20160801130356) do
     t.integer  "records_processed"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "import_file_name"
   end
 
   create_table "projects", force: :cascade do |t|
