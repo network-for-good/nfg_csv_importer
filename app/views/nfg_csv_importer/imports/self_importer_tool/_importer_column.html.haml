@@ -1,5 +1,5 @@
 - @headers.each_with_index do |header_name, index|
-  .col-importer{ id: [header_name, index].join("_"), data: { id: index } }
+  .col-importer{ id: [index, header_name].join("_"), data: { id: index + 1 } }
     -# temporary placement of the ignore column checkbox
     %p
       -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
@@ -13,7 +13,8 @@
         -# TODO: Include blank should read "please select" or the automatically mapped name
         -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
         -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
-        = id.select header_name, options_for_select(@all_valid_columns), include_blank: true
+
+        = id.select header_name, options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), include_blank: true
         = id.hidden_field index
 
     .row
