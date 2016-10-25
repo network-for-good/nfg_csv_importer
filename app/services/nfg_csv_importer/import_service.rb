@@ -3,6 +3,8 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
+  IGNORE_COLUMN_NAME = "ignore_column"
+
   attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record,
                 :starting_row, :start_timestamp, :current_row
 
@@ -71,7 +73,7 @@ class NfgCsvImporter::ImportService
   end
 
   def all_valid_columns
-    @all_valid_columns ||= (new_model.attributes.keys + required_columns + optional_columns).uniq!
+    @all_valid_columns ||= (new_model.attributes.keys + required_columns + optional_columns + [IGNORE_COLUMN_NAME]).uniq!
   end
 
   def first_x_rows(x = 10)
