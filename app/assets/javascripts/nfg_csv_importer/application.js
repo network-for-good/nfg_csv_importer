@@ -24,7 +24,7 @@
 
 // NFG_CSV_IMPORTER Coffee
 //= require_self
-//= require nfg_csv_importer/ignore_column
+//= require nfg_csv_importer/importer_column
 //= require nfg_csv_importer/import_spinner
 
 
