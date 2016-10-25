@@ -1,13 +1,14 @@
 class NfgCsvImporter.IgnoreColumn
   constructor: (@el) ->
-    # Elements
-    @checkboxes = @el.find "input[type='checkbox']"
-    @selects = @el.find "select"
-
     # Component Library
+    @checkboxSelector = "input[type='checkbox']"
     @columnSelector = ".col-importer"
     @ignoreColumnClass = "col-ignore"
     @ignoreColumnSelectOptionValue = "ignore_column"
+
+    # Elements
+    @checkboxes = @el.find @checkboxSelector
+    @selects = @el.find "select"
 
     # Actions
     @checkboxes.on 'click', (event) =>
@@ -31,6 +32,11 @@ class NfgCsvImporter.IgnoreColumn
   toggleIgnoreColumn: (column) ->
     column.toggleClass(@ignoreColumnClass)
 
+    # Might need this...
+    # if column.hasClass @ignoreColumnClass
+    #   column.removeClass @ignoreColumnClass
+    # else
+    #   column.addClass @ignoreColumnClass
 
   # Change the select's option :selected value
   toggleSelectViaCheckbox: (select) ->
@@ -41,11 +47,19 @@ class NfgCsvImporter.IgnoreColumn
     else
       select.val(@ignoreColumnSelectOptionValue)
 
-
+  # Determine whether or not to move forward with ignoring or unignoring a column
   evaluateIgnoringColumnViaSelect: (select) ->
-    # selectVal = select.val()
-    # if selectVal == @ignoreColumnSelectOptionValue
-    #   @toggleIgnoreColumn(select)
+    selectVal = select.val()
+    column = select.closest(@columnSelector)
+
+    if selectVal == @ignoreColumnSelectOptionValue
+      column.find(@checkboxSelector).prop "checked", true
+      @toggleIgnoreColumn(column)
+      select.preventDefault
+    # Goal of this: if I have ignore applied, but change it to something else
+    # De-ignore the column, remove the class.
+    # else
+    #   column.find(@checkboxSelector).prop "checked", false
 
 
 

@@ -9,3 +9,13 @@
   padding-right: 1.2rem;
   flex: 0 0 250px;
 }
+
+.col-ignore{
+  .col-importer-contents{
+    opacity: 0.5;
+  }
+
+  select {
+    pointer-events: none;
+  }
+}
