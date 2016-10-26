@@ -17,6 +17,7 @@ class NfgCsvImporter.IgnoreColumn
       @ignoreColumnViaCheckbox(checkbox)
 
     # Check for ignoring the column based on the select menu interaction
+    # @selects.on 'change', (event) =>
     @selects.on 'change', (event) =>
       select = $(event.currentTarget)
       @evaluateIgnoringColumnViaSelect(select)
@@ -40,8 +41,13 @@ class NfgCsvImporter.IgnoreColumn
     column.toggleClass(@ignoreColumnClass)
 
     # Prevent select menu from being clickable once ignore is set.
-    $(select).mousedown ->
+    if column.hasClass @ignoreColumnClass
+      $(select).mousedown ->
         event.preventDefault()
+
+    # If ignore class is removed, undo the preventDefault
+    else
+      $(select).unbind('mousedown')
 
 
   # Change the select's option :selected value
@@ -66,7 +72,6 @@ class NfgCsvImporter.IgnoreColumn
     if selectVal == @ignoreColumnSelectOptionValue
       column.find(@checkboxSelector).prop "checked", true
       @toggleIgnoreColumn(column, select)
-
 
 
 $(document).on 'ready', ->

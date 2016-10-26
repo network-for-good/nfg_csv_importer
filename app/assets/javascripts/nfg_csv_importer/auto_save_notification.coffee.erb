@@ -1,0 +1,36 @@
+class NfgCsvImporter.AutoSaveNotification
+  constructor: (@el) ->
+    # Component Library
+    @checkboxSelector = "input[type='checkbox']"
+    @columnSelector = ".col-importer"
+    @ignoreColumnClass = "col-ignore"
+    @ignoreColumnSelectOptionValue = "ignore_column"
+
+    # Elements
+    @checkboxes = @el.find @checkboxSelector
+    @selects = @el.find "select"
+
+    # Actions
+    # Check for ignoring the column when clicking on the checkbox
+    @checkboxes.on 'click', (event) =>
+      # checkbox = $(event.currentTarget)
+      # @ignoreColumnViaCheckbox(checkbox)
+      console.log "saving!"
+
+    # Check for ignoring the column based on the select menu interaction
+    @selects.on 'change', (event) =>
+      # select = $(event.currentTarget)
+      console.log "saving!"
+
+
+
+  # Checkbox Behavior
+  ignoreColumnViaCheckbox: (checkbox) ->
+    return
+
+
+
+$(document).on 'ready', ->
+  el = $(".col-importer")
+  return unless el.length > 0
+  inst = new NfgCsvImporter.AutoSaveNotification el

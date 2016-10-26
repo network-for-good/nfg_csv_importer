@@ -1,3 +1,4 @@
+= render "nfg_csv_importer/imports/self_importer/auto_save_notification"
 .nfg-csv-importer
   -# TODO: This works on a new import but doesn't when editing the import (the assumption is that this is being edited before it's been "committed" to the DMS)
   %p=@import.import_file_name
@@ -19,7 +20,7 @@
     = form_for @import do |f|
       .row.row-no-wrap.p-a-half.m-b-base-half
         = f.fields_for :fields_mapping do |id|
-          = render partial: "nfg_csv_importer/imports/self_importer_tool/importer_column", locals: { id: id, f: f }
+          = render partial: "nfg_csv_importer/imports/self_importer/importer_column", locals: { id: id, f: f }
       .row
         .col-xs-12
           = button_tag type: :submit, class: "btn btn-primary btn-lg" do
