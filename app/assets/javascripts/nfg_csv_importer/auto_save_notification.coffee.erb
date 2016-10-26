@@ -4,66 +4,73 @@
 
 class NfgCsvImporter.AutoSaveNotification
   constructor: (@el) ->
-    # Component Library
+
+    # Page Component Library
+    @selfImporterContainer = $("#self_importer")
     @checkboxSelector = "input[type='checkbox']"
     @columnSelector = ".col-importer"
-    @columns = @el.find @columnSelector
+    @checkboxes = @el.find @checkboxSelector
+    @selects = @el.find "select"
+
+    # Growl Components
     @alertGrowlClass = "alert-growl"
+    @alertGrowlSelector = ".alert-growl"
 
-    # Elements
-    @checkboxes = @columns.find @checkboxSelector
-    @selects = @columns.find "select"
-    # @columnLetters = @columns.find "[data-column]".data
+    # Autosave Message Details
+    @columnIndexOutputClass = "additionalInfo"
+    @columnIndexOutputSelector = ".additionalInfo"
+    @saveMessage = "Auto-saving adjustments to column "
+    @zIndexVal = 0
 
-    # Autosave HTML
-    @html = """
-            <div class='alert alert-success #{@alertGrowlClass}' role='alert'>
-              Saving Settings <span id='additionalInfo'></span>
-              <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-              <span class="sr-only">Saving...</span>
-            </div>
-           """
+    # Autosaved HTML Output
+    @autosaveHTML = """
+                    <div class='alert alert-success #{@alertGrowlClass}' style='z-index:#{@zIndexVal}' role='alert'>
+                      #{@saveMessage} <span class='#{@columnIndexOutputClass}'></span>
+                      <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    </div>
+                   """
 
     # Actions
     # On click of a checkbox, launch autosave notification
     @checkboxes.on 'click', (event) =>
-      interactiveElement = $(event.currentTarget)
-      @displayAutoSave(interactiveElement)
+      checkbox = $(event.target)
+      @displayAutoSave(checkbox)
 
     # On change of a select menu, launch autosave notification
     @selects.on 'change', (event) =>
-      interactiveElement = $(event.currentTarget)
-      @displayAutoSave(interactiveElement)
-
+      select = $(event.currentTarget)
+      @displayAutoSave(select)
 
   # Display Autosave
-  displayAutoSave: (interactiveElement) ->
+  displayAutoSave: (clickedElement) ->
+    @zIndexVal = @zIndexVal + 1
+    console.log @zIndexVal
+    # Determine which column has the interaction
+    column = clickedElement.closest(@columnSelector)
+
     # Grab the column index letter so we can display it in the auto save notification
-    columnIndex = interactiveElement.closest(@columnSelector).find(".col-index").data("column")
+    columnIndex = column.find(".col-index").data("column")
 
-    # Make sure there isn't an autosave there
-    if $(".alert-growl").length == 0
-      $(@html).appendTo @el
+    # Generate the autosave message
+    $(@autosaveHTML).appendTo @selfImporterContainer
 
-      # Inject the column index additional content
-      $('#additionalInfo').text columnIndex
+    # Inject the column index additional content
+    $(@columnIndexOutputSelector).text columnIndex
 
-      # Animation time!
-      @animateAutoSave()
-
+    # Animation time!
+    @animateAutoSave()
 
   # Make the magic happen :)
   animateAutoSave: =>
 
     # Convenience variables
-    alertGrowlElement = $(".alert-growl")
     animationEnd = "animationend webkitAnimationEnd oAnimationEnd msAnimationEnd"
     growlStep1 = "growl-step1"
     growlStep2 = "growl-step2"
     growlStep3 = "growl-step3"
 
     # Step 1: Introduce Growl
-    alertGrowlElement.addClass(growlStep1).on animationEnd, ->
+    $(@alertGrowlSelector).addClass(growlStep1).on animationEnd, ->
 
       # Step 2: Announce Autosave
       $(@).addClass(growlStep2).on animationEnd, ->
@@ -77,6 +84,6 @@ class NfgCsvImporter.AutoSaveNotification
 
 
 $(document).on 'ready', ->
-  el = $("#self_importer")
+  el = $(".col-importer")
   return unless el.length > 0
   inst = new NfgCsvImporter.AutoSaveNotification el
