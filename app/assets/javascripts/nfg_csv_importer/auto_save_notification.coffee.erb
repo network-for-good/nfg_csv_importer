@@ -34,27 +34,30 @@ class NfgCsvImporter.AutoSaveNotification
       select = $(@)
       @displayAutoSave(select)
 
-  # Autosave
+  # Display Autosave
   displayAutoSave: ->
     $(@html).appendTo @el
     @animateAutoSave()
 
-  animateAutoSave: ->
+  # Make the magic happen :)
+  animateAutoSave: =>
     alertGrowlElement = $(".alert-growl")
-    animationEndListeners = "webkitAnimationEnd oanimationend msAnimationEnd animationend"
+    animationEnd = "animationend webkitAnimationEnd oAnimationEnd msAnimationEnd"
+    growlStep1 = "growl-step1"
+    growlStep2 = "growl-step2"
+    growlStep3 = "growl-step3"
 
-    # Step 1: Fade In
-    alertGrowlElement.addClass("growl-fade-in")
+    # Step 1: Introduce Growl
+    alertGrowlElement.addClass(growlStep1).on animationEnd, ->
 
-    # Step 2:
-    alertGrowlElement.on animationEndListeners, ->
-      $(@).addClass "growl-fade-out"
+      # Step 2: Announce Autosave
+      $(@).addClass(growlStep2).on animationEnd, ->
 
+        # Step 3: End autosave notification
+        $(@).addClass(growlStep3).on animationEnd, ->
 
-
-  # removeAutoSave: ->
-  #   $(".alert-growl").on 'webkitAnimationEnd oanimationend msAnimationEnd animationend', ->
-  #     $(@).remove()
+          # Step 4: remove the HTML
+          $(@).remove()
 
 
 $(document).on 'ready', ->
