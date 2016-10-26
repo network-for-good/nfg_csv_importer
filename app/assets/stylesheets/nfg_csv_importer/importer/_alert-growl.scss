@@ -1,4 +1,7 @@
 
+.alert-growl{
+
+}
 
 @keyframes step1 {
   0%   { opacity: 0; }
@@ -38,15 +41,9 @@ $step1-duration: 1s;
 $step2-duration: 1s;
 $step3-duration: 1s;
 
+.growl-step1{ animation:  step1 $step1-duration ease-out forwards; }
 
-.growl-step1{
-  animation:  step1 $step1-duration ease-out forwards;
-
-}
-
-.growl-step2{
-  animation: step2 $step2-duration ease-out forwards;
-}
+.growl-step2{ animation: step2 $step2-duration ease-out forwards; }
 
 .growl-step3{
   background-color: purple;

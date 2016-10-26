@@ -13,11 +13,12 @@ class NfgCsvImporter.AutoSaveNotification
     # Elements
     @checkboxes = @columns.find @checkboxSelector
     @selects = @columns.find "select"
+    # @columnLetters = @columns.find "[data-column]".data
 
     # Autosave HTML
     @html = """
             <div class='alert alert-success #{@alertGrowlClass}' role='alert'>
-              Saving Settings
+              Saving Settings <span id='additionalInfo'></span>
               <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
               <span class="sr-only">Saving...</span>
             </div>
@@ -25,22 +26,36 @@ class NfgCsvImporter.AutoSaveNotification
 
     # Actions
     # On click of a checkbox, launch autosave notification
-    @checkboxes.on 'click', =>
-      checkbox = $(@)
-      @displayAutoSave(checkbox)
+    @checkboxes.on 'click', (event) =>
+      interactiveElement = $(event.currentTarget)
+      @displayAutoSave(interactiveElement)
 
     # On change of a select menu, launch autosave notification
-    @selects.on 'change', =>
-      select = $(@)
-      @displayAutoSave(select)
+    @selects.on 'change', (event) =>
+      interactiveElement = $(event.currentTarget)
+      @displayAutoSave(interactiveElement)
+
 
   # Display Autosave
-  displayAutoSave: ->
-    $(@html).appendTo @el
-    @animateAutoSave()
+  displayAutoSave: (interactiveElement) ->
+    # Grab the column index letter so we can display it in the auto save notification
+    columnIndex = interactiveElement.closest(@columnSelector).find(".col-index").data("column")
+
+    # Make sure there isn't an autosave there
+    if $(".alert-growl").length == 0
+      $(@html).appendTo @el
+
+      # Inject the column index additional content
+      $('#additionalInfo').text columnIndex
+
+      # Animation time!
+      @animateAutoSave()
+
 
   # Make the magic happen :)
   animateAutoSave: =>
+
+    # Convenience variables
     alertGrowlElement = $(".alert-growl")
     animationEnd = "animationend webkitAnimationEnd oAnimationEnd msAnimationEnd"
     growlStep1 = "growl-step1"
@@ -58,6 +73,7 @@ class NfgCsvImporter.AutoSaveNotification
 
           # Step 4: remove the HTML
           $(@).remove()
+          return false
 
 
 $(document).on 'ready', ->
