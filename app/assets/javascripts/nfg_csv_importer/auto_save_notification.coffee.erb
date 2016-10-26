@@ -1,36 +1,63 @@
+# TODO: Look into inheritance so that the variables that represent the structure of the importer page
+# eg: @checkboxSelector can be passed across differnet coffeescript files so we have
+# one centralized source of those variables.
+
 class NfgCsvImporter.AutoSaveNotification
   constructor: (@el) ->
     # Component Library
     @checkboxSelector = "input[type='checkbox']"
     @columnSelector = ".col-importer"
-    @ignoreColumnClass = "col-ignore"
-    @ignoreColumnSelectOptionValue = "ignore_column"
+    @columns = @el.find @columnSelector
+    @alertGrowlClass = "alert-growl"
 
     # Elements
-    @checkboxes = @el.find @checkboxSelector
-    @selects = @el.find "select"
+    @checkboxes = @columns.find @checkboxSelector
+    @selects = @columns.find "select"
+
+    # Autosave HTML
+    @html = """
+            <div class='alert alert-success #{@alertGrowlClass}' role='alert'>
+              Saving Settings
+              <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+              <span class="sr-only">Saving...</span>
+            </div>
+           """
 
     # Actions
-    # Check for ignoring the column when clicking on the checkbox
-    @checkboxes.on 'click', (event) =>
-      # checkbox = $(event.currentTarget)
-      # @ignoreColumnViaCheckbox(checkbox)
-      console.log "saving!"
+    # On click of a checkbox, launch autosave notification
+    @checkboxes.on 'click', =>
+      checkbox = $(@)
+      @displayAutoSave(checkbox)
 
-    # Check for ignoring the column based on the select menu interaction
-    @selects.on 'change', (event) =>
-      # select = $(event.currentTarget)
-      console.log "saving!"
+    # On change of a select menu, launch autosave notification
+    @selects.on 'change', =>
+      select = $(@)
+      @displayAutoSave(select)
+
+  # Autosave
+  displayAutoSave: ->
+    $(@html).appendTo @el
+    @animateAutoSave()
+
+  animateAutoSave: ->
+    alertGrowlElement = $(".alert-growl")
+    animationEndListeners = "webkitAnimationEnd oanimationend msAnimationEnd animationend"
+
+    # Step 1: Fade In
+    alertGrowlElement.addClass("growl-fade-in")
+
+    # Step 2:
+    alertGrowlElement.on animationEndListeners, ->
+      $(@).addClass "growl-fade-out"
 
 
 
-  # Checkbox Behavior
-  ignoreColumnViaCheckbox: (checkbox) ->
-    return
-
+  # removeAutoSave: ->
+  #   $(".alert-growl").on 'webkitAnimationEnd oanimationend msAnimationEnd animationend', ->
+  #     $(@).remove()
 
 
 $(document).on 'ready', ->
-  el = $(".col-importer")
+  el = $("#self_importer")
   return unless el.length > 0
   inst = new NfgCsvImporter.AutoSaveNotification el
