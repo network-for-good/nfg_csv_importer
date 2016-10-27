@@ -14,7 +14,7 @@
           -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
           -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
 
-          = id.select(header_name, options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), include_blank: true)
+          = id.select(header_name, options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), { include_blank: true }, { class: "c-select" })
           = id.hidden_field index
 
       .row
