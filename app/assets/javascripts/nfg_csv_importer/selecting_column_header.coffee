@@ -10,13 +10,13 @@ class NfgCsvImporter.SelectingColumnHeader
     # Elements
     @selects = @el.find "select"
     @columnHeaderNameSelectors = "[data-describe='source-column-header-name']"
-    # @selectsValue = @el.find "select option:selected"
 
     # Actions
     # Check for ignoring the column based on the select menu interaction
     @selects.on 'change', (event) =>
-      select = $(event.target)
+      select = $(event.currentTarget)
       @evaluateColumnHeaderInteraction(select)
+
 
   evaluateColumnHeaderInteraction: (select) =>
     column = select.closest @columnSelector
@@ -39,14 +39,6 @@ class NfgCsvImporter.SelectingColumnHeader
     # 1. Add updated badge to a column that had the header selected.
     # 1b. Remove the badge is the column is reset... consider writing a "wipe all"
     #     kind of function on emptying the header select
-
-
-
-
-
-
-
-
 
 
 

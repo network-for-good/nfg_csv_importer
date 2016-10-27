@@ -1,7 +1,7 @@
 # Purpose: Deliver the interaction design for ignoring a column
 # by checkbox or selecting from the dropdown menu
 
-class NfgCsvImporter.IgnoreColumn
+class NfgCsvImporter.IgnoreImporterColumn
   constructor: (@el) ->
     # Component Library
     @checkboxSelector = "input[type='checkbox']"
@@ -83,4 +83,4 @@ class NfgCsvImporter.IgnoreColumn
 $(document).on 'turbolinks:load', ->
   el = $(".col-importer")
   return unless el.length > 0
-  inst = new NfgCsvImporter.IgnoreColumn el
+  inst = new NfgCsvImporter.IgnoreImporterColumn el

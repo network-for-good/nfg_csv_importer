@@ -64,26 +64,8 @@ class NfgCsvImporter.AutoSaveNotification
     # Remove focus from the element
     clickedElement.blur()
 
-    # Kickoff the column highlight animation
-    @highlightColumn(clickedElement)
-
     # Kickoff the auto save growl
     @displayAutoSave(clickedElement)
-
-
-  # Highlight the interacted column
-  highlightColumn: (clickedElement) ->
-    # Store the animation ending values for ease of adjustment
-    animationEnd = "webkitAnimationEnd oAnimationEnd msAnimationEnd animationend"
-
-    # Determine which column to attach the highlight to
-    column = clickedElement.closest(@columnSelector)
-
-    # Run the column highlight animation
-    $(column).addClass("col-importer-success").on animationEnd, ->
-
-      # Remove the column highlight animation class once the animation is over
-      $(@).removeClass("col-importer-success")
 
 
   # Generate the auto save HTML
