@@ -21,8 +21,9 @@ describe NfgCsvImporter::ImportedRecord do
   end
 
   describe "destroying imported records" do
-    let!(:importable) { create(:user) }
-    let!(:imported_record) { create(:imported_record, importable: importable) }
+    let(:imported_for) { create(:entity) }
+    let!(:importable) { create(:user, entity: imported_for) }
+    let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
 
     context "when the importable does not respond to #can_be_destroyed?" do
       it_behaves_like "deleting an imported record"
@@ -54,7 +55,6 @@ describe NfgCsvImporter::ImportedRecord do
     end
 
     context "when the importable belongs to a different imported_for" do
-      let(:imported_for) { create(:entity) }
       let(:other_imported_for) { create(:entity) }
       let!(:importable) { create(:user, entity: other_imported_for) }
       let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }

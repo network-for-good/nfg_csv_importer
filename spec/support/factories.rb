@@ -25,6 +25,6 @@ FactoryGirl.define do
     first_name "Joe"
     last_name "Schmoe"
     email "user@example.com"
-    association :entity, factory: :entity
+    entity { Entity.first || create(:entity) }
   end
 end
