@@ -1,3 +1,4 @@
+
 .row-no-wrap{
   flex-wrap: nowrap;
 }
@@ -8,6 +9,7 @@
   padding-left: 1.2rem;
   padding-right: 1.2rem;
   flex: 0 0 250px;
+  border: solid 1px transparent;
 }
 
 .col-ignore{
@@ -16,3 +18,12 @@
   }
 }
 
+@keyframes col-importer-success {
+  0%   { border: solid 1px transparent; }
+  50%  { border: solid 1px $brand-success; }
+  100% { border: solid 1px transparent; }
+}
+
+.col-importer-success{
+  animation:  col-importer-success 3s ease-out forwards;
+}

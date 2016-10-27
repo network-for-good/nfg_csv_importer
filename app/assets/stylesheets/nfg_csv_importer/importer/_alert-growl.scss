@@ -1,14 +1,16 @@
 
-.alert-growl{
 
+
+.alert-growl-danger{
+  border: solid 1px $brand-danger;
 }
 
-@keyframes step1 {
+@keyframes auto-save-step1 {
   0%   { opacity: 0; }
   100% { opacity: 1; }
 }
 
-@keyframes step2{
+@keyframes auto-save-step2{
   0%{
     background-color: $brand-success;
   }
@@ -17,7 +19,7 @@
   }
 }
 
-@keyframes step3 {
+@keyframes auto-save-step3 {
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
@@ -41,13 +43,13 @@ $step1-duration: 1s;
 $step2-duration: 1s;
 $step3-duration: 1s;
 
-.growl-step1{ animation:  step1 $step1-duration ease-out forwards; }
+.growl-step1{ animation:  auto-save-step1 $step1-duration ease-out forwards; }
 
-.growl-step2{ animation: step2 $step2-duration ease-out forwards; }
+.growl-step2{ animation: auto-save-step2 $step2-duration ease-out forwards; }
 
 .growl-step3{
   background-color: purple;
-  animation: step3 $step3-duration ease-out forwards;
+  animation: auto-save-step3 $step3-duration ease-out forwards;
   opacity: 0;
 }
 
