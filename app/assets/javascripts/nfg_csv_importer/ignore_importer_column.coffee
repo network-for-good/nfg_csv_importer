@@ -41,7 +41,7 @@ class NfgCsvImporter.IgnoreColumn
     column.toggleClass(@ignoreColumnClass)
 
     # Toggle disabled class (fallback) & disabled attribute
-    select.toggleClass("disabled").attr 'disabled', (_, attr) ->
+    select.toggleClass("disabled").attr "disabled", (_, attr) ->
       !attr
 
     # Prevent select menu from being clickable once ignore is set.

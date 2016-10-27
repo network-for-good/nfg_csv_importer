@@ -1,0 +1,30 @@
+.card{
+  border: none;
+}
+
+.card-header{
+  @include rem(padding, ($spacer-base * 0.75));
+  // padding: $spacer-base;
+  background-color:#efefef;
+  border-top: solid 1px #dfdfdf;
+  border-right: solid 1px #dfdfdf;
+  border-left: solid 1px #dfdfdf;
+  border-bottom: none;
+
+  .form-group{
+    @include rem(margin-bottom, ($spacer-base * 0.75));
+  }
+}
+
+.card-block-importer-index{
+  @include rem(font-size, 10px);
+  line-height:1;
+  @include rem(padding-top, 2px);
+  @include rem(padding-bottom, 2px);
+  background-color: $brand-primary;
+  text-align: center;
+  font-weight: $font-weight-bold;
+  color: $white;
+  border-left: solid 1px $brand-primary;
+  border-right: solid 1px $brand-primary;
+}

@@ -19,7 +19,7 @@
     %strong Total columns supplied in the uploaded spreadsheet:
     -# TODO: so this would reflect the amount of columns in the uploaded doc.
     -# Does not (for now) include the count of columns that are ignored  since we're not tracking ignored.
-    Column count
+
 
 
   %hr
@@ -34,7 +34,7 @@
   %h2.h4 Below is a sample of the first few rows of your data
   %p Use the dropdown menus below to select the mappings for your import, rest assured, all
 
-  .container-fluid{ style: "background-color:#fff;" }
+  .container-fluid.m-y-double-half
     = form_for @import do |f|
       .row.row-no-wrap.p-a-half.m-b-base-half
         = f.fields_for :fields_mapping do |id|

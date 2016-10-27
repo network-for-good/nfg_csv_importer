@@ -1,0 +1,25 @@
+.list-group{
+  border-bottom: solid 1px #dfdfdf;
+  border-right: solid 1px #dfdfdf;
+  border-left: solid 1px #dfdfdf;
+  background-color: #f7f7f7;
+}
+
+.list-group-item{
+  border-bottom: solid 1px #eeeeee;
+  line-height: 1;
+  @include rem(height, 50px);
+  @include rem(padding, ($spacer-base * 0.75));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+
+  &:last-child{
+    border-bottom: none;
+  }
+
+  &:nth-child(even){
+    background-color: #fafafa;
+  }
+}
