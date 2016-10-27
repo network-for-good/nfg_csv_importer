@@ -61,6 +61,9 @@ class NfgCsvImporter.AutoSaveNotification
     # Apply the updated z-index value to the auto save growl
     $(@alertGrowlSelector).css("z-index", @zIndexVal)
 
+    # Remove focus from the element
+    clickedElement.blur()
+
     # Kickoff the column highlight animation
     @highlightColumn(clickedElement)
 
