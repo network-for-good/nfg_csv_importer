@@ -42,12 +42,15 @@ describe NfgCsvImporter::ImportsController do
       NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
       NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
     end
+    let(:import) { Import.last }
 
     subject { post :create, params }
 
+    it { expect(subject).to change(Import, :count).by(1) }
+
     it "should redirect when import is successfully placed in queue" do
       subject
-      expect(response).to redirect_to(import)
+      expect(response).to redirect_to(edit_import_path(import))
     end
 
     it "should add import job to queue" do
