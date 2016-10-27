@@ -4,3 +4,8 @@
   %td= import.number_of_records_with_errors.to_i
   %td= import.updated_at.to_s(:us_time)
   %td= link_to import.status, import_path(import)
+
+  %td{ style: 'padding-bottom: 15px' }
+    &nbsp;
+    = link_to edit_import_path(import), class: "btn btn-primary" do
+      Edit Import
