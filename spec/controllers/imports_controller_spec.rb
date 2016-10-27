@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe NfgCsvImporter::ImportsController do
+
   let(:entity) { create(:entity) }
   let(:user) { create(:user) }
   let(:import_type) { 'user' }
@@ -42,11 +43,11 @@ describe NfgCsvImporter::ImportsController do
       NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
       NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
     end
-    let(:import) { Import.last }
+    let(:import) { NfgCsvImporter::Import.last }
 
     subject { post :create, params }
 
-    it { expect(subject).to change(Import, :count).by(1) }
+    it { expect { subject }.to change(NfgCsvImporter::Import, :count).by(1) }
 
     it "should redirect when import is successfully placed in queue" do
       subject
