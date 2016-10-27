@@ -76,7 +76,7 @@ class NfgCsvImporter::ImportService
     @all_valid_columns ||= (new_model.attributes.keys + required_columns + optional_columns + [IGNORE_COLUMN_NAME]).uniq!
   end
 
-  def first_x_rows(x = 10)
+  def first_x_rows(x = 6)
     @first_x_rows ||= (starting_row..x).map do |i|
                       Hash[[header, spreadsheet.row(i)].transpose]
                     end
