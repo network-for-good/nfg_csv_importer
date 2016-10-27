@@ -1,5 +1,19 @@
+-# TODO: remove this later, for now this is just an easy spacer above the content.
+%div{ class: 'm-t-double'  }
+
 #self_importer.nfg-csv-importer
-  %p=@import.import_file_name
+  %p
+
+    %i.fa.fa-info-circle
+    %strong Source Uploaded Document:
+    =@import.import_file_name
+
+
+  %p
+    %strong Total Columns to be imported upon completion:
+    -# TODO: Would like to have the imported file's row count here
+    -# For now, this is the wrong code, but should explain what I'm looking for
+    = @import.imported_records.size
 
   %hr
   %p
@@ -10,9 +24,8 @@
       Show skipped columns
   %hr
 
-
-  %p
-    Use the fields below to select the mappings for your import
+  %h2.h4 Below is a sample of the first few rows of your data
+  %p Use the dropdown menus below to select the mappings for your import, rest assured, all
 
   .container-fluid{ style: "background-color:#fff;" }
     = form_for @import do |f|

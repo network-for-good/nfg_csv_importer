@@ -40,14 +40,18 @@ class NfgCsvImporter.IgnoreColumn
     # Toggle ignore class
     column.toggleClass(@ignoreColumnClass)
 
+    # Toggle disabled class (fallback) & disabled attribute
+    select.toggleClass("disabled").attr 'disabled', (_, attr) ->
+      !attr
+
     # Prevent select menu from being clickable once ignore is set.
     if column.hasClass @ignoreColumnClass
-      $(select).mousedown ->
+      select.mousedown ->
         event.preventDefault()
 
     # If ignore class is removed, undo the preventDefault
     else
-      $(select).unbind('mousedown')
+      select.unbind('mousedown')
 
 
   # Change the select's option :selected value
@@ -74,7 +78,7 @@ class NfgCsvImporter.IgnoreColumn
       @toggleIgnoreColumn(column, select)
 
 
-$(document).on 'ready turbolinks:load', ->
+$(document).on 'turbolinks:load', ->
   el = $(".col-importer")
   return unless el.length > 0
   inst = new NfgCsvImporter.IgnoreColumn el

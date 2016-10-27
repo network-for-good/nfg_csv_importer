@@ -113,7 +113,7 @@ class NfgCsvImporter.AutoSaveNotification
           return false
 
 
-$(document).on 'ready turbolinks:load', ->
+$(document).on 'turbolinks:load', ->
   el = $(".col-importer")
   return unless el.length > 0
   inst = new NfgCsvImporter.AutoSaveNotification el
