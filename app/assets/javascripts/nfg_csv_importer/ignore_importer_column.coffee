@@ -74,7 +74,7 @@ class NfgCsvImporter.IgnoreColumn
       @toggleIgnoreColumn(column, select)
 
 
-$(document).on 'ready turbolinks:load', ->
+$(document).on 'turbolinks:load', ->
   el = $(".col-importer")
   return unless el.length > 0
   inst = new NfgCsvImporter.IgnoreColumn el
