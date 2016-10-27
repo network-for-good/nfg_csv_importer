@@ -12,8 +12,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import.import_type = @import_type
     @import.imported_for = @imported_for
     if @import.save
-      setup_edit
-      render action: 'edit'
+      redirect_to edit_import_path(@import)
     else
       render :action => 'new'
     end
