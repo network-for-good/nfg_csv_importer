@@ -10,10 +10,17 @@
 
 
   %p
-    %strong Total Columns to be imported upon completion:
+    %strong Total rows to be imported upon completion:
     -# TODO: Would like to have the imported file's row count here
     -# For now, this is the wrong code, but should explain what I'm looking for
     = @import.imported_records.size
+
+  %p
+    %strong Total columns supplied in the uploaded spreadsheet:
+    -# TODO: so this would reflect the amount of columns in the uploaded doc.
+    -# Does not (for now) include the count of columns that are ignored  since we're not tracking ignored.
+    Column count
+
 
   %hr
   %p
