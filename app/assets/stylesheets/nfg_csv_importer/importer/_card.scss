@@ -4,12 +4,27 @@
 
 .card-header{
   @include rem(padding, ($spacer-base * 0.75));
-  // padding: $spacer-base;
   background-color:#efefef;
   border-top: solid 1px #dfdfdf;
   border-right: solid 1px #dfdfdf;
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.text-muted,
+     .text-muted,
+    s.text-muted{
+      color: #c4c4c4 !important;
+    }
+  }
 
   .form-group{
     @include rem(margin-bottom, ($spacer-base * 0.75));

@@ -26,6 +26,7 @@
 //= require_self
 //= require nfg_csv_importer/ignore_importer_column
 //= require nfg_csv_importer/auto_save_notification
+//= require nfg_csv_importer/selecting_column_header
 //= require nfg_csv_importer/import_spinner
 
 

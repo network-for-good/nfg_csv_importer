@@ -20,7 +20,6 @@ class NfgCsvImporter.IgnoreColumn
       @ignoreColumnViaCheckbox(checkbox)
 
     # Check for ignoring the column based on the select menu interaction
-    # @selects.on 'change', (event) =>
     @selects.on 'change', (event) =>
       select = $(event.currentTarget)
       @evaluateIgnoringColumnViaSelect(select)
