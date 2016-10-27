@@ -8,11 +8,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
-    @import.uploaded!
+    @import.status = :uploaded
     @import.import_type = @import_type
     @import.imported_for = @imported_for
     if @import.save
-      redirect_to edit_import_path(@import)
+      redirect_to edit_import_path(@import), notice: I18n.t('import.create.notice')
     else
       render :action => 'new'
     end
