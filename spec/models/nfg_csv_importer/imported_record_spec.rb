@@ -52,5 +52,17 @@ describe NfgCsvImporter::ImportedRecord do
         expect { imported_record.reload.destroy }.not_to raise_exception
       end
     end
+
+    context "when the importable belongs to a different imported_for" do
+      let(:imported_for) { create(:entity) }
+      let(:other_imported_for) { create(:entity) }
+      let!(:importable) { create(:user, entity: other_imported_for) }
+      let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
+
+      it "does not destroy the importable" do
+        imported_record.destroy
+        expect(importable.destroyed?).to be_falsey
+      end
+    end
   end
 end

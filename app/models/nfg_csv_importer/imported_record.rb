@@ -17,14 +17,12 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
     if self.importable.present?
       if importable.respond_to?(:can_be_destroyed?)
         if importable.can_be_destroyed?
-          importable.destroy
-          super
+          destroy_importable! && super
         else
           return
         end
       else
-        importable.destroy
-        super
+        destroy_importable! && super
       end
     else
       super
@@ -33,5 +31,12 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   def created?
     action == 'create'
+  end
+
+  private
+
+  def destroy_importable!
+    return false unless importable.send(NfgCsvImporter.configuration.imported_for_class.downcase).id == imported_for_id
+    importable.destroy
   end
 end
