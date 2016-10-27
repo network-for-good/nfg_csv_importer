@@ -1,12 +1,12 @@
 - @headers.each_with_index do |header_name, index|
   .col-importer{ id: [index + 1, header_name].join("_"), data: { id: index + 1 } }
     -# temporary placement of the ignore column checkbox
-    %p
-      -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
-      %label.c-input.c-checkbox.m-b-quarter{ data: { describe: "activate-ignore-column" } }
-        %input{ :name => [index + 1, header_name].join("_"), :type => "checkbox", :value => header_name }
-        %span.c-indicator
-        %span.text-muted Ignore Column
+
+    -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
+    %label.c-input.c-checkbox.m-b-quarter{ data: { describe: "activate-ignore-column" } }
+      %input{ :name => [index + 1, header_name].join("_"), :type => "checkbox", :value => header_name }
+      %span.c-indicator
+      %span.text-muted Ignore Column
 
 
     .card.col-importer-contents
@@ -18,7 +18,9 @@
           = id.select(header_name, options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), { include_blank: true }, { class: "c-select" })
           = id.hidden_field index
 
-        %h3.h5.text-xs-center= header_name
+        %h3.h5.text-xs-center{ data: { describe: 'source-column-header-name' } }
+          = header_name
+
       .card-block.card-block-importer-index{ data: { column: index_alphabetize[index] } }
         = index_alphabetize[index]
 
