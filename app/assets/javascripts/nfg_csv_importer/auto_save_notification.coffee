@@ -2,6 +2,9 @@
 # eg: @checkboxSelector can be passed across differnet coffeescript files so we have
 # one centralized source of those variables.
 
+# Purpose: Deliver the interaction design for notifying the user
+# that the data adjustments are being automatically saved
+
 class NfgCsvImporter.AutoSaveNotification
   constructor: (@el) ->
 

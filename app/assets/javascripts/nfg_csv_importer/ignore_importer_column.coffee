@@ -1,3 +1,6 @@
+# Purpose: Deliver the interaction design for ignoring a column
+# by checkbox or selecting from the dropdown menu
+
 class NfgCsvImporter.IgnoreColumn
   constructor: (@el) ->
     # Component Library
