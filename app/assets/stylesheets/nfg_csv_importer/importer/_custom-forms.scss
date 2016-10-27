@@ -1,0 +1,10 @@
+.c-input{
+  &:hover .text-muted{
+    @include transition(color .15s ease-in-out);
+    color: $font-color-primary !important;
+  }
+}
+
+.c-select{
+  width: 100%;
+}
