@@ -6,3 +6,8 @@ coverage: true
 timeout: 300
 test_exclude_pattern:
 - spec/flaky/*
+---
+cache:
+  key_paths:
+    - Gemfile
+    - nfg_csv_importer.gemspec
