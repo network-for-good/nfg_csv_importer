@@ -8,9 +8,7 @@ test_pattern:
   - spec/**_spec.rb
 test_exclude_pattern:
   - none
+skip_package:
+  - ruby
 hooks:
-  package_setup: gem install bundler -v 1.13.6 && bundle install --path=$HOME/bundle --no-deployment
-cache:
-  key_paths:
-    - Gemfile
-    - nfg_csv_importer.gemspec
+  pre_setup: gem install bundler -v 1.13.6 && bundle install --path=$HOME/bundle --no-deployment
