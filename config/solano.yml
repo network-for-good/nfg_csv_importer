@@ -4,9 +4,12 @@ environment:
   RAILS_LOG_LEVEL: '2'
 coverage: true
 timeout: 300
+test_pattern:
+  - spec/**_spec.rb
 test_exclude_pattern:
-- spec/flaky/*
----
+  - none
+hooks:
+  package_setup: gem install bundler -v 1.13.6 && bundle install --path=$HOME/bundle --no-deployment
 cache:
   key_paths:
     - Gemfile
