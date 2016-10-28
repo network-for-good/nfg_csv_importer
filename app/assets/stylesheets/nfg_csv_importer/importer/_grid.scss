@@ -15,17 +15,3 @@
   text-overflow: ellipsis;
 
 }
-
-.col-ignore{
-  .col-importer-contents{
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .c-select.disabled,
-  .c-select:disabled{
-    color: $input-color-disabled;
-    background-color: $input-bg-disabled;
-    border-color: $input-border-color-disabled;
-    cursor: $cursor-disabled;
-  }
-}

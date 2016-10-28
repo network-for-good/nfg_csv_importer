@@ -1,0 +1,8 @@
+.card-header{
+  .label{
+    position:absolute;
+    @include rem(top, -9px);
+    @include rem(right, ($spacer-base * 0.75));
+  }
+}
+

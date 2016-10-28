@@ -1,5 +1,6 @@
 .card{
-  border: none;
+  border: solid 1px transparent;
+  transition: border-color 1s ease-out;
 }
 
 .card-header{
@@ -31,6 +32,20 @@
   }
 }
 
+.card-disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+
+  .c-select.disabled,
+  .c-select:disabled{
+    color: $input-color-disabled;
+    background-color: $input-bg-disabled;
+    border-color: $input-border-color-disabled;
+    cursor: $cursor-disabled;
+  }
+}
+
+
 .card-block-importer-index{
   @include rem(font-size, 10px);
   line-height:1;
@@ -44,12 +59,14 @@
   border-right: solid 1px $brand-primary;
 }
 
-@keyframes card-importer-success {
+@keyframes card-highlight {
   0%   { border: solid 1px transparent; }
   50%  { border: solid 1px $brand-success; }
   100% { border: solid 1px transparent; }
 }
 
-.card-importer-success{
-  animation:  card-importer-success 3s ease-out forwards;
+.card-highlight{
+  border: solid 1px $brand-success;
+  // animation:  card-highlight 1s ease-out forwards;
+  transition: border-color 1s ease-out;
 }

@@ -6,6 +6,7 @@ class NfgCsvImporter.SelectingColumnHeader
     # Component Library
     @columnSelector = ".col-importer"
     @ignoreColumnSelectOptionValue = "ignore_column"
+    @form = "#self_importer form"
 
     # Elements
     @selects = @el.find "select"
@@ -15,32 +16,21 @@ class NfgCsvImporter.SelectingColumnHeader
     # Check for ignoring the column based on the select menu interaction
     @selects.on 'change', (event) =>
       select = $(event.currentTarget)
-      @evaluateColumnHeaderInteraction(select)
 
+      # Pavan: here!
+      # $(@form).submit()
+
+      @evaluateColumnHeaderInteraction(select)
 
   evaluateColumnHeaderInteraction: (select) =>
     column = select.closest @columnSelector
     columnHeaderNameSelector = column.find @columnHeaderNameSelectors
+    selectVal = select.val()
 
-    # Conditions to test against:
-    # Ignore suite:
-    # 1. When a column header is already updated, upon ignore checkbox or select option
-    #    de-strike out.
-    # 2. When un-ignored and reset back to the empty select option, un-strike out
-
-    # Next to test:
-    # 3. Struck out by picking a column header, then going back to empty select should de-strike out
-    #    and add back the notification icon
-
+    # if selectVal == @ignoreColumnSelectOptionValue
+    #   columnHeaderNameSelector.unwrap()
+    # else
     columnHeaderNameSelector.wrapInner "<s class='text-muted'></s>"
-
-
-    # Features to introduce:
-    # 1. Add updated badge to a column that had the header selected.
-    # 1b. Remove the badge is the column is reset... consider writing a "wipe all"
-    #     kind of function on emptying the header select
-
-
 
 $(document).on 'turbolinks:load', ->
   el = $(".col-importer")

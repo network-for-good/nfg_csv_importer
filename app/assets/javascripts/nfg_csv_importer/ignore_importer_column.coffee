@@ -6,7 +6,8 @@ class NfgCsvImporter.IgnoreImporterColumn
     # Component Library
     @checkboxSelector = "input[type='checkbox']"
     @columnSelector = ".col-importer"
-    @ignoreColumnClass = "col-ignore"
+    @cardSelector = ".card"
+    @ignoreCardClass = "card-disabled"
     @ignoreColumnSelectOptionValue = "ignore_column"
 
     # Elements
@@ -27,27 +28,28 @@ class NfgCsvImporter.IgnoreImporterColumn
 
   # Checkbox Behavior
   ignoreColumnViaCheckbox: (checkbox) ->
-    column = checkbox.closest(@columnSelector)
+    column = checkbox.closest @columnSelector
+    card = column.find @cardSelector
     select = column.find("select")
 
     # Toggle ignore css class
-    @toggleIgnoreColumn(column, select)
+    @toggleIgnoreColumn(card, select)
 
     # Set the select's option :selected value to ignore if appropriate
     @toggleSelectViaCheckbox(select)
 
 
   # Toggle Ignore Column
-  toggleIgnoreColumn: (column, select) ->
+  toggleIgnoreColumn: (card, select) ->
     # Toggle ignore class
-    column.toggleClass(@ignoreColumnClass)
+    card.toggleClass @ignoreCardClass
 
     # Toggle disabled class (fallback) & disabled attribute
     select.toggleClass("disabled").attr "disabled", (_, attr) ->
       !attr
 
     # Prevent select menu from being clickable once ignore is set.
-    if column.hasClass @ignoreColumnClass
+    if card.hasClass @ignoreCardClass
       select.mousedown ->
         event.preventDefault()
 
@@ -71,13 +73,15 @@ class NfgCsvImporter.IgnoreImporterColumn
   # Determine whether or not to move forward with ignoring or unignoring a column
   evaluateIgnoringColumnViaSelect: (select) ->
     selectVal = select.val()
-    column = select.closest(@columnSelector)
+    card = select.closest @cardSelector
+    checkbox = select.closest(@columnSelector).find(@checkboxSelector)
 
     # If the column is set to ignored via the select menu, toggle the ignore checkbox
     # & fire the toggle function
     if selectVal == @ignoreColumnSelectOptionValue
-      column.find(@checkboxSelector).prop "checked", true
-      @toggleIgnoreColumn(column, select)
+      checkbox.prop "checked", true
+
+      @toggleIgnoreColumn(card, select)
 
 
 $(document).on 'turbolinks:load', ->

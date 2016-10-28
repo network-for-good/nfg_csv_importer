@@ -18,14 +18,33 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     end
   end
 
+
+  # Original def update
+  # def update
+  #   if @import.update(import_params)
+  #     redirect_to @import
+  #   else
+  #     setup_edit
+  #     render "edit"
+  #   end
+  # end
+
+  # if failure, will update the edit page -- undesirable
   def update
     if @import.update(import_params)
-      redirect_to @import
+      respond_to do |format|
+        format.html { render "edit" }
+        format.js { }
+      end
     else
-      setup_edit
-      render "edit"
+      respond_to do |format|
+        format.html { redirect_to @import }
+        format.js { }
+      end
     end
   end
+
+
 
   def edit
     setup_edit
