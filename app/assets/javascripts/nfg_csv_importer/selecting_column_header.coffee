@@ -16,10 +16,13 @@ class NfgCsvImporter.SelectingColumnHeader
     # Check for ignoring the column based on the select menu interaction
     @selects.on 'change', (event) =>
       select = $(event.currentTarget)
-
-      # Pavan: here!
-      # $(@form).submit()
-
+      form_data = {}
+      form_data[select.attr('name')] = select.val()
+      $.ajax
+        url: $(@form).attr('action')
+        type: 'PATCH'
+        dataType: 'script'
+        data: form_data
       @evaluateColumnHeaderInteraction(select)
 
   evaluateColumnHeaderInteraction: (select) =>
