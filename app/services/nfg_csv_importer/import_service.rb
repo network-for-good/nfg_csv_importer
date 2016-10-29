@@ -125,6 +125,7 @@ class NfgCsvImporter::ImportService
         imported_for_id: imported_for.id,
         transaction_id: transaction_id,
         action: get_action(model_obj),
+        row_data: row
       )
 
       if saved_object.is_a?(ActiveRecord::Base)

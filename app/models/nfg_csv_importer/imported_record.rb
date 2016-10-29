@@ -1,6 +1,8 @@
 class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   attr_accessor :destroy_stats
 
+  serialize :row_data, Hash
+
   belongs_to :import
   belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
   belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
