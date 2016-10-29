@@ -38,19 +38,19 @@ describe NfgCsvImporter::ImportedRecord do
       before { importable.stubs(:can_be_destroyed?).returns(false) }
 
       it "does not delete the record" do
-        expect { imported_record.destroy }.not_to change(importable.class, :count)
+        expect { imported_record.destroy_importable! }.not_to change(importable.class, :count)
       end
 
       it "does not delete itself" do
-        imported_record.destroy
-        expect(imported_record.destroyed?).to be_falsey
+        imported_record.destroy_importable!
+        expect(imported_record.deleted?).to be_falsey
       end
     end
 
     context "when the importable no longer exists" do
       it "does not raise an exception" do
         importable.destroy
-        expect { imported_record.reload.destroy }.not_to raise_exception
+        expect { imported_record.reload.destroy_importable! }.not_to raise_exception
       end
     end
 
@@ -60,7 +60,7 @@ describe NfgCsvImporter::ImportedRecord do
       let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
 
       it "does not destroy the importable" do
-        imported_record.destroy
+        imported_record.destroy_importable!
         expect(importable.destroyed?).to be_falsey
       end
     end

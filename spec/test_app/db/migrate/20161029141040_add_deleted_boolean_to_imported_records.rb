@@ -1,0 +1,5 @@
+class AddDeletedBooleanToImportedRecords < ActiveRecord::Migration
+  def change
+    add_column :nfg_csv_importer_imported_records, :deleted, :boolean, default: false
+  end
+end

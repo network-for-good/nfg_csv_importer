@@ -15,21 +15,19 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
     500
   end
 
-  def destroy
+  def destroy_importable!
     self.destroy_stats = {}
     if self.importable.present?
       if importable.respond_to?(:can_be_destroyed?)
         if importable.can_be_destroyed?
-          destroy_importable! && super
+          destroy_imported_record
         else
           log_importable_to(:undestroyable)
           return
         end
       else
-        destroy_importable! && super
+        destroy_imported_record
       end
-    else
-      super
     end
   end
 
@@ -39,7 +37,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   private
 
-  def destroy_importable!
+  def destroy_imported_record
     imported_for_association = NfgCsvImporter.configuration.imported_for_class.downcase
 
     unless importable.respond_to?(imported_for_association)
@@ -53,6 +51,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
     end
 
     importable.destroy
+    self.update(deleted: true)
     log_importable_to(:destroyed)
   end
 

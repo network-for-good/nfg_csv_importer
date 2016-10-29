@@ -10,7 +10,7 @@ module NfgCsvImporter
       batch.each do |imported_record_id|
         imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) rescue next
         next unless imported_record.created?
-        imported_record.destroy
+        imported_record.destroy_importable!
         imported_record.destroy_stats.each do |key, value|
           if @stats.has_key?(key)
             @stats[key] << value
