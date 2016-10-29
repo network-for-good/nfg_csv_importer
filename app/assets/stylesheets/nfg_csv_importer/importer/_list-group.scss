@@ -2,7 +2,6 @@
   border-bottom: solid 1px #dfdfdf;
   border-right: solid 1px #dfdfdf;
   border-left: solid 1px #dfdfdf;
-  background-color: #f7f7f7;
 }
 
 .list-group-flush{
@@ -23,5 +22,25 @@
 
   &:nth-child(even){
     background-color: #fafafa;
+  }
+}
+
+.card-disabled{
+  .list-group-flush{
+    .list-group{
+      border-bottom: solid 1px #575757;
+      border-right: solid 1px #575757;
+      border-left: solid 1px #575757;
+      background-color: #717171 !important;
+      color: #9e9e9e;
+    }
+
+    .list-group-item{
+      border-bottom: solid 1px #656565;
+
+      &:nth-child(even){
+        background-color: #676767;
+      }
+    }
   }
 }

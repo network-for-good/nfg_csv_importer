@@ -11,6 +11,8 @@
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
 
+  transition: all .15s ease-in-out;
+
   h2,
   h3,
   h4,
@@ -33,14 +35,25 @@
 }
 
 .card-disabled{
-  opacity: 0.5;
-  cursor: not-allowed;
+  cursor: $cursor-disabled;
+
+  .card-header{
+    background-color: #575757;
+    color: #bebebe;
+    border-color: #575757;
+  }
+
+  .card-block-importer-index{
+    background-color: #353535;
+    border-left: solid 1px #353535;
+    border-right: solid 1px #353535;
+  }
 
   .c-select.disabled,
   .c-select:disabled{
-    color: $input-color-disabled;
-    background-color: $input-bg-disabled;
-    border-color: $input-border-color-disabled;
+    color: #959595;
+    background-color: #727272;
+    border-color: #727272;
     cursor: $cursor-disabled;
   }
 }
