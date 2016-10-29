@@ -1,28 +1,8 @@
-.col-importer{ id: ["col_importer", header_name].join("_"), data: { id: index + 1 } }
-  -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
-  %label.c-input.c-checkbox.m-b-quarter
-    %input{ :name => [index + 1, header_name].join("_"), :type => "checkbox", :value => header_name }
-    %span.c-indicator
-    %span.text-muted Ignore Column
-
-
+.col-importer{ id: ["col_importer", header_name].join("_"), data: { id: header_name_counter + 1 } }
   .card
-    .card-header
-
-      = render partial: "nfg_csv_importer/imports/self_importer/column_label_component", locals: { label_status: :success, label_text: "Updated!" }
-
-      .form-group
-        -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
-        -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
-
-        = id.select(header_name, options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), { include_blank: true }, { class: "c-select" })
-        = id.hidden_field index
-
-      %h3.h5.text-xs-center{ data: { describe: 'source-column-header-name' } }
-        = header_name
-
-    .card-block.card-block-importer-index{ data: { column: index_alphabetize[index] } }
-      = index_alphabetize[index]
+    = render 'nfg_csv_importer/imports/self_importer/importer_column_header.html.haml', header_name: header_name
+    .card-block.card-block-importer-index{ data: { column: index_alphabetize[header_name_counter] } }
+      = index_alphabetize[header_name_counter]
 
     .list-group.list-group-flush
       - (0..(@first_x_rows.length - 1)).each do |i|

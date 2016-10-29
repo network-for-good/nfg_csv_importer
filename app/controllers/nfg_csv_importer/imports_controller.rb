@@ -31,7 +31,12 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   # if failure, will update the edit page -- undesirable
   def update
-    if @import.update(import_params)
+    setup_edit
+    import_params["fields_mapping"].each do |header_name, mapped_header_name|
+      @header_name = header_name
+      @import.fields_mapping[header_name] = mapped_header_name
+    end
+    if @import.save
       respond_to do |format|
         format.html { render "edit" }
         format.js { }
@@ -73,7 +78,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def import_params
     # params.require(:import).permit!
-    params.fetch(:import, {}).permit!
+    # params.require(:import).permit(fields_mapping: {})
+    params[:import]
   end
 
   def load_new_import
@@ -97,5 +103,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @first_x_rows = @import.first_x_rows
     @all_valid_columns = @import.all_valid_columns
     @headers = @import.header
+    @fields_mapping = @import.fields_mapping
   end
 end

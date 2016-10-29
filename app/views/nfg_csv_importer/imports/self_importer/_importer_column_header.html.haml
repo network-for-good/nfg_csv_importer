@@ -1,0 +1,19 @@
+.card-header{ id: "card_header_#{header_name}", data: { describe: "card-header-for-#{header_name}" } }
+  -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
+  %label.c-input.c-checkbox.m-b-quarter
+    %input{ :name => "ignore_column_#{ header_name }", :type => "checkbox", :value => header_name }
+    %span.c-indicator
+    %span.text-muted Ignore Column
+
+  = render partial: "nfg_csv_importer/imports/self_importer/column_label_component", locals: { label_status: :success, label_text: "Updated!" }
+
+  .form-group
+    -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
+    -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
+
+    / on re-render save the previously selected header name that was mapped and re-display it on the column
+
+    = select_tag("import[fields_mapping[#{ header_name }]]", options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }), include_blank: true, class: "c-select" )
+
+  %h3.h5.text-xs-center{ data: { describe: 'source-column-header-name' } }
+    = header_name

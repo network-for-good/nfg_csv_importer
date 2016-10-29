@@ -34,12 +34,14 @@
   %h2.h4 Below is a sample of the first few rows of your data
   %p Use the dropdown menus below to select the mappings for your import, rest assured, all
 
-  .container-fluid.m-y-double-half
+  .container-fluid.m-y-triple
+
     = form_for @import, ajax: true do |f|
       .row.row-no-wrap.p-a-half.m-b-base-half
-        = f.fields_for :fields_mapping do |id|
-          - @headers.each_with_index do |header_name, index|
-            = render partial: "nfg_csv_importer/imports/self_importer/importer_column", locals: { id: id, header_name: header_name, index: index }
+
+        = render partial: "nfg_csv_importer/imports/self_importer/importer_column", collection: @headers, as: :header_name
+
+
       .row
         .col-xs-12
           = button_tag type: :submit, class: "btn btn-primary btn-lg" do

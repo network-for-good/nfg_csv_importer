@@ -3,7 +3,7 @@ module NfgCsvImporter
 
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
-    serialize :import_definition
+    serialize :fields_mapping
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
     mount_uploader :import_file, ImportFileUploader
