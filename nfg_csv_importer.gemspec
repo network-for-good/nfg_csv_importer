@@ -14,16 +14,17 @@ Gem::Specification.new do |s|
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
+
   if s.respond_to?(:metadata)
     s.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
   else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
+    raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
 
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails"
+  s.add_dependency "rails", '~> 4.2.0'
   s.add_dependency "roo"
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
@@ -35,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency "font-awesome-rails", "~> 4.6", ">= 4.6.3.1"
 
   s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "rspec-rails", '~> 3.4.0'
   s.add_development_dependency "rspec-rails-mocha"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "capybara"
