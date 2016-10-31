@@ -20,6 +20,7 @@ RSpec.configure do |config|
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   config.include FactoryGirl::Syntax::Methods
   config.include Rails.application.routes.url_helpers
+  config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
 end
 

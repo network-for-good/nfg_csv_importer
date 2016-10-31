@@ -54,10 +54,10 @@ describe NfgCsvImporter::ImportsController do
       expect(response).to redirect_to(edit_import_path(import))
     end
 
-    it "should add import job to queue" do
-      NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
-      subject
-    end
+    #it "should add import job to queue" do
+      #NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
+      #subject
+    #end
 
     it "should display success message" do
       subject
