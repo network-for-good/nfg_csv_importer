@@ -25,15 +25,32 @@ class NfgCsvImporter.SelectingColumnHeader
         data: form_data
       @evaluateColumnHeaderInteraction(select)
 
+      @adjustPromptAppearance()
+
+    @adjustPromptAppearance()
+
+  adjustPromptAppearance: ->
+    $("select").each ->
+      selected = $('option:selected', @).map(->
+        $(@).text()
+      ).toArray().join(', ')
+      if selected == "Select Header"
+        $(@).addClass "c-select-unselected"
+
+      else
+        $(@).removeClass "c-select-unselected"
+      return
+
+
   evaluateColumnHeaderInteraction: (select) =>
     column = select.closest @columnSelector
     columnHeaderNameSelector = column.find @columnHeaderNameSelectors
     selectVal = select.val()
-
     # if selectVal == @ignoreColumnSelectOptionValue
     #   columnHeaderNameSelector.unwrap()
     # else
     columnHeaderNameSelector.wrapInner "<s class='text-muted'></s>"
+
 
 $(document).on 'turbolinks:load', ->
   el = $(".col-importer")

@@ -1,6 +1,6 @@
 .card{
-  border: solid 1px transparent;
-  transition: border-color 1s ease-out;
+  border: none;
+  transition: all .5s ease-in-out;
 }
 
 .card-header{
@@ -10,8 +10,6 @@
   border-right: solid 1px #dfdfdf;
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
-
-  transition: all .15s ease-in-out;
 
   h2,
   h3,
@@ -32,21 +30,32 @@
   .form-group{
     @include rem(margin-bottom, ($spacer-base * 0.75));
   }
+
+  .c-input{
+    z-index:2;
+    position:absolute;
+    top:-28px;
+    left:0;
+  }
 }
 
 .card-disabled{
   cursor: $cursor-disabled;
+  transition: all .5s ease-in-out;
 
   .card-header{
     background-color: #575757;
     color: #bebebe;
     border-color: #575757;
+    text-decoration: line-through;
+    transition: all .5s ease-in-out;
   }
 
   .card-block-importer-index{
     background-color: #353535;
     border-left: solid 1px #353535;
     border-right: solid 1px #353535;
+    transition: all .5s ease-in-out;
   }
 
   .c-select.disabled,
@@ -55,6 +64,7 @@
     background-color: #727272;
     border-color: #727272;
     cursor: $cursor-disabled;
+    transition: all .5s ease-in-out;
   }
 }
 
@@ -79,7 +89,14 @@
 }
 
 .card-highlight{
-  border: solid 1px $brand-success;
-  // animation:  card-highlight 1s ease-out forwards;
-  transition: border-color 1s ease-out;
+  @include box-shadow(0px 0px 60px 0px rgba(33,122,164,0.2));
+  transition: all .5s ease-in-out;
+
+  .card-header{
+    background-color:#e2f2f6;
+    color: $brand-primary;
+    border-top: solid 1px #b4d5e3;
+    border-right: solid 1px #b4d5e3;
+    border-left: solid 1px #b4d5e3;
+  }
 }

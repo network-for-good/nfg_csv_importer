@@ -9,9 +9,4 @@
   @include rem(margin-right, 5px);
   @include rem(flex, 0 0 275px);
   border: solid 1px transparent;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
 }
