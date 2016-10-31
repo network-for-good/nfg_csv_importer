@@ -19,15 +19,22 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   def destroy_importable!
     self.destroy_stats = {}
+
+    # don't bother doing anything if there's no importable
     if self.importable.present?
+      # This is an importable instance method where we can supply criteria
+      # to block deletion. The DM user model has this method.
       if importable.respond_to?(:can_be_destroyed?)
         if importable.can_be_destroyed?
           destroy_imported_record
         else
+          # If the importable can't be destroyed, log it and return.
           log_importable_to(:undestroyable)
           return
         end
       else
+        # If the importable doesn't respond to :can_be_destroyed?, then we'll
+        # we can delete it.
         destroy_imported_record
       end
     end
@@ -42,11 +49,15 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   def destroy_imported_record
     imported_for_association = NfgCsvImporter.configuration.imported_for_class.downcase
 
+    # imported_for is Site in DM, Entity in Evo. If the importable doesn't respond to this
+    # association, then we're bailing immediately because we can't do the next evaluation.
     unless importable.respond_to?(imported_for_association)
       log_importable_to(:no_imported_for_assoc)
       return false
     end
 
+    # This checks to make sure the importable belongs to the same site or entity (imported_for)
+    # to which the import belongs. If not, we don't delete the record.
     unless importable.send(imported_for_association).id == imported_for_id
       log_importable_to(:mismatched_owner_ids)
       return false
