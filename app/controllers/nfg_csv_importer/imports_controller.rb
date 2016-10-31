@@ -31,10 +31,16 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   # if failure, will update the edit page -- undesirable
   def update
+
     setup_edit
-    import_params["fields_mapping"].each do |header_name, mapped_header_name|
+    # import_params["fields_mapping"].each do |header_name, mapped_header_name|
+    import_params["fields_mapping"].each do |header_name|
       @header_name = header_name
-      @import.fields_mapping[header_name] = mapped_header_name
+      # binding.pry
+      # @import.fields_mapping[header_name] = mapped_header_name
+
+
+
     end
     if @import.save
       respond_to do |format|
