@@ -1,3 +1,5 @@
 NfgCsvImporter::Engine.routes.draw do
-  resources :imports, path: ''
+  resources :imports, path: '' do
+    resource :review
+  end
 end

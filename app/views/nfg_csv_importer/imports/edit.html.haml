@@ -36,7 +36,7 @@
 
   .container-fluid.m-y-triple
 
-    = form_for @import, ajax: true do |f|
+    = form_for @import, url: nfg_csv_importer.import_review_path(@import), ajax: true do |f|
       .row.row-no-wrap.p-a-half.m-b-base-half
 
         = render partial: "nfg_csv_importer/imports/self_importer/importer_column", collection: @headers, as: :header_name
@@ -45,5 +45,5 @@
       .row
         .col-xs-12
           = button_tag type: :submit, class: "btn btn-primary btn-lg" do
-            Save
+            Review
             = fa_icon "chevron-right"
