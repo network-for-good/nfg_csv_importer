@@ -1,16 +1,23 @@
 - ignore_column = false if local_assigns[:ignore_column].nil?
+- column_is_mapped = false if local_assigns[:column_is_mapped].nil?
 
-- select_prompt = @header_name.present? ? @header_name : "Select Header"
-- selected_option = ignore_column ? "ignore_column" : nil
+- select_tag_prompt = @header_name.present? ? @header_name : "Select Header"
+- selected_option = "ignore_column" if ignore_column
 
+- if column_is_mapped
+  - mapped_column_output_class = ""
+  - select_column_mapping_class = "hidden-xs-up"
+- else
+  - mapped_column_output_class = "hidden-xs-up"
+  - select_column_mapping_class = "c-select"
 
 / - column_update_action = nil if local_assigns[:column_update_action].nil?
-/ = render partial: "nfg_csv_importer/imports/self_importer/column_label_component", locals: { label_status: :success, label_text: "Updated!" }
+= render partial: "nfg_csv_importer/imports/self_importer/column_label_component", locals: { label_status: :success, label_text: "Mapped!" }
 
 .card-header{ id: "card_header_#{header_name}", data: { header_name: "#{header_name}" } }
   -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
   %label.c-input.c-checkbox.m-b-quarter
-    %input{ name: "ignore_column_#{ header_name }", type: "checkbox", value: header_name, checked: ("checked" if ignore_column) }
+    %input{ name: "import[fields_mapping['ignore_column']]", type: "checkbox", value: "ignore_#{header_name}", checked: ("checked" if ignore_column) }
     %span.c-indicator
     %span.text-muted Ignore Column
 
@@ -21,7 +28,15 @@
     -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
     -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
 
-    = select_tag("import[fields_mapping[#{ header_name }]]", options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }, selected_option), prompt: select_prompt, class: "c-select", disabled: ("disabled" if ignore_column))
+
+    -# Add text version when dropdown has been committed.
+
+    = select_tag("import[fields_mapping[#{ header_name }]]", options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }, selected_option), prompt: select_tag_prompt, class: select_column_mapping_class, disabled: ("disabled" if ignore_column))
+    %div{ class: mapped_column_output_class, data: { describe: "mapped-header-name" } }
+      = @header_name
+      %a.btn.btn-primary.btn-sm{ href: "javascript:;" }
+        %i.fa.fa-pencil
+        Edit
 
   %h3.h5.text-xs-center{ data: { describe: 'source-column-header-name' } }
     - if ignore_column

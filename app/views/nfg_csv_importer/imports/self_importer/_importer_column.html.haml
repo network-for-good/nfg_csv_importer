@@ -1,16 +1,17 @@
 - ignore_column = false if local_assigns[:ignore_column].nil?
-- card_highlight = false if local_assigns[:card_highlight].nil?
+- column_is_mapped = false if local_assigns[:column_is_mapped].nil?
 - ignore_column = false if local_assigns[:ignore_column].nil?
 
+- column_is_mapped = false
 
 - card_classes = "card"
-- card_classes += " card-highlight" if card_highlight
+/ - card_classes += " card-highlight" if column_is_mapped
 - card_classes += " card-disabled" if ignore_column
 
 
 .col-importer{ id: ["col_importer", header_name].join("_"), data: { id: header_name_counter + 1 } }
-  %div{ class: card_classes }
-    = render 'nfg_csv_importer/imports/self_importer/importer_column_header.html.haml', header_name: header_name, ignore_column: ignore_column
+  %div{ class: card_classes, id: header_name }
+    = render 'nfg_csv_importer/imports/self_importer/importer_column_header.html.haml', header_name: header_name, ignore_column: ignore_column, column_is_mapped: column_is_mapped
     .card-block.card-block-importer-index{ data: { column: index_alphabetize[header_name_counter] } }
       = index_alphabetize[header_name_counter]
 
