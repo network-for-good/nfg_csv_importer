@@ -5,7 +5,6 @@ module NfgCsvImporter
     def perform(*args)
       batch = args.first
       import = NfgCsvImporter::Import.find(args.last)
-      processing_final_batch = import.imported_records.last.id == batch.last
       @stats = {}
       batch.each do |imported_record_id|
         imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) rescue next
@@ -22,7 +21,8 @@ module NfgCsvImporter
 
       Rails.logger.info "Batch finished: #{@stats}"
 
-      if processing_final_batch
+      import.reload
+      if import.imported_records.where(deleted: true).count == import.imported_records.count
         NfgCsvImporter::ImportMailer.send_destroy_result(import).deliver
         import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleted])
         Rails.logger.info "Final batch for #{import.class} #{import.id} finished processing at #{DateTime.now}"
