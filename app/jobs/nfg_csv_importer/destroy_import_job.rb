@@ -5,7 +5,7 @@ module NfgCsvImporter
     def perform(*args)
       batch = args.first
       import = NfgCsvImporter::Import.find(args.last)
-      processing_final_batch = import.imported_records.size == batch.size
+      processing_final_batch = import.imported_records.last.id == batch.last
       @stats = {}
       batch.each do |imported_record_id|
         imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) rescue next
