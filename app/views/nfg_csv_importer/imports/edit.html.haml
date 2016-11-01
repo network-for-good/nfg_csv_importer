@@ -1,49 +1,89 @@
--# TODO: remove this later, for now this is just an easy spacer above the content.
-%div{ class: 'm-t-double'  }
+///// -- Design Source Code -- /////
 
-#self_importer.nfg-csv-importer
-  %p
-
-    %i.fa.fa-info-circle
-    %strong Source Uploaded Document:
-    =@import.import_file_name
-
-
-  %p
-    %strong Total rows to be imported upon completion:
-    -# TODO: Would like to have the imported file's row count here
-    -# For now, this is the wrong code, but should explain what I'm looking for
-    = @import.imported_records.size
-
-  %p
-    %strong Total columns supplied in the uploaded spreadsheet:
-    -# TODO: so this would reflect the amount of columns in the uploaded doc.
-    -# Does not (for now) include the count of columns that are ignored  since we're not tracking ignored.
-
-
-
-  %hr
-  %p
-    -# Not expecting this to be used, but keeping here for design balancing.
-    %label.c-input.c-checkbox
-      %input{ :name => "option-checkbox", :type => "checkbox", :value => 1 }
-      %span.c-indicator
-      Show skipped columns
-  %hr
-
-  %h2.h4 Below is a sample of the first few rows of your data
-  %p Use the dropdown menus below to select the mappings for your import, rest assured, all
-
+.nfg-csv-importer
   .container-fluid.m-y-triple
+    .row.row-no-wrap.p-a-half
+      -# Column: Static / base version
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
 
-    = form_for @import, url: nfg_csv_importer.import_review_path(@import), ajax: true do |f|
-      .row.row-no-wrap.p-a-half.m-b-base-half
+      -# Column: Column is mid-stream being "mapped" as indicated to the user
+      -# like this: on render, apply .card-highlight
+        -# after the animation has finished, remove card-highlight
+        -# add .card-mapped
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
 
-        = render partial: "nfg_csv_importer/imports/self_importer/importer_column", collection: @headers, as: :header_name
+      -# Column: Column has been set to ignored (.card-disabled)
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+
+      -# Column: Column is now mapped (.card-mapped)
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+
+      -# Column: Column was mapped by us (.card-mapped)
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :auto_mapped
+
+      -# Column: Additional columns for page layout purposes
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+      = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+
+  -# Displayed upon any interaction with any column
+  .alert.alert-success.alert-growl{ role: "alert" }
+    Saving Updates
+    %i.fa.fa-spinner.fa-pulse.fa-2x.fa-fw
 
 
-      .row
-        .col-xs-12
-          = button_tag type: :submit, class: "btn btn-primary btn-lg" do
-            Review
-            = fa_icon "chevron-right"
+
+///// -- Original Code -- /////
+
+/ -# TODO: remove this later, for now this is just an easy spacer above the content.
+/ %div{ class: 'm-t-double'  }
+
+/ #self_importer.nfg-csv-importer
+/   %p
+
+/     %i.fa.fa-info-circle
+/     %strong Source Uploaded Document:
+/     =@import.import_file_name
+
+
+/   %p
+/     %strong Total rows to be imported upon completion:
+/     -# TODO: Would like to have the imported file's row count here
+/     -# For now, this is the wrong code, but should explain what I'm looking for
+/     = @import.imported_records.size
+
+/   %p
+/     %strong Total columns supplied in the uploaded spreadsheet:
+/     -# TODO: so this would reflect the amount of columns in the uploaded doc.
+/     -# Does not (for now) include the count of columns that are ignored  since we're not tracking ignored.
+
+
+
+/   %hr
+/   %p
+/     -# Not expecting this to be used, but keeping here for design balancing.
+/     %label.c-input.c-checkbox
+/       %input{ :name => "option-checkbox", :type => "checkbox", :value => 1 }
+/       %span.c-indicator
+/       Show skipped columns
+/   %hr
+
+/   %h2.h4 Below is a sample of the first few rows of your data
+/   %p Use the dropdown menus below to select the mappings for your import, rest assured, all
+
+/   .container-fluid.m-y-triple
+
+/     = form_for @import, url: nfg_csv_importer.import_review_path(@import), ajax: true do |f|
+/       .row.row-no-wrap.p-a-half.m-b-base-half
+
+/         = render partial: "nfg_csv_importer/imports/self_importer/importer_column", collection: @headers, as: :header_name
+
+
+/       .row
+/         .col-xs-12
+/           = button_tag type: :submit, class: "btn btn-primary btn-lg" do
+/             Review
+/             = fa_icon "chevron-right"

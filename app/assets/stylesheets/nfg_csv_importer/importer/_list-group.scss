@@ -67,3 +67,25 @@
     }
   }
 }
+
+.card-mapped{
+  .list-group-flush{
+    &.list-group{
+      border-left: solid 1px #a7e2fc;
+      border-bottom: solid 1px #a7e2fc;
+      border-right: solid 1px #a7e2fc;
+      transition: all .5s ease-in-out;
+    }
+    .list-group-item{
+      background-color: #f4f9fb;
+      transition: all .5s ease-in-out;
+      border-bottom: solid 1px #deeaed;
+      color:#71c1e6;
+
+      &:nth-child(even){
+        background-color:#fff;
+        transition: all .5s ease-in-out;
+      }
+    }
+  }
+}

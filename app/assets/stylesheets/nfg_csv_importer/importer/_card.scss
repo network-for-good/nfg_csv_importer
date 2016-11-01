@@ -10,6 +10,7 @@
   border-right: solid 1px #dfdfdf;
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
+  @include rem(height, 115px);
 
   h2,
   h3,
@@ -24,6 +25,7 @@
      .text-muted,
     s.text-muted{
       color: #c4c4c4 !important;
+      transition: all .5s ease-in-out;
     }
   }
 
@@ -31,16 +33,43 @@
     @include rem(margin-bottom, ($spacer-base * 0.75));
   }
 
-  .c-input{
+  .card-header-interactions{
     z-index:2;
     position:absolute;
-    top:-28px;
     left:0;
+    @include rem(top, -25px);
+    @include rem(font-size, 12px);
+
+    a,
+    label{
+      font-size:12px;
+      line-height:1;
+      .fa{
+        margin-right:3px;
+      }
+
+      .fa,
+      .c-indicator:before,
+      .c-indicator:after{
+        font-size:16px !important;
+      }
+
+      .c-indicator,
+      .c-indicator:before,
+      .c-indicator:after{
+        width:16px;
+        height:16px;
+      }
+
+
+    }
+
   }
 }
 
 .card-disabled{
   cursor: $cursor-disabled;
+  @include box-shadow(0px 0px 12px 0px rgba(0,0,0,0.15));
   transition: all .5s ease-in-out;
 
   .card-header{
@@ -66,6 +95,20 @@
     cursor: $cursor-disabled;
     transition: all .5s ease-in-out;
   }
+
+  .card-header-interactions{
+
+    .c-indicator:before,
+    .c-indicator:after{
+      color: $brand-danger !important;
+      transition: all .5s ease-in-out;
+    }
+
+    .c-input .text-muted{
+      color: $brand-danger !important;
+      transition: all .5s ease-in-out;
+    }
+  }
 }
 
 
@@ -89,14 +132,57 @@
 }
 
 .card-highlight{
-  @include box-shadow(0px 0px 60px 0px rgba(33,122,164,0.2));
+  @include box-shadow(0px 0px 60px 0px rgba(0,138,203,0.2));
   transition: all .5s ease-in-out;
 
   .card-header{
     background-color:#e2f2f6;
-    color: $brand-primary;
     border-top: solid 1px #b4d5e3;
     border-right: solid 1px #b4d5e3;
     border-left: solid 1px #b4d5e3;
+
+   a.h3{
+      @include rem(font-size, 20px);
+      font-weight: $font-weight-normal;
+      color: $brand-primary;
+      display: block;
+    }
+
+    .text-muted,
+    s.text-muted{
+      color: $brand-primary !important;
+    }
+  }
+}
+
+.card-mapped{
+  @include box-shadow(0px 0px 12px 0px rgba(0,138,203,0.15));
+  transition: all .5s ease-in-out;
+
+  .card-header{
+    background-color:#fff;
+    border-top: solid 1px #a7e2fc;
+    border-right: solid 1px #a7e2fc;
+    border-left: solid 1px #a7e2fc;
+    color: $gray-dark;
+
+
+    a.h3{
+      @include rem(font-size, 20px);
+      font-weight: $font-weight-normal;
+      display: block;
+      color:#4d4d4d;
+      text-decoration:none;
+
+      @include hover-focus{
+        text-decoration: underline;
+        @include vendor-prefix((text-decoration-style, dotted) mo);
+      }
+    }
+
+    .text-muted,
+    s.text-muted{
+      color: #a9d9ef !important;
+    }
   }
 }

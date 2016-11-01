@@ -1,0 +1,30 @@
+- version = :static if local_assigns[:version].nil?
+
+- card_classes = "card"
+
+- case version
+- when :active
+  - card_classes += " card-highlight"
+- when :mapped
+  - card_classes += " card-mapped"
+- when :ignored
+  - card_classes += " card-disabled"
+- when :auto_mapped
+  - card_classes += " card-mapped"
+
+.col-importer
+  %div{ class: card_classes }
+    = render 'nfg_csv_importer/imports/design_source/importer_column_header.html.haml', version: version
+    .card-block.card-block-importer-index
+      A
+    .list-group.list-group-flush
+      .list-group-item
+        John Doe
+      .list-group-item
+        Jane Doe
+      .list-group-item
+        Alberto Rodriguez
+      .list-group-item
+        Connie Albertson
+      .list-group-item
+        Alexander Goschef

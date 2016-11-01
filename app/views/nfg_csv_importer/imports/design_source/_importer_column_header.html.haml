@@ -1,0 +1,84 @@
+- version = :static if local_assigns[:version].nil?
+
+- case version
+- when :static
+  - header_name = "static_column"
+- when :active
+  - label_status = "success"
+  - label_icon = "fa-check-circle"
+  - label_text = "Mapping Column"
+  - header_name = "active_column"
+- when :mapped
+  - label_status = "success"
+  - label_icon = "fa-check-circle"
+  - label_text = "Mapped"
+  - header_name = "user_mapped_column"
+- when :ignored
+  - label_status = "danger"
+  - label_icon = "fa-exclamation-circle"
+  - label_text = "Will not be imported"
+  - header_name = "ignored_column"
+- when :auto_mapped
+  - label_status = "success"
+  - label_icon = "fa-info-circle"
+  - label_text = "Automatically Mapped"
+  - header_name = "auto_mapped_column"
+
+- unless version == :static
+  -# When mapping has wrapped up, have the label:
+  -# 1. Fade out "Mapping column"
+  -# 2. Slide the check mark to the right
+  -# 3. Shrink label to fit checkmark
+  -# 4. Expand label out to reveal "Mapped"
+  %div{ class: "label label-pill label-#{label_status}" }
+    %i{ class: "fa #{label_icon}" }
+    = label_text
+
+.card-header
+  .card-header-interactions
+    - if (version == :ignored) || (version == :static)
+      %label.c-input.c-checkbox.m-b-quarter
+        - if version == :ignored
+          %input{ name: "ignore", type: "checkbox", value: "ignore", checked: "checked" }
+        - else
+          %input{ name: "ignore", type: "checkbox", value: "ignore" }
+        %span.c-indicator
+        %span.text-muted Ignore Column
+    - else
+      %a.m-b-quarter{ href: "javascript:;" }
+        %i.fa.fa-pencil
+        Edit Column
+
+  .form-group
+    - if version == :ignored
+      %select{ class: "c-select disabled", disabled: "disabled" }
+        %option Select Header
+        %option Header Name
+        %option Header Name
+        %option Header Name
+        %option{ selected: "selected" } Ignore Column
+
+    - elsif version == :static
+      %select{ class: "c-select" }
+        %option{ selected: "selected" } Select Header
+        %option Header Name
+        %option Header Name
+        %option Header Name
+        %option Ignore Column
+
+    - else
+      -# Kicks off edit, just like the edit button above.
+      %a.h3.text-xs-center.m-t-half{ href: "javascript:;" }
+        Header Name
+
+
+  %h4.h5.text-xs-center
+    - if (version == :static) || (version == :ignored)
+      = header_name
+      - unless version == :ignored
+        %sup
+          %i.fa.fa-info-circle.text-info{ title: "We couldn't automatically map this column for you", data: { toggle: "tooltip", placement: "top" } }
+    - else
+      %s.text-muted= header_name
+
+

@@ -11,26 +11,27 @@
   - mapped_column_output_class = "hidden-xs-up"
   - select_column_mapping_class = "c-select"
 
-/ - column_update_action = nil if local_assigns[:column_update_action].nil?
-= render partial: "nfg_csv_importer/imports/self_importer/column_label_component", locals: { label_status: :success, label_text: "Mapped!" }
+-# Label needs logic
+  .label.label-success
+    %i.fa.fa-check-circle
+    Mapped
 
 .card-header{ id: "card_header_#{header_name}", data: { header_name: "#{header_name}" } }
-  -# I think this value should be the selected field name? or should it be the header_name initially and then updated?
-  %label.c-input.c-checkbox.m-b-quarter
-    %input{ name: "import[fields_mapping['ignore_column']]", type: "checkbox", value: "ignore_#{header_name}", checked: ("checked" if ignore_column) }
-    %span.c-indicator
-    %span.text-muted Ignore Column
 
+  .card-header-interactions
+    %label.c-input.c-checkbox.m-b-quarter
+      %input{ name: "import[fields_mapping['ignore_column']]", type: "checkbox", value: "ignore_#{header_name}", checked: ("checked" if ignore_column) }
+      %span.c-indicator
+      %span.text-muted Ignore Column
+
+    -# Need Edit Button Stuff here
+      %a.m-b-quarter{ href: "javascript:;" }
+        %i.fa.fa-pencil.m-r-quarter
+        Edit Column
 
 
 
   .form-group
-    -# TODO: if automatically mapped, we need some kind of visual flourish to indicate "mapped for ya!", perhaps a flag is passed to a hidden field for each column and JS can read it?
-    -# TODO: The select should be broken into option groups... like personal contact details, organization contact details, etc.
-
-
-    -# Add text version when dropdown has been committed.
-
     = select_tag("import[fields_mapping[#{ header_name }]]", options_for_select(@all_valid_columns.map { |c| [c.humanize.titleize, c] }, selected_option), prompt: select_tag_prompt, class: select_column_mapping_class, disabled: ("disabled" if ignore_column))
     %div{ class: mapped_column_output_class, data: { describe: "mapped-header-name" } }
       = @header_name
