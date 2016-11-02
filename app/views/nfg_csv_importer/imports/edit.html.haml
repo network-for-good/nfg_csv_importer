@@ -3,9 +3,12 @@
 - ready_for_import = true
 
 .nfg-csv-importer
+
   #importer_header_bar.container-fluid.container-flush
-    .row.row-importer-header.row-xs-center
+
+    .row.row-importer-header
       .col-xs-12
+
         %h1
           %i.fa.fa-paperclip
           my_filename_whatever.xlsx
@@ -20,6 +23,7 @@
                 %i.fa.fa-th
 
   .container-fluid.container-flush
+    %span.header-bar-arrow
     .row.row-xs-center.row-importer-stats
 
       .col-md-2.col-xs-center.col-importer-stat
@@ -73,14 +77,15 @@
 
   .container-fluid.container-flush.bg-white
     .row
-      .col-xs-12.p-y-double.text-xs-center
+      .col-xs-12.p-t-double.p-y-base.text-xs-center
         / %h2.h4
         /   Now it's time to map your column headers
         / %p
         /   This is the setup process for importing your data. Nothing will be finalized until you review & confirm your choices.
 
-        .lead
+        %p.lead
           Let's map your column headers ahead of importing your data
+        %p.text-muted Scroll Left & Right
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   .container-fluid.container-flush
@@ -114,6 +119,17 @@
         = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
         = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
         = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+
+  .container-fluid.container-flush.bg-white
+    .row.p-x-base.p-b-base-half
+      .col-xs-6
+        %a.btn.btn-secondary.btn-lg{ href: "javascript:;" }
+          %i.fa.fa-chevron-left.m-r-quarter
+          Save & Come Back Later
+      .col-xs-6.text-xs-right
+        %a.btn.btn-primary.btn-lg{ href: "javascript:;" }
+          Review & Confirm Your Import
+          %i.fa.fa-chevron-right.m-l-quarter
 
   -# Displayed upon any interaction with any column
   .alert.alert-success.alert-growl{ role: "alert" }
