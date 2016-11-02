@@ -3,10 +3,10 @@
   color: #fff;
   font-weight: $font-weight-light;
   text-transform: none;
-  @include rem(margin-bottom, 20px);
+  @include rem(margin-bottom, 15px);
 
   .fa{
-    @include rem(margin-bottom, 8px);
+
   }
 
   a{
@@ -21,24 +21,33 @@
 .text-sub-headline{
   @include rem(font-size, 10px);
   @include rem(letter-spacing, 1px);
-  // color: $gray;
   font-weight: $font-weight-bold;
   text-transform: uppercase;
 }
 
 .text-light-gray{
-  color: $gray-light;
+  color: #eee;
 }
 
 a.text-glow{
+  position: absolute;
+  bottom: 22px;
+  // text-align: center;
   color:#fff !important;
   text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.7);
   padding: 4px;
   display:inline-block;
+  width: 100%;
   @include rem(font-size, 13px);
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
 
   @include hover-focus{
     text-shadow: 0px 0px 12px rgba(255, 255, 255, 1);
 
   }
+
+
+
 }

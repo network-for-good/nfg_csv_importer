@@ -11,6 +11,12 @@
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
   @include rem(height, 115px);
+  transition: all .5s ease-in-out;
+
+  .fa{
+    color: $brand-info;
+    transition: color 0.5s ease-in-out;
+  }
 
   h2,
   h3,
@@ -69,7 +75,7 @@
 
 .card-disabled{
   cursor: $cursor-disabled;
-  @include box-shadow(0px 0px 12px 0px rgba(0,0,0,0.15));
+  @include box-shadow(0px 0px 8px 0px rgba(0,0,0,0.15));
   transition: all .5s ease-in-out;
 
   .card-header{
@@ -82,8 +88,7 @@
 
   .card-block-importer-index{
     background-color: #353535;
-    border-left: solid 1px #353535;
-    border-right: solid 1px #353535;
+    border-color: #353535;
     transition: all .5s ease-in-out;
   }
 
@@ -100,12 +105,12 @@
 
     .c-indicator:before,
     .c-indicator:after{
-      color: $brand-danger !important;
+      color: $gray !important;
       transition: all .5s ease-in-out;
     }
 
     .c-input .text-muted{
-      color: $brand-danger !important;
+      color: $gray !important;
       transition: all .5s ease-in-out;
     }
   }
@@ -123,23 +128,17 @@
   color: $white;
   border-left: solid 1px $brand-primary;
   border-right: solid 1px $brand-primary;
+
+  transition: all 0.5s ease-in-out;
 }
 
-@keyframes card-highlight {
-  0%   { border: solid 1px transparent; }
-  50%  { border: solid 1px $brand-success; }
-  100% { border: solid 1px transparent; }
-}
-
-.card-highlight{
-  @include box-shadow(0px 0px 60px 0px rgba(0,138,203,0.2));
+.card-active{
+  @include box-shadow(0px 0px 20px 0px rgba(0,138,203,0.2));
   transition: all .5s ease-in-out;
 
   .card-header{
     background-color:#e2f2f6;
-    border-top: solid 1px #b4d5e3;
-    border-right: solid 1px #b4d5e3;
-    border-left: solid 1px #b4d5e3;
+    border-color: #b4d5e3;
 
    a.h3{
       @include rem(font-size, 20px);
@@ -156,14 +155,12 @@
 }
 
 .card-mapped{
-  @include box-shadow(0px 0px 12px 0px rgba(0,138,203,0.15));
+  @include box-shadow(0px 0px 8px 0px rgba(0,138,203,0.15));
   transition: all .5s ease-in-out;
 
   .card-header{
     background-color:#fff;
-    border-top: solid 1px #a7e2fc;
-    border-right: solid 1px #a7e2fc;
-    border-left: solid 1px #a7e2fc;
+    border-color: #a7e2fc;
     color: $gray-dark;
 
 
@@ -184,5 +181,83 @@
     s.text-muted{
       color: #a9d9ef !important;
     }
+  }
+}
+
+@keyframes animateHighlight{
+  0%{ top: -55px; }
+  100%{ top: -40px; }
+}
+
+@keyframes fadeHighlight{
+  0%{
+    top: -40px;
+    opacity: 0;
+  }
+  100%{
+    top: -55px;
+    opacity: 1;
+  }
+}
+
+.card-highlight{
+  @include box-shadow(0px 0px 5px 0px rgba($brand-warning, .2));
+
+  .c-select{ color: $brand-warning; }
+
+  .card-header{
+    border-color: lighten($brand-warning, 30%);
+    background-color: rgba($brand-warning, .08);
+
+    .fa{
+      color: $brand-warning;
+    }
+  }
+
+  .card-block-importer-index{
+    background-color: $brand-warning;
+    border-color: $brand-warning;
+  }
+
+  &:before{
+    transition: opacity 0.5s ease-out;
+    color: $brand-warning;
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 40px !important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\f107";
+    top: -40px;
+    position: absolute;
+
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+
+    animation: fadeHighlight .5s ease-out 0 1,
+               animateHighlight .75s ease-in-out .5s alternate infinite none running;
+
+
+    // Shorthand Reference:
+
+    // animation-name: fadeHighlight;
+    // animation-duration: .5s;
+    // animation-timing-function: ease-in-out;
+    // animation-delay: 0;
+    // animation-iteration-count: 1;
+
+    // animation-name: animateHighlight;
+    // animation-duration: .75s;
+    // animation-timing-function: ease-in-out;
+    // animation-delay: .5s;
+    // animation-direction: alternate;
+    // animation-iteration-count: infinite;
+    // animation-fill-mode: none;
+    // animation-play-state: running;
+
+
+
   }
 }

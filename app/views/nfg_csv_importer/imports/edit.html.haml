@@ -1,5 +1,7 @@
 ///// -- Design Source Code -- /////
 
+- ready_for_import = true
+
 .nfg-csv-importer
   #importer_header_bar.container-fluid.container-flush
     .row.row-importer-header.row-xs-center
@@ -7,13 +9,19 @@
         %h1
           %i.fa.fa-paperclip
           my_filename_whatever.xlsx
-        %a{ href: "javascript:;" }
+        %a.import-header-link{ href: "javascript:;" }
+          .media
+            .media-body
+              Import
+              %br
+              Templates
+            .media-right
+              .media-object
+                %i.fa.fa-th
 
-          %i.fa.fa-th
-          %br
-          Templates
   .container-fluid.container-flush
     .row.row-xs-center.row-importer-stats
+
       .col-md-2.col-xs-center.col-importer-stat
         .display-3
           4,512
@@ -28,55 +36,66 @@
 
       .col-md-2.col-xs-center.col-importer-stat
         .display-3
-          129
+          3
         .text-sub-headline
-          Rows
+          Ignored Columns
 
       .col-md-2.col-xs-center.col-importer-stat
-        .display-3.m-t-base
+        .display-3
           18
         .text-sub-headline
           Unmapped Columns
 
         %a.text-glow{ href: "javascript:;" }
           %i.fa.fa-lightbulb-o.text-white
-          Highlight
+          %strong
+            %span#highlight_off
+              Highlight Columns
+            %span#highlight_on
+              Turn Off Highlight
 
 
-      .col-md-4.text-xs-center
-
-
-
+      .col-md-4.col-md-center.text-xs-center
         .display-4
-
-          %i.fa.fa-check-circle.text-white
-          %br
-          Ready to import
+          - if ready_for_import
+            %i.fa.fa-check-circle.text-white
+            %br
+            Ready to import
+          - else
+            %i.fa.fa-times-circle.text-white
+            %br
+            Not ready to import
         %p
-          %a.btn.btn-white-outline{ href: "javascript:;" }
+          %a{ href: "javascript:;", class: "btn btn-white-outline #{ 'disabled' unless ready_for_import }" }
+
             Review & Confirm
             %i.fa.fa-chevron-right.text-white
 
-
   .container-fluid.container-flush.bg-white
     .row
-      .col-xs-12.p-t-double.p-b-half.text-xs-center
-        %h2.h4
-          Below is a sample of the first few rows of your data
-        %p
-          Use the dropdown menus below to select the mappings for your import, rest assured, these mappings aren't final until you say so.
+      .col-xs-12.p-y-double.text-xs-center
+        / %h2.h4
+        /   Now it's time to map your column headers
+        / %p
+        /   This is the setup process for importing your data. Nothing will be finalized until you review & confirm your choices.
 
+        .lead
+          Let's map your column headers ahead of importing your data
+
+  -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   .container-fluid.container-flush
+
     .container-importer
+
       .row.row-no-wrap
 
         -# Column: Static / base version
         = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
 
         -# Column: Column is mid-stream being "mapped" as indicated to the user
-        -# like this: on render, apply .card-highlight
+        -# like this: on render, apply .card-active
           -# after the animation has finished, add .card-mapped
-          -# remove .card-highlight
+          -# remove .card-active
         = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
 
         -# Column: Column has been set to ignored (.card-disabled)
@@ -101,20 +120,23 @@
     Saving Updates
     %i.fa.fa-spinner.fa-pulse.fa-2x.fa-fw
 
-/ :javascript
-/   $("a.text-glow").on("click").closest(".card");
-
 :javascript
-  $(document).ready(function(){
-    $("#importer_header_bar").sticky({
-      widthFromWrapper: false,
-      topSpacing: 48,
-      className: "header-is-stuck",
-      wrapperClassName: "importer-header-bar-wrapper",
-      zIndex: 99
-      }
-    );
+  $(document).ready(function() {
+
+    $("#highlight_on").hide();
+
+    $("a.text-glow").click( function(){
+
+      $("#highlight_off").toggle();
+      $("#highlight_on").toggle();
+
+      $(".card[data-mapped='false']").each( function() {
+        $(this).toggleClass("card-highlight");
+      });
+    });
   });
+
+
 ///// -- Original Code -- /////
 
 / -# TODO: remove this later, for now this is just an easy spacer above the content.

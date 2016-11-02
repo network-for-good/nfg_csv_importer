@@ -3,8 +3,10 @@
 - card_classes = "card"
 
 - case version
+- when :static
+  - card_data = { mapped: "false" }
 - when :active
-  - card_classes += " card-highlight"
+  - card_classes += " card-active"
 - when :mapped
   - card_classes += " card-mapped"
 - when :ignored
@@ -13,7 +15,7 @@
   - card_classes += " card-mapped"
 
 .col-importer
-  %div{ class: card_classes }
+  %div{ class: card_classes, data: card_data }
     = render 'nfg_csv_importer/imports/design_source/importer_column_header.html.haml', version: version
     .card-block.card-block-importer-index
       A

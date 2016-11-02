@@ -25,7 +25,7 @@
   width: 100%;
   overflow:auto;
   margin-bottom: $spacer-base;
-  padding: $spacer-double 0;
+  padding: $spacer-base-half 0 $spacer-base 0;
   background-color:#fff;
   margin: 0;
 }
@@ -46,7 +46,7 @@
   color: #fff;
   padding-top:27px;
   padding-bottom: 27px;
-  z-index: 1;
+  z-index: 2;
 
   &:after {
     top: 100%;
@@ -68,56 +68,69 @@
     font-size:30px;
     line-height:1;
     font-weight: $font-weight-light;
-  }
-
-  // Needs adjustment & cleaning up.
-  a{
-    display: inline-block;
-    text-align: right;
-    position:absolute;
-    right:20px;
-    top: 0;
-    text-transform: uppercase;
-    font-weight: $font-weight-bold;
-    font-size:9px;
-    line-height:10px;
-    margin-right: 30px;
-    color:#fff !important;
+    color:#fff;
 
     .fa{
-      position: absolute;
-      right:-30px;
-      font-size:24px;
       color:#fff;
-      top:-3px;
     }
   }
-  .fa{
-    color:#fff;
+
+  a.import-header-link{
+    color:#fff !important;
+    text-align: right;
+    position: absolute;
+    @include rem(right, 20px);
+    @include rem(top, 8px);
+    @include rem(font-size, 9px);
+    @include rem(line-height, 10px);
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+
+    .fa{
+      color:#fff;
+      font-size: 24px;
+      position: relative;
+      @include rem(top, -3px);
+    }
   }
 }
 
 
 .row-importer-stats{
-  background-color:#25aceb;
+  background-color:$brand-primary;
   color:#fff;
-  z-index:0;
+  z-index:1;
+  position: relative;
 
   a{
     color:#fff;
+  }
+
+  &:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba($brand-primary, 0);
+    border-top-color: $brand-primary;
+    border-width: 15px;
+    margin-left: -15px;
+    z-index: 2;
   }
 }
 
 .col-importer-stat{
   border-right: solid 1px #51bdef;
   text-align: center;
-  padding-top:30px;
-  padding-bottom: 30px;
+  @include rem(padding-top, $spacer-double);
+  @include rem(padding-bottom, $spacer-double);
 
   .display-3{
     font-weight: $font-weight-light;
     color:#fff;
   }
 }
-
-
