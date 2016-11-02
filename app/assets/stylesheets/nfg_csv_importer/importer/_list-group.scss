@@ -20,6 +20,10 @@
       background-color: #fafafa;
       transition: all .5s ease-in-out;
     }
+
+    &:last-child{
+      border-bottom: none;
+    }
   }
 }
 
@@ -41,6 +45,9 @@
       &:nth-child(even){
         background-color: #676767;
         transition: all .5s ease-in-out;
+      }
+      &:last-child{
+        border-bottom: none;
       }
     }
   }
@@ -64,6 +71,10 @@
         background-color:#f5f9fa;
         transition: all .5s ease-in-out;
       }
+
+      &:last-child{
+        border-bottom: none;
+      }
     }
   }
 }
@@ -85,6 +96,10 @@
       &:nth-child(even){
         background-color:#fff;
         transition: all .5s ease-in-out;
+      }
+
+      &:last-child{
+        border-bottom: none;
       }
     }
   }

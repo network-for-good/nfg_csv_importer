@@ -2,27 +2,27 @@
 
 - case version
 - when :static
-  - header_name = "static_column"
+  - header_name = "a_static_column"
 - when :active
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapping Column"
-  - header_name = "active_column"
+  - header_name = "an_active_column"
 - when :mapped
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapped"
-  - header_name = "user_mapped_column"
+  - header_name = "a_user_mapped_column"
 - when :ignored
   - label_status = "danger"
   - label_icon = "fa-exclamation-circle"
   - label_text = "Will not be imported"
-  - header_name = "ignored_column"
+  - header_name = "an_ignored_column"
 - when :auto_mapped
   - label_status = "success"
   - label_icon = "fa-info-circle"
   - label_text = "Automatically Mapped"
-  - header_name = "auto_mapped_column"
+  - header_name = "an_auto_mapped_column"
 
 - unless version == :static
   -# When mapping has wrapped up, have the label:
@@ -52,18 +52,29 @@
   .form-group
     - if version == :ignored
       %select{ class: "c-select disabled", disabled: "disabled" }
-        %option Select Header
-        %option Header Name
-        %option Header Name
-        %option Header Name
         %option{ selected: "selected" } Ignore Column
 
     - elsif version == :static
       %select{ class: "c-select" }
         %option{ selected: "selected" } Select Header
-        %option Header Name
-        %option Header Name
-        %option Header Name
+        %optgroup{ label: "Personal Contact Details" }
+          %option Full Name
+          %option First Name
+          %option Last Name
+          %option Etc
+        %optgroup{ label: "Professional Contact Details" }
+          %option Work Phone
+          %option Work Email
+          %option Work Address 1
+          %option Etc
+        %optgroup{ label: "Organization Contact Details" }
+          %option Business Name
+          %option Business Email
+          %option Etc
+        %optgroup{ label: "Custom Fields" }
+          %option Favorite Food
+          %option Favorite Team
+          %option Etc
         %option Ignore Column
 
     - else

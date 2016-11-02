@@ -1,5 +1,33 @@
+.container-flush{
+  margin: 0 -24px 0 -24px;
+}
+
+#importer_header_bar{
+  @include box-shadow(0px 0px 16px 0px rgba(0,0,0,0));
+  @include transition(box-shadow 1s ease-in-out);
+}
+
+.header-is-stuck{
+  #importer_header_bar{
+    @include box-shadow(0px 0px 16px 0px rgba(0,0,0,0.2));
+    .row-importer-header{
+      height: 84px;
+    }
+  }
+}
+
 .row-no-wrap{
   flex-wrap: nowrap;
+  padding: 16px 32px;
+}
+
+.container-importer{
+  width: 100%;
+  overflow:auto;
+  margin-bottom: $spacer-base;
+  padding: $spacer-double 0;
+  background-color:#fff;
+  margin: 0;
 }
 
 .col-importer{
@@ -10,3 +38,86 @@
   @include rem(flex, 0 0 275px);
   border: solid 1px transparent;
 }
+
+.row-importer-header{
+  position: relative;
+  background-color:#3bb4ed;
+  text-align:center;
+  color: #fff;
+  padding-top:27px;
+  padding-bottom: 27px;
+  z-index: 1;
+
+  &:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(59, 180, 237, 0);
+    border-top-color: #3bb4ed;
+    border-width: 15px;
+    margin-left: -15px;
+    z-index: 2;
+  }
+
+  h1{
+    font-size:30px;
+    line-height:1;
+    font-weight: $font-weight-light;
+  }
+
+  // Needs adjustment & cleaning up.
+  a{
+    display: inline-block;
+    text-align: right;
+    position:absolute;
+    right:20px;
+    top: 0;
+    text-transform: uppercase;
+    font-weight: $font-weight-bold;
+    font-size:9px;
+    line-height:10px;
+    margin-right: 30px;
+    color:#fff !important;
+
+    .fa{
+      position: absolute;
+      right:-30px;
+      font-size:24px;
+      color:#fff;
+      top:-3px;
+    }
+  }
+  .fa{
+    color:#fff;
+  }
+}
+
+
+.row-importer-stats{
+  background-color:#25aceb;
+  color:#fff;
+  z-index:0;
+
+  a{
+    color:#fff;
+  }
+}
+
+.col-importer-stat{
+  border-right: solid 1px #51bdef;
+  text-align: center;
+  padding-top:30px;
+  padding-bottom: 30px;
+
+  .display-3{
+    font-weight: $font-weight-light;
+    color:#fff;
+  }
+}
+
+
