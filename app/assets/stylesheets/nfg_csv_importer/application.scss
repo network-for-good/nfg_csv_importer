@@ -118,14 +118,8 @@
   @import "vendor/*";
 
   // Feature
-  @import "importer/alert-growl";
-  @import "importer/card";
-  @import "importer/custom-forms";
-  @import "importer/grid";
-  @import "importer/labels";
-  @import "importer/list-group";
-  @import "importer/type";
-  @import "importer/utilities-background";
+  @import "importer/bootstrap/*";
+  @import "importer/components/*";
 
 }
 

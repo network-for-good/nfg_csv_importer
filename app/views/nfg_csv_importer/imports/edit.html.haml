@@ -1,6 +1,6 @@
 ///// -- Design Source Code -- /////
 
-- ready_for_import = true
+- ready_for_import = false
 
 .nfg-csv-importer
 
@@ -51,12 +51,14 @@
           Unmapped Columns
 
         %a.text-glow{ href: "javascript:;" }
-          %i.fa.fa-lightbulb-o.text-white
-          %strong
-            %span#highlight_off
+          %span#highlight_off
+            %i.fa.fa-lightbulb-o.text-white
+            %strong
               Highlight Columns
-            %span#highlight_on
-              Turn Off Highlight
+          %span#highlight_on
+            %i.fa.fa-eye-slash.text-white
+            %strong
+              Turn Highlight Off
 
 
       .col-md-4.col-md-center.text-xs-center
@@ -78,56 +80,57 @@
   .container-fluid.container-flush.bg-white
     .row
       .col-xs-12.p-t-double.p-y-base.text-xs-center
-        / %h2.h4
-        /   Now it's time to map your column headers
-        / %p
-        /   This is the setup process for importing your data. Nothing will be finalized until you review & confirm your choices.
-
         %p.lead
           Let's map your column headers ahead of importing your data
-        %p.text-muted Scroll Left & Right
+        %p
+          %i.text-muted
+            %i.fa.fa-long-arrow-left.m-r-quarter.text-muted
+            Scroll left & right
+            %i.fa.fa-long-arrow-right.m-l-quarter.text-muted
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   .container-fluid.container-flush
+    .importer-wrapper
+      .container-importer
+        .row.row-no-wrap
+          -# Column: Static / base version
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
 
-    .container-importer
+          -# Column: Column is mid-stream being "mapped" as indicated to the user
+          -# like this: on render, apply .card-active
+            -# after the animation has finished, add .card-mapped
+            -# remove .card-active
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
 
-      .row.row-no-wrap
+          -# Column: Column has been set to ignored (.card-disabled)
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
 
-        -# Column: Static / base version
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+          -# Column: Column is now mapped (.card-mapped)
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
 
-        -# Column: Column is mid-stream being "mapped" as indicated to the user
-        -# like this: on render, apply .card-active
-          -# after the animation has finished, add .card-mapped
-          -# remove .card-active
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
+          -# Column: Column was mapped by us (.card-mapped)
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :auto_mapped
 
-        -# Column: Column has been set to ignored (.card-disabled)
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+          -# Column: Additional columns for page layout purposes
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
 
-        -# Column: Column is now mapped (.card-mapped)
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+          -# Can probably remove this mandatory spacer (so we don't end up covering the last importable column) by using JQuery to fadeout the gradient once you reach the end of the column suite.
+          %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
 
-        -# Column: Column was mapped by us (.card-mapped)
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :auto_mapped
-
-        -# Column: Additional columns for page layout purposes
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
 
   .container-fluid.container-flush.bg-white
-    .row.p-x-base.p-b-base-half
+    .row.p-x-base.p-t-base.p-b-triple
       .col-xs-6
         %a.btn.btn-secondary.btn-lg{ href: "javascript:;" }
           %i.fa.fa-chevron-left.m-r-quarter
           Save & Come Back Later
       .col-xs-6.text-xs-right
-        %a.btn.btn-primary.btn-lg{ href: "javascript:;" }
+        %a.btn.btn-primary.btn-lg{ href: "javascript:;", class: "#{ 'disabled' unless ready_for_import }" }
           Review & Confirm Your Import
           %i.fa.fa-chevron-right.m-l-quarter
 
@@ -135,22 +138,6 @@
   .alert.alert-success.alert-growl{ role: "alert" }
     Saving Updates
     %i.fa.fa-spinner.fa-pulse.fa-2x.fa-fw
-
-:javascript
-  $(document).ready(function() {
-
-    $("#highlight_on").hide();
-
-    $("a.text-glow").click( function(){
-
-      $("#highlight_off").toggle();
-      $("#highlight_on").toggle();
-
-      $(".card[data-mapped='false']").each( function() {
-        $(this).toggleClass("card-highlight");
-      });
-    });
-  });
 
 
 ///// -- Original Code -- /////

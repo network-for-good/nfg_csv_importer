@@ -30,7 +30,8 @@
 // require nfg_csv_importer/highlight_interacted_column
 // require nfg_csv_importer/import_spinner
 //= require nfg_csv_importer/importer_column
-//= require nfg_csv_importer/sticky
+//= require nfg_csv_importer/header-bar
+//= require nfg_csv_importer/highlight-unmapped-columns
 
 
 
