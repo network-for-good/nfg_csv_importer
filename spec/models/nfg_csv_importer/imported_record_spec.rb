@@ -21,8 +21,9 @@ describe NfgCsvImporter::ImportedRecord do
   end
 
   describe "destroying imported records" do
-    let!(:importable) { create(:user) }
-    let!(:imported_record) { create(:imported_record, importable: importable) }
+    let(:imported_for) { create(:entity) }
+    let!(:importable) { create(:user, entity: imported_for) }
+    let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
 
     context "when the importable does not respond to #can_be_destroyed?" do
       it_behaves_like "deleting an imported record"
@@ -37,19 +38,30 @@ describe NfgCsvImporter::ImportedRecord do
       before { importable.stubs(:can_be_destroyed?).returns(false) }
 
       it "does not delete the record" do
-        expect { imported_record.destroy }.not_to change(importable.class, :count)
+        expect { imported_record.destroy_importable! }.not_to change(importable.class, :count)
       end
 
       it "does not delete itself" do
-        imported_record.destroy
-        expect(imported_record.destroyed?).to be_falsey
+        imported_record.destroy_importable!
+        expect(imported_record.deleted?).to be_falsey
       end
     end
 
     context "when the importable no longer exists" do
       it "does not raise an exception" do
         importable.destroy
-        expect { imported_record.reload.destroy }.not_to raise_exception
+        expect { imported_record.reload.destroy_importable! }.not_to raise_exception
+      end
+    end
+
+    context "when the importable belongs to a different imported_for" do
+      let(:other_imported_for) { create(:entity) }
+      let!(:importable) { create(:user, entity: other_imported_for) }
+      let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
+
+      it "does not destroy the importable" do
+        imported_record.destroy_importable!
+        expect(importable.destroyed?).to be_falsey
       end
     end
   end
