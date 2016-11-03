@@ -63,38 +63,42 @@ describe NfgCsvImporter::Import do
       end
     end
 
-    context "with invalid headers" do
-      let(:header_data) {["first_name","last_name"]}
+    # TODO These validations will be appropriate
+    # when we want to know if the import is ready for import
+    # and they will use the fields_mapping instead of the list of headers
 
-      it { expect(subject).not_to be }
+    # context "with invalid headers" do
+    #   let(:header_data) {["first_name","last_name"]}
 
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
-      end
-    end
+    #   it { expect(subject).not_to be }
 
-    context "when file doesn't contain all required headers" do
-      let(:header_data) {["last_name" ,"first_name","last_name"]}
+    #   it "should add errors to base" do
+    #     subject
+    #     expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
+    #   end
+    # end
 
-      it { expect(subject).not_to be }
+    # context "when file doesn't contain all required headers" do
+    #   let(:header_data) {["last_name" ,"first_name","last_name"]}
 
-      it "should show error message" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
-      end
-    end
+    #   it { expect(subject).not_to be }
 
-    context "when file contain unknown headers" do
-      let(:header_data) {["email" ,"first_name","last_name","middle_name"]}
+    #   it "should show error message" do
+    #     subject
+    #     expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
+    #   end
+    # end
 
-      it { expect(subject).not_to be }
+    # context "when file contain unknown headers" do
+    #   let(:header_data) {["email" ,"first_name","last_name","middle_name"]}
 
-      it "should show error message" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["The file contains columns that do not have a corresponding value on the #{import.import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: middle_name"])
-      end
-    end
+    #   it { expect(subject).not_to be }
+
+    #   it "should show error message" do
+    #     subject
+    #     expect(import.errors.messages[:base]).to eq(["The file contains columns that do not have a corresponding value on the #{import.import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: middle_name"])
+    #   end
+    # end
   end
 
   describe "#service" do

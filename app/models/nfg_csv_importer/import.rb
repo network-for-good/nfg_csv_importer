@@ -25,7 +25,14 @@ module NfgCsvImporter
     def import_validation
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
-        collect_header_errors and return false unless headers_valid?
+
+        # TODO
+
+        # this should not be run on create. It will need to be run prior to the import
+        # and will be based on the fields_mapping
+        # We will need to consider how to handle old imports
+        # Should we run a migration to create field mappings based on their columns
+        # collect_header_errors and return false unless headers_valid?
       rescue  => e
         errors.add :base, "File import failed: #{e.message}"
         Rails.logger.error e.message
@@ -55,7 +62,7 @@ module NfgCsvImporter
     def maybe_append_to_existing_errors(errors_csv)
       if error_file.present?
         errors_csv = CSV.generate(col_sep: "\t") do |csv|
-          CSV.parse(error_file.read, col_sep: "\t") { |row| puts row; csv << row }
+          CSV.parse(error_file.read, col_sep: "\t") { |row| csv << row }
           CSV.parse(errors_csv, headers: true, col_sep: "\t") { |row| csv << row }
         end
       end
