@@ -3,6 +3,7 @@ module NfgCsvImporter
 
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
+    IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
@@ -21,6 +22,10 @@ module NfgCsvImporter
     delegate :description, :required_columns,:optional_columns,:column_descriptions, :transaction_id,
       :header, :missing_required_columns,:import_class_name, :headers_valid?, :valid_file_extension?,
       :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :field_aliases, :first_x_rows, :to => :service
+
+    def self.ignore_column_value
+      IGNORE_COLUMN_VALUE
+    end
 
     def import_validation
       begin
@@ -68,6 +73,10 @@ module NfgCsvImporter
       end
 
       errors_csv
+    end
+
+    def mapped_fields
+      fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(header_column: header_column, field: field)}
     end
 
     def time_zone

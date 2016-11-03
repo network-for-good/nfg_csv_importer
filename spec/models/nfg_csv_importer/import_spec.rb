@@ -135,6 +135,21 @@ describe NfgCsvImporter::Import do
 
   end
 
+  describe "#mapped_fields" do
+    before do
+      import.fields_mapping = { "first_name" => "first_name", "email" => nil, "last_name" => "ignore_column" }
+    end
+    subject { import.mapped_fields }
+
+    it "should be an array of MappedField objects" do
+      expect(subject.first).to be_a(NfgCsvImporter::MappedField)
+    end
+
+    it "should have a MappedField for each of the fields_mapping elements" do
+      expect(subject.length).to eq(import.fields_mapping.length)
+    end
+  end
+
   describe "time_zone" do
     subject { import.time_zone }
     context 'when imported_for does not respond to time_zone' do
