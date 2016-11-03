@@ -13,7 +13,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import.imported_for = @imported_for
 
     if @import.save
-      @import.fields_mapping = NfgCsvImporter::FieldsMapper.new(@import).call
+      @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
       redirect_to edit_import_path(@import), notice: I18n.t('import.create.notice')
     else
       render :action => 'new'

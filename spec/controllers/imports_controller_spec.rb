@@ -43,8 +43,10 @@ describe NfgCsvImporter::ImportsController do
     context "when the import is valid" do
       before do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
-        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").at_least_once #when the importer is created
         NfgCsvImporter::FieldsMapper.expects(:new).returns(mock(call: fields_mapping))
+        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").at_least_once
+
+
         # NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
       end
       let(:import) { NfgCsvImporter::Import.last }
@@ -58,7 +60,7 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it "should assign the value of the fields mapper to the import" do
-        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").with(fields_mapping)
+        NfgCsvImporter::Import.any_instance.expects("update").with(has_entry(fields_mapping: fields_mapping)).at_least_once #when the importer is created
         subject
       end
 
