@@ -39,29 +39,48 @@ describe NfgCsvImporter::ImportsController do
 
 
   describe "#create" do
-    before do
-      NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
-      NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
-    end
-    let(:import) { NfgCsvImporter::Import.last }
-
     subject { post :create, params }
+    context "when the import is valid" do
+      before do
+        NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
+        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").at_least_once #when the importer is created
+        NfgCsvImporter::FieldsMapper.expects(:new).returns(mock(call: fields_mapping))
+        # NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
+      end
+      let(:import) { NfgCsvImporter::Import.last }
+      let(:fields_mapping) { { "foo" => "bar" } }
 
-    it { expect { subject }.to change(NfgCsvImporter::Import, :count).by(1) }
+      it { expect { subject }.to change(NfgCsvImporter::Import, :count).by(1) }
 
-    it "should redirect when import is successfully placed in queue" do
-      subject
-      expect(response).to redirect_to(edit_import_path(import))
+      it "should redirect when import is successfully placed in queue" do
+        subject
+        expect(response).to redirect_to(edit_import_path(import))
+      end
+
+      it "should assign the value of the fields mapper to the import" do
+        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").with(fields_mapping)
+        subject
+      end
+
+      #it "should add import job to queue" do
+        #NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
+        #subject
+      #end
+
+      it "should display success message" do
+        subject
+        expect(flash[:notice]).to eq I18n.t('import.create.notice')
+      end
     end
 
-    #it "should add import job to queue" do
-      #NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
-      #subject
-    #end
+    context "when the import is not valid" do
+      before do
+        NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(false)
+      end
 
-    it "should display success message" do
-      subject
-      expect(flash[:notice]).to eq I18n.t('import.create.notice')
+      it { expect { subject }.not_to change(NfgCsvImporter::Import, :count) }
+
+
     end
   end
 
