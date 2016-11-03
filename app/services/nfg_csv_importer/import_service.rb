@@ -69,7 +69,7 @@ class NfgCsvImporter::ImportService
   end
 
   def header
-    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip).map(&:downcase)
+    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip)
   end
 
   def all_valid_columns
