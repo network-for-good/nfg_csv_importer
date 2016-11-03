@@ -7,9 +7,13 @@
   @include box-shadow(0px 0px 16px 0px rgba(0,0,0,0));
   @include transition(box-shadow .3s ease-in-out);
   background-color: #3bb4ed;
-  position: -webkit-sticky;
-  position:sticky;
+  // position: -webkit-sticky;
+  // position:sticky;
+  position: fixed;
+  width: 100%;
+  padding-left:200px;
   top:48px;
+  right:0;
   z-index:99;
 
   .row-importer-header{
@@ -71,9 +75,20 @@
     .row-importer-header{
       padding-top:14px;
       height: 60px;
+      // position: absolute;
+    }
+
+    .header-bar-arrow{
+
+      &:after{
+        content: "";
+        top: 60px;
+      }
     }
   }
 }
+
+// TODO: Fix header bar arrow. Looks disconnected on scroll up.
 
 .header-bar-arrow{
   position:relative;
@@ -81,11 +96,12 @@
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
+  transition: all 0.5s ease-in-out;
 
   &:after {
     top: 100%;
     left: 50%;
-    top:0;
+    top: 84px;
     border: solid transparent;
     content: " ";
     height: 0;
@@ -97,7 +113,7 @@
     border-top-color: #3bb4ed;
     border-width: 15px;
     margin-left: -15px;
-    z-index: 2;
+    z-index: 3;
   }
 }
 
@@ -109,6 +125,7 @@
   color:#fff;
   z-index:2;
   position: relative;
+  padding-top:84px;
 
   a{
     color:#fff;
