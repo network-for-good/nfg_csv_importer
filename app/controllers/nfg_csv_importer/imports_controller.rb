@@ -14,6 +14,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
     if @import.save
       @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
+      @import.service.maybe_set_import_number_of_records
       redirect_to edit_import_path(@import), notice: I18n.t('import.create.notice')
     else
       render :action => 'new'

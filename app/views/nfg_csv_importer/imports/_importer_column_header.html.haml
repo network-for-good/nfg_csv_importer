@@ -1,6 +1,6 @@
-- version = :unmapped if local_assigns[:version].nil?
+- mapped_column = nil if local_assigns[:mapped_column].nil?
 
-- case version
+- case mapped_column.status
 - when :unmapped
   - header_name = "a_static_column"
 
@@ -8,20 +8,20 @@
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapping Column"
-  - header_name = "an_active_column"
+  - header_name = mapped_column.name
 - when :mapped
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapped"
-  - header_name = "a_user_mapped_column"
+  - header_name = mapped_column.mapped_to
 - when :ignored
   - label_status = "danger"
   - label_icon = "fa-exclamation-circle"
   - label_text = "Won't be imported"
-  - header_name = "an_ignored_column"
+  - header_name = mapped_column.name
 
 
-- unless version == :unmapped
+- unless mapped_column.status == :unmapped
   -# When mapping has wrapped up, have the label:
   -# 1. Fade out "Mapping column"
   -# 2. Slide the check mark to the right
@@ -33,9 +33,9 @@
 
 .card-header
   .card-header-interactions
-    - if (version == :ignored) || (version == :unmapped)
+    - if (mapped_column.status == :ignored) || (mapped_column.status == :unmapped)
       %label.c-input.c-checkbox.m-b-quarter
-        - if version == :ignored
+        - if mapped_column.status == :ignored
           / todo: make name dynamic
           %input{ name: "ignore_header_name", type: "checkbox", value: "ignore_column", checked: "checked" }
         - else
@@ -48,11 +48,11 @@
         Edit Column
 
   .form-group
-    - if version == :ignored
+    - if mapped_column.status == :ignored
       %select{ class: "c-select disabled", disabled: "disabled" }
         %option{ selected: "selected" } Ignore Column
 
-    - elsif version == :unmapped
+    - elsif mapped_column.status == :unmapped
       %select{ class: "c-select" }
         %option{ selected: "selected" } Select Header
         %optgroup{ label: "Personal Contact Details" }
@@ -78,13 +78,13 @@
     - else
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;" }
-        Header Name
+        = mapped_column.name
 
 
   %h4.h5.text-xs-center
-    - if (version == :unmapped) || (version == :ignored)
+    - if (mapped_column.status == :unmapped) || (mapped_column.status == :ignored)
       = header_name
-      - unless version == :ignored
+      - unless mapped_column.status == :ignored
         %sup
           %i.fa.fa-info-circle{ title: "We couldn't automatically map this column for you", data: { toggle: "tooltip", placement: "top" } }
     - else

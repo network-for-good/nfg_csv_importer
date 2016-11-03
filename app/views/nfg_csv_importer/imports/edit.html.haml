@@ -6,9 +6,9 @@
 
 .nfg-csv-importer
 
-  = render 'nfg_csv_importer/imports/design_source/import_header_file_name', import: @import
+  = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
-  = render 'nfg_csv_importer/imports/design_source/import_header_stats', ready_for_import: ready_for_import, import: @import
+  = render 'nfg_csv_importer/imports/import_header_stats', ready_for_import: ready_for_import, import: @import
 
   - if @errors
     = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
@@ -39,27 +39,28 @@
 
       .row.row-no-wrap
         -# Column: Static / base version
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :unmapped
+        - @import.mapped_fields.each do |mapped_column|
+          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column
 
-        -# Column: Column is mid-stream being "mapped" as indicated to the user
-        -# like this: on render, apply .card-active
-          -# after the animation has finished, add .card-mapped
-          -# remove .card-active
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
+        / -# Column: Column is mid-stream being "mapped" as indicated to the user
+        / -# like this: on render, apply .card-active
+        /   -# after the animation has finished, add .card-mapped
+        /   -# remove .card-active
+        / = render "nfg_csv_importer/imports/importer_column", version: :active
 
-        -# Column: Column has been set to ignored (.card-disabled)
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+        / -# Column: Column has been set to ignored (.card-disabled)
+        / = render "nfg_csv_importer/imports/importer_column", version: :ignored
 
-        -# Column: Column is now mapped (.card-mapped)
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+        / -# Column: Column is now mapped (.card-mapped)
+        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
 
-        -# Column: Additional columns for page layout purposes
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :unmapped
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :unmapped
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :unmapped
-        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+        / -# Column: Additional columns for page layout purposes
+        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
+        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
+        / = render "nfg_csv_importer/imports/importer_column", version: :ignored
+        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
+        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
+        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
 
 
         %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }

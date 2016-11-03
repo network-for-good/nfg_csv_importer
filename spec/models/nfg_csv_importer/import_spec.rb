@@ -153,11 +153,11 @@ describe NfgCsvImporter::Import do
   describe "#column_stats" do
     before do
       import.stubs(:fields_mapping).returns({
-                                              "field1" => nil,
-                                              "field2" => "field2",
-                                              "field3" => NfgCsvImporter::Import.ignore_column_value,
-                                              "field4" => "field4"
-        })
+        "field1" => nil,
+        "field2" => "field2",
+        "field3" => NfgCsvImporter::Import.ignore_column_value,
+        "field4" => "field4"
+      })
     end
 
     subject { import.column_stats }

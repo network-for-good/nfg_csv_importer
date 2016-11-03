@@ -1,8 +1,8 @@
-- version = :unmapped if local_assigns[:version].nil?
+- mapped_column = nil if local_assigns[:mapped_column].nil?
 
 - card_classes = "card"
 
-- case version
+- case mapped_column.status
 - when :unmapped
   - card_data = { mapped: "false" }
 - when :active
@@ -11,12 +11,10 @@
   - card_classes += " card-mapped"
 - when :ignored
   - card_classes += " card-disabled"
-- when :auto_mapped
-  - card_classes += " card-mapped"
 
 .col-importer
   %div{ class: card_classes, data: card_data }
-    = render 'nfg_csv_importer/imports/design_source/importer_column_header', version: version
+    = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column
     .card-block.card-block-importer-index
       A
     .list-group.list-group-flush

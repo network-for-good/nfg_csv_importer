@@ -45,7 +45,7 @@ describe NfgCsvImporter::ImportsController do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
         NfgCsvImporter::FieldsMapper.expects(:new).returns(mock(call: fields_mapping))
         NfgCsvImporter::Import.any_instance.expects("fields_mapping=").at_least_once
-
+        NfgCsvImporter::Import.any_instance.stubs(:number_of_records).returns(3)
 
         # NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
       end
@@ -60,7 +60,12 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it "should assign the value of the fields mapper to the import" do
-        NfgCsvImporter::Import.any_instance.expects("update").with(has_entry(fields_mapping: fields_mapping)).at_least_once #when the importer is created
+        NfgCsvImporter::Import.any_instance.expects(:update).with(has_entry(fields_mapping: fields_mapping)).at_least_once #when the importer is created
+        subject
+      end
+
+      it "should set the number of rows" do
+        NfgCsvImporter::Import.any_instance.expects(:service).returns(mock(maybe_set_import_number_of_records: true)) #when the importer is created
         subject
       end
 

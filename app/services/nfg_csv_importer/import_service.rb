@@ -82,6 +82,12 @@ class NfgCsvImporter::ImportService
                     end
   end
 
+  def maybe_set_import_number_of_records
+    unless import_record.number_of_records
+      import_record.update(number_of_records: no_of_records)
+    end
+  end
+
   protected
 
   def additional_class_attributes(row, object)
@@ -92,12 +98,6 @@ class NfgCsvImporter::ImportService
   end
 
   private
-
-  def maybe_set_import_number_of_records
-    unless import_record.number_of_records
-      import_record.update(number_of_records: no_of_records)
-    end
-  end
 
   def load_and_persist_imported_objects
     self.errors_list = []
