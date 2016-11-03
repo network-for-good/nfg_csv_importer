@@ -1,9 +1,9 @@
-- version = :static if local_assigns[:version].nil?
+- version = :unmapped if local_assigns[:version].nil?
 
 - card_classes = "card"
 
 - case version
-- when :static
+- when :unmapped
   - card_data = { mapped: "false" }
 - when :active
   - card_classes += " card-active"

@@ -71,12 +71,6 @@
     .row-importer-header{
       padding-top:14px;
       height: 60px;
-
-      h1{
-
-
-        // font-weight: $font-weight-normal;
-      }
     }
   }
 }
@@ -120,21 +114,21 @@
     color:#fff;
   }
 
-  &:after {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-color: rgba($brand-primary, 0);
-    border-top-color: $brand-primary;
-    border-width: 15px;
-    margin-left: -15px;
-    z-index: 2;
-  }
+  // &:after {
+  //   top: 100%;
+  //   left: 50%;
+  //   border: solid transparent;
+  //   content: "";
+  //   height: 0;
+  //   width: 0;
+  //   position: absolute;
+  //   pointer-events: none;
+  //   border-color: rgba($brand-primary, 0);
+  //   border-top-color: $brand-primary;
+  //   border-width: 15px;
+  //   margin-left: -15px;
+  //   z-index: 2;
+  // }
 }
 
 .col-importer-stat{

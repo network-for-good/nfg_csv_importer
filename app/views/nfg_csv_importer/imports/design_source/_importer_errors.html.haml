@@ -1,0 +1,45 @@
+- if duplicate_columns
+  .container-fluid.container-flush.container-error
+    %h2
+      We found 5 issues you’ll need to address
+    .row
+      .col-xs-12
+        .alert.alert-danger
+          .media
+            .media-left
+              %span.fa-stack
+                %i.fa.fa-circle.fa-stack-2x
+                %i.fa.fa-exclamation.fa-stack-1x
+            .media-body
+              %h3.media-heading
+                You can’t have multiple columns with the same mapped header. Time to ignore or adjust these columns:
+
+              .row
+                .col-md-3
+                  .media
+                    .media-left
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        A
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        B
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        C
+                    .media-body
+                      Full Name
+
+                .col-md-3
+                  .media
+                    .media-left
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        A
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        B
+                      %a.btn.btn-outline.btn-square{ href: "javascript:;" }
+                        C
+                    .media-body
+                      Full Name
+                .col-md-3
+                .col-md-3
+
+    .row
+      .col-md-6

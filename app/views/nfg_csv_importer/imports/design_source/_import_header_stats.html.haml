@@ -1,0 +1,56 @@
+- ready_for_import = true if local_assigns[:ready_for_import].nil?
+- import = nil if local_assigns[:import].nil?
+
+.container-fluid.container-flush
+  %span.header-bar-arrow
+  .row.row-xs-center.row-importer-stats
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .display-3
+        4,512
+      .text-sub-headline
+        Rows
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .display-3
+        25
+      .text-sub-headline
+        Columns
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .display-3
+        3
+      .text-sub-headline
+        Ignored Columns
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .display-3
+        18
+      .text-sub-headline
+        Unmapped Columns
+
+      %a.text-glow{ href: "javascript:;" }
+        %span#highlight_off
+          %i.fa.fa-lightbulb-o.text-white
+          %strong
+            Highlight Columns
+        %span#highlight_on
+          %i.fa.fa-eye-slash.text-white
+          %strong
+            Turn Highlight Off
+
+    .col-md-4.col-md-center.text-xs-center
+      .display-4
+        - if ready_for_import
+          %i.fa.fa-check-circle.text-white
+          %br
+          Ready to import
+        - else
+          %i.fa.fa-times-circle.text-white
+          %br
+          Not ready to import
+      %p
+        %a{ href: "javascript:;", class: "btn btn-white-outline #{ 'disabled' unless ready_for_import }" }
+
+          Review & Confirm
+          %i.fa.fa-chevron-right.text-white

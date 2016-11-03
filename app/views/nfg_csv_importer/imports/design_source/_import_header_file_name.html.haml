@@ -1,0 +1,17 @@
+- import = nil if local_assigns[:import].nil?
+
+#importer_header_bar.container-fluid.container-flush
+  .row.row-importer-header
+    .col-xs-12
+      %h1
+        %i.fa.fa-paperclip
+        my_filename_whatever.xlsx
+      %a.import-header-link{ href: "javascript:;" }
+        .media
+          .media-body
+            Import
+            %br
+            Templates
+          .media-right
+            .media-object
+              %i.fa.fa-th
