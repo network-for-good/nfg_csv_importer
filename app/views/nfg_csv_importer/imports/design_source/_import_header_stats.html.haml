@@ -13,19 +13,19 @@
 
     .col-md-2.col-xs-center.col-importer-stat
       .display-3
-        25
+        = @import.column_stats[:column_count]
       .text-sub-headline
         Columns
 
     .col-md-2.col-xs-center.col-importer-stat
       .display-3
-        3
+        = @import.column_stats[:ignored_column_count]
       .text-sub-headline
         Ignored Columns
 
     .col-md-2.col-xs-center.col-importer-stat
       .display-3
-        18
+        = @import.column_stats[:unmapped_column_count]
       .text-sub-headline
         Unmapped Columns
 

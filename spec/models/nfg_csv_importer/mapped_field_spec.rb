@@ -43,4 +43,8 @@ describe NfgCsvImporter::MappedField do
       expect(subject).to eq(header_column)
     end
   end
+
+  describe "mapped_to" do
+    subject { value }
+  end
 end

@@ -27,6 +27,14 @@ module NfgCsvImporter
       IGNORE_COLUMN_VALUE
     end
 
+    def can_be_deleted?
+      imported_records.created.any? && complete? && !Rails.env.production?
+    end
+
+    def imported_by_name
+      imported_by.try(:name)
+    end
+
     def import_validation
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
@@ -47,21 +55,8 @@ module NfgCsvImporter
       true
     end
 
-    def service
-      service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
-    end
-
-    def imported_by_name
-      imported_by.try(:name)
-    end
-
-    def set_upload_error_file(errors_csv)
-      errors_csv = maybe_append_to_existing_errors(errors_csv)
-      csv_file = FilelessIO.new(errors_csv)
-      csv_file.original_filename = "import_error_file.xls"
-      self.error_file = csv_file
-      self.save!
+    def mapped_fields
+      fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(header_column: header_column, field: field)}
     end
 
     def maybe_append_to_existing_errors(errors_csv)
@@ -75,8 +70,33 @@ module NfgCsvImporter
       errors_csv
     end
 
-    def mapped_fields
-      fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(header_column: header_column, field: field)}
+    def service
+      service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
+      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
+    end
+
+    def set_upload_error_file(errors_csv)
+      errors_csv = maybe_append_to_existing_errors(errors_csv)
+      csv_file = FilelessIO.new(errors_csv)
+      csv_file.original_filename = "import_error_file.xls"
+      self.error_file = csv_file
+      self.save!
+    end
+
+    def column_stats
+      return @stats if @stats
+      @stats = {
+        column_count: 0,
+        unmapped_column_count: 0,
+        mapped_column_count: 0,
+        ignored_column_count: 0
+      }
+
+      mapped_fields.each do |mf|
+        @stats[:column_count] += 1
+        @stats["#{ mf.status }_column_count".to_sym] += 1
+      end
+      @stats
     end
 
     def time_zone
@@ -87,9 +107,6 @@ module NfgCsvImporter
       end
     end
 
-    def can_be_deleted?
-      imported_records.created.any? && complete? && !Rails.env.production?
-    end
 
     private
 

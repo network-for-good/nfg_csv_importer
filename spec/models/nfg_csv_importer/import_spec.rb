@@ -150,6 +150,35 @@ describe NfgCsvImporter::Import do
     end
   end
 
+  describe "#column_stats" do
+    before do
+      import.stubs(:fields_mapping).returns({
+                                              "field1" => nil,
+                                              "field2" => "field2",
+                                              "field3" => NfgCsvImporter::Import.ignore_column_value,
+                                              "field4" => "field4"
+        })
+    end
+
+    subject { import.column_stats }
+
+    it "should return a count of all of the columns" do
+      expect(subject[:column_count]).to eq(4)
+    end
+
+    it "should return the number of unmapped columns" do
+      expect(subject[:unmapped_column_count]).to eq(1)
+    end
+
+    it "should return the number of mapped columns" do
+      expect(subject[:mapped_column_count]).to eq(2)
+    end
+
+    it "should return the number of ignored columns" do
+      expect(subject[:ignored_column_count]).to eq(1)
+    end
+  end
+
   describe "time_zone" do
     subject { import.time_zone }
     context 'when imported_for does not respond to time_zone' do
