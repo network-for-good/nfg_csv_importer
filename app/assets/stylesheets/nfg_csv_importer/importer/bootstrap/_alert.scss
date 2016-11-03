@@ -1,0 +1,53 @@
+@mixin importer-alert($color){
+  &.alert{
+    background-color:#fff;
+    border-bottom:solid 1px #eeeeee;
+    border-right:solid 1px #eeeeee;
+    border-left: solid 3px $color;
+    font-weight: $font-weight-normal;
+
+    .alert-link, a{
+      color: $color !important;
+    }
+  }
+
+  .fa-stack{
+    .fa:first-child{
+      color: $color;
+    }
+    .fa:last-child{
+      color: $white;
+    }
+  }
+
+  .media-body{
+    line-height: 1.2;
+    &.text-muted{
+      color: #8a8a8a;
+    }
+    @include rem(font-size, 14px);
+  }
+
+  .media-heading{
+    @include rem(font-size, 16px);
+    font-weight: $font-weight-normal;
+  }
+
+  .btn-danger-outline{
+    @include button-outline-variant($brand-danger);
+  }
+}
+
+
+
+.alert-red{
+  @include importer-alert($brand-danger);
+}
+
+.alert-blue{
+  @include importer-alert($brand-primary);
+}
+
+.alert-green{
+  @include importer-alert($brand-success);
+}
