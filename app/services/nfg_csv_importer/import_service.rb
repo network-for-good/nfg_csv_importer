@@ -9,7 +9,7 @@ class NfgCsvImporter::ImportService
                 :starting_row, :start_timestamp, :current_row
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
-           :description, :to => :import_definition
+           :description, :field_aliases, :to => :import_definition
 
   alias_attribute :import_model, :model
   alias_attribute :import_class_name, :class_name

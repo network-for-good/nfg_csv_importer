@@ -20,7 +20,7 @@ module NfgCsvImporter
 
     delegate :description, :required_columns,:optional_columns,:column_descriptions, :transaction_id,
       :header, :missing_required_columns,:import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :first_x_rows, :to => :service
+      :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :field_aliases, :first_x_rows, :to => :service
 
     def import_validation
       begin
