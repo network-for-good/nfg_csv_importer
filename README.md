@@ -105,3 +105,22 @@ To improve the styling of the imports new page, add a require statement to your 
 ````
 *= require nfg_csv_importer/application
 ````
+
+# Development
+## Running Specs
+If running specs for the first time, you will need to setup the test database
+````
+> cd spec/test_app
+> bundle exec rake db:setup
+````
+
+In the future, you may need to bring your database up to date
+````
+> cd spec/test_app
+> bundle exec rake db:migrate
+````
+
+To run specs, from the root of the project
+````
+bundle exec rspec spec
+````

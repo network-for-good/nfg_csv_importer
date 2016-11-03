@@ -11,7 +11,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import.status = :uploaded
     @import.import_type = @import_type
     @import.imported_for = @imported_for
+
     if @import.save
+      @import.fields_mapping = NfgCsvImporter::FieldsMapper.new(@import).call
       redirect_to edit_import_path(@import), notice: I18n.t('import.create.notice')
     else
       render :action => 'new'
@@ -31,7 +33,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   # if failure, will update the edit page -- undesirable
   def update
-
     setup_edit
     import_params["fields_mapping"].each do |header_name, mapped_header_name|
       @header_name = header_name
@@ -50,8 +51,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       end
     end
   end
-
-
 
   def edit
     setup_edit
