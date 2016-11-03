@@ -10,7 +10,8 @@
 
   = render 'nfg_csv_importer/imports/design_source/import_header_stats', ready_for_import: ready_for_import, import: @import
 
-  = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
+  - if @errors
+    = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
 
 
 
