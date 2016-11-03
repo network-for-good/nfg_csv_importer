@@ -1,5 +1,6 @@
 .container-flush{
   margin: 0 -24px 0 -24px;
+  position: relative;
 }
 
 #importer_header_bar{
@@ -24,13 +25,13 @@
 
 
     h1{
-      font-size:30px;
+      @include rem(font-size, 28px);
       line-height:1;
       font-weight: $font-weight-light;
       color:#fff;
 
-      transition: font-size 0.25s ease-in-out,
-                  font-weight 0.25s ease-in-out;
+      transition: font-size 0.35s ease-in-out,
+                  letter-spacing 0.7s ease-in-out;
 
       .fa{
         color:#fff;
@@ -68,38 +69,21 @@
     @include box-shadow(0px 0px 8px 0px rgba(0,0,0,0.15));
 
     .row-importer-header{
-      padding-top:12px;
-      height: 40px;
+      padding-top:14px;
+      height: 60px;
 
       h1{
 
-        font-size: 16px;
-        font-weight: $font-weight-normal;
+
+        // font-weight: $font-weight-normal;
       }
     }
   }
 }
 
-// .header-is-stuck{
-//   &#importer_header_bar{
-//     @include box-shadow(0px 0px 16px 0px rgba(0,0,0,0.2));
-//     .row-importer-header{
-//       padding-top:12px;
-//       // padding-bottom: 15px;
-//       height: 40px;
-
-//       h1{
-
-//         font-size: 16px;
-//         font-weight: $font-weight-normal;
-//       }
-//     }
-//   }
-// }
-
 .header-bar-arrow{
   position:relative;
-  z-index:2;
+  z-index:3;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
@@ -129,7 +113,7 @@
 .row-importer-stats{
   background-color:$brand-primary;
   color:#fff;
-  z-index:1;
+  z-index:2;
   position: relative;
 
   a{
@@ -165,23 +149,20 @@
   }
 }
 
-
-
-
 .container-importer{
   width: 100%;
   overflow-x: scroll;
   position: relative;
   z-index:0;
   margin-bottom: $spacer-base;
-  padding: $spacer-base-half 0 $spacer-base 0;
+  padding: 90px 0 $spacer-base 0;
   background-color:#fff;
   margin: 0;
 }
 
 .row-no-wrap{
   flex-wrap: nowrap;
-  padding: 16px 32px 5px 32px;
+  padding: 80px 32px 5px 32px;
   position: relative;
   z-index:0;
 }
@@ -195,28 +176,32 @@
   border: solid 1px transparent;
 }
 
+
 [data-describe='horizontal-scroll-ending-spacer']:after{
-  width: 150px;
+  width: 20px;
   content: "";
   display:block;
 }
 
 .importer-wrapper{
+  position: relative;
+  width: 100%;
   &:after{
     content: "";
     position:absolute;
     right:0;
     top:0;
     bottom:0;
-    width: 150px;
-    // background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-    // background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-    // background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
-    // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+    width: 175px;
+    z-index:7;
+    @include box-shadow(0px 0px 24px 0px rgba(0,0,0,0.15));
 
-    background: -moz-linear-gradient(left, rgba($white,0) 1%, rgba($white,1) 90%, rgba($white,1) 100%);
-    background: -webkit-linear-gradient(left, rgba($white,0) 1%,rgba($white,1) 90%,rgba($white,1) 100%);
-    background: linear-gradient(to right, rgba($white,0) 1%,rgba($white,1) 90%,rgba($white,1) 100%);
+    background: -moz-linear-gradient(left, rgba($white,0) 1%, rgba($white,1) 100%, rgba($white,1) 100%);
+    background: -webkit-linear-gradient(left, rgba($white,0) 1%,rgba($white,1) 100%,rgba($white,1) 100%);
+    background: linear-gradient(to right, rgba($white,0) 1%,rgba($white,1) 100%,rgba($white,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+
+    // background-color: rgba($gray-darkest, .6);
   }
+
 }

@@ -1,6 +1,7 @@
 ///// -- Design Source Code -- /////
 
-- ready_for_import = false
+/ Swap components with this flag
+- ready_for_import = true
 
 .nfg-csv-importer
 
@@ -8,7 +9,6 @@
 
     .row.row-importer-header
       .col-xs-12
-
         %h1
           %i.fa.fa-paperclip
           my_filename_whatever.xlsx
@@ -60,7 +60,6 @@
             %strong
               Turn Highlight Off
 
-
       .col-md-4.col-md-center.text-xs-center
         .display-4
           - if ready_for_import
@@ -77,50 +76,59 @@
             Review & Confirm
             %i.fa.fa-chevron-right.text-white
 
-  .container-fluid.container-flush.bg-white
-    .row
-      .col-xs-12.p-t-double.p-y-base.text-xs-center
-        %p.lead
-          Let's map your column headers ahead of importing your data
-        %p
-          %i.text-muted
-            %i.fa.fa-long-arrow-left.m-r-quarter.text-muted
-            Scroll left & right
-            %i.fa.fa-long-arrow-right.m-l-quarter.text-muted
+
+
+
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
-  .container-fluid.container-flush
-    .importer-wrapper
-      .container-importer
-        .row.row-no-wrap
-          -# Column: Static / base version
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+  #thing.container-fluid.container-flush
 
-          -# Column: Column is mid-stream being "mapped" as indicated to the user
-          -# like this: on render, apply .card-active
-            -# after the animation has finished, add .card-mapped
-            -# remove .card-active
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
+    .thinger.bg-white.text-xs-center.p-t-double{ style: 'z-index:1; position: absolute; width: 100%;' }
+      %p.lead
+        Let's map your column headers ahead of importing your data
+      %p
+        %i.text-muted
+          Navigate by scrolling left or right or by clicking the arrow buttons
 
-          -# Column: Column has been set to ignored (.card-disabled)
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+    %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "left" } }
+      %i.fa.fa-arrow-circle-left
 
-          -# Column: Column is now mapped (.card-mapped)
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
 
-          -# Column: Column was mapped by us (.card-mapped)
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :auto_mapped
+    %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "right" } }
+      %i.fa.fa-arrow-circle-right
 
-          -# Column: Additional columns for page layout purposes
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
-          = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
 
-          -# Can probably remove this mandatory spacer (so we don't end up covering the last importable column) by using JQuery to fadeout the gradient once you reach the end of the column suite.
-          %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
+    .container-importer
+
+      .row.row-no-wrap
+        -# Column: Static / base version
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+
+        -# Column: Column is mid-stream being "mapped" as indicated to the user
+        -# like this: on render, apply .card-active
+          -# after the animation has finished, add .card-mapped
+          -# remove .card-active
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :active
+
+        -# Column: Column has been set to ignored (.card-disabled)
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+
+        -# Column: Column is now mapped (.card-mapped)
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+
+        -# Column: Column was mapped by us (.card-mapped)
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :auto_mapped
+
+        -# Column: Additional columns for page layout purposes
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :ignored
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :static
+        = render "nfg_csv_importer/imports/design_source/importer_column", version: :mapped
+
+
+        %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
 
 
   .container-fluid.container-flush.bg-white
@@ -135,9 +143,12 @@
           %i.fa.fa-chevron-right.m-l-quarter
 
   -# Displayed upon any interaction with any column
-  .alert.alert-success.alert-growl{ role: "alert" }
-    Saving Updates
-    %i.fa.fa-spinner.fa-pulse.fa-2x.fa-fw
+  / .alert.alert-success.alert-growl{ role: "alert" }
+  /   Saving Updates
+  /   %i.fa.fa-spinner.fa-pulse.fa-2x.fa-fw
+
+
+
 
 
 ///// -- Original Code -- /////

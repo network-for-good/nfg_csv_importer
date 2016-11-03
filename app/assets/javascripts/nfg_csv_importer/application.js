@@ -32,6 +32,7 @@
 //= require nfg_csv_importer/importer_column
 //= require nfg_csv_importer/header-bar
 //= require nfg_csv_importer/highlight-unmapped-columns
+//= require nfg_csv_importer/scroll_importer_columns
 
 
 
