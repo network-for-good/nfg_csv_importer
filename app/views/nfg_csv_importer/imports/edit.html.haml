@@ -1,5 +1,3 @@
-///// -- Design Source Code -- /////
-
 / Swap components with this flag
 - ready_for_import = true
 - duplicate_columns = true
@@ -40,7 +38,7 @@
       .row.row-no-wrap
         -# Column: Static / base version
         - @import.mapped_fields.each do |mapped_column|
-          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column
+          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import
 
         / -# Column: Column is mid-stream being "mapped" as indicated to the user
         / -# like this: on render, apply .card-active

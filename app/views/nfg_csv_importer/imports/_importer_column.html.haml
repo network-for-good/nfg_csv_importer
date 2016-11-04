@@ -1,4 +1,5 @@
 - mapped_column = nil if local_assigns[:mapped_column].nil?
+- import = nil if local_assigns[:import].nil?
 
 - card_classes = "card"
 
@@ -14,7 +15,7 @@
 
 .col-importer
   %div{ class: card_classes, data: card_data }
-    = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column
+    = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column, import: import
     .card-block.card-block-importer-index
       A
     .list-group.list-group-flush
