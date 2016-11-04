@@ -31,6 +31,17 @@ module NfgCsvImporter
       imported_records.created.any? && complete? && !Rails.env.production?
     end
 
+    def duplicated_field_mappings
+      return {} unless fields_mapping.present?
+      fields = fields_mapping.values
+      duplicates = fields.select { |f|  fields.count(f) > 1 && f != NfgCsvImporter::Import.ignore_column_value && f.present? }.uniq
+      return {} unless duplicates.present?
+      duplicates.inject({}) do |hsh, dupe_field|
+        hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
+        hsh
+      end
+    end
+
     def imported_by_name
       imported_by.try(:name)
     end
@@ -73,6 +84,11 @@ module NfgCsvImporter
       end
 
       errors_csv
+    end
+
+    def ready_to_import?
+      return false if duplicated_field_mappings.present?
+      true
     end
 
     def service
