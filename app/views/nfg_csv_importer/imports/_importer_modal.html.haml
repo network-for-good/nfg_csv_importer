@@ -34,6 +34,7 @@
 -# MODAL
 - aria_labelledby = "modal_title_#{component_id}"
 - resource_color = nil if local_assigns[:resource_color].nil?
+- interstitial = true if local_assigns[:interstitial].nil?
 
 -# MODAL SIZE
 - modal_size = nil if local_assigns[:modal_size].nil?
@@ -51,7 +52,7 @@
 
 
 
-%div{ id: component_id, class: [bootstrap_component, "fade", "#{resource_color}", component_class].join(' '), "aria-hidden" => "true", "aria-labelledby" => "#{aria_labelledby}", :role => "dialog", :tabindex => "-1" }
+%div{ id: component_id, class: [bootstrap_component, "fade", "#{resource_color}", "#{ 'interstitial' if interstitial }", component_class].join(' '), "aria-hidden" => "true", "aria-labelledby" => "#{aria_labelledby}", :role => "dialog", :tabindex => "-1" }
 
   %div{:class => "modal-dialog #{ "modal-#{ modal_size }" if modal_size }" }
     .modal-content

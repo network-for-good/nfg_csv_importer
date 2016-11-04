@@ -55,4 +55,6 @@
   = render "nfg_csv_importer/imports/design_source/auto_save"
 
   / TODO: any thoughts on how I can pass arguments / locals to this modal so that content can be customized per error message? -- this modal is rendered from a donation or individual user column error (e.g. missing first name or full name)
-  = render partial: "nfg_csv_importer/imports/importer_modal", locals: { component_id: "task-modal", modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }
+
+
+  = render partial: "nfg_csv_importer/imports/importer_modal", locals: {  modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }
