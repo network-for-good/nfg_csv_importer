@@ -4,14 +4,10 @@
   .row.row-importer-header
     .col-xs-12
       %h1
-        %i.fa.fa-paperclip
-        = @import.import_file_name
+        = link_to @import.import_file.url do
+          %i.fa.fa-paperclip
+          = @import.import_file_name
       %a.import-header-link{ href: "javascript:;" }
-        .media
-          .media-body
-            Import
-            %br
-            Templates
-          .media-right
-            .media-object
-              %i.fa.fa-th
+        %i.fa.fa-chevron-left.m-r-quarter
+        Back to Imports
+

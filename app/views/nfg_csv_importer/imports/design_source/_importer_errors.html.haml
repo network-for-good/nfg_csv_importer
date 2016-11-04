@@ -1,121 +1,159 @@
-- if duplicate_columns
-  .container-fluid.container-flush.container-error
-    .row.m-y-base
-      .col-xs-12
-        %h2.text-xs-center
-          We found 5 issues you’ll need to address
-    .row
-      .col-xs-12
-        .alert.alert-red
-          .media
-            .media-left
-              %span.fa-stack.fa-lg
-                %i.fa.fa-circle.fa-stack-2x
-                %i.fa.fa-exclamation.fa-stack-1x
-            .media-body
-              %h3.media-heading.m-b-base
-                You can’t have multiple columns with the same mapped header. Time to
-                %strong
-                  ignore
-                or
-                %strong
-                  adjust
-                these columns:
 
-              .row
-                .col-xl-3.col-md-4.col-xs-12.m-b-base
-                  .media
-                    .media-left
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        A
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        B
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        B
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        B
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        B
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        C
-                    .media-body.text-muted
-                      Full Name
+.container-fluid.container-flush.container-error
+  .row.m-y-base
+    .col-xs-12
+      %h2.text-xs-center
+        We found 5 issues you’ll need to address
+  .row
+    .col-xs-12
+      .alert.alert-red
+        .media
+          .media-left
+            %span.fa-stack.fa-lg
+              %i.fa.fa-circle.fa-stack-2x
+              %i.fa.fa-exclamation.fa-stack-1x
+          .media-body
+            %h3.media-heading.m-b-base
+              You can’t have multiple columns with the same mapped header. Time to
+              %strong
+                ignore
+              or
+              %strong
+                adjust
+              these columns:
 
-                .col-xl-3.col-md-4.col-xs-12.m-b-base
-                  .media
-                    .media-left
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        G
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        AF
-                    .media-body.text-muted
-                      Notification Tribute Type
+            .row
+              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
+                .media
+                  .media-left
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      A
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      B
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      B
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      B
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      B
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      C
+                  .media-body.text-muted
+                    Full Name
 
-                .col-xl-3.col-md-4.col-xs-12.m-b-base
-                  .media
-                    .media-left
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        Q
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        Z
-                    .media-body.text-muted
-                      Payment Method
+              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
+                .media
+                  .media-left
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      G
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      AF
+                  .media-body.text-muted
+                    Notification Tribute Type
 
-                .col-xl-3.col-md-4.col-xs-12.m-b-base
-                  .media
-                    .media-left
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        F
-                      %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                        AAC
-                    .media-body.text-muted
-                      Sandwhich Preference
+              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
+                .media
+                  .media-left
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      Q
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      Z
+                  .media-body.text-muted
+                    Payment Method
 
-    .row
-      .col-md-6
-        .alert.alert-blue
-          .media
-            .media-left
-              %span.fa-stack.fa-lg
-                %i.fa.fa-circle.fa-stack-2x
-                %i.fa.fa-exclamation.fa-stack-1x
-            .media-body
-              %h3.media-heading
-                Individuals must have a
-                %strong
-                  first name
-                or
-                %strong
-                  full name
-              .small
-                =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
-                  Missing this data? Recommended next steps
-                  %i.fa.fa-caret-right.m-l-quarter
+              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
+                .media
+                  .media-left
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      F
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                      AAC
+                  .media-body.text-muted
+                    Sandwhich Preference
 
-      .col-md-6
-        .alert.alert-green
-          .media
-            .media-left
-              %span.fa-stack.fa-lg
-                %i.fa.fa-circle.fa-stack-2x
-                %i.fa.fa-exclamation.fa-stack-1x
-            .media-body
-              %h3.media-heading
-                Donations must have a
-                %strong
-                  donation date
-              .small
-                =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
-                  Missing this data? Recommended next steps
-                  %i.fa.fa-caret-right.m-l-quarter
+  .row
+    .col-md-6
+      .alert.alert-blue
+        .media
+          .media-left
+            %span.fa-stack.fa-lg
+              %i.fa.fa-circle.fa-stack-2x
+              %i.fa.fa-exclamation.fa-stack-1x
+          .media-body
+            %h3.media-heading
+              Individuals must have a
+              %strong
+                first name
+              or
+              %strong
+                full name
+            .small.m-t-quarter
+              =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
+                Missing this data? Recommended next steps
+                %i.fa.fa-caret-right.fa-fw
+
+    .col-md-6
+      .alert.alert-green
+        .media
+          .media-left
+            %span.fa-stack.fa-lg
+              %i.fa.fa-circle.fa-stack-2x
+              %i.fa.fa-exclamation.fa-stack-1x
+          .media-body
+            %h3.media-heading
+              Donations must have a
+              %strong
+                donation date
+            .small.m-t-quarter
+              =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
+                Missing this data? Recommended next steps
+                %i.fa.fa-caret-right.fa-fw
+
+    .col-md-6
+      .alert.alert-blue
+        .media
+          .media-left
+            %span.fa-stack.fa-lg
+              %i.fa.fa-circle.fa-stack-2x
+              %i.fa.fa-exclamation.fa-stack-1x
+          .media-body
+            %h3.media-heading
+              Individuals must have a
+              %strong
+                first name
+              or
+              %strong
+                full name
+
+            .small.m-t-quarter
+              =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
+                Missing this data? Recommended next steps
+                %i.fa.fa-caret-right.fa-fw
+
+    .col-md-6
+      .alert.alert-green
+        .media
+          .media-left
+            %span.fa-stack.fa-lg
+              %i.fa.fa-circle.fa-stack-2x
+              %i.fa.fa-exclamation.fa-stack-1x
+          .media-body
+            %h3.media-heading
+              Donations must have a
+              %strong
+                donation date
+            .small.m-t-quarter
+              =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
+                Missing this data? Recommended next steps
+                %i.fa.fa-caret-right.fa-fw
 

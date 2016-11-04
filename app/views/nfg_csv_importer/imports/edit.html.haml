@@ -1,16 +1,15 @@
-/ Swap components with this flag
-- ready_for_import = true
-- duplicate_columns = true
+/ TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
+- ready_for_import = false
 
 .nfg-csv-importer
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
-  = render 'nfg_csv_importer/imports/import_header_stats', ready_for_import: ready_for_import, import: @import
+  = render 'nfg_csv_importer/imports/import_header_stats', import: @import, ready_for_import: ready_for_import
 
   / Doesn't work yet
   / - if @errors
-  = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
+  = render "nfg_csv_importer/imports/design_source/importer_errors"
 
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
