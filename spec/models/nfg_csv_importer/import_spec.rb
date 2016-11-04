@@ -139,15 +139,37 @@ describe NfgCsvImporter::Import do
     before do
       import.fields_mapping = { "first_name" => "first_name", "email" => nil, "last_name" => "ignore_column" }
     end
-    subject { import.mapped_fields }
 
-    it "should be an array of MappedField objects" do
-      expect(subject.first).to be_a(NfgCsvImporter::MappedField)
+    context "when no arguments" do
+      subject { import.mapped_fields }
+
+      it "should be an array of MappedField objects" do
+        expect(subject.first).to be_a(NfgCsvImporter::MappedField)
+      end
+
+      it "should have a MappedField for each of the fields_mapping elements" do
+        expect(subject.length).to eq(import.fields_mapping.length)
+      end
     end
 
-    it "should have a MappedField for each of the fields_mapping elements" do
-      expect(subject.length).to eq(import.fields_mapping.length)
+    context "when the argument matches a header in the fields mapping hash" do
+      subject { import.mapped_fields("email") }
+
+      it "should return the mapped field for that header" do
+        expect(subject).to be_a(NfgCsvImporter::MappedField)
+        expect(subject.name).to eq("email")
+        expect(subject.mapped_to).to eq(nil)
+      end
     end
+
+    context "when the argument does not match a header in the fields mapping hash" do
+      subject { import.mapped_fields("bar") }
+
+      it "should return the mapped field for that header" do
+        expect(subject).not_to be
+      end
+    end
+
   end
 
   describe "#column_stats" do
