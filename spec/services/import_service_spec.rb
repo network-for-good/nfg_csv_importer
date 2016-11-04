@@ -53,12 +53,26 @@ describe NfgCsvImporter::ImportService do
 				expect(subject.import).to be_nil
 			end
 
-			it "should create importedrecord" do
-				expect {subject.import }.to change(NfgCsvImporter::ImportedRecord, :count)
-				expect(NfgCsvImporter::ImportedRecord.last.importable_id).to be
+      describe "the imported record" do
+        it "should create importedrecord" do
+          expect {subject.import }.to change(NfgCsvImporter::ImportedRecord, :count)
+        end
 
-				# expect(NfgCsvImporter::ImportedRecord.last.importable).to eq(User.last)
-			end
+        it "sets the importable" do
+          subject.import
+          expect(NfgCsvImporter::ImportedRecord.last.importable).to eql(User.last)
+        end
+
+        context "when the model isn't active record (unlikely to ever happen but just to be safe" do
+          let(:non_model_object) { mock("NonModelObject") }
+
+
+          it "leaves importable empty" do
+            User.any_instance.stubs(:save).returns(non_model_object)
+            expect { subject.import }.to raise_error(ActiveRecord::RecordInvalid)
+          end
+        end
+      end
 
 			context "when the header data contains extra spaces and capitalizations" do
 				let(:header_data) {["email " ," first_name","Last_Name"]}

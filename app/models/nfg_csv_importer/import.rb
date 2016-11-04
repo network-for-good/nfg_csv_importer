@@ -107,6 +107,9 @@ module NfgCsvImporter
       end
     end
 
+    def can_be_deleted?
+      imported_records.created.any? && complete? && !Rails.env.production?
+    end
 
     private
 
