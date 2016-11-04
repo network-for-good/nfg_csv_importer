@@ -1,0 +1,8 @@
+.modal{
+  z-index: $zindex-modal + 1000 !important;
+}
+
+.modal-backdrop{
+  z-index: 99 !important;
+  position: absolute;
+}
