@@ -17,15 +17,8 @@
   %div{ class: card_classes, data: card_data }
     = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column, import: import
     .card-block.card-block-importer-index
-      A
+      = index_alphabetize[index]
     .list-group.list-group-flush
-      .list-group-item
-        John Doe
-      .list-group-item
-        Jane Doe
-      .list-group-item
-        Alberto Rodriguez
-      .list-group-item
-        Connie Albertson
-      .list-group-item
-        Alexander Goschef
+      - (0..(@first_x_rows.length - 1)).each do |i|
+        .list-group-item
+          =@first_x_rows[i][mapped_column.name]
