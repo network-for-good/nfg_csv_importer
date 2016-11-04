@@ -4,6 +4,8 @@
     .col-xs-12
       %h2.text-xs-center
         We found 5 issues you’ll need to address
+
+  / Duplicate column error is always here. This full width alert is only used by duplicate columns error.
   .row
     .col-xs-12
       .alert.alert-red
@@ -81,6 +83,7 @@
                   .media-body.text-muted
                     Sandwhich Preference
 
+  / these individual / donation errors are always presented in a 6 col fashion. donation column errors get the fa-dollar icon, user column errors get the fa-user icon
   .row
     .col-md-6
       .alert.alert-blue
@@ -88,7 +91,7 @@
           .media-left
             %span.fa-stack.fa-lg
               %i.fa.fa-circle.fa-stack-2x
-              %i.fa.fa-exclamation.fa-stack-1x
+              %i.fa.fa-user.fa-stack-1x
           .media-body
             %h3.media-heading
               Individuals must have a
@@ -108,7 +111,7 @@
           .media-left
             %span.fa-stack.fa-lg
               %i.fa.fa-circle.fa-stack-2x
-              %i.fa.fa-exclamation.fa-stack-1x
+              %i.fa.fa-dollar.fa-stack-1x
           .media-body
             %h3.media-heading
               Donations must have a
@@ -119,22 +122,20 @@
                 Missing this data? Recommended next steps
                 %i.fa.fa-caret-right.fa-fw
 
+
+
     .col-md-6
-      .alert.alert-blue
+      .alert.alert-green
         .media
           .media-left
             %span.fa-stack.fa-lg
               %i.fa.fa-circle.fa-stack-2x
-              %i.fa.fa-exclamation.fa-stack-1x
+              %i.fa.fa-dollar.fa-stack-1x
           .media-body
             %h3.media-heading
-              Individuals must have a
+              Donations must have a
               %strong
-                first name
-              or
-              %strong
-                full name
-
+                payment method
             .small.m-t-quarter
               =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
                 Missing this data? Recommended next steps
@@ -146,12 +147,12 @@
           .media-left
             %span.fa-stack.fa-lg
               %i.fa.fa-circle.fa-stack-2x
-              %i.fa.fa-exclamation.fa-stack-1x
+              %i.fa.fa-dollar.fa-stack-1x
           .media-body
             %h3.media-heading
               Donations must have a
               %strong
-                donation date
+                donation amount
             .small.m-t-quarter
               =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
                 Missing this data? Recommended next steps
