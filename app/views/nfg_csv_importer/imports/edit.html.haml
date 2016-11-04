@@ -2,7 +2,7 @@
 - ready_for_import = true
 - duplicate_columns = true
 
-.nfg-csv-importer
+.nfg-csv-importer{ data: { unmapped_highlight: 'disabled'} }
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
@@ -32,32 +32,10 @@
 
 
     .container-importer
-
-      .row.row-no-wrap
-        -# Column: Static / base version
-        - @import.mapped_fields.each_with_index do |mapped_column, index|
-          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
-
-        / -# Column: Column is mid-stream being "mapped" as indicated to the user
-        / -# like this: on render, apply .card-active
-        /   -# after the animation has finished, add .card-mapped
-        /   -# remove .card-active
-        / = render "nfg_csv_importer/imports/importer_column", version: :active
-
-        / -# Column: Column has been set to ignored (.card-disabled)
-        / = render "nfg_csv_importer/imports/importer_column", version: :ignored
-
-        / -# Column: Column is now mapped (.card-mapped)
-        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
-
-        / -# Column: Additional columns for page layout purposes
-        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
-        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
-        / = render "nfg_csv_importer/imports/importer_column", version: :ignored
-        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
-        / = render "nfg_csv_importer/imports/importer_column", version: :unmapped
-        / = render "nfg_csv_importer/imports/importer_column", version: :mapped
-
+      = form_for @import, html: { id: "fields_mapping" } do
+        .row.row-no-wrap
+          - @import.mapped_fields.each_with_index do |mapped_column, index|
+            = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
 
         %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
 

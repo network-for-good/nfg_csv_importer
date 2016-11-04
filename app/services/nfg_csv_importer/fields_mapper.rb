@@ -31,6 +31,9 @@ module NfgCsvImporter
     end
 
     def column_header_mapped_to_aliases(header_column)
+      # each alias should be a hash with the field
+      # name as the key and an array of aliases as the value
+      # i.e. "first_name" => ["first", "donor first name", "contact first name"]
       aliases_for_mapping.each do |field, alias_values|
         break field if header_column.match(/#{ alias_values.join('|') }/)
       end

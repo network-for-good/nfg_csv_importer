@@ -11,9 +11,9 @@
 - when :mapped
   - card_classes += " card-mapped"
 - when :ignored
-  - card_classes += " card-disabled"
+  - card_classes += " card-ignored"
 
-.col-importer
+.col-importer{ data: { column_name: mapped_column.name }}
   %div{ class: card_classes, data: card_data }
     = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column, import: import
     .card-block.card-block-importer-index

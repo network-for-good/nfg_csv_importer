@@ -12,6 +12,18 @@ module NfgCsvImporter
       :unmapped
     end
 
+    def mapped?
+      status == :mapped
+    end
+
+    def unmapped?
+      status == :unmapped
+    end
+
+    def ignored?
+      status == :ignored
+    end
+
     private
 
     def ignore_column_value

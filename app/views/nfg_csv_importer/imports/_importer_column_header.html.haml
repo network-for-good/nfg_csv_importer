@@ -1,6 +1,6 @@
 - mapped_column = nil if local_assigns[:mapped_column].nil?
 - import = nil if local_assigns[:import].nil?
-
+- field_name = "import[fields_mapping[#{ mapped_column.name }]]"
 
 - case mapped_column.status
 - when :unmapped
@@ -22,50 +22,44 @@
   - label_text = "Won't be imported"
   - mapped_column_name = mapped_column.name
 
-
-- unless mapped_column.status == :unmapped
-  -# When mapping has wrapped up, have the label:
-  -# 1. Fade out "Mapping column"
-  -# 2. Slide the check mark to the right
-  -# 3. Shrink label to fit checkmark
-  -# 4. Expand label out to reveal "Mapped"
-  %div{ class: "label label-pill label-#{label_status}" }
-    %i{ class: "fa #{label_icon}" }
-    = label_text
-
 .card-header{ id: "card_header_#{ mapped_column.name }" }
+  - unless mapped_column.status == :unmapped
+    -# When mapping has wrapped up, have the label:
+    -# 1. Fade out "Mapping column"
+    -# 2. Slide the check mark to the right
+    -# 3. Shrink label to fit checkmark
+    -# 4. Expand label out to reveal "Mapped"
+    %div{ class: "label label-pill label-#{label_status}" }
+      %i{ class: "fa #{label_icon} text-white" }
+      = label_text
   .card-header-interactions
     - if (mapped_column.status == :ignored) || (mapped_column.status == :unmapped)
       %label.c-input.c-checkbox.m-b-quarter
-        - if mapped_column.status == :ignored
-          / todo: make name dynamic
-          %input{ name: "ignore_column", type: "checkbox", value: "ignore_#{ mapped_column_name }", checked: "checked" }
-        - else
-          %input{ name: "ignore_column", type: "checkbox", value: "ignore_#{ mapped_column_name }" }
+        - ignore_checkbox_value = mapped_column.status == :ignored ? "" : "ignore_column"
+        %input{ name: field_name, type: "checkbox", value: ignore_checkbox_value, checked: mapped_column.status == :ignored }
         %span.c-indicator
         %span.text-muted Ignore Column
     - else
       / todo: turn on this functionality and re-render the column header
-      %a.m-b-quarter{ href: "javascript:;" }
+      %a.m-b-quarter{ href: "javascript:;", data: { edit_column: "true" } }
         %i.fa.fa-pencil
         Edit Column
 
 
   .form-group
     - if mapped_column.status == :ignored
-      %select{ class: "c-select disabled", disabled: "disabled" }
-        %option{ selected: "selected" } Ignore Column
+      = hidden_field_tag field_name, NfgCsvImporter::Import.ignore_column_value
 
     - elsif mapped_column.status == :unmapped
-      - all_fields = [""] + import.all_valid_columns + [NfgCsvImporter::Import.ignore_column_value]
+      - all_fields = [""] + import.all_valid_columns
 
-
-      = select_tag "import[fields_mapping[#{ mapped_column_name }]]", options_for_select(all_fields.map { |f| f.humanize.titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
+      = select_tag field_name, options_for_select(all_fields.map { |f| f.humanize.titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
 
     - else
       -# Kicks off edit, just like the edit button above.
-      %a.h3.text-xs-center.m-t-half{ href: "javascript:;" }
+      %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
         = mapped_column.mapped_to.humanize
+      = hidden_field_tag field_name
 
 
   %h4.h5.text-xs-center
@@ -75,6 +69,6 @@
         %sup
           %i.fa.fa-info-circle{ title: "We couldn't automatically map this column for you", data: { toggle: "tooltip", placement: "top" } }
     - else
-      %s.text-muted= mapped_column_name
+      %s.text-muted= mapped_column.name
 
 

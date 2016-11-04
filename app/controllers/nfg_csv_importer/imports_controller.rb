@@ -34,13 +34,13 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   # if failure, will update the edit page -- undesirable
   def update
-    setup_edit
-    import_params["fields_mapping"].each do |header_name, mapped_header_name|
-      @header_name = header_name
-      @import.fields_mapping[header_name] = mapped_header_name
+    import_params["fields_mapping"].each do |header_name, mapped_field_name|
+      next unless @import.fields_mapping.has_key?(header_name) # don't do an assignment if something strange was submitted
+      @import.fields_mapping[header_name] = mapped_field_name
+      @mapped_column = @import.mapped_fields(header_name)
     end
-    if @import.save
 
+    if @import.save
       respond_to do |format|
         format.html { render "edit" }
         format.js { }
@@ -54,7 +54,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def edit
-    setup_edit
+    @first_x_rows = @import.first_x_rows
   end
 
   def index
@@ -82,7 +82,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def import_params
-    params.fetch(:import, {}).merge(import_type: @import_type, imported_for: @imported_for, fields_mapping: {}).permit!
+    params.fetch(:import, {}).merge(import_type: @import_type, imported_for: @imported_for).permit!
   end
 
   def load_new_import
@@ -100,12 +100,5 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def load_import
     @import = @imported_for.imports.find(params[:id])
-  end
-
-  def setup_edit
-    @first_x_rows = @import.first_x_rows
-    @all_valid_columns = @import.all_valid_columns
-    @headers = @import.header
-    @fields_mapping = @import.fields_mapping
   end
 end

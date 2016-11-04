@@ -1,3 +1,45 @@
 // <%= @column_update_action = "test" %>
-$('#card_header_<%= @header_name %>').replaceWith("<%= j render 'nfg_csv_importer/imports/self_importer/importer_column_header', header_name: @header_name %>");
-console.log("rendered");
+var importerContainer = $('.nfg-csv-importer')
+var cardHeader = $('#card_header_<%= @mapped_column.name %>');
+var card = cardHeader.closest(".card");
+
+$("#importer_header_stats").replaceWith("<%= j render  'nfg_csv_importer/imports/import_header_stats', ready_for_import: true, import: @import %>");
+
+cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
+new NfgCsvImporter.ImporterColumn($('.col-importer[data-column-name=<%= @mapped_column.name %>]'));
+
+card.attr('class', 'card card-<%= @mapped_column.status.to_s %>');
+card.attr("data-mapped", "<%= @mapped_column.mapped? ? 'true' : 'false' %>");
+
+var highlighted = importerContainer.attr("data-unmapped-highlight") == 'enabled';
+//
+if(highlighted) {
+  $("#highlights_on").show();
+  $("#highlights_off").hide();
+}
+else
+{
+  $("#highlights_on").hide();
+  $("#highlights_off").show();
+}
+// this is a duplicate of the code in the highlight-unmapped-columns.coffee
+$("a.text-glow").click(function() {
+  var new_highlight_status;
+  if ($('.nfg-csv-importer').attr('data-unmapped-highlight') === 'enabled') {
+    new_highlight_status = 'disabled';
+  } else {
+    new_highlight_status = 'enabled';
+  }
+  $('.nfg-csv-importer').attr('data-unmapped-highlight', new_highlight_status);
+  $("#highlights_off").toggle();
+  $("#highlights_on").toggle();
+  return $(".card[data-mapped='false']").each(function() {
+    return $(this).toggleClass("card-highlight");
+  });
+});
+
+<% if @mapped_column.unmapped? %>
+  if(highlighted) {
+    card.toggleClass("card-highlight")
+  }
+<% end %>
