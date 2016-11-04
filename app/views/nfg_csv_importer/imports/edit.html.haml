@@ -1,16 +1,15 @@
-/ Swap components with this flag
-- ready_for_import = true
-- duplicate_columns = true
+/ TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
+- ready_for_import = false
 
 .nfg-csv-importer{ data: { unmapped_highlight: 'disabled'} }
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
-  = render 'nfg_csv_importer/imports/import_header_stats', ready_for_import: ready_for_import, import: @import
+  = render 'nfg_csv_importer/imports/import_header_stats', import: @import, ready_for_import: ready_for_import
 
   / Doesn't work yet
-  - if @errors
-    = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
+  / - if @errors
+  = render "nfg_csv_importer/imports/design_source/importer_errors"
 
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
@@ -54,58 +53,5 @@
 
   = render "nfg_csv_importer/imports/design_source/auto_save"
 
-
-
-
-
-///// -- Original Code -- /////
-
-/ -# TODO: remove this later, for now this is just an easy spacer above the content.
-/ %div{ class: 'm-t-double'  }
-
-/ #self_importer.nfg-csv-importer
-/   %p
-
-/     %i.fa.fa-info-circle
-/     %strong Source Uploaded Document:
-/     =@import.import_file_name
-
-
-/   %p
-/     %strong Total rows to be imported upon completion:
-/     -# TODO: Would like to have the imported file's row count here
-/     -# For now, this is the wrong code, but should explain what I'm looking for
-/     = @import.imported_records.size
-
-/   %p
-/     %strong Total columns supplied in the uploaded spreadsheet:
-/     -# TODO: so this would reflect the amount of columns in the uploaded doc.
-/     -# Does not (for now) include the count of columns that are ignored  since we're not tracking ignored.
-
-
-
-/   %hr
-/   %p
-/     -# Not expecting this to be used, but keeping here for design balancing.
-/     %label.c-input.c-checkbox
-/       %input{ :name => "option-checkbox", :type => "checkbox", :value => 1 }
-/       %span.c-indicator
-/       Show skipped columns
-/   %hr
-
-/   %h2.h4 Below is a sample of the first few rows of your data
-/   %p Use the dropdown menus below to select the mappings for your import, rest assured, all
-
-/   .container-fluid.m-y-triple
-
-/     = form_for @import, url: nfg_csv_importer.import_review_path(@import), ajax: true do |f|
-/       .row.row-no-wrap.p-a-half.m-b-base-half
-
-/         = render partial: "nfg_csv_importer/imports/self_importer/importer_column", collection: @headers, as: :header_name
-
-
-/       .row
-/         .col-xs-12
-/           = button_tag type: :submit, class: "btn btn-primary btn-lg" do
-/             Review
-/             = fa_icon "chevron-right"
+  / TODO: any thoughts on how I can pass arguments / locals to this modal so that content can be customized per error message? -- this modal is rendered from a donation or individual user column error (e.g. missing first name or full name)
+  = render partial: "nfg_csv_importer/imports/importer_modal", locals: { component_id: "task-modal", modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }

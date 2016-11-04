@@ -58,7 +58,7 @@
     - else
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
-        = mapped_column.mapped_to.humanize
+        = mapped_column.mapped_to.humanize.titleize
       = hidden_field_tag field_name
 
 

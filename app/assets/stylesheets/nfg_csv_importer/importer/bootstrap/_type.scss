@@ -49,6 +49,14 @@ a.text-glow{
   }
 }
 
+.container-error{
+  h2{
+    @include rem(font-size, 24px);
+    font-weight: $font-weight-light;
+    color: #ababab;
+  }
+}
+
 // strong{
 //   font-weight: $font-weight-bold;
 // }

@@ -27,6 +27,17 @@
     height: 84px;
     transition: all 0.33s ease-in-out;
 
+    a{
+      color:#fff;
+
+      @include hover-focus{
+        background-image: linear-gradient(to right, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 0%);
+        background-size: 10px 1px;
+        background-repeat: repeat-x;
+        background-position: center bottom;
+      }
+    }
+
 
     h1{
       @include rem(font-size, 28px);
@@ -44,27 +55,27 @@
 
     a.import-header-link{
       color:#fff !important;
-      text-align: right;
+      text-align: left;
       position: absolute;
-      @include rem(right, 20px);
+      @include rem(left, 20px);
       top: 50%;
       -webkit-transform: translateY(-50%);
       transform: translateY(-50%);
 
-      @include rem(font-size, 9px);
-      @include rem(line-height, 10px);
+      @include rem(font-size, 11px);
+      line-height: 1;
       font-weight: $font-weight-bold;
       text-transform: uppercase;
-      margin-top:3px;
+      // margin-top:3px;
 
       .fa{
         color:#fff;
-        font-size: 24px;
+        // font-size: 24px;
         line-height:1;
         padding-bottom:0;
         margin-bottom:0;
         position: relative;
-        @include rem(top, -3px);
+        // @include rem(top, -3px);
       }
     }
   }

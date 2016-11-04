@@ -1,0 +1,83 @@
+-# Modal Component
+-# Reference: http://v4-alpha.getbootstrap.com/components/modal
+
+
+-# ##########
+-# PURPOSE:
+-# ##########
+
+-#
+
+
+-# ####################
+-# LOCALS DEFINITIONS:
+-# ####################
+
+-# STANDARD LOCALS
+-# bootstrap_component: the class name of the component
+-# component_id: CSS ID to be added the card if needed (e.g.: for specs or JavaScript)
+-# component_class: optional class extender for namespacing purposes
+
+-# ####################
+-# USAGE EXAMPLES:
+-# ####################
+
+
+-# ####################
+-# COMPONENT
+-# ####################
+
+- bootstrap_component = "modal"
+- component_id = nil if local_assigns[:component_id].nil?
+- component_class = nil if local_assigns[:component_class].nil?
+
+-# MODAL
+- aria_labelledby = "modal_title_#{component_id}"
+- resource_color = nil if local_assigns[:resource_color].nil?
+
+-# MODAL SIZE
+- modal_size = nil if local_assigns[:modal_size].nil?
+
+-# MODAL HEADER
+- modal_title = nil if local_assigns[:modal_title].nil?
+- modal_body = nil if local_assigns[:modal_body].nil?
+- modal_body_class = nil if local_assigns[:modal_body_class].nil?
+
+-# MODAL FOOTER
+- modal_footer = false if local_assigns[:modal_footer].nil?
+- no_submit = false if local_assigns[:no_submit].nil?
+- submit_text = "Submit" if local_assigns[:submit_text].nil?
+- submit_id = nil if local_assigns[:submit_id].nil?
+
+
+
+%div{ id: component_id, class: [bootstrap_component, "fade", "#{resource_color}", component_class].join(' '), "aria-hidden" => "true", "aria-labelledby" => "#{aria_labelledby}", :role => "dialog", :tabindex => "-1" }
+
+  %div{:class => "modal-dialog #{ "modal-#{ modal_size }" if modal_size }" }
+    .modal-content
+      .modal-header
+        %a.close.float-right{ "data-dismiss" => "modal", "aria-label" => "close", :href => "javascript:;" }
+          = fa_icon "times"
+        %h4{ id: aria_labelledby, class: "modal-title" }
+          = modal_title
+
+      %div{ class: ["modal-body", modal_body_class].join(" ") }
+        - if modal_body.present?
+          %p= modal_body
+        - else
+          = yield
+
+      - if modal_footer
+        .modal-footer
+          = modal_footer
+
+      - else
+        %a.btn.btn-secondary{ "data-dismiss" => "modal" }
+          = fa_icon "times"
+          Cancel
+
+        - unless no_submit
+          %a.btn.btn-primary.submit{:href => "javascript:;", id: submit_id }
+            = fa_icon "check"
+            = submit_text
+
