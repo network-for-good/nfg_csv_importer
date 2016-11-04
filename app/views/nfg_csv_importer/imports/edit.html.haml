@@ -8,11 +8,9 @@
 
   = render 'nfg_csv_importer/imports/import_header_stats', ready_for_import: ready_for_import, import: @import
 
+  / Doesn't work yet
   - if @errors
     = render "nfg_csv_importer/imports/design_source/importer_errors", duplicate_columns: duplicate_columns
-
-
-
 
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
@@ -37,8 +35,8 @@
 
       .row.row-no-wrap
         -# Column: Static / base version
-        - @import.mapped_fields.each do |mapped_column|
-          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import
+        - @import.mapped_fields.each_with_index do |mapped_column, index|
+          = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
 
         / -# Column: Column is mid-stream being "mapped" as indicated to the user
         / -# like this: on render, apply .card-active

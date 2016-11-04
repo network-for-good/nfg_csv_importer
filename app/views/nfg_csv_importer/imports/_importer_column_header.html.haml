@@ -1,25 +1,26 @@
 - mapped_column = nil if local_assigns[:mapped_column].nil?
 - import = nil if local_assigns[:import].nil?
 
+
 - case mapped_column.status
 - when :unmapped
-  - header_name = "a_static_column"
+  - mapped_column_name = mapped_column.name
 
 - when :active
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapping Column"
-  - header_name = mapped_column.name
+  - mapped_column_name = mapped_column.name
 - when :mapped
   - label_status = "success"
   - label_icon = "fa-check-circle"
   - label_text = "Mapped"
-  - header_name = mapped_column.mapped_to
+  - mapped_column_name = mapped_column.mapped_to
 - when :ignored
   - label_status = "danger"
   - label_icon = "fa-exclamation-circle"
   - label_text = "Won't be imported"
-  - header_name = mapped_column.name
+  - mapped_column_name = mapped_column.name
 
 
 - unless mapped_column.status == :unmapped
@@ -32,21 +33,23 @@
     %i{ class: "fa #{label_icon}" }
     = label_text
 
-.card-header{ id: ""}
+.card-header{ id: "card_header_#{ mapped_column.name }" }
   .card-header-interactions
     - if (mapped_column.status == :ignored) || (mapped_column.status == :unmapped)
       %label.c-input.c-checkbox.m-b-quarter
         - if mapped_column.status == :ignored
           / todo: make name dynamic
-          %input{ name: "ignore_header_name", type: "checkbox", value: "ignore_column", checked: "checked" }
+          %input{ name: "ignore_column", type: "checkbox", value: "ignore_#{ mapped_column_name }", checked: "checked" }
         - else
-          %input{ name: "ignore", type: "checkbox", value: "ignore" }
+          %input{ name: "ignore_column", type: "checkbox", value: "ignore_#{ mapped_column_name }" }
         %span.c-indicator
         %span.text-muted Ignore Column
     - else
+      / todo: turn on this functionality and re-render the column header
       %a.m-b-quarter{ href: "javascript:;" }
         %i.fa.fa-pencil
         Edit Column
+
 
   .form-group
     - if mapped_column.status == :ignored
@@ -55,7 +58,9 @@
 
     - elsif mapped_column.status == :unmapped
       - all_fields = [""] + import.all_valid_columns + [NfgCsvImporter::Import.ignore_column_value]
-      = select_tag mapped_column.name, options_for_select(all_fields.map { |f| f.humanize }.zip(all_fields)), class: "c-select", allow_blank: true
+
+
+      = select_tag "import[fields_mapping[#{ mapped_column_name }]]", options_for_select(all_fields.map { |f| f.humanize.titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
 
     - else
       -# Kicks off edit, just like the edit button above.
@@ -65,11 +70,11 @@
 
   %h4.h5.text-xs-center
     - if (mapped_column.status == :unmapped) || (mapped_column.status == :ignored)
-      = header_name
+      = mapped_column_name
       - unless mapped_column.status == :ignored
         %sup
           %i.fa.fa-info-circle{ title: "We couldn't automatically map this column for you", data: { toggle: "tooltip", placement: "top" } }
     - else
-      %s.text-muted= header_name
+      %s.text-muted= mapped_column_name
 
 
