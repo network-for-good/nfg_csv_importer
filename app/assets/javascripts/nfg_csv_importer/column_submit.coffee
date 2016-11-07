@@ -1,21 +1,22 @@
-class NfgCsvImporter.ImporterColumn
-  constructor: (@el) ->
-    @checkboxes = @el.find "input[type='checkbox']"
-    @selects = @el.find "select"
+class NfgCsvImporter.SetEventsOnImportColumn
+  constructor: (el) ->
+    @column = $(el)
+    @checkbox = @column.find "input[type='checkbox']"
+    @select = @column.find "select"
+    @edit_column =  @column.find "a[data-edit-column='true']"
     @form = $("form#fields_mapping")
-    @edit_columns = $("a[data-edit-column='true']")
 
-    @checkboxes.on 'click', (event) =>
+    @checkbox.on 'click', (event) =>
       checkbox = $(event.currentTarget)
       card = checkbox.closest ".card"
       @submitFormForColumn(checkbox, card)
 
-    @selects.on 'change', (event) =>
+    @select.on 'change', (event) =>
       select = $(event.currentTarget)
       card = select.closest ".card"
       @submitFormForColumn(select, card)
 
-    @edit_columns.on 'click', (event) =>
+    @edit_column.on 'click', (event) =>
       link = $(event.currentTarget)
       card = link.closest ".card"
       hidden_field = card.find("input[type='hidden']")
@@ -31,6 +32,7 @@ class NfgCsvImporter.ImporterColumn
       data: form_data
 
 $(document).on 'turbolinks:load', ->
-  el = $(".col-importer")
-  return unless el.length > 0
-  inst = new NfgCsvImporter.ImporterColumn el
+  columns = $(".col-importer")
+  return unless columns.length > 0
+  for column in columns
+    new NfgCsvImporter.SetEventsOnImportColumn column
