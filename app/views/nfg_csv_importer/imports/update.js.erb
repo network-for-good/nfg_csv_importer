@@ -28,3 +28,12 @@ $("a.text-glow").click(function() {
   highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;
   return highlighter.toggleHighlights();
 });
+
+
+// Re-initialize Tooltips
+if (!('ontouchstart' in window)) {
+  $('[data-toggle="tooltip"]').tooltip({
+    trigger: 'hover',
+    container: 'body'
+  });
+}

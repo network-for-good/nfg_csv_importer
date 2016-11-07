@@ -9,6 +9,62 @@
 
     .alert-link, a{
       color: $color !important;
+
+      &.btn{
+
+        position: relative;
+
+        .linked-text{
+          transition: top 0.3s ease-in-out;
+
+          position: relative;
+          display:block;
+          top:0;
+        }
+        @include hover-focus{
+
+          .linked-text{
+
+            top: -8px;
+
+            &:before{
+
+              color: #fff;
+              display: inline-block;
+              font: normal normal normal 14px/1 FontAwesome;
+              font-size: 12px !important;
+              text-rendering: auto;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+              content: "\f107";
+              // bottom: 10px;
+              top:16px;
+              position: absolute;
+
+              left: 50%;
+              -webkit-transform: translateX(-50%);
+              transform: translateX(-50%);
+
+
+
+
+
+            }
+          }
+
+
+
+
+
+          color:#fff !important;
+
+          & .text-muted{
+            color: $color !important;
+          }
+        }
+
+
+      }
     }
 
     .fa{
@@ -56,4 +112,8 @@
 
 .alert-green{
   @include importer-alert($brand-success);
+}
+
+.alert-yellow{
+  @include importer-alert($brand-warning);
 }

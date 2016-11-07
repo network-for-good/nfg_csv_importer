@@ -1,204 +1,174 @@
+.interstitial-open{
 
-.interstitial{
+  .interstitial{
+    .close{
+      transition: all 0.5s ease-in-out;
+      position: fixed !important;
+      top:65px;
+      right: 80px;
+      color:#fff !important;
 
+      float: none !important;
+      z-index: 9999999999 !important;
+      opacity: 1;
+      text-shadow: none;
+      color: #fff;
+      display:inline-block;
 
-  // .modal-open      - body class for killing the scroll
-  // .modal           - container to scroll within
-  // .modal-dialog    - positioning shell for the actual modal
-  // .modal-content   - actual modal w/ bg and corners and shit
+      .fa{
+        @include rem(font-size, 40px);
+        color: #fff;
+        text-shadow: 0px 0px 6px rgba(255, 255, 255, 0);
+      }
 
+      @include hover-focus{
+        .fa{
+          color: #fff;
+          text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
 
-  // Kill the scroll on the body
-  // .modal-open {
-  //   overflow: hidden;
-  // }
+    .container-fluid{
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
 
-  // Container that the modal scrolls within
-  // .modal {
-  //   position: fixed;
-  //   top: 0;
-  //   right: 0;
-  //   bottom: 0;
-  //   left: 0;
-  //   z-index: $zindex-modal;
-  //   display: none;
-  //   overflow: hidden;
-  //   // Prevent Chrome on Windows from adding a focus outline. For details, see
-  //   // https://github.com/twbs/bootstrap/pull/10951.
-  //   outline: 0;
-  //   -webkit-overflow-scrolling: touch;
+      > .row-xs-center{
+        height: 100%;
+      }
+    }
 
-  //   // When fading in the modal, animate it to slide down
-  //   &.fade .modal-dialog {
-  //     transition: transform .3s ease-out;
-  //     transform: translate(0, -25%);
-  //   }
-  //   &.in .modal-dialog { transform: translate(0, 0); }
-  // }
-  // .modal-open .modal {
-  //   overflow-x: hidden;
-  //   overflow-y: auto;
-  // }
+    &.modal{
 
-  // Shell div to position the modal with bottom padding
-  // .modal-dialog {
-  //   position: relative;
-  //   width: auto;
-  //   margin: 10px;
-  // }
-
-  // Actual modal
-  .modal-content {
-    font-size: 100px;
-    // position: relative;
-    // background-color: $modal-content-bg;
-    background-color: transparent !important;
-    // background-clip: padding-box;
-    // border: 1px solid $modal-content-border-color;
-    border: none !important;
-    // border-radius: $border-radius-lg;
-    border-radius: 0 !important;
-    // @include box-shadow(0 3px 9px rgba(0,0,0,.5));
-    box-shadow: none !important;
-    // Remove focus outline from opened modal
-    // outline: 0;
+      &.fade .modal-dialog {
+        transition: opacity 0.5s ease-in-out;
+        transform: translate(0, 0%);
+        opacity:0;
+      }
+      &.in .modal-dialog {
+        opacity: 1;
+      }
+    }
   }
 
-  // Modal background
-  .modal-backdrop {
-    // position: fixed;
-    // top: 0;
-    // right: 0;
-    // bottom: 0;
-    // left: 0;
-    // z-index: $zindex-modal-bg;
-    background-color: $brand-primary !important;
-
-    // Fade for backdrop
-    // &.fade { opacity: 0; }
-    &.in { opacity: 95% !important; }
+  .modal-dialog{
+    margin:0;
   }
 
-  // Modal header
-  // Top section of the modal w/ title and dismiss
-  .modal-header {
-    // padding: $modal-title-padding;
-    // border-bottom: 1px solid $modal-header-border-color;
-    border-bottom: none !important;
-    // @include clearfix;
-  }
-  // Close icon
-  .modal-header .close {
-    position: fixed !important;
-    top: 45px !important;
-    right: 45px !important;
-  }
-
-  // Title text within header
-  .modal-title {
-    margin: 0;
-    line-height: 1.2;
+  .modal-content{
     background-color: transparent;
+    border: none;
+    border-radius: 0;
+    color: #fff;
+    @include vendor-prefix((box-shadow: none), webkit moz ms o);
   }
 
-  // Modal body
-  // Where all modal content resides (sibling of .modal-header and .modal-footer)
-  .modal-body {
-    // position: relative;
-    // padding: $modal-inner-padding;
-    background-color:transparent;
+  .modal-backdrop{
+    background-color:$brand-primary;
+
+    &.in{
+      opacity: 0.95;
+    }
   }
 
-  // Footer (for actions)
-  .modal-footer {
-    border-top: none;
+  .modal-header{
+    border: none;
+    background: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color:#fff;
+    @include rem(font-size, 60px);
+    font-weight: $font-weight-bold;
+    padding:0;
+    position: relative;
+
+
+
+
+    .media{
+
+      .media-left{
+        position: absolute;
+        left: -155px;
+        top: -27px;
+      }
+    }
+
+    .fa-stack{
+      @include rem(font-size, 70px);
+
+      .fa-stack-2x{
+        color: #3eb9f2;
+      }
+      .fa-stack-1x{
+        color:#fff;
+      }
+    }
+  }
+
+  .modal-body{
+    padding:0;
+
+    &,
+    p{
+      @include rem(font-size, 40px);
+      font-weight: $font-weight-light;
+      line-height:1.15;
+      }
+
+    small,
+    .small{
+      @include rem(font-size, 16px);
+      font-weight: $font-weight-normal;
+    }
+  }
+
+  .modal-footer{
+    padding:0;
+    border:none;
     background-color: transparent;
-  //   padding: $modal-inner-padding;
-  //   text-align: right; // right align buttons
-  //   border-top: 1px solid $modal-footer-border-color;
-  //   @include clearfix(); // clear it in case folks use .pull-* classes on buttons
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    text-align: left;
 
-  //   // Properly space out buttons
-  //   .btn + .btn {
-  //     margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
-  //     margin-left: 5px;
-  //   }
-  //   // but override that for button groups
-  //   .btn-group .btn + .btn {
-  //     margin-left: -1px;
-  //   }
-  //   // and override it for block buttons as well
-  //   .btn-block + .btn-block {
-  //     margin-left: 0;
-  //   }
+    a.text-link{
+
+
+
+      &,
+      .fa{
+        color: rgba(255,255,255,0.6) !important;
+        transition: 0.15s ease-in-out;
+      }
+
+      @include hover-focus{
+        &,
+        .fa{
+          color:#fff !important;
+        }
+      }
+
+    }
   }
 
+  @include media-breakpoint-up(sm) {
+    // Automatically set modal's width for larger viewports
+    .modal-dialog {
+      width: 100%;
+      margin: 0 auto;
+    }
+    .modal-content {
+      // @include vendor-prefix((box-shadow: none), webkit moz ms o);
+    }
 
+    // Modal sizes
+    .modal-sm { width: 100%; }
+  }
 
-
-
-  //////
-
-
-
-  // .interstitial-open{
-  //   overflow: hidden;
-  // }
-
-  // .interstitial-backdrop{
-  //   position: fixed;
-  //   z-index: $zindex-modal-bg;
-  //   top:0;
-  //   left:0;
-  //   right:0;
-  //   bottom:0;
-  // }
-
-  // .interstitial-blue{
-  //   background-color:rgba($brand-primary, 95%);
-  // }
-
-  // .interstitial{
-  //   position:absolute;
-  //   top:0;
-  //   left:0;
-  //   right:0;
-  //   bottom:0;
-  //   z-index: $zindex-modal;
-
-  //   .interstitial-content{
-  //     position: absolute;
-  //     z-index: $zindex-modal + 1;
-  //     width: auto;
-  //     top:50%;
-  //     left:50%;
-  //     transform: translateY(-50%);
-  //     transform: translateX(-50%);
-
-  //     .media{
-  //       color:#fff;
-  //     }
-
-  //     .media-heading{
-  //       color:#fff;
-  //       @include rem(font-size, 60px);
-  //       font-weight: $font-weight-bold;
-  //     }
-
-  //     .media-body{
-  //       @include rem(font-size, 40px);
-  //       font-weight: $font-weight-light;
-
-  //       strong{
-  //         font-weight: $font-weight-bold;
-  //       }
-
-  //       .small,
-  //       small{
-  //         font-size: 16px;
-  //         font-weight: $font-weight-normal;
-  //       }
-  //     }
-  //   }
-  // }
+  @include media-breakpoint-up(md) {
+    .modal-lg { width: 100%; }
+  }
 }
