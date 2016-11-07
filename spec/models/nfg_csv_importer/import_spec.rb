@@ -311,6 +311,20 @@ describe NfgCsvImporter::Import do
           end
         end
       end
+
+      context "and all validations are not met" do
+
+      end
+    end
+
+    context "when all fields are not mapped or ignored" do
+      before do
+        import.stubs(:unmapped_columns).returns([stub(unmapped: true)])
+      end
+
+      it "should be false" do
+        expect(subject).not_to be
+      end
     end
   end
 end

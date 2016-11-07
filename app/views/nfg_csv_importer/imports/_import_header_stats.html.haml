@@ -1,4 +1,3 @@
-- ready_for_import = nil if local_assigns[:ready_for_import].nil?
 - import = nil if local_assigns[:import].nil?
 
 #importer_header_stats.container-fluid.container-flush
@@ -41,7 +40,7 @@
 
     .col-md-4.col-md-center.text-xs-center
       .display-4
-        - if ready_for_import
+        - if import.ready_to_import?
           %i.fa.fa-check-circle.text-white
           %br
           Ready to import
@@ -50,7 +49,7 @@
           %br
           Not ready to import
       %p
-        %a{ href: "javascript:;", class: "btn btn-white-outline #{ 'disabled' unless ready_for_import }" }
+        %a{ href: "javascript:;", class: "btn btn-white-outline #{ 'disabled' unless import.ready_to_import? }" }
 
           Review & Confirm
           %i.fa.fa-chevron-right.text-white
