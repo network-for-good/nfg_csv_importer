@@ -32,7 +32,7 @@ class NfgCsvImporter::ImportService
   end
 
   def headers_valid?
-    (all_headers_are_string_type? && header_has_all_required_columns? && unknown_columns.empty?)
+    (all_headers_are_string_type? && header_has_all_required_columns? )
   end
 
   def valid_file_extension?

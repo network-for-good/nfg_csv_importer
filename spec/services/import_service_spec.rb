@@ -265,7 +265,7 @@ describe NfgCsvImporter::ImportService do
 		before(:each) do
 			import_service.stubs(:all_headers_are_string_type?).returns(all_headers_are_string_type)
 			import_service.stubs(:header_has_all_required_columns?).returns(header_has_all_required_columns)
-			import_service.stubs(:unknown_columns).returns(unknown_columns)
+			# import_service.stubs(:unknown_columns).returns(unknown_columns)
 		end
 
 		let(:all_headers_are_string_type) { true }
@@ -285,12 +285,6 @@ describe NfgCsvImporter::ImportService do
 			let(:header_has_all_required_columns) { false }
 			it { expect(subject).not_to be }
 		end
-
-		context "unknown columns present" do
-			let(:unknown_columns) { ['unknown'] }
-			it { expect(subject).not_to be }
-		end
-
 	end
 
 	describe "#valid_file_extension?" do
@@ -310,27 +304,6 @@ describe NfgCsvImporter::ImportService do
 			it { expect(subject).not_to be }
 		end
 
-	end
-
-	describe "#unknown_columns" do
-		subject { import_service.unknown_columns }
-
-		before(:each) do
-			import_service.stubs(:stripped_headers).returns(stripped_headers)
-			import_service.stubs(:all_valid_columns).returns(all_valid_columns)
-		end
-
-		let(:stripped_headers) { ['unknown', 'name', 'email'] }
-		let(:all_valid_columns) { ['name', 'email']  }
-
-		context "when there are unknown columns" do
-			it { expect(subject).to eq(['unknown']) }
-		end
-
-		context "when there is no unknown columns" do
-			let(:stripped_headers) { ['name', 'email']  }
-			it { expect(subject).to eq([]) }
-		end
 	end
 
 	describe "#missing_required_columns" do
