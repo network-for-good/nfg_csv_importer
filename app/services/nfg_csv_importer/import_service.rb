@@ -9,15 +9,15 @@ class NfgCsvImporter::ImportService
                 :starting_row, :start_timestamp, :current_row
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
-           :description, :field_aliases, :to => :import_definition
+           :description, :field_aliases, :column_validation_rules, :to => :import_definition
+
+  delegate :fields_mapping, to: :import_record
 
   alias_attribute :import_model, :model
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    definition = ::ImportDefinition.new
-    definition.imported_for = imported_for
-    OpenStruct.new definition.send(type)
+    @import_definition ||= ::ImportDefinition.get_definition(type, imported_for)
   end
 
   def import
@@ -31,12 +31,18 @@ class NfgCsvImporter::ImportService
     @transaction_id ||= SecureRandom.urlsafe_base64
   end
 
+  # column validation related methods
+
   def headers_valid?
-    (all_headers_are_string_type? && header_has_all_required_columns? )
+    (all_headers_are_string_type? && header_has_all_required_columns? && all_column_rules_valid?)
   end
 
-  def valid_file_extension?
-    %w{.csv .xls .xlsx}.include? file_extension
+  def all_column_rules_valid?
+    invalid_column_rules.empty?
+  end
+
+  def header_has_all_required_columns?
+    missing_required_columns.empty?
   end
 
   def unknown_columns
@@ -48,16 +54,24 @@ class NfgCsvImporter::ImportService
     required_columns - stripped_headers
   end
 
+  def invalid_column_rules
+    column_validation_rules.select do |rule|
+      !rule.validate(fields_mapping) # keep rule if validate is false
+    end
+  end
+
+  ## End column validation methods
+
+  def valid_file_extension?
+    %w{.csv .xls .xlsx}.include? file_extension
+  end
+
   def no_of_records
     spreadsheet.last_row - 1
   end
 
   def no_of_error_records
     errors_list ? errors_list.count : 0
-  end
-
-  def header_has_all_required_columns?
-    missing_required_columns.empty?
   end
 
   def run_time_limit_reached?
@@ -179,7 +193,6 @@ class NfgCsvImporter::ImportService
   def get_action(record)
     record.new_record? ? "create" : "update"
   end
-
 
   def all_headers_are_string_type?
     header.collect{|header| header.is_a?(String) }.all?

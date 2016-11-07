@@ -16,7 +16,11 @@ describe NfgCsvImporter::ImportService do
 	let(:file_name) {"/subscribers.csv"}
 	let(:admin) {  FactoryGirl.create(:user)}
 	let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
-	let(:import) { FactoryGirl.build(:import, import_file: File.open("spec/fixtures#{file_name}"))}
+	let(:import) { FactoryGirl.build(:import,
+																		import_file: File.open("spec/fixtures#{file_name}"),
+																		fields_mapping: fields_mapping)}
+	let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
+	let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }
 
 	describe "subscriber" do
     let!(:csv_data) { mock }
@@ -265,12 +269,12 @@ describe NfgCsvImporter::ImportService do
 		before(:each) do
 			import_service.stubs(:all_headers_are_string_type?).returns(all_headers_are_string_type)
 			import_service.stubs(:header_has_all_required_columns?).returns(header_has_all_required_columns)
-			# import_service.stubs(:unknown_columns).returns(unknown_columns)
+			import_service.stubs(:all_column_rules_valid?).returns(all_column_rules_valid)
 		end
 
 		let(:all_headers_are_string_type) { true }
 		let(:header_has_all_required_columns) { true }
-		let(:unknown_columns) { [] }
+		let(:all_column_rules_valid) { true }
 
 		context "headers are valid" do
 			it { expect(subject).to be }
@@ -285,6 +289,51 @@ describe NfgCsvImporter::ImportService do
 			let(:header_has_all_required_columns) { false }
 			it { expect(subject).not_to be }
 		end
+
+		context "invalid column rules" do
+		  let(:all_column_rules_valid) { false }
+
+		  it { expect(subject).not_to be }
+		end
+	end
+
+	describe "#all_column_rules_valid?" do
+  	before do
+  	  import_service.stubs(:column_validation_rules).returns(column_validation_rules)
+  	end
+
+	  subject { import_service.all_column_rules_valid? }
+
+	  context 'when there are no rules supplied with the definition' do
+	  	let(:column_validation_rules) { [] }
+	  	it "should be true" do
+	  		expect(subject).to be
+	  	end
+	  end
+
+	  context "when there are rules supplied with the definition and some of them are invalid" do
+	    before do
+	      column_validator.expects(:validate).with(import.fields_mapping).returns(false)
+	    end
+
+	    let(:column_validation_rules) { [column_validator] }
+
+	    it "should be false" do
+	    	expect(subject).not_to be
+	    end
+	  end
+
+	  context "when there are rules supplied with the definition and all are valid" do
+	    before do
+	      column_validator.expects(:validate).with(import.fields_mapping).returns(true)
+	    end
+
+	    let(:column_validation_rules) { [column_validator] }
+
+	    it "should be true" do
+	    	expect(subject).to be
+	    end
+	  end
 	end
 
 	describe "#valid_file_extension?" do
