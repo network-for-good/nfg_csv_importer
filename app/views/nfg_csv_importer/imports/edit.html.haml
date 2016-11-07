@@ -11,7 +11,6 @@
   / - if @errors
   = render "nfg_csv_importer/imports/design_source/importer_errors"
 
-
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   #thing.container-fluid.container-flush
 
@@ -56,4 +55,14 @@
   / TODO: any thoughts on how I can pass arguments / locals to this modal so that content can be customized per error message? -- this modal is rendered from a donation or individual user column error (e.g. missing first name or full name)
 
 
-  = render partial: "nfg_csv_importer/imports/importer_modal", locals: {  modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }
+  / = render partial: "nfg_csv_importer/imports/importer_modal", locals: {  modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }
+
+  =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal_welcome" }, class: "btn btn-primary", remote: true do
+    Kick it off
+    %i.fa.fa-caret-right.fa-fw
+
+  = render layout: "nfg_csv_importer/imports/importer_modal", locals: {  component_id: "nfg_csv_importer_modal_welcome", resource_color: :blue, interstitial: true, data: { modal_identifier: "nfg_csv_importer_modal" } } do
+    Test
+
+
+

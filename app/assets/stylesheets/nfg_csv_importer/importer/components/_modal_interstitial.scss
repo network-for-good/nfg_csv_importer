@@ -1,5 +1,5 @@
 
-.interstitial{
+
 
 
   // .modal-open      - body class for killing the scroll
@@ -65,18 +65,22 @@
   }
 
   // Modal background
-  .modal-backdrop {
-    // position: fixed;
-    // top: 0;
-    // right: 0;
-    // bottom: 0;
-    // left: 0;
-    // z-index: $zindex-modal-bg;
-    background-color: $brand-primary !important;
+  .interstitial-open{
 
-    // Fade for backdrop
-    // &.fade { opacity: 0; }
-    &.in { opacity: 95% !important; }
+
+    .modal-backdrop {
+      // position: fixed;
+      // top: 0;
+      // right: 0;
+      // bottom: 0;
+      // left: 0;
+      // z-index: $zindex-modal-bg;
+      background-color: $brand-primary !important;
+
+      // Fade for backdrop
+      // &.fade { opacity: 0; }
+      &.in { opacity: 95% !important; }
+    }
   }
 
   // Modal header
@@ -201,4 +205,3 @@
   //     }
   //   }
   // }
-}

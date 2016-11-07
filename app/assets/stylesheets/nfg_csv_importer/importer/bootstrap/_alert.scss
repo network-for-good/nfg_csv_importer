@@ -57,3 +57,7 @@
 .alert-green{
   @include importer-alert($brand-success);
 }
+
+.alert-yellow{
+  @include importer-alert($brand-warning);
+}
