@@ -15,9 +15,9 @@ class NfgCsvImporter::ImportService
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    service = ::ImportDefinition.new
-    service.imported_for = imported_for
-    OpenStruct.new service.send(type)
+    definition = ::ImportDefinition.new
+    definition.imported_for = imported_for
+    OpenStruct.new definition.send(type)
   end
 
   def import
@@ -191,7 +191,7 @@ class NfgCsvImporter::ImportService
 
   def set_obj_attributes(row,object)
     # this requires that the object have a attributes= method, which ActiveModel classes do not
-    object.attributes = assign_defaults(striped_attributes(row,object))
+    object.attributes = assign_defaults(stripped_attributes(row,object))
   end
 
   def set_zone_for_date_fields(data)
@@ -207,7 +207,7 @@ class NfgCsvImporter::ImportService
     }
   end
 
-  def striped_attributes(row,object)
+  def stripped_attributes(row,object)
     row.slice( *(object.attributes.keys + import_definition.alias_attributes) )
   end
 

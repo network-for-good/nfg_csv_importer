@@ -66,13 +66,6 @@ module NfgCsvImporter
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
 
-        # TODO
-
-        # this should not be run on create. It will need to be run prior to the import
-        # and will be based on the fields_mapping
-        # We will need to consider how to handle old imports
-        # Should we run a migration to create field mappings based on their columns
-        # collect_header_errors and return false unless headers_valid?
       rescue  => e
         errors.add :base, "File import failed: #{e.message}"
         Rails.logger.error e.message
@@ -105,6 +98,7 @@ module NfgCsvImporter
     def ready_to_import?
       return false if unmapped_columns.present?
       return false if duplicated_field_mappings.present?
+      collect_header_errors and return false unless headers_valid?
       true
     end
 
