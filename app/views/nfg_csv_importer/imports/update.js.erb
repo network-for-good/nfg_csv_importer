@@ -5,41 +5,26 @@ var card = cardHeader.closest(".card");
 
 $("#importer_header_stats").replaceWith("<%= j render  'nfg_csv_importer/imports/import_header_stats', ready_for_import: true, import: @import %>");
 
+// add or remove the error area based on the import's status
+<% if @import.duplicated_field_mappings.present? %>
+  $("#importer_errors").html("<%= j render 'nfg_csv_importer/imports/importer_errors', import: @import %>");
+<% else %>
+  $("#importer_errors").html("");
+<% end %>
+
 cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
-new NfgCsvImporter.ImporterColumn($('.col-importer[data-column-name=<%= @mapped_column.name %>]'));
+new NfgCsvImporter.SetEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
 
 card.attr('class', 'card card-<%= @mapped_column.status.to_s %>');
-card.attr("data-mapped", "<%= @mapped_column.mapped? ? 'true' : 'false' %>");
+card.attr("data-mapped", "<%= @mapped_column.unmapped? ? 'false' : 'true' %>");
 
-var highlighted = importerContainer.attr("data-unmapped-highlight") == 'enabled';
-//
-if(highlighted) {
-  $("#highlights_on").show();
-  $("#highlights_off").hide();
-}
-else
-{
-  $("#highlights_on").hide();
-  $("#highlights_off").show();
-}
-// this is a duplicate of the code in the highlight-unmapped-columns.coffee
+// Reset the highlight toggle to it's appropriate state
+var highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;
+highlighter.setHighlightsBasedOnStatus();
+
+// set the click action on the highlight toggler
 $("a.text-glow").click(function() {
-  var new_highlight_status;
-  if ($('.nfg-csv-importer').attr('data-unmapped-highlight') === 'enabled') {
-    new_highlight_status = 'disabled';
-  } else {
-    new_highlight_status = 'enabled';
-  }
-  $('.nfg-csv-importer').attr('data-unmapped-highlight', new_highlight_status);
-  $("#highlights_off").toggle();
-  $("#highlights_on").toggle();
-  return $(".card[data-mapped='false']").each(function() {
-    return $(this).toggleClass("card-highlight");
-  });
+  var highlighter;
+  highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;
+  return highlighter.toggleHighlights();
 });
-
-<% if @mapped_column.unmapped? %>
-  if(highlighted) {
-    card.toggleClass("card-highlight")
-  }
-<% end %>

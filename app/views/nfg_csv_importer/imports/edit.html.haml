@@ -9,8 +9,9 @@
 
   / Doesn't work yet
   / - if @errors
-  - if @import.duplicated_field_mappings.present?
-    = render "nfg_csv_importer/imports/importer_errors", import: @import
+  #importer_errors
+    - if @import.duplicated_field_mappings.present?
+      = render "nfg_csv_importer/imports/importer_errors", import: @import
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   #thing.container-fluid.container-flush

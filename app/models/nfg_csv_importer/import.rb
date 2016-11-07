@@ -31,6 +31,22 @@ module NfgCsvImporter
       imported_records.created.any? && complete? && !Rails.env.production?
     end
 
+    def column_stats
+      return @stats if @stats
+      @stats = {
+        column_count: 0,
+        unmapped_column_count: 0,
+        mapped_column_count: 0,
+        ignored_column_count: 0
+      }
+
+      mapped_fields.each do |mf|
+        @stats[:column_count] += 1
+        @stats["#{ mf.status }_column_count".to_sym] += 1
+      end
+      @stats
+    end
+
     def duplicated_field_mappings
       return {} unless fields_mapping.present?
       fields = fields_mapping.values
@@ -87,6 +103,7 @@ module NfgCsvImporter
     end
 
     def ready_to_import?
+      return false if unmapped_columns.present?
       return false if duplicated_field_mappings.present?
       true
     end
@@ -104,22 +121,6 @@ module NfgCsvImporter
       self.save!
     end
 
-    def column_stats
-      return @stats if @stats
-      @stats = {
-        column_count: 0,
-        unmapped_column_count: 0,
-        mapped_column_count: 0,
-        ignored_column_count: 0
-      }
-
-      mapped_fields.each do |mf|
-        @stats[:column_count] += 1
-        @stats["#{ mf.status }_column_count".to_sym] += 1
-      end
-      @stats
-    end
-
     def time_zone
       if imported_for.respond_to?(:time_zone) && imported_for.time_zone
         imported_for.time_zone
@@ -128,8 +129,8 @@ module NfgCsvImporter
       end
     end
 
-    def can_be_deleted?
-      imported_records.created.any? && complete? && !Rails.env.production?
+    def unmapped_columns
+      mapped_fields.select { |column| column.unmapped? }
     end
 
     private
