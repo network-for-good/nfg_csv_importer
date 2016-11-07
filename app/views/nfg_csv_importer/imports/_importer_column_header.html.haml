@@ -59,6 +59,8 @@
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
         = mapped_column.mapped_to.humanize.titleize
+        %small{ title: "This column has been successfully mapped", data: { toggle: "tooltip", placement: "top" } }
+          %i.fa.fa-icon.fa-check-circle.text-success
       = hidden_field_tag field_name
 
 
@@ -67,7 +69,7 @@
       = mapped_column_name
       - unless mapped_column.status == :ignored
         %sup
-          %i.fa.fa-info-circle{ title: "We couldn't automatically map this column for you", data: { toggle: "tooltip", placement: "top" } }
+          %i.fa.fa-info-circle{ title: "This column hasn't been mapped yet", data: { toggle: "tooltip", placement: "top" } }
     - else
       %s.text-muted= mapped_column.name
 
