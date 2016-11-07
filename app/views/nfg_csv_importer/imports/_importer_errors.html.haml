@@ -34,63 +34,16 @@
 
 
             .row
-              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
-                .media
-                  .media-left
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      A
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      B
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      B
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      B
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      B
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      C
-                  .media-body.text-muted
-                    Full Name
+              - import.duplicated_field_mappings.each do |field, columns|
 
-              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
-                .media
-                  .media-left
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      G
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      AF
-                  .media-body.text-muted
-                    Notification Tribute Type
-
-              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
-                .media
-                  .media-left
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      Q
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      Z
-                  .media-body.text-muted
-                    Payment Method
-
-              .col-xl-3.col-md-4.col-xs-12.m-b-quarter
-                .media
-                  .media-left
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      F
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
-                      AAC
-                  .media-body.text-muted
-                    Sandwhich Preference
+                .col-xl-3.col-md-4.col-xs-12.m-b-quarter
+                  .media
+                    .media-left
+                      - columns.each do |column|
+                        %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                          = column
+                    .media-body.text-muted
+                      = field.humanize.titleize
 
   / these individual / donation errors are always presented in a 6 col fashion. donation column errors get the fa-dollar icon, user column errors get the fa-user icon
   .row

@@ -36,6 +36,78 @@ describe NfgCsvImporter::MappedField do
     end
   end
 
+  describe "#mapped?" do
+    before do
+      mapped_field.stubs(:status).returns(status)
+    end
+
+    subject { mapped_field.mapped? }
+
+    context 'when the status is :mapped' do
+      let(:status) { :mapped }
+
+      it "should be true" do
+        expect(subject).to be
+      end
+    end
+
+    context "when the status is not :mapped" do
+      let(:status) { :unmapped }
+
+      it "should be false" do
+        expect(subject).not_to be
+      end
+    end
+  end
+
+  describe "#unmapped?" do
+    before do
+      mapped_field.stubs(:status).returns(status)
+    end
+
+    subject { mapped_field.unmapped? }
+
+    context 'when the status is :unmapped' do
+      let(:status) { :unmapped }
+
+      it "should be true" do
+        expect(subject).to be
+      end
+    end
+
+    context "when the status is not :unmapped" do
+      let(:status) { :mapped }
+
+      it "should be false" do
+        expect(subject).not_to be
+      end
+    end
+  end
+
+  describe "#ignored?" do
+    before do
+      mapped_field.stubs(:status).returns(status)
+    end
+
+    subject { mapped_field.ignored? }
+
+    context 'when the status is :ignored' do
+      let(:status) { :ignored }
+
+      it "should be true" do
+        expect(subject).to be
+      end
+    end
+
+    context "when the status is not :ignored" do
+      let(:status) { :mapped }
+
+      it "should be false" do
+        expect(subject).not_to be
+      end
+    end
+  end
+
   describe "#name" do
     subject { mapped_field.name }
 
@@ -44,7 +116,7 @@ describe NfgCsvImporter::MappedField do
     end
   end
 
-  describe "mapped_to" do
+  describe "#mapped_to" do
     subject { value }
   end
 end

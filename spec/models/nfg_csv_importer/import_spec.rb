@@ -201,6 +201,47 @@ describe NfgCsvImporter::Import do
     end
   end
 
+  describe "duplicated_field_mappings" do
+    subject { import.duplicated_field_mappings }
+    context 'when no field mappings contain two of the same fields' do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => "first_name"})
+      end
+
+      it "should be an empty hash" do
+        expect(subject).to eq({})
+      end
+    end
+
+    context "when the fields mapping contains duplicated fields" do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => "first_name", "Donor Email" => "email", "Donor First Name" => "first_name"})
+      end
+      it "should return a hash where the keys are the duplicate fields names and the values are an array header columns mapped to that field" do
+        expect(subject).to eq({ "first_name" => ["First Name", "Donor First Name"]})
+      end
+    end
+
+    context "when the fields mapping contains duplicated fields but they are ignore_columns" do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => NfgCsvImporter::Import.ignore_column_value, "Donor Email" => "email", "Donor First Name" => NfgCsvImporter::Import.ignore_column_value})
+      end
+      it "should not include the ignore column dupes in the list" do
+        expect(subject).to eq({})
+      end
+    end
+
+    context "when the fields mapping contains duplicated fields but they are blank values" do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => nil, "Donor Email" => "email", "Donor First Name" => nil})
+      end
+      it "should not include the ignore column dupes in the list" do
+        expect(subject).to eq({})
+      end
+    end
+
+  end
+
   describe "time_zone" do
     subject { import.time_zone }
     context 'when imported_for does not respond to time_zone' do
@@ -246,6 +287,29 @@ describe NfgCsvImporter::Import do
         expect(csv.size).to eq 3
         expect(subject).to include 'pavan@gmail.com' # new errors
         expect(subject).to include 'ajporterfield@gmail' # existing errors
+      end
+    end
+  end
+
+  describe "#ready_to_import?" do
+    subject { import.ready_to_import? }
+    context "when all fields are mapped or ignored" do
+      context "and all validations (field requirements) are met" do
+        context 'and there are no duplicate fields' do
+          it "should be true" do
+            expect(subject).to be
+          end
+        end
+
+        context 'and there are duplicate fields' do
+          before do
+            import.stubs(:duplicated_field_mappings).returns({ "field1" => [3,6]})
+          end
+
+          it "should return false" do
+            expect(subject).not_to be
+          end
+        end
       end
     end
   end
