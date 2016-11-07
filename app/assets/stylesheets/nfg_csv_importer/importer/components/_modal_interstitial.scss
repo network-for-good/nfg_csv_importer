@@ -1,9 +1,86 @@
 .interstitial-open{
 
+  .interstitial{
+    &.modal{
+
+
+      &.fade .modal-dialog {
+        transition: opacity 1s ease-in-out;
+        transform: translate(0, 0%);
+        opacity:0;
+      }
+      &.in .modal-dialog {
+        opacity: 1;
+      }
+    }
+  }
+
+  .modal-dialog{
+    margin:0;
+  }
+
+  .modal-content{
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+  }
 
   .modal-backdrop{
-      background-color:$brand-primary;
+    background-color:$brand-primary;
 
+    &.in{
+      opacity: 0.95;
+    }
+  }
 
+  .modal-header{
+    border: none;
+    background: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color:#fff;
+    @include rem(font-size, 60px);
+    font-weight: $font-weight-bold;
+    padding:0;
+
+    .fa-stack{
+      .fa-stack-2x{
+        color: #38b4ed;
+      }
+      .fa-stack-1x{
+        color:#fff;
+      }
+    }
+  }
+
+  .modal-body{
+    padding:0;
+  }
+
+  .modal-footer{
+    padding:0;
+    border:none;
+    background-color: transparent;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    text-align: left;
+  }
+
+  @include media-breakpoint-up(sm) {
+    // Automatically set modal's width for larger viewports
+    .modal-dialog {
+      width: 100%;
+      margin: 0 auto;
+    }
+    .modal-content {
+      @include vendor-prefix((box-shadow: none), webkit moz ms o);
+    }
+
+    // Modal sizes
+    .modal-sm { width: 100%; }
+  }
+
+  @include media-breakpoint-up(md) {
+    .modal-lg { width: 100%; }
   }
 }
