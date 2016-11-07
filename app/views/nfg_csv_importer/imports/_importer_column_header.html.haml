@@ -21,6 +21,10 @@
   - label_icon = "fa-exclamation-circle"
   - label_text = "Won't be imported"
   - mapped_column_name = mapped_column.name
+- when :duplicate
+  - label_status = "danger"
+  - label_icon = "fa-exclamation-triangle"
+  - label_text = "Duplicate column header"
 
 .card-header{ id: "card_header_#{ mapped_column.name }" }
   - unless mapped_column.status == :unmapped
@@ -55,6 +59,11 @@
 
       = select_tag field_name, options_for_select(all_fields.map { |f| f.humanize.titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
 
+    - elsif mapped_column.status == :duplicate
+      %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
+        = mapped_column.mapped_to.humanize.titleize
+        %small{ title: "This column is a duplicate header", data: { toggle: "tooltip", placement: "top" } }
+          %i.fa.fa-exclamation-circle.text-white
     - else
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
@@ -62,6 +71,7 @@
         %small{ title: "This column has been successfully mapped", data: { toggle: "tooltip", placement: "top" } }
           %i.fa.fa-icon.fa-check-circle.text-success
       = hidden_field_tag field_name
+
 
 
   %h4.h5.text-xs-center

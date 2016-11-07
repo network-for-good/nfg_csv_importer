@@ -103,6 +103,31 @@
   }
 }
 
+.card-duplicate{
+  .list-group-flush{
+    &.list-group{
+      border-color: darken($brand-warning, 10%);
+      transition: all .5s ease-in-out;
+    }
+    .list-group-item{
+
+      background-color:#ff7d49;
+      transition: all .5s ease-in-out;
+      border-bottom-color: #ff6d33;
+      color:#ffe0d4;
+
+      &:nth-child(even){
+        background-color: #ff956b;
+        transition: all .5s ease-in-out;
+      }
+
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+  }
+}
+
 .card-highlight{
   .list-group-flush{
     &.list-group{
