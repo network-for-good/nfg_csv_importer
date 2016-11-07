@@ -50,41 +50,44 @@
 - no_submit = false if local_assigns[:no_submit].nil?
 - submit_text = "Submit" if local_assigns[:submit_text].nil?
 - submit_id = nil if local_assigns[:submit_id].nil?
-- cancel_text = nil if local_assigns[:cancel_text].nil?
 
 
-%div{ id: component_id, class: [bootstrap_component, "fade", "#{resource_color}", "#{ 'interstitial' if interstitial }", component_class].join(' '), data: data, "aria-hidden" => "true", "aria-labelledby" => "#{aria_labelledby}", :role => "dialog", :tabindex => "-1" }
+- if interstitial && interstitial_modal_wrapper
+  = interstitial_modal_wrapper
 
-  %div{:class => "modal-dialog #{ "modal-#{ modal_size }" if modal_size }" }
-    .modal-content
-      .modal-header
-        %a.close.float-right{ "data-dismiss" => "modal", "aria-label" => "close", :href => "javascript:;" }
-          = fa_icon "times"
 
-        - if interstitial
-          = interstitial_header
+    %div{ id: component_id, class: [bootstrap_component, "fade", "#{resource_color}", "#{ 'interstitial' if interstitial }", component_class].join(' '), data: data, "aria-hidden" => "true", "aria-labelledby" => "#{aria_labelledby}", :role => "dialog", :tabindex => "-1" }
 
-        - else
-          %h4{ id: aria_labelledby, class: "modal-title" }
-            = modal_title
+      %div{:class => "modal-dialog #{ "modal-#{ modal_size }" if modal_size }" }
+        .modal-content
+          .modal-header
+            %a.close.float-right{ "data-dismiss" => "modal", "aria-label" => "close", :href => "javascript:;" }
+              = fa_icon "times"
 
-      %div{ class: ["modal-body", modal_body_class].join(" ") }
-        - if modal_body.present?
-          %p= modal_body
-        - else
-          = yield
+            - if interstitial
+              = interstitial_header
 
-      - if modal_footer
-        .modal-footer
-          = modal_footer
+            - else
+              %h4{ id: aria_labelledby, class: "modal-title" }
+                = modal_title
 
-      - else
-        %a.btn.btn-secondary{ "data-dismiss" => "modal" }
-          = fa_icon "times"
-          Cancel
+          %div{ class: ["modal-body", modal_body_class].join(" ") }
+            - if modal_body.present?
+              %p= modal_body
+            - else
+              = yield
 
-        - unless no_submit
-          %a.btn.btn-primary.submit{:href => "javascript:;", id: submit_id }
-            = fa_icon "check"
-            = submit_text
+          - if modal_footer
+            .modal-footer
+              = modal_footer
+
+          - else
+            %a.btn.btn-secondary{ "data-dismiss" => "modal" }
+              = fa_icon "times"
+              Cancel
+
+            - unless no_submit
+              %a.btn.btn-primary.submit{:href => "javascript:;", id: submit_id }
+                = fa_icon "check"
+                = submit_text
 

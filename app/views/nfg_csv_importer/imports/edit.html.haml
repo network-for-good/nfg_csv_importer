@@ -62,33 +62,39 @@
     %i.fa.fa-caret-right.fa-fw
 
 
-  / = render 'shared/partial', body: capture {
-  / My body content
-  / - }, footer: capture {
-  / My footer content
-  / - }
 
-  = render layout: "nfg_csv_importer/imports/importer_modal", locals: {  component_id: "nfg_csv_importer_modal_first_visit", resource_color: :blue, interstitial: true, data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" }, interstitial_header: capture {
-
-    .media
-      .media-left
-        %span.fa-stack.fa-lg
-          %i.fa.fa-circle.fa-stack-2x
-          %i.fa.fa-thumbs-o-up.fa-stack-1x
-      .media-body
-        Great News!
-    - }, modal_footer: capture {
-    %a.btn.btn-secondary{ data: { dismiss: "modal" } }
-      Great, Let's Go
-      %i.fa.fa-chevron-right.m-l-quarter
-    - } } do
+  #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
+    %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
+      %span{"aria-hidden" => "true"}
+        %i.fa.fa-times-circle
     .container-fluid
-      .row
-        .col-md-10.col-md-push-1.col-xs-12.col-xs-push-0
-          %p
-            We just saved you some time by automatically mapping 12 column headers for you.
-          %p.small
-            %i
-              As good as we are at this, you should still double check our work :)
+      .row.row-xs-center{ style: "height: 100%;" }
+        .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2.col-xl-6.col-xl-push-3
+          .modal-dialog{:role => "document"}
+            .modal-content
+              .modal-header
 
 
+                .media#modal_title_nfg_csv_importer_modal_first_visit
+                  .media-left.hidden-sm-down
+                    %span.fa-stack.fa-lg
+                      %i.fa.fa-circle.fa-stack-2x
+                      %i.fa.fa-thumbs-o-up.fa-stack-1x
+                  .media-body
+                    Great News!
+              .modal-body.m-b-base
+                %p.m-b-double
+                  We just saved you some time by automatically mapping
+                  %strong
+                    12 column headers
+                  for you.
+                .small
+                  %i As good as we are at this, you should still double check our work :)
+
+              .modal-footer
+                %a.btn.btn-white-bg.btn-lg{ type: "button", data: { dismiss: "modal" } }
+                  Great, Let's Go
+                  %i.fa.fa-chevron-right.m-l-quarter
+                %a.text-link.small.m-l-base{ href: "javascript:;", type: "button", data: { dismiss: "modal" } }
+                  Close
+                  %i.fa.fa-times
