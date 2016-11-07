@@ -51,7 +51,6 @@ module NfgCsvImporter
       return {} unless fields_mapping.present?
       fields = fields_mapping.values
       duplicates = fields.select { |f|  fields.count(f) > 1 && f != NfgCsvImporter::Import.ignore_column_value && f.present? }.uniq
-      return {} unless duplicates.present?
       duplicates.inject({}) do |hsh, dupe_field|
         hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
         hsh
@@ -65,7 +64,7 @@ module NfgCsvImporter
     def import_validation
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
-
+        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
       rescue  => e
         errors.add :base, "File import failed: #{e.message}"
         Rails.logger.error e.message
@@ -136,6 +135,14 @@ module NfgCsvImporter
     def collect_header_errors
       errors.add :base, "The file contains columns that do not have a corresponding value on the #{import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: #{unknown_columns.join(',')}" unless unknown_columns.empty?
       errors.add :base, "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
+    end
+
+    def duplicated_headers
+      duplicates = header.select { |f|  header.count(f) > 1 }.uniq
+      duplicates.inject({}) do |hsh, dupe_field|
+        hsh[dupe_field] = header.each.with_index.inject([]) { |arr, (field, index)| arr << (index + 1).to_s26.upcase if field == dupe_field; arr }
+        hsh
+      end
     end
   end
 

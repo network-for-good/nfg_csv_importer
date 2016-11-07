@@ -63,6 +63,17 @@ describe NfgCsvImporter::Import do
       end
     end
 
+    context 'when the file contains duplicate headers' do
+      let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
+
+      it { expect(subject).not_to be }
+
+      it "should add errors to base" do
+        subject
+        expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
+      end
+    end
+
     # TODO These validations will be appropriate
     # when we want to know if the import is ready for import
     # and they will use the fields_mapping instead of the list of headers
