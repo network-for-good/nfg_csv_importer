@@ -43,14 +43,6 @@ describe NfgCsvImporter::FieldsMapper do
         expect(subject).to eq("first_name")
       end
     end
-
-    context "when the header matches the field with underscores removed" do
-      let(:column_name) { "firstname" }
-
-      it "the mapped field should be the field" do
-        expect(subject).to eq("first_name")
-      end
-    end
   end
 
   context "when the definition has field aliases" do

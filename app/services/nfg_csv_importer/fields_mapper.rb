@@ -35,17 +35,17 @@ module NfgCsvImporter
       # name as the key and an array of aliases as the value
       # i.e. "first_name" => ["first", "donor first name", "contact first name"]
       aliases_for_mapping.each do |field, alias_values|
-        break field if header_column.match(/#{ alias_values.join('|') }/)
+        break field if header_column.match(/#{ alias_values.join('|') }/i)
       end
     end
 
     def column_headers_mapper
       mapped_fields.inject({}) do |hsh, (header_column, field)|
         if field.blank? # we skip any field that has already been mapped
-          matching_field =  column_header_mapped_to_field_names(header_column) ||
-                            column_header_mapped_to_humanized_field_names(header_column) ||
-                            column_header_mapped_to_un_underscored_field_names(header_column) ||
-                            column_header_mapped_to_aliases(header_column)
+          matching_field = column_header_mapped_to_field_names(header_column)
+          matching_field = column_header_mapped_to_humanized_field_names(header_column)  unless matching_field.present?
+          matching_field = column_header_mapped_to_un_underscored_field_names(header_column)  unless matching_field.present?
+          matching_field = column_header_mapped_to_aliases(header_column) unless matching_field.present?
           hsh[header_column] = matching_field if matching_field
         end
         hsh

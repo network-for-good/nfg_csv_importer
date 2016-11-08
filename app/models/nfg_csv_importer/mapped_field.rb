@@ -12,6 +12,10 @@ module NfgCsvImporter
       :unmapped
     end
 
+    def dom_id
+      name.downcase.gsub(/[^a-z0-9 ]/, '').gsub(/( )/, '_')
+    end
+
     def mapped?
       status == :mapped
     end
