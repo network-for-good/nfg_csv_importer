@@ -73,6 +73,8 @@
   }
 }
 
+
+
 .card-ignored{
   cursor: $cursor-disabled;
   @include box-shadow(0px 0px 8px 0px rgba(0,0,0,0.15));
@@ -181,6 +183,43 @@
     s.text-muted{
       color: #a9d9ef !important;
     }
+  }
+}
+
+.card-duplicate{
+  @include box-shadow(0px 0px 8px 0px rgba($brand-danger, 0.15));
+  transition: all .5s ease-in-out;
+
+  .card-header{
+    background-color:$brand-danger;
+    border-color: darken($brand-warning, 10%);
+    color: $gray-dark;
+
+
+    a.h3{
+      @include rem(font-size, 20px);
+      font-weight: $font-weight-normal;
+      display: block;
+      color:#fff;
+      text-decoration:none;
+
+      @include hover-focus{
+        text-decoration: underline;
+        @include vendor-prefix((text-decoration-style, dotted) mo);
+        color:#fff !important;
+      }
+    }
+
+    .text-muted,
+    s.text-muted{
+      color: #ffd3c1 !important;
+    }
+  }
+
+  .card-block-importer-index{
+    background-color: #dd4e16;
+    border-color: darken($brand-warning, 10%);
+    transition: all .5s ease-in-out;
   }
 }
 

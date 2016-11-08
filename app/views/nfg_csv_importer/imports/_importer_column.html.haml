@@ -12,6 +12,8 @@
   - card_classes += " card-mapped"
 - when :ignored
   - card_classes += " card-ignored"
+- when :duplicate
+  - card_classes += " card-duplicate"
 
 .col-importer{ data: { column_name: mapped_column.name }}
   %div{ class: card_classes, data: card_data }
