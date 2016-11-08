@@ -25,6 +25,10 @@ module NfgCsvImporter
       self["description"] || ""
     end
 
+    def field_aliases
+      self["field_aliases"] || {}
+    end
+
     def column_validation_rules
       return @column_validation_rules if @column_validation_rules
 

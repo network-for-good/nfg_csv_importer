@@ -9,6 +9,8 @@ module NfgCsvImporter
 
   # A 'all_if_any' validation requires that all of the fields in the array be included
   # if any of them are included
+
+  # A 'all' validation requires that all of the fields in the array be included
   class ColumnValidator
 
     attr_accessor :fields_mapping, :type, :fields, :message

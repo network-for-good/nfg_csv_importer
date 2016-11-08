@@ -22,7 +22,7 @@
   - label_text = "Won't be imported"
   - mapped_column_name = mapped_column.name
 
-.card-header{ id: "card_header_#{ (mapped_column.name).downcase.tr(" ", "_") }" }
+.card-header{ id: "card_header_#{ mapped_column.dom_id }" }
   - unless mapped_column.status == :unmapped
     -# When mapping has wrapped up, have the label:
     -# 1. Fade out "Mapping column"

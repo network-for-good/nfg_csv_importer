@@ -1,12 +1,12 @@
 // <%= @column_update_action = "test" %>
 var importerContainer = $('.nfg-csv-importer')
-var cardHeader = $('#card_header_<%= @mapped_column.name %>');
+var cardHeader = $('#card_header_<%= @mapped_column.dom_id %>');
 var card = cardHeader.closest(".card");
 
 $("#importer_header_stats").replaceWith("<%= j render  'nfg_csv_importer/imports/import_header_stats', ready_for_import: true, import: @import %>");
 
 // add or remove the error area based on the import's status
-<% if @import.duplicated_field_mappings.present? %>
+<% if @import.duplicated_field_mappings.present? || @import.invalid_column_rules.present? %>
   $("#importer_errors").html("<%= j render 'nfg_csv_importer/imports/importer_errors', import: @import %>");
 <% else %>
   $("#importer_errors").html("");

@@ -116,6 +116,23 @@ describe NfgCsvImporter::MappedField do
     end
   end
 
+  describe "#dom_id" do
+    subject { mapped_field.dom_id }
+    let(:header_column) { "Donor First Name" }
+
+    it "should downcase and underscore the header name" do
+      expect(subject).to eq("donor_first_name")
+    end
+
+    context 'when the field name contains special characters' do
+      let(:header_column) { "Donor # of Donations" }
+
+      it "should strip out the special characters" do
+        expect(subject).to eq("donor__of_donations")
+      end
+    end
+  end
+
   describe "#mapped_to" do
     subject { value }
   end
