@@ -32,15 +32,16 @@ $(document).on 'turbolinks:load', ->
 
     target = $(this).attr('href')
     # returns something like #card_header_etc
-    card = $(target)
+    card = $(target).closest ".card"
     root = $('.container-importer')
-    xPosition = $(card).offset().left
-    horizontalPosition = card.scrollLeft()
+    xPosition = root.offset().left
+    horizontalPosition = root.scrollLeft()
 
-    console.log "card is " + card.attr "id"
-    console.log "link target is " + $(this).attr('href')
+    console.log "target is " + target
+    console.log "card is " + $(card).attr "id"
     console.log "card.offset().left is " + xPosition
     console.log "card.scrollLeft() is " + horizontalPosition
+    console.log "target offset left is " + $(target).offset().left
 
     $(".card").removeClass("card-duplicate")
     $(card).addClass "card-duplicate"
@@ -48,6 +49,8 @@ $(document).on 'turbolinks:load', ->
     $("body").animate {
       scrollTop: $("#thing").offset().top - 100
     }, 500
+
+
 
     # if horizontalPosition == 0
     #   return

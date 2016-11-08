@@ -187,12 +187,12 @@
 }
 
 .card-duplicate{
-  @include box-shadow(0px 0px 8px 0px rgba($brand-danger, 0.15));
+  @include box-shadow(0px 0px 8px 0px rgba($brand-danger, 0.35));
   transition: all .5s ease-in-out;
 
   .card-header{
     background-color:$brand-danger;
-    border-color: darken($brand-warning, 10%);
+    border-color: darken($brand-danger, 12%);
     color: $gray-dark;
 
 
@@ -218,7 +218,7 @@
 
   .card-block-importer-index{
     background-color: #dd4e16;
-    border-color: darken($brand-warning, 10%);
+    border-color: darken($brand-danger, 12%);
     transition: all .5s ease-in-out;
   }
 }

@@ -106,7 +106,7 @@
 .card-duplicate{
   .list-group-flush{
     &.list-group{
-      border-color: darken($brand-warning, 10%);
+      border-color: darken($brand-danger, 12%);
       transition: all .5s ease-in-out;
     }
     .list-group-item{
