@@ -348,27 +348,6 @@ describe NfgCsvImporter::ImportService do
 
 	end
 
-	describe "#missing_required_columns" do
-		subject { import_service.missing_required_columns }
-
-		before(:each) do
-			import_service.stubs(:stripped_headers).returns(stripped_headers)
-			import_service.stubs(:required_columns).returns(required_columns)
-		end
-
-		let(:stripped_headers) { ['name', 'email', 'address'] }
-		let(:required_columns) { ['name', 'email']  }
-
-		context "when all required columns are present" do
-			it { expect(subject).to eq([]) }
-		end
-
-		context "when required columns are missing" do
-			let(:required_columns) { ['name', 'email', 'contact']  }
-			it { expect(subject).to eq(['contact']) }
-		end
-	end
-
 	describe "#validate_object(object)" do
 		subject { import_service.send(:validate_object,object) }
     let(:object) { FactoryGirl.build(:user, email: email) }

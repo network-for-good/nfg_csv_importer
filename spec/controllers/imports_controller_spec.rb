@@ -44,7 +44,6 @@ describe NfgCsvImporter::ImportsController do
       before do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
         NfgCsvImporter::FieldsMapper.expects(:new).returns(mock(call: fields_mapping))
-        NfgCsvImporter::Import.any_instance.expects("fields_mapping=").at_least_once
         NfgCsvImporter::Import.any_instance.stubs(:number_of_records).returns(3)
 
         # NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
