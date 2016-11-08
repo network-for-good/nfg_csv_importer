@@ -1,5 +1,6 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
+    attr_accessor :header_errors
 
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
@@ -19,8 +20,8 @@ module NfgCsvImporter
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
-    delegate :description, :required_columns,:optional_columns,:column_descriptions, :transaction_id,
-      :header, :missing_required_columns,:import_class_name, :headers_valid?, :valid_file_extension?,
+    delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
+      :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
       :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :field_aliases, :first_x_rows, :to => :service
 
     def self.ignore_column_value
@@ -133,8 +134,11 @@ module NfgCsvImporter
     end
 
     def collect_header_errors
-      errors.add :base, "The file contains columns that do not have a corresponding value on the #{import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: #{unknown_columns.join(',')}" unless unknown_columns.empty?
-      errors.add :base, "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
+      header_errors = []
+      header_errors << "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
+      invalid_column_rules.each do |invalid_rule|
+        header_errors << invalid_rule.message
+      end
     end
 
     def duplicated_headers
