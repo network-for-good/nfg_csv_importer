@@ -1,6 +1,5 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
-
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
@@ -19,9 +18,9 @@ module NfgCsvImporter
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
-    delegate :description, :required_columns,:optional_columns,:column_descriptions, :transaction_id,
-      :header, :missing_required_columns,:import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :field_aliases, :first_x_rows, :to => :service
+    delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
+      :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
+      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows, :invalid_column_rules, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -51,11 +50,16 @@ module NfgCsvImporter
       return {} unless fields_mapping.present?
       fields = fields_mapping.values
       duplicates = fields.select { |f|  fields.count(f) > 1 && f != NfgCsvImporter::Import.ignore_column_value && f.present? }.uniq
-      return {} unless duplicates.present?
       duplicates.inject({}) do |hsh, dupe_field|
         hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
         hsh
       end
+    end
+
+    def header_errors
+      return @header_errors if @header_errors
+      @header_errors = invalid_column_rules.inject([]) { |hsh, invalid_rule| hsh << invalid_rule.message; hsh }
+      @header_errors
     end
 
     def imported_by_name
@@ -65,14 +69,7 @@ module NfgCsvImporter
     def import_validation
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
-
-        # TODO
-
-        # this should not be run on create. It will need to be run prior to the import
-        # and will be based on the fields_mapping
-        # We will need to consider how to handle old imports
-        # Should we run a migration to create field mappings based on their columns
-        # collect_header_errors and return false unless headers_valid?
+        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
       rescue  => e
         errors.add :base, "File import failed: #{e.message}"
         Rails.logger.error e.message
@@ -105,12 +102,14 @@ module NfgCsvImporter
     def ready_to_import?
       return false if unmapped_columns.present?
       return false if duplicated_field_mappings.present?
+      return false unless headers_valid?
       true
     end
 
     def service
+      return @service if @service
       service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
+      @service = service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
     end
 
     def set_upload_error_file(errors_csv)
@@ -139,9 +138,12 @@ module NfgCsvImporter
       "#{import_type.capitalize}".classify + "ImportService"
     end
 
-    def collect_header_errors
-      errors.add :base, "The file contains columns that do not have a corresponding value on the #{import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: #{unknown_columns.join(',')}" unless unknown_columns.empty?
-      errors.add :base, "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
+    def duplicated_headers
+      duplicates = header.select { |f|  header.count(f) > 1 }.uniq
+      duplicates.inject({}) do |hsh, dupe_field|
+        hsh[dupe_field] = header.each.with_index.inject([]) { |arr, (field, index)| arr << (index + 1).to_s26.upcase if field == dupe_field; arr }
+        hsh
+      end
     end
   end
 
