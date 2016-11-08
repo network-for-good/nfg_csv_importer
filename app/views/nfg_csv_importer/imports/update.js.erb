@@ -12,11 +12,11 @@ $("#importer_header_stats").replaceWith("<%= j render  'nfg_csv_importer/imports
   $("#importer_errors").html("");
 <% end %>
 
-cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
-new NfgCsvImporter.SetEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
-
 card.attr('class', 'card card-<%= @mapped_column.status.to_s %>');
 card.attr("data-mapped", "<%= @mapped_column.unmapped? ? 'false' : 'true' %>");
+
+cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
+new NfgCsvImporter.SetEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
 
 // Reset the highlight toggle to it's appropriate state
 var highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;

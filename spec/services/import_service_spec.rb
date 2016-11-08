@@ -268,12 +268,10 @@ describe NfgCsvImporter::ImportService do
 
 		before(:each) do
 			import_service.stubs(:all_headers_are_string_type?).returns(all_headers_are_string_type)
-			import_service.stubs(:header_has_all_required_columns?).returns(header_has_all_required_columns)
 			import_service.stubs(:all_column_rules_valid?).returns(all_column_rules_valid)
 		end
 
 		let(:all_headers_are_string_type) { true }
-		let(:header_has_all_required_columns) { true }
 		let(:all_column_rules_valid) { true }
 
 		context "headers are valid" do
@@ -282,11 +280,6 @@ describe NfgCsvImporter::ImportService do
 
 		context "headers are not string type" do
 			let(:all_headers_are_string_type) { false }
-			it { expect(subject).not_to be }
-		end
-
-		context "missing required columns" do
-			let(:header_has_all_required_columns) { false }
 			it { expect(subject).not_to be }
 		end
 

@@ -53,6 +53,33 @@ describe NfgCsvImporter::ColumnValidator do
         end
       end
     end
+
+    context "with an 'all' type" do
+      let(:rule) { { type: 'all', fields: ["donated_at", "amount", "payment_method"] } }
+
+      context 'and the mapping does not contain any of the fields' do
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "and the mapping contains some but not all of the fields" do
+        let(:fields_mapping) { { "Donation Amount" => "amount", "Donated At" => nil} }
+
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "and the mapping contains all of the fields" do
+        let(:fields_mapping) { { "Donation Amount" => "amount", "Donation Date" => "donated_at", "How paid?" => "payment_method" } }
+
+        it "should be true" do
+          expect(subject).to be
+        end
+      end
+
+    end
   end
 end
 

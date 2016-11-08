@@ -15,13 +15,9 @@ module NfgCsvImporter
     def initialize(args)
       @type = args[:type]
       @fields = args[:fields]
-      @message = args[:message]
+      @message = args[:message] || ""
       raise ArgumentError.new("You must supply a rule type ('any', 'all_if_any') but no type was included #{ args}") unless type
       raise ArgumentError.new("You must supply the rule fields (fields: ['field 1', 'field 2']) but no fields were included #{ args }") unless fields
-    end
-
-    def message
-      self["message"] || ""
     end
 
     def validate(fields_mapping)
@@ -35,6 +31,10 @@ module NfgCsvImporter
       fields.select { |field| mapped_to_fields.include?(field) }.any?
     end
 
+    def validate_all
+      return fields.map { |field| mapped_to_fields.include?(field) }.all?
+    end
+
     def validate_all_if_any
       if fields.select { |field| mapped_to_fields.include?(field) }.any?
         return fields.map { |field| mapped_to_fields.include?(field) }.all?
@@ -43,7 +43,7 @@ module NfgCsvImporter
     end
 
     def mapped_to_fields
-      @fields_mapping.values
+      (@fields_mapping || {}).values
     end
   end
 end

@@ -26,14 +26,16 @@ module NfgCsvImporter
     end
 
     def column_validation_rules
-      if self["column_validation_rules"].blank?
-        []
-      else
-        raise ArgumentError.new("The column_validation_rules attribute must be an array of hashes") unless self["column_validation_rules"].is_a?(Array)
-        self["column_validation_rules"].map do |rule|
-          NfgCsvImporter::ColumnValidator.new(rule)
-        end
+      return @column_validation_rules if @column_validation_rules
+
+      @column_validation_rules = (self["column_validation_rules"] || []).map do |rule|
+        NfgCsvImporter::ColumnValidator.new(rule)
       end
+
+      @column_validation_rules << NfgCsvImporter::ColumnValidator.new(type: "all",
+                                                                      fields: required_columns,
+                                                                      message: "At least one of the following required columns are missing: #{required_columns}") if required_columns.present?
+      @column_validation_rules
     end
   end
 end

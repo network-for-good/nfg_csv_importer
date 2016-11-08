@@ -1,7 +1,5 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
-    attr_accessor :header_errors
-
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
@@ -22,7 +20,7 @@ module NfgCsvImporter
 
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
       :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :header_has_all_required_columns?, :all_valid_columns, :field_aliases, :first_x_rows, :to => :service
+      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows, :invalid_column_rules, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -56,6 +54,12 @@ module NfgCsvImporter
         hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
         hsh
       end
+    end
+
+    def header_errors
+      return @header_errors if @header_errors
+      @header_errors = invalid_column_rules.inject([]) { |hsh, invalid_rule| hsh << invalid_rule.message; hsh }
+      @header_errors
     end
 
     def imported_by_name
@@ -98,13 +102,14 @@ module NfgCsvImporter
     def ready_to_import?
       return false if unmapped_columns.present?
       return false if duplicated_field_mappings.present?
-      collect_header_errors and return false unless headers_valid?
+      return false unless headers_valid?
       true
     end
 
     def service
+      return @service if @service
       service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
+      @service = service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
     end
 
     def set_upload_error_file(errors_csv)
@@ -131,14 +136,6 @@ module NfgCsvImporter
 
     def service_name
       "#{import_type.capitalize}".classify + "ImportService"
-    end
-
-    def collect_header_errors
-      header_errors = []
-      header_errors << "Missing following required columns: #{missing_required_columns}" unless header_has_all_required_columns?
-      invalid_column_rules.each do |invalid_rule|
-        header_errors << invalid_rule.message
-      end
     end
 
     def duplicated_headers

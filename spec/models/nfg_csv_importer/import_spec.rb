@@ -6,6 +6,22 @@ describe NfgCsvImporter::Import do
   it { should validate_presence_of(:import_type)}
   it { should belong_to(:imported_for) }
   it { should belong_to(:imported_by) }
+  it { should delegate_method(:description).to(:service)}
+  it { should delegate_method(:required_columns).to(:service)}
+  it { should delegate_method(:optional_columns).to(:service)}
+  it { should delegate_method(:column_descriptions).to(:service)}
+  it { should delegate_method(:transaction_id).to(:service)}
+  it { should delegate_method(:header).to(:service)}
+  it { should delegate_method(:missing_required_columns).to(:service)}
+  it { should delegate_method(:import_class_name).to(:service)}
+  it { should delegate_method(:headers_valid?).to(:service)}
+  it { should delegate_method(:valid_file_extension?).to(:service)}
+  it { should delegate_method(:import_model).to(:service)}
+  it { should delegate_method(:unknown_columns).to(:service)}
+  it { should delegate_method(:all_valid_columns).to(:service)}
+  it { should delegate_method(:field_aliases).to(:service)}
+  it { should delegate_method(:first_x_rows).to(:service)}
+  it { should delegate_method(:invalid_column_rules).to(:service)}
 
   context "when file is nil" do
     let(:file) { nil }
@@ -73,43 +89,6 @@ describe NfgCsvImporter::Import do
         expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
       end
     end
-
-    # TODO These validations will be appropriate
-    # when we want to know if the import is ready for import
-    # and they will use the fields_mapping instead of the list of headers
-
-    # context "with invalid headers" do
-    #   let(:header_data) {["first_name","last_name"]}
-
-    #   it { expect(subject).not_to be }
-
-    #   it "should add errors to base" do
-    #     subject
-    #     expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
-    #   end
-    # end
-
-    # context "when file doesn't contain all required headers" do
-    #   let(:header_data) {["last_name" ,"first_name","last_name"]}
-
-    #   it { expect(subject).not_to be }
-
-    #   it "should show error message" do
-    #     subject
-    #     expect(import.errors.messages[:base]).to eq(["Missing following required columns: [\"email\"]"])
-    #   end
-    # end
-
-    # context "when file contain unknown headers" do
-    #   let(:header_data) {["email" ,"first_name","last_name","middle_name"]}
-
-    #   it { expect(subject).not_to be }
-
-    #   it "should show error message" do
-    #     subject
-    #     expect(import.errors.messages[:base]).to eq(["The file contains columns that do not have a corresponding value on the #{import.import_class_name}. Please remove the column(s) or change their header name to match an attribute name. The column(s) are: middle_name"])
-    #   end
-    # end
   end
 
   describe "#service" do
@@ -250,7 +229,34 @@ describe NfgCsvImporter::Import do
         expect(subject).to eq({})
       end
     end
+  end
 
+  describe "#header_errors" do
+    before do
+      import.stubs(:invalid_column_rules).returns(invalid_column_rules)
+    end
+
+    subject { import.header_errors }
+
+    context 'when invalid_column_rules are empty' do
+      let(:invalid_column_rules) { [] }
+
+      it "should be empty" do
+        expect(subject).to be_empty
+      end
+    end
+
+    context 'when invalid_column_rules are not empty' do
+      let(:invalid_column_rules) { [mock(message: "bar")] }
+
+      it "should not be empty" do
+        expect(subject).to be_present
+      end
+
+      it "should include the message returned by the rule validator" do
+        expect(subject).to eq(["bar"])
+      end
+    end
   end
 
   describe "time_zone" do
@@ -303,9 +309,19 @@ describe NfgCsvImporter::Import do
   end
 
   describe "#ready_to_import?" do
+    before do
+      import.stubs(:headers_valid?).returns(headers_valid)
+      import.stubs(:duplicated_field_mappings).returns(duplicated_field_mappings)
+      import.stubs(:unmapped_columns).returns(unmapped_columns)
+    end
+    let(:headers_valid) { true }
+    let(:duplicated_field_mappings) { {} }
+    let(:unmapped_columns) { [] }
+
     subject { import.ready_to_import? }
+
     context "when all fields are mapped or ignored" do
-      context "and all validations (field requirements) are met" do
+      context "and all header validations (field requirements) are met" do
         context 'and there are no duplicate fields' do
           it "should be true" do
             expect(subject).to be
@@ -313,9 +329,7 @@ describe NfgCsvImporter::Import do
         end
 
         context 'and there are duplicate fields' do
-          before do
-            import.stubs(:duplicated_field_mappings).returns({ "field1" => [3,6]})
-          end
+          let(:duplicated_field_mappings) { { "field1" => [3,6]} }
 
           it "should return false" do
             expect(subject).not_to be
@@ -323,17 +337,17 @@ describe NfgCsvImporter::Import do
         end
       end
 
-      context "and all validations are not met" do
-        before do
+      context "and all headers validations are not met" do
+        let(:headers_valid) { false }
 
+        it "should be false" do
+          expect(subject).not_to be
         end
       end
     end
 
     context "when all fields are not mapped or ignored" do
-      before do
-        import.stubs(:unmapped_columns).returns([stub(unmapped: true)])
-      end
+      let(:unmapped_columns) { [stub(unmapped: true)] }
 
       it "should be false" do
         expect(subject).not_to be

@@ -27,8 +27,9 @@ describe NfgCsvImporter::ImportDefinition do
 
   describe "column_validation_rules" do
     subject { import_definition.column_validation_rules }
-    context 'when the definitions column_validation_rules is nil' do
+    context 'when the definitions column_validation_rules and required_columns are nil' do
       let(:column_validation_rules) { nil }
+      let(:required_columns) { nil }
       it "should return an empty array" do
         expect(subject).to eq([])
       end
@@ -40,6 +41,14 @@ describe NfgCsvImporter::ImportDefinition do
           expect(subject).to be_a(Array)
           expect(subject.first).to be_a(NfgCsvImporter::ColumnValidator)
         end
+      end
+    end
+
+    context "and the required_columns is present" do
+      let(:column_validation_rules) { [] }
+      it "should include a rule for the required columns" do
+        expect(subject.first.type).to eq("all")
+        expect(subject.first.fields).to eq(["email", "first_name"])
       end
     end
   end

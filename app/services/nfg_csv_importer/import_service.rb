@@ -34,24 +34,16 @@ class NfgCsvImporter::ImportService
   # column validation related methods
 
   def headers_valid?
-    (all_headers_are_string_type? && header_has_all_required_columns? && all_column_rules_valid?)
+    (all_headers_are_string_type? && all_column_rules_valid?)
   end
 
   def all_column_rules_valid?
     invalid_column_rules.empty?
   end
 
-  def header_has_all_required_columns?
-    missing_required_columns.empty?
-  end
-
   def unknown_columns
     # The [''] removes empty headers
     stripped_headers - all_valid_columns - ['']
-  end
-
-  def missing_required_columns
-    required_columns - stripped_headers
   end
 
   def invalid_column_rules
