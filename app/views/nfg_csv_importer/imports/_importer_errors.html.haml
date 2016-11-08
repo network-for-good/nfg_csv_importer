@@ -33,6 +33,7 @@
 
 
             .row
+
               - import.duplicated_field_mappings.each do |field, columns|
 
                 .col-md-4.col-xs-12.m-b-quarter
@@ -47,7 +48,7 @@
                   - columns.each do |column|
 
 
-                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter{ href: "javascript:;" }
+                    %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter.btn-horizontal-scroll{ href: "#card_header_#{ column.downcase.tr(" ", "_") }" }
                       %small.text-muted
                         Your Original Header:
                       %br
