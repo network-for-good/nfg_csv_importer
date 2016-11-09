@@ -99,6 +99,10 @@ module NfgCsvImporter
       errors_csv
     end
 
+    def process!
+      service.import
+    end
+
     def ready_to_import?
       return false if unmapped_columns.present?
       return false if duplicated_field_mappings.present?

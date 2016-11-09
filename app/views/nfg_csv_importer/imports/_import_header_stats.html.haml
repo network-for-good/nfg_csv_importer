@@ -49,7 +49,6 @@
           %br
           Not ready to import
       %p
-        %a{ href: "javascript:;", class: "btn btn-white-outline #{ 'disabled' unless import.ready_to_import? }" }
-
-          Review & Confirm
+        = link_to import_review_path(import), class: "btn btn-white-outline #{ 'disabled' unless import.ready_to_import? }" do
           %i.fa.fa-chevron-right.text-white
+          Review & Confirm

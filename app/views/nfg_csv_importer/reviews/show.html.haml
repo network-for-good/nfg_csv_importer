@@ -1,2 +1,2 @@
 %h1 this is the show page
-= params.inspect
+= link_to "Process Import", import_process_path(@import.id), class: "btn btn-primary", method: :post

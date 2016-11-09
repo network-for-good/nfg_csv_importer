@@ -1,6 +1,8 @@
 class NfgCsvImporter::ReviewsController < NfgCsvImporter::ApplicationController
-  def create
-    render 'show'
+
+  before_filter :load_imported_for
+  before_filter :load_import, only: [:show]
+
+  def show
   end
-  alias_method :update, :create
 end

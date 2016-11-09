@@ -78,16 +78,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for))
   end
 
-  def load_imported_for
-    @imported_for ||= self.send "#{NfgCsvImporter.configuration.imported_for_class.downcase}".to_sym
-  end
-
   def set_import_type
     redirect_to imports_path unless params[:import_type]
     @import_type ||= params[:import_type]
-  end
-
-  def load_import
-    @import = @imported_for.imports.find(params[:id])
   end
 end
