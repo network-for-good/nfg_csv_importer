@@ -53,6 +53,5 @@ $(document).on 'turbolinks:load', ->
 
     setTimeout (->
       $(card).removeClass "card-duplicate"
-      console.log "timeout occured did card duplicate get removed?"
     ), 2500
 
