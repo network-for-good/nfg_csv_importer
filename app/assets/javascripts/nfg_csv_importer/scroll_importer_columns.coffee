@@ -36,7 +36,7 @@ $(document).on 'turbolinks:load', ->
     centerOnTheFocusedCard = (actualCardOffsetLeft + cardPositionRelativeToDocument) - centerScrollLeft + 200
 
 
-    $(".card").removeClass("card-duplicate")
+    $(".card").removeClass "card-duplicate"
     $(card).addClass "card-duplicate"
 
     $("body").animate {
@@ -45,9 +45,14 @@ $(document).on 'turbolinks:load', ->
 
 
     setTimeout (->
-      $('.container-importer').animate {
+      $(".container-importer").animate {
         scrollLeft: centerOnTheFocusedCard
         scrollTop: $(target).offset().top
       }, 1100
     ), 500
+
+    setTimeout (->
+      $(card).removeClass "card-duplicate"
+      console.log "timeout occured did card duplicate get removed?"
+    ), 2500
 
