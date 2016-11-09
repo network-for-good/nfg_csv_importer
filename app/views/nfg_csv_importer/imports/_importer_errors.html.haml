@@ -69,7 +69,7 @@
                   %i.fa.fa-exclamation.fa-stack-1x
               .media-body
                 %h3.media-heading
-                  = column_rule.message
+                  = column_rule.message.html_safe
                 / .small.m-t-quarter
                 /   =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal" }, class: "alert-link", remote: true do
                 /     Missing this data? Recommended next steps
