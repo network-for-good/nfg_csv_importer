@@ -13,7 +13,8 @@ module NfgCsvImporter
     end
 
     def dom_id
-      name.downcase.gsub(/[^a-z0-9 ]/, '').gsub(/( )/, '_')
+      name.downcase.gsub(/[^a-z0-9_ ]/, '').gsub(/( )/, '_')
+
     end
 
     def mapped?
