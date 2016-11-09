@@ -21,7 +21,7 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it "should send the mail to admin with imported result" do
     NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver: true))
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
     subject
   end
 
