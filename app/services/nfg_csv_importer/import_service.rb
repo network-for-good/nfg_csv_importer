@@ -111,7 +111,7 @@ class NfgCsvImporter::ImportService
       self.current_row = i
       break if run_time_limit_reached?
 
-      row = Hash[[header, spreadsheet.row(i)].transpose]
+      row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
       row = strip_data(row)
       set_zone_for_date_fields(row)
       # this record lookup conflicts with DM, where the ID field is assumed
@@ -220,6 +220,19 @@ class NfgCsvImporter::ImportService
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
     attributes.merge(blank_attributes)
+  end
+
+  def convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
+    Hash[[mapped_fields_from_fields_mapping , spreadsheet.row(i)].transpose].select { |field, value| field != NfgCsvImporter::Import.ignore_column_value }
+  end
+
+  def mapped_fields_from_fields_mapping
+    # if no fields mapping have been created, then use the file's headers
+    return header.map(&:downcase) unless fields_mapping.present?
+
+    # Return the mapped fields in the same order as the headers. if any header was not mapped
+    # return the header
+    header.map { |header_name| fields_mapping[header_name] || header_name }
   end
 
   def defaults(attributes)
