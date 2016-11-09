@@ -63,6 +63,16 @@ describe NfgCsvImporter::FieldsMapper do
         expect(subject).to eq("first_name")
       end
     end
+
+    context "and the alias has many options but none that match the " do
+      let(:column_name) { "Street Address" }
+      let(:field_aliases) { { "first_name" => ["first", "donor first name"], "last_name" => ["last", "donor last name"], "salutation" => ["prefix"], "amount" => ["amount"] } }
+
+      it "should return nil" do
+        expect(subject).to eq(nil)
+      end
+
+    end
   end
 end
 
