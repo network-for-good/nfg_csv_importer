@@ -1,6 +1,4 @@
 $(document).on 'turbolinks:load', ->
-  centerScrollLeft = ($('.container-importer').width() / 2)
-
 
   $("[data-horizontal-scroll-button='right']").click ->
     event.preventDefault()
@@ -25,23 +23,18 @@ $(document).on 'turbolinks:load', ->
 
 
 
-
   $('a.btn-horizontal-scroll').on click: (e) ->
 
     e.preventDefault()
 
-    target = $(this).attr('href')
-    # returns something like #card_header_etc
+    centerScrollLeft = ($('.container-importer').width() / 2)
+    target = $(@).attr('href')
     card = $(target).closest ".card"
-    root = $('.container-importer')
-    xPosition = root.offset().left
-    horizontalPosition = root.scrollLeft()
 
-    console.log "target is " + target
-    console.log "card is " + $(card).attr "id"
-    console.log "card.offset().left is " + xPosition
-    console.log "card.scrollLeft() is " + horizontalPosition
-    console.log "target offset left is " + $(target).offset().left
+    cardPositionRelativeToDocument = $(target).closest(".card").offset().left - 200 #the width of the side nav
+    actualCardOffsetLeft = Math.abs( $('#fields_mapping').offset().left - 200 )
+    centerOnTheFocusedCard = (actualCardOffsetLeft + cardPositionRelativeToDocument) - centerScrollLeft + 200
+
 
     $(".card").removeClass("card-duplicate")
     $(card).addClass "card-duplicate"
@@ -51,21 +44,10 @@ $(document).on 'turbolinks:load', ->
     }, 500
 
 
-
-    # if horizontalPosition == 0
-    #   return
-    #   console.log $(target).offset().left()
-
-
-
-
     setTimeout (->
-      root.animate {
-        scrollLeft: $(target).offset().left - centerScrollLeft
+      $('.container-importer').animate {
+        scrollLeft: centerOnTheFocusedCard
         scrollTop: $(target).offset().top
       }, 1100
     ), 500
-
-
-
 
