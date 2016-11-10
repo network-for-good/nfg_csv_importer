@@ -8,7 +8,6 @@
     .panel-body
       // This partial should live within the parent app's views/ subdirectory
       = render(partial: 'shared/flash_messages') rescue nil
-      #import_links.import_links
       - if @imports.empty?
         There are no Imports
       -else
