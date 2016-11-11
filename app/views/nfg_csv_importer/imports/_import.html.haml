@@ -1,11 +1,23 @@
-%tr[import]
-  %td= import.imported_by_name
-  %td= import.number_of_records
-  %td= import.number_of_records_with_errors.to_i
-  %td= import.updated_at.to_s(:us_time)
-  %td= link_to import.status, import_path(import)
+- column_structure_classes = "" if local_assigns[:column_structure_classes].nil?
 
-  %td{ style: 'padding-bottom: 15px' }
-    &nbsp;
+.row
+  %div{ class: column_structure_classes }
+    %h4
+      = import.imported_by_name
+    %small
+      = link_to import.import_file.url do
+        %i.fa.fa-paperclip
+        = import.import_file_name
+  %div{ class: column_structure_classes }
+    %h4= import.number_of_records
+  %div{ class: column_structure_classes }
+    %h4= import.number_of_records_with_errors.to_i
+  %div{ class: column_structure_classes }
+    %h4= import.updated_at.to_s(:abrev_month_yyyy)
+    %small= import.updated_at.to_s(:abrev_time_alternative)
+  %div{ class: column_structure_classes }
+    = link_to import.status, import_path(import)
+  %div{ class: column_structure_classes }
     = link_to edit_import_path(import), class: "btn btn-primary" do
+      =fa_icon "check"
       Edit Import
