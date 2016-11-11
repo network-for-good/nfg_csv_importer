@@ -14,9 +14,9 @@
       = render "nfg_csv_importer/imports/importer_errors", import: @import
 
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
-  #thing.container-fluid.container-flush
+  #columns_wrapper.container-fluid.container-flush
 
-    .thinger.bg-white.text-xs-center.p-t-double{ style: 'z-index:1; position: absolute; width: 100%;' }
+    .bg-white.text-xs-center.p-t-double{ style: 'z-index:1; position: absolute; width: 100%;' }
       %p.lead
         Let's map your column headers ahead of importing your data
       %p
@@ -43,7 +43,7 @@
   .container-fluid.container-flush.bg-white
     .row.p-x-base.p-t-base.p-b-triple
       .col-xs-6
-        %a.btn.btn-secondary.btn-lg{ href: "javascript:;" }
+        = link_to imports_path, class: "btn btn-secondary btn-lg" do
           %i.fa.fa-chevron-left.m-r-quarter
           Save & Come Back Later
       .col-xs-6.text-xs-right

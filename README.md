@@ -124,3 +124,12 @@ To run specs, from the root of the project
 ````
 bundle exec rspec spec
 ````
+
+## Javascript Specs
+We use the mocha javascript testing library and the Chai expectations library. The tests have to be housed in the Test App in the spec/test_app/spec/javascripts/ folder.
+
+To run the tests, use the following command
+````
+bundle exec rake konacha:serve
+````
+Then navigate to http://localhost:3500/
