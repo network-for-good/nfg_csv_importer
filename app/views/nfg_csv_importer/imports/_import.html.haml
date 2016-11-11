@@ -23,5 +23,15 @@
     = import_status_icon_and_text(import)
 
   %div{ class: column_structure_classes }
-    = edit_import_link(import)
+
+    - if import.status.to_sym == :uploaded
+      = link_to edit_import_path(import), class: "btn btn-link" do
+        = fa_icon "pencil", class: "m-r-quarter"
+        Edit Import
+    - else
+      %span{ bootstrap_tooltip("Once an import has been processed, it's no longer editable", :top) }
+        %span.btn.btn-link.btn-disabled
+          = fa_icon "pencil", class: "m-r-quarter text-muted"
+          Edit Import
+
 

@@ -53,11 +53,13 @@ module NfgCsvImporter
           error_file_link_tabindex = nil
         end
 
-        html = "<h4 class='text-danger'>#{ error_records_count }</h4>"
-        html += "<small>"
-        html += "#{ fa_icon 'paperclip', class: import_with_errors_color_class }"
-        html += "#{ link_to "Error File", error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex }"
-        html += "</small>"
+        html =
+          "<h4 class='text-danger'>#{ error_records_count }</h4>
+           <small>
+             #{ fa_icon 'paperclip', class: import_with_errors_color_class }
+             #{ link_to "Error File", error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex }
+           </small>"
+
       else
         html = fa_icon "minus", class: "text-muted"
       end
@@ -73,23 +75,20 @@ module NfgCsvImporter
       html.html_safe
     end
 
-    def edit_import_link(import)
-      edit_import_link_class = "btn btn-link"
+    def bootstrap_tooltip(tooltip_content, placement = :right)
+      acceptable_placement_directions = [ :right, :top, :bottom, :left ]
 
-      if import.status.to_sym == :uploaded
-        edit_import_link_url = edit_import_path(import)
-        edit_import_link_icon_class = ""
-        edit_import_link_tab_index = nil
+      raise StandardError.new("Acceptable placement options are :right, :top, :bottom or :left, only... and you assigned #{placement}") unless acceptable_placement_directions.include?(placement)
+
+      if is_browser_a_touch_device?
+        {}
       else
-        edit_import_link_url = "javascript:;"
-        edit_import_link_class += " disabled"
-        edit_import_link_icon_class = "text-muted"
-        edit_import_link_tab_index = "-1"
+        { title: tooltip_content, data: { placement: placement, toggle: "tooltip" } }
       end
+    end
 
-      link_to edit_import_link_url, class: edit_import_link_class, tabindex: edit_import_link_tab_index do
-        "#{ fa_icon 'pencil', class: edit_import_link_icon_class } Edit Import".html_safe
-      end
+    def is_browser_a_touch_device?
+      browser.mobile? || browser.tablet?
     end
   end
 end
