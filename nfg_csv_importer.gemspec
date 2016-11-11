@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 5.0"
-  s.add_dependency "font-awesome-rails", "~> 4.6", ">= 4.6.3.1"
+  s.add_dependency "font-awesome-rails", "~> 4.7"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails", '~> 3.4.0'
