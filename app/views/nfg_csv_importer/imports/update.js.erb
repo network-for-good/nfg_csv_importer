@@ -1,28 +1,20 @@
 // <%= @column_update_action = "test" %>
-var fieldsMapperClass = NfgCsvImporter.FieldsMapper;
-var fieldsMapper = new fieldsMapperClass
+var fieldsMapper = new NfgCsvImporter.FieldsMapper
 var importerContainer = $(fieldsMapper.MAIN_CONTAINER_CLASS)
 var cardHeader = $('#card_header_<%= @mapped_column.dom_id %>');
 var card = cardHeader.closest(".card");
 
-$("#importer_header_stats").replaceWith("<%= j render  'nfg_csv_importer/imports/import_header_stats', ready_for_import: true, import: @import %>");
+var params = {
+  headerStatsContent: "<%= j render  'nfg_csv_importer/imports/import_header_stats', ready_for_import: true, import: @import %>",
+  importerErrorsContent: "<%= j render 'nfg_csv_importer/imports/importer_errors', import: @import %>",
+  cardHeaderContent: "<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>",
+  cardHeaderSelector: "#card_header_<%= @mapped_column.dom_id %>",
+  cardClass: "card card-<%= @mapped_column.status.to_s %>",
+  columnMapped: "<%= @mapped_column.unmapped? ? 'false' : 'true' %>",
+  columnSelector: ".col-importer[data-column-name='<%= @mapped_column.name %>']"
+}
 
-// add or remove the error area based on the import's status
-<% if @import.duplicated_field_mappings.present? || @import.invalid_column_rules.present? %>
-  $("#importer_errors").html("<%= j render 'nfg_csv_importer/imports/importer_errors', import: @import %>");
-<% else %>
-  $("#importer_errors").html("");
-<% end %>
-
-card.attr('class', 'card card-<%= @mapped_column.status.to_s %>');
-card.attr("data-mapped", "<%= @mapped_column.unmapped? ? 'false' : 'true' %>");
-
-cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
-fieldsMapper.setEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
-
-// Reset the highlight toggle to it's appropriate state
-
-fieldsMapper.setHighlightsBasedOnStatus();
+fieldsMapper.updatePage(params);
 
 // set the click action on the highlight toggler
 $("a.text-glow").click(function() {

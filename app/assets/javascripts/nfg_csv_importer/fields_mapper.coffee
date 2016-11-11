@@ -157,3 +157,13 @@ class NfgCsvImporter.FieldsMapper
       dataType: 'script'
       data: form_data
 
+  updatePage: (params) ->
+    $("#importer_header_stats").replaceWith(params.headerStatsContent)
+    $("#importer_errors").html(params.importerErrorsContent)
+    cardHeader = $(params.cardHeaderSelector)
+    card = cardHeader.closest(".card")
+    cardHeader.replaceWith(params.cardHeaderContent)
+    $(card).attr('class', params.cardClass)
+    $(card).attr("data-mapped", params.columnMapped)
+    @setEventsOnImportColumn(params.columnSelector)
+
