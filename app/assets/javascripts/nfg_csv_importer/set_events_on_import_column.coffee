@@ -30,9 +30,3 @@ class NfgCsvImporter.SetEventsOnImportColumn
       type: 'PATCH'
       dataType: 'script'
       data: form_data
-
-$(document).on 'turbolinks:load', ->
-  columns = $(".col-importer")
-  return unless columns.length > 0
-  for column in columns
-    new NfgCsvImporter.SetEventsOnImportColumn column

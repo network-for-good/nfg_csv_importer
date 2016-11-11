@@ -1,5 +1,7 @@
 // <%= @column_update_action = "test" %>
-var importerContainer = $('.nfg-csv-importer')
+var fieldsMapperClass = NfgCsvImporter.FieldsMapper;
+var fieldsMapper = new fieldsMapperClass
+var importerContainer = $(fieldsMapper.MAIN_CONTAINER_CLASS)
 var cardHeader = $('#card_header_<%= @mapped_column.dom_id %>');
 var card = cardHeader.closest(".card");
 
@@ -16,17 +18,16 @@ card.attr('class', 'card card-<%= @mapped_column.status.to_s %>');
 card.attr("data-mapped", "<%= @mapped_column.unmapped? ? 'false' : 'true' %>");
 
 cardHeader.replaceWith("<%= j render 'nfg_csv_importer/imports/importer_column_header', mapped_column: @mapped_column, import: @import %>");
-new NfgCsvImporter.SetEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
+fieldsMapper.setEventsOnImportColumn($(".col-importer[data-column-name='<%= @mapped_column.name %>']"));
 
 // Reset the highlight toggle to it's appropriate state
-var highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;
-highlighter.setHighlightsBasedOnStatus();
+
+fieldsMapper.setHighlightsBasedOnStatus();
 
 // set the click action on the highlight toggler
 $("a.text-glow").click(function() {
-  var highlighter;
-  highlighter = new NfgCsvImporter.ToggleUnmappedHighlights;
-  return highlighter.toggleHighlights();
+  var fieldsMapper = new NfgCsvImporter.FieldsMapper;
+  return fieldsMapper.toggleHighlights();
 });
 
 
