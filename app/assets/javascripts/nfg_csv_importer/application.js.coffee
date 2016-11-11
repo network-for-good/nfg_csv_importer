@@ -27,7 +27,6 @@
 # require nfg_csv_importer/selecting_column_header
 # require nfg_csv_importer/highlight_interacted_column
 # require nfg_csv_importer/import_spinner
-#= require nfg_csv_importer/set_events_on_import_column
 #= require nfg_csv_importer/header_bar
 #= require nfg_csv_importer/fields_mapper
 #= require nfg_csv_importer/scroll_importer_columns
@@ -41,4 +40,4 @@ $(document).on 'turbolinks:load', ->
     fields_mapper.toggleHighlights()
 
   fields_mapper = new NfgCsvImporter.FieldsMapper
-  fields_mapper.setEventListeners
+  fields_mapper.setEventListeners()

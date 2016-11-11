@@ -1,6 +1,5 @@
 #= require spec_helper
 #= require nfg_csv_importer/fields_mapper
-#= require nfg_csv_importer/highlight_unmapped_columns
 
 describe "NfgCsvImporter::HighlightUnmappedColumns.toggleHighlights", ->
 

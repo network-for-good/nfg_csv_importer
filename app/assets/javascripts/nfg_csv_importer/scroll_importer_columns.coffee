@@ -16,11 +16,11 @@ class NfgCsvImporter.HorizontalScroller
   setEventListeners: () ->
     @rightScrollButton.click ->
       event.preventDefault()
-      $(HorizontalScroller.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '+=650px', "easeInOut" }, 600
+      $(HorizontalScroller.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '+=900px', "easeInOut" }, 550
 
     @leftScrollButton.click ->
       event.preventDefault()
-      $(HorizontalScroller.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '-=650px', "easeInOut" }, 600
+      $(HorizontalScroller.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '-=900px', "easeInOut" }, 550
 
     @columnsWrapper.on 'mouseenter', ->
       $(HorizontalScroller.SCROLL_BUTTONS_FINDER).addClass "active"

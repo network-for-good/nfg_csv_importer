@@ -1,24 +1,53 @@
+- column_structure_classes = "col-md-2"
+
 #imports
-  %h1
-    Imports
-  .panel.panel-default
-    .panel-heading
-      - ImportDefinition.import_types.each do |import_type|
-        = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
-    .panel-body
-      // This partial should live within the parent app's views/ subdirectory
-      = render(partial: 'shared/flash_messages') rescue nil
-      #import_links.import_links
+  .jumbotron.jumbotron-fluid
+    .container-fluid
+      .row
+        .col-xs-12
+          %h1
+            Starting a
+            %strong
+              new
+            data import?
+          %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
+
+      .row
+        .col-xs-12
+          - ImportDefinition.import_types.each do |import_type|
+            = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
+
+      .row
+        .col-xs-12
+          %a.btn.btn-white-bg{ href: "javascript:;" }
+            Get Started
+
+
+
+  .container-fluid
+    .row
+      .col-xs-12
+        %h2
+          Past Uploads & Imports
+
+    // This partial should live within the parent app's views/ subdirectory
+    = render(partial: 'shared/flash_messages') rescue nil
+    .row
       - if @imports.empty?
-        There are no Imports
+        .col-xs-12
+          There are no Imports
       -else
-        .table-responsive
-          %table.table.table-striped#imports_table
-            %thead
-              %tr
-                %th.first Admin
-                %th No. of Records
-                %th No. of Records with errors
-                %th Last updated
-                %th.last Status
-            = render :partial => 'import', :collection => @imports
+        .col-xs-12
+          .row
+            %div{ class: column_structure_classes }
+              %h3 Uploaded by
+            %div{ class: column_structure_classes }
+              %h3 Record Count
+            %div{ class: column_structure_classes }
+              %h3 Records With Errors
+            %div{ class: column_structure_classes }
+              %h3 Last Updated
+            %div{ class: column_structure_classes }
+              %h3 Import Status
+            %div{ class: column_structure_classes }
+          = render partial: "import", collection: @imports, locals: { column_structure_classes: column_structure_classes }

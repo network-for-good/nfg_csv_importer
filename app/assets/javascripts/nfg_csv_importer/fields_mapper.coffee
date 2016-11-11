@@ -26,6 +26,8 @@ class NfgCsvImporter.FieldsMapper
     @turnHighlightsOffSwitch = $(FieldsMapper.TURN_HIGHLIGHT_OFF_ID)
     @turnHighlightsOnSwitch = $(FieldsMapper.TURN_HIGHLIGHT_ON_ID)
 
+    @form = $(FieldsMapper.COLUMN_WRAPPER_ID)
+
   setEventListeners: () ->
 
     # scroll control
@@ -49,8 +51,9 @@ class NfgCsvImporter.FieldsMapper
 
     columns = $(FieldsMapper.COLUMN_CLASS)
     return unless columns.length > 0
+    fieldsMapper = new NfgCsvImporter.FieldsMapper
     for column in columns
-      new NfgCsvImporter.SetEventsOnImportColumn column
+      fieldsMapper.setEventsOnImportColumn column
 
     # scroll to duplicate mapped buttond
     @setDuplicateMappedButtonListeners()
