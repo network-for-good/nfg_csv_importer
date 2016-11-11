@@ -31,6 +31,7 @@
 #= require nfg_csv_importer/fields_mapper
 #= require nfg_csv_importer/scroll_importer_columns
 #= require nfg_csv_importer/modal
+#= require nfg_csv_importer/tooltips
 
 window.NfgCsvImporter = {}
 
