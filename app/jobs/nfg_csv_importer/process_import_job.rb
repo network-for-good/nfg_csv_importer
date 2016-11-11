@@ -15,7 +15,7 @@ module NfgCsvImporter
         NfgCsvImporter::ProcessImportJob.perform_later(import_id, import_service.current_row)
       else
         import.complete!
-        NfgCsvImporter::ImportMailer.send_import_result(import).deliver
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
       end
     end
   end
