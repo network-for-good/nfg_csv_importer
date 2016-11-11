@@ -1,9 +1,23 @@
 .jumbotron{
 
-
+  background-color: #f00;
 
   &.jumbotron-fluid{
     margin: 0 -24px 0 -24px;
     position: relative;
+  }
+}
+
+
+.tester{
+  background-color: #f00 !important;
+  font-size: 300px !important;
+
+  p{
+    font-size: 300px !important;
+  }
+
+  h1{
+    font-size: 200px !important;
   }
 }
