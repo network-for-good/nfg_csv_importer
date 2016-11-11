@@ -1,8 +1,9 @@
 - column_structure_classes = "col-md-2"
 
+
 .nfg-csv-importer
-  .jumbotron.jumbotron-fluid
-    .container-fluid
+  .jumbotron.jumbotron-fluid.p-b-0
+    .container-fluid.container-flush
       .row
         .col-xs-12
           %h1
@@ -12,15 +13,16 @@
             data import?
           %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-      .row
+      .row.hidden-xs-up
         .col-xs-12
           - ImportDefinition.import_types.each do |import_type|
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
 
-      .row
-        .col-xs-12
-          %a.btn.btn-white-bg{ href: "javascript:;" }
-            Get Started
+      .jumbotron-footer
+        .row.m-y-double
+          .col-xs-12
+            %a.btn.btn-white-bg{ href: "javascript:;" }
+              Get Started
 
 
 
