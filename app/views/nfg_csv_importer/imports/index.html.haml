@@ -5,7 +5,11 @@
     .container-fluid
       .row
         .col-xs-12
-          %h1 Starting a new data import?
+          %h1
+            Starting a
+            %strong
+              new
+            data import?
           %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
       .row
@@ -23,12 +27,10 @@
   .container-fluid
     .row
       .col-xs-12
-
         %h2
           Past Uploads & Imports
 
     // This partial should live within the parent app's views/ subdirectory
-
     = render(partial: 'shared/flash_messages') rescue nil
     .row
       - if @imports.empty?
