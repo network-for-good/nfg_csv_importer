@@ -11,13 +11,13 @@
       .p-b-quarter
         %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-      .row.hidden-xs-up
+      #import_type_row.row.hidden-xs-up
         .col-xs-12
           - ImportDefinition.import_types.each do |import_type|
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
 
       .jumbotron-footer.p-b-triple.p-t-double
-        %a.btn.btn-white-bg{ href: "javascript:;" }
+        %a.btn.btn-white-bg{ href: "javascript:;", data: { target: "#import_type_row" } }
           Get Started
 
 
