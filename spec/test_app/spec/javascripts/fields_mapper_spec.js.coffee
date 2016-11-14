@@ -84,4 +84,52 @@ describe "NfgCsvImporter::FieldsMapper", ->
         @fieldsMapper.setHighlightsBasedOnStatus()
         expect(@card).not.to.have.class(@fieldsMapperClass.CARD_HIGHLIGHT_CLASS)
 
+  describe "#updatePage", ->
+    beforeEach ->
+      @fieldName = "Donor First Name"
+      @fieldId = "donor_first_name"
+      $('body').html(JST['templates/fields_mapping_base']({ highlight_status: 'enabled' }))
+      $('form#fields_mapping div.row').html(JST['templates/mapped_field_column']({ field_name: @fieldName, field_id: @fieldId }))
 
+      @fieldsMapper = new NfgCsvImporter.FieldsMapper
+      @params = {
+                  headerStatsContent: "<div id='importer_header_stats'>__header_stats__</div>",
+                  importerErrorsContent: "__importer_errors__",
+                  cardHeaderSelector: "#card_header_#{ @fieldId }",
+                  cardHeaderContent: "<div id='card_header_#{ @fieldId }'>__card_header_content__</div>"
+                  cardClass: "card card-unmapped",
+                  columnMapped: "false",
+                  columnSelector: ".col-importer[data-column-name='#{ @fieldName }']"
+                }
+      @errorArea = $(@fieldsMapperClass.ERROR_AREA_SELECTOR)
+
+    it "should replace the header stats with the content in headerStatsContent", ->
+      $(@fieldsMapperClass.HEADER_STATS_AREA_SELECTOR).should.not.have.text("__header_stats__")
+      @fieldsMapper.updatePage(@params)
+      $(@fieldsMapperClass.HEADER_STATS_AREA_SELECTOR).should.have.text("__header_stats__")
+
+    it "should replace the content of the error area with the importerErrorsContent", ->
+      $(@fieldsMapperClass.ERROR_AREA_SELECTOR).should.not.have.text("__importer_errors__")
+      @fieldsMapper.updatePage(@params)
+      $(@fieldsMapperClass.ERROR_AREA_SELECTOR).should.have.text("__importer_errors__")
+
+    it "should replace the card header content with the cardHeaderContent", ->
+      $(@params.cardHeaderSelector).should.not.have.text("__card_header_content__")
+      @fieldsMapper.updatePage(@params)
+      $(@params.cardHeaderSelector).should.have.text("__card_header_content__")
+
+    it "should update the class of the containing card", ->
+      card = $(@params.cardHeaderSelector).closest('.card')
+      $(card).should.have.class('card card-mapped')
+      @fieldsMapper.updatePage(@params)
+      expect($(card)).to.have.class(@params.cardClass)
+
+    it "should set events on the import column", ->
+      spy = chai.spy.on(@fieldsMapper, "setEventsOnImportColumn")
+      @fieldsMapper.updatePage(@params)
+      expect(spy).to.have.been.called.once.with(@params.columnSelector)
+
+    it "should set highlight based on status", ->
+      spy = chai.spy.on(@fieldsMapper, "setHighlightsBasedOnStatus")
+      @fieldsMapper.updatePage(@params)
+      expect(spy).to.have.been.called.once

@@ -45,17 +45,17 @@ describe NfgCsvImporter::ImportsController do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
         NfgCsvImporter::FieldsMapper.expects(:new).returns(mock(call: fields_mapping))
         NfgCsvImporter::Import.any_instance.stubs(:number_of_records).returns(3)
-
-        # NfgCsvImporter::ProcessImportJob.stubs(:perform_later).returns(mock)
       end
+
       let(:import) { NfgCsvImporter::Import.last }
-      let(:fields_mapping) { { "foo" => "bar" } }
+      let(:fields_mapping) { { "foo" => "bar", "baz" => "bing", "bat" => nil } }
+      let(:mapped_column_count) { 2 } # the number of values in the fields_mapping hash
 
       it { expect { subject }.to change(NfgCsvImporter::Import, :count).by(1) }
 
-      it "should redirect when import is successfully placed in queue" do
+      it "should redirect to the edit page and include the number of mapped columns in the url" do
         subject
-        expect(response).to redirect_to(edit_import_path(import))
+        expect(response).to redirect_to(edit_import_path(import, mapped_column_count: mapped_column_count))
       end
 
       it "should assign the value of the fields mapper to the import" do

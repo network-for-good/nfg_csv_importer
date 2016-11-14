@@ -61,41 +61,45 @@
     %i.fa.fa-caret-right.fa-fw
 
 
+  - if @mapped_column_count > 0
+    #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
+      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
+        %span{"aria-hidden" => "true"}
+          %i.fa.fa-times-circle
+      .container-fluid
+        .row.row-xs-center{ style: "height: 100%;" }
+          .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2.col-xl-6.col-xl-push-3
+            .modal-dialog{:role => "document"}
+              .modal-content
+                .modal-header
 
-  #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
-    %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
-      %span{"aria-hidden" => "true"}
-        %i.fa.fa-times-circle
-    .container-fluid
-      .row.row-xs-center{ style: "height: 100%;" }
-        .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2.col-xl-6.col-xl-push-3
-          .modal-dialog{:role => "document"}
-            .modal-content
-              .modal-header
 
+                  .media#modal_title_nfg_csv_importer_modal_first_visit
+                    .media-left.hidden-sm-down
+                      %span.fa-stack.fa-lg
+                        %i.fa.fa-circle.fa-stack-2x
+                        %i.fa.fa-thumbs-o-up.fa-stack-1x
+                    .media-body
+                      Great News!
+                .modal-body.m-b-base
+                  %p.m-b-double
+                    We just saved you some time by automatically mapping
+                    %strong
+                      #{ @import.column_stats[:mapped_column_count] } column headers
+                    of the #{ @import.column_stats[:column_count] } columns in your file for you.
+                  .small
+                    %i As good as we are at this, you should still double check our work :)
 
-                .media#modal_title_nfg_csv_importer_modal_first_visit
-                  .media-left.hidden-sm-down
-                    %span.fa-stack.fa-lg
-                      %i.fa.fa-circle.fa-stack-2x
-                      %i.fa.fa-thumbs-o-up.fa-stack-1x
-                  .media-body
-                    Great News!
-              .modal-body.m-b-base
-                %p.m-b-double
-                  We just saved you some time by automatically mapping
-                  %strong
-                    12 column headers
-                  for you.
-                .small
-                  %i As good as we are at this, you should still double check our work :)
+                .modal-footer
+                  %a.btn.btn-white-bg.btn-lg{ type: "button", data: { dismiss: "modal" } }
+                    Great, Let's Go
+                    %i.fa.fa-chevron-right.m-l-quarter
 
-              .modal-footer
-                %a.btn.btn-white-bg.btn-lg{ type: "button", data: { dismiss: "modal" } }
-                  Great, Let's Go
-                  %i.fa.fa-chevron-right.m-l-quarter
+                  %a.text-link.small.m-l-base{ href: "javascript:;", type: "button", data: { dismiss: "modal" } }
+                    %i.fa.fa-times
 
-                %a.text-link.small.m-l-base{ href: "javascript:;", type: "button", data: { dismiss: "modal" } }
-                  %i.fa.fa-times
+                    Close
 
-                  Close
+    :javascript
+      $("#nfg_csv_importer_modal_first_visit").appendTo("body");
+      $("#nfg_csv_importer_modal_first_visit").modal();
