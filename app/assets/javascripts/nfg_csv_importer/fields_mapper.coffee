@@ -11,6 +11,8 @@ class NfgCsvImporter.FieldsMapper
   @TURN_HIGHLIGHT_ON_ID: "#turn_highlights_on"
   @HIGHLIGHT_STATUS_ELEMENT: "data-unmapped-highlight"
   @CARD_HIGHLIGHT_CLASS: "card-highlight"
+  @HEADER_STATS_AREA_SELECTOR: "#importer_header_stats"
+  @ERROR_AREA_SELECTOR: "#importer_errors"
 
 
   constructor: () ->
@@ -158,10 +160,10 @@ class NfgCsvImporter.FieldsMapper
 
   updatePage: (params) ->
     # Replace the header stats
-    $("#importer_header_stats").replaceWith(params.headerStatsContent)
+    $(FieldsMapper.HEADER_STATS_AREA_SELECTOR).replaceWith(params.headerStatsContent)
 
     # Replace the errors block
-    $("#importer_errors").html(params.importerErrorsContent)
+    $(FieldsMapper.ERROR_AREA_SELECTOR).html(params.importerErrorsContent)
 
     # update the card content and classes
     cardHeader = $(params.cardHeaderSelector)
