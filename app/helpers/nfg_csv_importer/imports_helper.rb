@@ -42,9 +42,10 @@ module NfgCsvImporter
       if error_records_count > 0
         if import.status.try(:to_sym) == :processing
           error_file_link_url = "javascript:;"
-          import_with_errors_color_class = "text-body"
+          import_with_errors_color_class = "text-muted"
           error_file_link_style = "pointer-events: none;"
           error_file_link_tabindex = "-1"
+
         else
           error_file_link_url = import.error_file.url
           import_with_errors_color_class = "text-danger"
