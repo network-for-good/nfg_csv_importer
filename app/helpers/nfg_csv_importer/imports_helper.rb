@@ -7,7 +7,7 @@ module NfgCsvImporter
 
     def import_status_icon_and_text(import)
       import_status_class = "m-r-quarter"
-      case import.status.to_sym
+      case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "cloud-upload"
         import_status_class += " text-primary"
@@ -41,7 +41,7 @@ module NfgCsvImporter
       import_with_errors_color_class = "m-r-quarter"
 
       if error_records_count > 0
-        if import.status.to_sym == :processing
+        if import.status.try(:to_sym) == :processing
           error_file_link_url = "javascript:;"
           import_with_errors_color_class += " text-muted"
           error_file_link_style = "pointer-events: none;"
@@ -67,7 +67,7 @@ module NfgCsvImporter
     end
 
     def number_of_records_without_errors_based_on_import_status(import)
-      if import.status.to_sym == :uploaded
+      if import.status.try(:to_sym) == :uploaded
         html = fa_icon "minus", class: "text-muted"
       else
         html = "<h4>#{ import.number_of_records }</h4>"
