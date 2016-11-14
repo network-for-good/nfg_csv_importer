@@ -15,7 +15,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     if @import.save
       @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
       @import.service.maybe_set_import_number_of_records
-      redirect_to edit_import_path(@import), notice: I18n.t('import.create.notice')
+      redirect_to edit_import_path(@import, mapped_column_count: @import.column_stats[:mapped_column_count]), notice: I18n.t('import.create.notice')
     else
       render :action => 'new'
     end
@@ -43,6 +43,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def edit
+    @mapped_column_count = params[:mapped_column_count].to_i
     @first_x_rows = @import.first_x_rows
   end
 
