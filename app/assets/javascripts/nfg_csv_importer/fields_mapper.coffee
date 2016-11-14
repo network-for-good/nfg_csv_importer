@@ -87,8 +87,6 @@ class NfgCsvImporter.FieldsMapper
         unless $(@).hasClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
           $(@).addClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
     else
-      @turnHighlightsOnSwitch.show()
-      @turnHighlightsOffSwitch.hide()
       @unMappedColumns.each ->
         if $(@).hasClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
           $(@).removeClass FieldsMapper.CARD_HIGHLIGHT_CLASS
