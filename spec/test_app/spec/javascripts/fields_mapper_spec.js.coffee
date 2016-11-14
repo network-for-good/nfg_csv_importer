@@ -124,3 +124,12 @@ describe "NfgCsvImporter::FieldsMapper", ->
       @fieldsMapper.updatePage(@params)
       expect($(card)).to.have.class(@params.cardClass)
 
+    it "should set events on the import column", ->
+      spy = chai.spy.on(@fieldsMapper, "setEventsOnImportColumn")
+      @fieldsMapper.updatePage(@params)
+      expect(spy).to.have.been.called.once.with(@params.columnSelector)
+
+    it "should set highlight based on status", ->
+      spy = chai.spy.on(@fieldsMapper, "setHighlightsBasedOnStatus")
+      @fieldsMapper.updatePage(@params)
+      expect(spy).to.have.been.called.once
