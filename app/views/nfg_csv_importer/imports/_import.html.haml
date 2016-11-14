@@ -1,37 +1,42 @@
 - column_structure_classes = "" if local_assigns[:column_structure_classes].nil?
 
-.row
-  %div{ class: column_structure_classes }
-    %h4
-      = import.imported_by_name
-    %small
-      = link_to import.import_file.url do
-        %i.fa.fa-paperclip
-        = import.import_file_name
+.import-listing-row
+  .row{ id: dom_id(import), data: { id: import.id } }
+    %div{ class: column_structure_classes }
+      %h5.m-b-quarter
+        = import.imported_by_name
+      %p.small.text-truncate.line-height-1
+        = link_to import.import_file.url do
+          %i.fa.fa-paperclip
+          = import.import_file_name
+      %p.small
+        = fa_icon "cloud-upload", class: "m-r-quarter text-muted"
+        = import.created_at.to_s(:abrev_month_yyyy)
 
-  %div{ class: column_structure_classes }
-    = number_of_records_without_errors_based_on_import_status(import)
+    %div{ class: column_structure_classes }
+      = number_of_records_without_errors_based_on_import_status(import)
 
-  %div{ class: column_structure_classes }
-    = number_of_records_with_errors_based_on_import_status(import)
+    %div{ class: column_structure_classes }
+      = number_of_records_with_errors_based_on_import_status(import)
 
-  %div{ class: column_structure_classes }
-    %h4= import.updated_at.to_s(:abrev_month_yyyy)
-    %small= import.updated_at.to_s(:abrev_time_alternative)
+    %div{ class: column_structure_classes }
+      %h5.line-height-1.m-b-quarter= import.updated_at.to_s(:abrev_month_yyyy)
+      %p.small= import.updated_at.to_s(:abrev_time_alternative)
 
-  %div{ class: column_structure_classes }
-    = import_status_icon_and_text(import)
+    %div{ class: column_structure_classes }
+      %p
+        %strong= import_status_icon_and_text(import)
 
-  %div{ class: column_structure_classes }
+    %div{ class: column_structure_classes }
 
-    - if import.status.to_sym == :uploaded
-      = link_to edit_import_path(import), class: "btn btn-link" do
-        = fa_icon "pencil", class: "m-r-quarter"
-        Edit Import
-    - else
-      %span{ bootstrap_tooltip("Once an import has been processed, it's no longer editable", :top) }
-        %span.btn.btn-link.btn-disabled
-          = fa_icon "pencil", class: "m-r-quarter text-muted"
+      - if import.status.to_sym == :uploaded
+        = link_to edit_import_path(import), class: "btn btn-link" do
+          = fa_icon "pencil", class: "m-r-quarter"
           Edit Import
+      - else
+        %span{ bootstrap_tooltip("Once an import has been processed, it's no longer editable", :top) }
+          %a.btn.btn-link.disabled{ href: "javascript:;" }
+            = fa_icon "pencil", class: "m-r-quarter text-muted"
+            Edit Import
 
 

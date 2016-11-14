@@ -3,7 +3,7 @@
   color:#fff;
   background-color: $brand-primary;
   @include rem(padding-top, 20px);
-  @include rem(padding-bottom, 20px);
+  padding-bottom:0;
 
   h1{
     @include rem(font-size, 38px);
@@ -30,9 +30,7 @@
     color: $brand-primary;
 
     @include hover-focus{
-      // background-color: $brand-primary;
       color: #fff;
-      // border-color: $brand-primary;
     }
   }
 }
@@ -40,13 +38,17 @@
 .jumbotron-footer{
   background-image: url("nfg_csv_importer/jumbotron_clouds.jpg");
   background-repeat: no-repeat;
-  background-position: center top;
+  background-position: center bottom;
   background-size: 100% auto;
   background-color: $brand-primary;
-  height:140px;
+  @extend .container-flush;
 }
 
 .jumbotron-fluid{
-  margin: 0 -24px 0 -24px;
   position: relative;
+
+  .row{
+    margin-left:0;
+    margin-right:0;
+  }
 }

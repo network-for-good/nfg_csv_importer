@@ -1,55 +1,71 @@
 - column_structure_classes = "col-md-2"
 
-
 .nfg-csv-importer
-  .jumbotron.jumbotron-fluid.p-b-0
-    .container-fluid.container-flush
-      .row
-        .col-xs-12
-          %h1
-            Starting a
-            %strong
-              new
-            data import?
-          %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
+  .container-fluid.container-flush
+    .jumbotron.jumbotron-fluid
+      %h1
+        Starting a
+        %strong
+          new
+        data import?
+      .p-b-quarter
+        %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
       .row.hidden-xs-up
         .col-xs-12
           - ImportDefinition.import_types.each do |import_type|
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
 
-      .jumbotron-footer
-        .row.m-y-double
-          .col-xs-12
-            %a.btn.btn-white-bg{ href: "javascript:;" }
-              Get Started
+      .jumbotron-footer.p-b-triple.p-t-double
+        %a.btn.btn-white-bg{ href: "javascript:;" }
+          Get Started
 
 
 
-  .container-fluid.container-flush.bg-white
-    .row
-      .col-xs-12
-        %h2
-          Past Uploads & Imports
 
-    // This partial should live within the parent app's views/ subdirectory
     = render(partial: 'shared/flash_messages') rescue nil
-    .row
+
+    #imports_listing.row.bg-white.p-x-base
+      %h2.h4.m-b-base-half.m-l-quarter
+        Past Uploads & Imports
+
       - if @imports.empty?
         .col-xs-12
           There are no Imports
       -else
         .col-xs-12
-          .row
+          .row.m-b-base
             %div{ class: column_structure_classes }
-              %h3 Uploaded by
+              %h4.display-4.p-t-quarter Uploaded by
             %div{ class: column_structure_classes }
-              %h3 Record Count
+              %h4.display-4.p-t-quarter Record Count
             %div{ class: column_structure_classes }
-              %h3 Records With Errors
+              %h4.display-4.p-t-quarter Records With Errors
             %div{ class: column_structure_classes }
-              %h3 Last Updated
+              %h4.display-4.p-t-quarter Last Updated
             %div{ class: column_structure_classes }
-              %h3 Import Status
+              %h4.display-4.p-t-quarter Import Status
             %div{ class: column_structure_classes }
           = render partial: "import", collection: @imports, locals: { column_structure_classes: column_structure_classes }
+          .row.p-y-base-half
+            .col-xs-12
+              %nav{"aria-label" => "Page navigation"}
+                %ul.pagination
+                  %li.page-item
+                    %a.page-link{"aria-label" => "Previous", :href => "#"}
+                      %span{"aria-hidden" => "true"} «
+                      %span.sr-only Previous
+                  %li.page-item
+                    %a.page-link{:href => "#"} 1
+                  %li.page-item
+                    %a.page-link{:href => "#"} 2
+                  %li.page-item
+                    %a.page-link{:href => "#"} 3
+                  %li.page-item
+                    %a.page-link{:href => "#"} 4
+                  %li.page-item
+                    %a.page-link{:href => "#"} 5
+                  %li.page-item
+                    %a.page-link{"aria-label" => "Next", :href => "#"}
+                      %span{"aria-hidden" => "true"} »
+                      %span.sr-only Next

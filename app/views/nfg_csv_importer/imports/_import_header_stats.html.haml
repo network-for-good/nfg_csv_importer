@@ -5,25 +5,25 @@
   .row.row-xs-center.row-importer-stats
 
     .col-md-2.col-xs-center.col-importer-stat
-      .display-3
+      .text-headline
         = number_with_delimiter(@import.number_of_records)
       .text-sub-headline
         Rows
 
     .col-md-2.col-xs-center.col-importer-stat
-      .display-3
+      .text-headline
         = @import.column_stats[:column_count]
       .text-sub-headline
         Columns
 
     .col-md-2.col-xs-center.col-importer-stat
-      .display-3
+      .text-headline
         = @import.column_stats[:ignored_column_count]
       .text-sub-headline
         Ignored Columns
 
     .col-md-2.col-xs-center.col-importer-stat
-      .display-3
+      .text-headline
         = @import.column_stats[:unmapped_column_count]
       .text-sub-headline
         Unmapped Columns
@@ -39,15 +39,16 @@
               Turn Highlight Off
 
     .col-md-4.col-md-center.text-xs-center
-      .display-4
-        - if import.ready_to_import?
-          %i.fa.fa-check-circle.text-white
-          %br
-          Ready to import
-        - else
-          %i.fa.fa-times-circle.text-white
-          %br
-          Not ready to import
+      .text-headline.m-b-base
+        .small
+          - if import.ready_to_import?
+            %i.fa.fa-check-circle.text-white
+            %br
+            Ready to import
+          - else
+            %i.fa.fa-times-circle.text-white
+            %br
+            Not ready to import
       %p
         = link_to import_review_path(import), class: "btn btn-white-outline #{ 'disabled' unless import.ready_to_import? }" do
           %i.fa.fa-chevron-right.text-white
