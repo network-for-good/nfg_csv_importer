@@ -10,6 +10,7 @@ class NfgCsvImporter.FieldsMapper
   @TURN_HIGHLIGHT_OFF_ID: "#turn_highlights_off"
   @TURN_HIGHLIGHT_ON_ID: "#turn_highlights_on"
   @HIGHLIGHT_STATUS_ELEMENT: "data-unmapped-highlight"
+  @CARD_HIGHLIGHT_CLASS: "card-highlight"
 
 
   constructor: () ->
@@ -83,14 +84,12 @@ class NfgCsvImporter.FieldsMapper
       @turnHighlightsOnSwitch.hide()
       @turnHighlightsOffSwitch.show()
       @unMappedColumns.each ->
-        unless $(@).hasClass("card-highlight")
-          $(@).addClass("card-highlight")
+        unless $(@).hasClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
+          $(@).addClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
     else
-      @turnHighlightsOnSwitch.show()
-      @turnHighlightsOffSwitch.hide()
       @unMappedColumns.each ->
-        if $(@).hasClass("card-highlight")
-          $(@).removeClass "card-highlight"
+        if $(@).hasClass(FieldsMapper.CARD_HIGHLIGHT_CLASS)
+          $(@).removeClass FieldsMapper.CARD_HIGHLIGHT_CLASS
 
 
   setDuplicateMappedButtonListeners: () ->
@@ -158,12 +157,21 @@ class NfgCsvImporter.FieldsMapper
       data: form_data
 
   updatePage: (params) ->
+    # Replace the header stats
     $("#importer_header_stats").replaceWith(params.headerStatsContent)
+
+    # Replace the errors block
     $("#importer_errors").html(params.importerErrorsContent)
+
+    # update the card content and classes
     cardHeader = $(params.cardHeaderSelector)
     card = cardHeader.closest(".card")
     cardHeader.replaceWith(params.cardHeaderContent)
     $(card).attr('class', params.cardClass)
     $(card).attr("data-mapped", params.columnMapped)
+
+    # Reset events on the card
     @setEventsOnImportColumn(params.columnSelector)
 
+    # Reset the highlight toggle to it's appropriate state
+    @setHighlightsBasedOnStatus()

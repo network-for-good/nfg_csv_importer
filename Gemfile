@@ -10,5 +10,7 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem 'konacha-chai-matchers', :git => 'git://github.com/network-for-good/konacha-chai-matchers.git', branch: 'master'
+
 # To use debugger
 # gem 'debugger'
