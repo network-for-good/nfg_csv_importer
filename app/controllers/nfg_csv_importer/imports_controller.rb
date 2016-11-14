@@ -43,7 +43,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def edit
+    # this is passed as a param from the create action. All other cases it is nil
     @mapped_column_count = params[:mapped_column_count].to_i
+
     @first_x_rows = @import.first_x_rows
   end
 
