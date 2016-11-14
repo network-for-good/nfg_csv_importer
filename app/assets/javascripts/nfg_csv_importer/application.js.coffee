@@ -32,7 +32,7 @@
 #= require nfg_csv_importer/scroll_importer_columns
 #= require nfg_csv_importer/modal
 #= require nfg_csv_importer/tooltips
-#= require nfg_csv_importer/show_and_hide_content
+#= require nfg_csv_importer/show_and_hide
 
 window.NfgCsvImporter = {}
 
