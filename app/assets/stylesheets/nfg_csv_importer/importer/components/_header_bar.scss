@@ -1,0 +1,15 @@
+.text-headline{
+  @include rem(font-size, 50px);
+  font-weight: $font-weight-light;
+  line-height:1;
+
+  .small{
+
+    &,.fa{
+      @include rem(font-size, 28px);
+    font-weight: $font-weight-light;
+    @include rem(line-height, 28px);
+    }
+
+  }
+}

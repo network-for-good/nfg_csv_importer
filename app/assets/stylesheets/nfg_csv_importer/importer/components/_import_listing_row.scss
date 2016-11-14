@@ -1,0 +1,21 @@
+
+.import-listing-row{
+  @include rem(padding-top, $spacer-base);
+  @include rem(padding-bottom, $spacer-base);
+  border-top: solid 1px #D8D8D8;
+
+  .text-muted{
+    color: #e0e0e0 !important;
+  }
+
+  .btn-link.disabled{
+    &,
+    .fa{
+      opacity: 1 !important;
+      color: #e0e0e0 !important;
+      @include hover-focus{
+        background-color: transparent;
+      }
+    }
+  }
+}

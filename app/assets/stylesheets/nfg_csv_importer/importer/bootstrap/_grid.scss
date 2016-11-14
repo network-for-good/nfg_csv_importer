@@ -164,11 +164,6 @@
   text-align: center;
   @include rem(padding-top, $spacer-double);
   @include rem(padding-bottom, $spacer-double);
-
-  .display-3{
-    font-weight: $font-weight-light;
-    color:#fff;
-  }
 }
 
 .container-importer{
