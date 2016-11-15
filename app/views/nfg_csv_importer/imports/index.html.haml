@@ -13,14 +13,13 @@
 
       #import_type_row.row{ data: { show_hide: "hide" } }
 
-
-        - ImportDefinition.import_types.each do |import_type|
-          .col-xs-4
+		.col-xs-12
+          - definition = ImportDefinition.get_definition(import_type, current_site)
 
             %h2
               Import
               = import_type.to_s.pluralize.titleize
-            %p Import your individual contacts and their associated donations
+            %p= definition.description
 
 
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
