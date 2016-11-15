@@ -15,8 +15,11 @@
         .col-xs-12
 
           - ImportDefinition.import_types.each do |import_type|
-            / - definition = NfgCsvImporter::ImportDefinition.get_definition(import_type, nil)
-            / = definition.description
+
+            - definition = NfgCsvImporter::ImportDefinition.get_definition(import_type, nil)
+
+            / = simple_format(definition.description)
+            = definition.description
 
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
 
