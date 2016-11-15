@@ -1,23 +1,21 @@
+
+
 .jumbotron{
   text-align:center;
   color:#fff;
   background-color: $brand-primary;
   @include rem(padding-top, 20px);
   padding-bottom:0;
-
-  h1{
-    @include rem(font-size, 38px);
-    font-weight: $font-weight-light;
-
-    strong{
-      font-weight: $font-weight-medium;
-    }
-  }
+  padding-top: $spacer-base-half;
 
   p{
     @include rem(font-size, 22px);
     font-weight: $font-weight-light;
     line-height: 1.2;
+  }
+
+  h1{
+    color: #fff;
   }
 
   .btn-white-bg{
