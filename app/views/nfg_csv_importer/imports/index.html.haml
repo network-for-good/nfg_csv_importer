@@ -21,7 +21,7 @@
                   Import
                   = import_type.to_s.pluralize.titleize
                 .card-text.m-b-base
-                  = simple_format(definition.description)
+                  = simple_format(definition.headline)
 
                 = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg" do
                   Begin Import
