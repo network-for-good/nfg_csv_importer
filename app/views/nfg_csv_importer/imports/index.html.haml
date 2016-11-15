@@ -15,7 +15,7 @@
         - ImportDefinition.import_types.each do |import_type|
           - definition = ImportDefinition.get_definition(import_type, @imported_for)
           .col-md-4
-            .card
+            .card{ id: import_type }
               .card-block
                 %h4.card-title.m-b-half
                   Import
@@ -23,7 +23,7 @@
                 .card-text.m-b-base
                   = simple_format(definition.description)
 
-                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg" do
+                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg", id: "begin_import_#{ import_type }" do
                   Begin Import
                   = fa_icon "chevron-right", class: "m-l-quarter"
 
