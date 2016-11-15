@@ -1,21 +1,30 @@
-- column_structure_classes = "col-md-2"
+- count_of_import_types = ImportDefinition.import_types.size
+- import_type_column_structure_classes = "display-flex"
+
+- if count_of_import_types > 4
+  - import_type_column_structure_classes << " col-md-6 col-xl-3"
+- else
+  - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
+  - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
 
 .nfg-csv-importer
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid
-      %h1
+      %h1.display-1
         Starting a
         %strong
           new
         data import?
-      .p-b-base
+      .p-b-half
         %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-      #import_type_row.row{ data: { show_hide: "hide" } }
+      #import_type_row.row.m-t-base{ data: { show_hide: "hide" } }
+
         - ImportDefinition.import_types.each do |import_type|
           - definition = ImportDefinition.get_definition(import_type, @imported_for)
-          .col-md-4
-            .card{ id: import_type }
+
+          %div{ class: import_type_column_structure_classes, id: import_type }
+            .card.flex-1
               .card-block
                 %h4.card-title.m-b-half
                   Import
@@ -43,18 +52,20 @@
       -else
         .col-xs-12
           .row.m-b-half
-            %div{ class: column_structure_classes }
+            - imports_listing_row_column_structure_class = "col-md-2"
+
+            %div{ class: imports_listing_row_column_structure_class }
               %h4.display-4.p-t-quarter Uploaded by
-            %div{ class: column_structure_classes }
+            %div{ class: imports_listing_row_column_structure_class }
               %h4.display-4.p-t-quarter Record Count
-            %div{ class: column_structure_classes }
+            %div{ class: imports_listing_row_column_structure_class }
               %h4.display-4.p-t-quarter Records With Errors
-            %div{ class: column_structure_classes }
+            %div{ class: imports_listing_row_column_structure_class }
               %h4.display-4.p-t-quarter Last Updated
-            %div{ class: column_structure_classes }
+            %div{ class: imports_listing_row_column_structure_class }
               %h4.display-4.p-t-quarter Import Status
-            %div{ class: column_structure_classes }
-          = render partial: "import", collection: @imports, locals: { column_structure_classes: column_structure_classes }
+            %div{ class: imports_listing_row_column_structure_class }
+          = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
           .row.p-y-base-half
             .col-xs-12
               %nav{"aria-label" => "Page navigation"}

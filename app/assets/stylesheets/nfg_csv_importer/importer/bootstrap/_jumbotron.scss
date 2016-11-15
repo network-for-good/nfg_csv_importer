@@ -1,23 +1,21 @@
+
+
 .jumbotron{
   text-align:center;
   color:#fff;
   background-color: $brand-primary;
   @include rem(padding-top, 20px);
   padding-bottom:0;
-
-  h1{
-    @include rem(font-size, 38px);
-    font-weight: $font-weight-light;
-
-    strong{
-      font-weight: $font-weight-medium;
-    }
-  }
+  padding-top: $spacer-base-half;
 
   p{
     @include rem(font-size, 22px);
     font-weight: $font-weight-light;
     line-height: 1.2;
+  }
+
+  h1{
+    color: #fff;
   }
 
   .btn-white-bg{
@@ -45,6 +43,7 @@
     }
 
     .btn{
+      @include vendor-prefix((transform, translateX(-50%)), webkit);
       @include rem(font-size, 16px);
       @include rem(padding, 15px);
       @include box-shadow(0px 0px 20px 0px rgba(255,255,255,.3));
@@ -59,14 +58,16 @@
     }
 
     .card-text{
-
-
       p{
         @include rem(font-size, 16px !important);
         line-height: 1.25;
         font-weight: $font-weight-normal;
         margin-bottom: $spacer-base;
       }
+    }
+
+    .card-block{
+      padding: $spacer-base;
     }
 
     .card-title{
