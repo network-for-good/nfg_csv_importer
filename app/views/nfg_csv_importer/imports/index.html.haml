@@ -8,18 +8,20 @@
         %strong
           new
         data import?
-      .p-b-quarter
+      .p-b-base
         %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
       #import_type_row.row{ data: { show_hide: "hide" } }
-        .col-xs-12
 
-          - ImportDefinition.import_types.each do |import_type|
 
-            - definition = NfgCsvImporter::ImportDefinition.get_definition(import_type, nil)
+        - ImportDefinition.import_types.each do |import_type|
+          .col-xs-4
 
-            / = simple_format(definition.description)
-            = definition.description
+            %h2
+              Import
+              = import_type.to_s.pluralize.titleize
+            %p Import your individual contacts and their associated donations
+
 
             = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
 
