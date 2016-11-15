@@ -80,9 +80,42 @@
       .col-xs-12
         %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
           = fa_icon "angle-down 3x", class: "display-block", text: "Expand the full list of column headers", right: true
-    #import_type_column_descriptions.row{ data: { show_hide: "hide" } }
-      .col-xs-12
-        Fields here
+    #import_type_column_descriptions.container-fluid.container-flush.container-new-import.bg-green{ data: { show_hide: "hide" } }
+      .row
+        .col-xs-12.display-flex
+          %h2
+            =params[:import_type].humanize.titleize if params[:import_type]
+            Column Headers
+          %a{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
+            = fa_icon "cloud-download", class: "m-r-quarter", text: "Download a Cheatsheet"
+
+      / Required
+      - if @import.required_columns.any?
+        %h3 Required Column Headers
+        .row
+          - @import.required_columns.each do |required_field|
+            - description = @import.column_descriptions[required_field]
+
+            .col-md-4{ style: "border:solid 3px #fff;" }
+              .card.card-danger
+                .card-block
+                  %span.text-red *
+                  %h4= field
+                - if description.present?
+                  .card-block
+                    = description
+      - if @import.optional_columns.any?
+        %h3 Optional Column Headers
+        .row
+          - @import.optional_columns.each do |field|
+            - description = @import.column_descriptions[field]
+            .col-md-4
+              .card
+                .card-block
+                  %h4= field
+                - if description.present?
+                  .card-block
+                    = description
 
   #upload_file.container-fluid.container-flush.container-new-import.blue
     .row.text-xs-center
