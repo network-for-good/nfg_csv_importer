@@ -12,26 +12,24 @@
         %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
       #import_type_row.row{ data: { show_hide: "hide" } }
-
-		.col-xs-12
+        - ImportDefinition.import_types.each do |import_type|
           - definition = ImportDefinition.get_definition(import_type, current_site)
+          .col-md-4
+            .card
+              .card-block
+                %h4.card-title.m-b-half
+                  Import
+                  = import_type.to_s.pluralize.titleize
+                .card-text.m-b-base
+                  = simple_format(definition.description)
 
-            %h2
-              Import
-              = import_type.to_s.pluralize.titleize
-            %p= definition.description
-
-
-            = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
-
-
+                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg" do
+                  Begin Import
+                  = fa_icon "chevron-right", class: "m-l-quarter"
 
       .jumbotron-footer.p-b-triple.p-t-base
-        %a.btn.btn-white-bg{ data: { show_hide_target: "#import_type_row" } }
+        %a.btn.btn-white-bg{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
           Get Started
-
-
-
 
     = render(partial: 'shared/flash_messages') rescue nil
 
