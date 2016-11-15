@@ -11,18 +11,18 @@ class NfgCsvImporter.ShowAndHide
 
   toggleShowHide: (clickedElement) ->
     elementToTarget = $($(clickedElement).data @dataTargetAttribute)
+    fadeOutPreference = $(clickedElement).data "fade-out"
 
     elementToTarget.slideToggle 300, ->
       $(@).data "show-hide", "show"
-      if $(clickedElement).data "fade-out", true
+      if fadeOutPreference == true
         $(clickedElement).fadeTo 500, 0
         $(clickedElement).css "pointer-events", "none"
-
 
 $(document).on 'turbolinks:load', ->
   el = $("[data-show-hide-target]")
 
-  # Turbo links doesn't refresh the page; re-displays faded out elements
+  # Turbolinks doesn't refresh the page; re-displays faded out elements, fix that here:
   $("[data-fade-out='true']").css { "opacity" : 1, "pointer-events" : "auto" }
 
   return unless el.length > 0
