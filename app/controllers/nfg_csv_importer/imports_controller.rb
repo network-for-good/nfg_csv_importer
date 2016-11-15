@@ -50,7 +50,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def index
-    @imports = @imported_for.imports.order_by_recent
+    @imports = @imported_for.imports.order_by_recent.page(params[:page]).per(10)
   end
 
   def show

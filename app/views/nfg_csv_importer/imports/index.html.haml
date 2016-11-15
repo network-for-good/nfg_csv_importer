@@ -1,7 +1,9 @@
 - count_of_import_types = ImportDefinition.import_types.size
 - import_type_column_structure_classes = "display-flex"
 
-- if count_of_import_types > 4
+- if count_of_import_types == 0
+  - import_type_column_structure_classes << " col-md-6 col-xl-1"
+- elsif count_of_import_types > 4
   - import_type_column_structure_classes << " col-md-6 col-xl-3"
 - else
   - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
@@ -68,23 +70,4 @@
           = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
           .row.p-y-base-half
             .col-xs-12
-              %nav{"aria-label" => "Page navigation"}
-                %ul.pagination
-                  %li.page-item
-                    %a.page-link{"aria-label" => "Previous", :href => "#"}
-                      %span{"aria-hidden" => "true"} «
-                      %span.sr-only Previous
-                  %li.page-item
-                    %a.page-link{:href => "#"} 1
-                  %li.page-item
-                    %a.page-link{:href => "#"} 2
-                  %li.page-item
-                    %a.page-link{:href => "#"} 3
-                  %li.page-item
-                    %a.page-link{:href => "#"} 4
-                  %li.page-item
-                    %a.page-link{:href => "#"} 5
-                  %li.page-item
-                    %a.page-link{"aria-label" => "Next", :href => "#"}
-                      %span{"aria-hidden" => "true"} »
-                      %span.sr-only Next
+              = paginate @imports

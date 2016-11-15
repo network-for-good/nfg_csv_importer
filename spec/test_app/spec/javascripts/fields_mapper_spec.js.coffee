@@ -133,3 +133,8 @@ describe "NfgCsvImporter::FieldsMapper", ->
       spy = chai.spy.on(@fieldsMapper, "setHighlightsBasedOnStatus")
       @fieldsMapper.updatePage(@params)
       expect(spy).to.have.been.called.once
+
+    it "should the listeners on the duplicate field scroll buttons", ->
+      spy = chai.spy.on(@fieldsMapper, "setDuplicateMappedButtonListeners")
+      @fieldsMapper.updatePage(@params)
+      expect(spy).to.have.been.called.once
