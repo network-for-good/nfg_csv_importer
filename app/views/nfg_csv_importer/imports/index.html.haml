@@ -16,7 +16,7 @@
 
           - ImportDefinition.import_types.each do |import_type|
 
-            - definition = NfgCsvImporter::ImportDefinition.get_definition(import_type, nil)
+            - definition = ImportDefinition.get_definition(import_type, current_site)
 
             / = simple_format(definition.description)
             = definition.description
