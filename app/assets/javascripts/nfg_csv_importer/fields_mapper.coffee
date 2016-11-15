@@ -2,6 +2,7 @@ class NfgCsvImporter.FieldsMapper
   @MAIN_CONTAINER_CLASS: ".nfg-csv-importer"
   @IMPORT_CONTAINER_CLASS: ".container-importer"
   @SCROLL_BUTTONS_FINDER: "a.horizontal-scroll-btn"
+  @DUPLICATE_SCROLL_BUTTON_FINDER: "a.btn-horizontal-scroll"
   @MAPPING_FORM: "#fields_mapping"
   @DUPLICATE_CARD_CLASS: "card-duplicate"
   @COLUMN_WRAPPER_ID: "#columns_wrapper"
@@ -22,7 +23,6 @@ class NfgCsvImporter.FieldsMapper
     # Scroll related elements
     @rightScrollButton = $("[data-horizontal-scroll-button='right']")
     @leftScrollButton = $("[data-horizontal-scroll-button='left']")
-    @duplicateMappedButton = $(FieldsMapper.SCROLL_BUTTONS_FINDER)
 
     # Highlight related elements
     @highlightsStatus = @importerPage.attr(FieldsMapper.HIGHLIGHT_STATUS_ELEMENT)
@@ -95,7 +95,7 @@ class NfgCsvImporter.FieldsMapper
 
 
   setDuplicateMappedButtonListeners: () ->
-    @duplicateMappedButton.on click: (e) ->
+    $(FieldsMapper.DUPLICATE_SCROLL_BUTTON_FINDER).on click: (e) ->
       e.preventDefault()
 
       centerScrollLeft = ($(FieldsMapper.IMPORT_CONTAINER_CLASS).width() / 2)
@@ -177,3 +177,6 @@ class NfgCsvImporter.FieldsMapper
 
     # Reset the highlight toggle to it's appropriate state
     @setHighlightsBasedOnStatus()
+
+    # if there are any duplicate columns, let's hook them up
+    @setDuplicateMappedButtonListeners()
