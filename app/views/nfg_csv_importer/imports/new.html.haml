@@ -1,4 +1,127 @@
-.import_new
+= simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
+
+  / Not yet setup.
+  - if @import.errors.any?
+    .bg-green
+      = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
+
+  #new_import_row_1.container-fluid.container-flush.container-new-import.blue.text-xs-center
+    .row
+      .col-xs-12
+        %h1.display-1
+          Let’s import
+          %strong
+            #{params[:import_type].humanize.pluralize.downcase if params[:import_type]}!
+
+        %p
+          This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
+    .row
+      .col-md-4
+        = fa_stacked_icon "cloud-upload inverse", base: "circle", class: "fa-lg"
+        %p.lead.text-blue
+          Step 1
+        %p
+          Upload & configure your spreadsheet on this page
+      .col-md-4
+        = fa_stacked_icon "columns inverse", base: "circle", class: "fa-lg"
+        %p.lead.text-blue
+          Step 2
+        %p
+          Map your column headers so we can import your data
+      .col-md-4
+        = fa_stacked_icon "thumbs-o-up inverse", base: "circle", class: "fa-lg"
+        %p.lead.text-blue
+          Step 3
+        %p
+          Review your decisions and then approve the import
+    .row
+      .col-xs-12
+        %a.btn.btn-primary.btn-lg{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
+          = fa_icon "chevron-right", class: "m-l-quarter", text: "Ready? Upload Your File", right: true
+
+        %p.small
+          or
+        %p.small
+          %em
+            %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
+              Scroll down to learn more
+
+      %a.btn.btn-scroll-to{ data: { smooth_scroll_target: "#new_import_row_2" } }
+        = fa_icon "angle-down", class: "display-block text-green", text: "Next", right: true
+
+  #new_import_row_2.container-fluid.container-flush.container-new-import.green
+    .row.text-xs-center
+      .col-xs-12
+        %h1.display-1
+          Setting up for
+          %strong
+            success
+
+        %p
+          There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
+          %a{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
+            Excel template
+
+        %p
+          = fa_icon "asterisk 2x", class: "text-green", text: "Here’s a list of required columns that your spreadsheet must have:"
+        / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
+        / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+        %p
+          .label.label-default
+            First name
+          .label.label-default
+            Donation date
+          .label.label-default
+            Amount
+          .label.label-default
+            Payment Method
+
+    .row.text-xs-center
+      .col-xs-12
+        %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
+          = fa_icon "angle-down 3x", class: "display-block", text: "Expand the full list of column headers", right: true
+    #import_type_column_descriptions.row{ data: { show_hide: "hide" } }
+      .col-xs-12
+        Fields here
+
+  #upload_file.container-fluid.container-flush.container-new-import.blue
+    .row.text-xs-center
+      .col-xs-12
+        %h1.display-1
+          %strong
+            Upload your spreadsheet
+        %p
+          Acceptable file types are:
+          %strong
+            csv, xls
+          or
+          %strong
+            xlsx
+    .row
+      .col-xs-12
+        .form-group
+          .label.label-blue 1
+          = f.input :import_file, :hint => "Select either csv,xls or xlsx file" do
+            = f.file_field :import_file
+          = hidden_field_tag 'import_type', @import_type
+        .form-group
+          .label.label-blue 2
+          %label
+            %em
+              Optionally
+            pick your template
+          %p.form-text.text-muted
+            %em
+              This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software
+
+          %select.c-select
+            %option Select a previous import to map your columns to
+            %option My_file_name.xlsx &ndash; Oct. 12, 2016
+        %button.btn.btn-primary.btn-lg{ :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..." }
+          = fa_icon "chevron-right", class: "m-l-quarter", text: "Upload & Continue", right: true
+
+
+-# .import_new
   %h1.page
     Import #{params[:import_type].humanize if params[:import_type]}
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
