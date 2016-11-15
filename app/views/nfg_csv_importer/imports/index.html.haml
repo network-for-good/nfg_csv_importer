@@ -27,26 +27,12 @@
             .card.flex-1
               .card-block
                 %h4.card-title.m-b-half
-                  = grid_size_by_dividing_count_of_imports_by_12
                   Import
                   = import_type.to_s.pluralize.titleize
                 .card-text.m-b-base
                   = simple_format(definition.headline)
 
                 = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg", id: "begin_import_#{ import_type }" do
-                  Begin Import
-                  = fa_icon "chevron-right", class: "m-l-quarter"
-          %div{ class: import_type_column_structure_classes }
-            .card.flex-1
-              .card-block
-                %h4.card-title.m-b-half
-                  = grid_size_by_dividing_count_of_imports_by_12
-                  Import
-                  = import_type.to_s.pluralize.titleize
-                .card-text.m-b-base
-                  = simple_format(definition.headline)
-
-                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg" do
                   Begin Import
                   = fa_icon "chevron-right", class: "m-l-quarter"
 
