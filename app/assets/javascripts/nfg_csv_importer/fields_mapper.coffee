@@ -54,9 +54,9 @@ class NfgCsvImporter.FieldsMapper
 
     columns = $(FieldsMapper.COLUMN_CLASS)
     return unless columns.length > 0
-    fieldsMapper = new NfgCsvImporter.FieldsMapper
+    # fieldsMapper = new NfgCsvImporter.FieldsMapper
     for column in columns
-      fieldsMapper.setEventsOnImportColumn column
+      @setEventsOnImportColumn column
 
     # scroll to duplicate mapped buttond
     @setDuplicateMappedButtonListeners()
@@ -127,33 +127,33 @@ class NfgCsvImporter.FieldsMapper
       ), 2500
 
   setEventsOnImportColumn: (el) ->
-    @column = $(el)
-    @checkbox = @column.find "input[type='checkbox']"
-    @select = @column.find "select"
-    @edit_column =  @column.find "a[data-edit-column='true']"
-    @form = $(FieldsMapper.MAPPING_FORM)
+    column = $(el)
+    checkbox = column.find "input[type='checkbox']"
+    select = column.find "select"
+    edit_column =  column.find "a[data-edit-column='true']"
+    form = $(FieldsMapper.MAPPING_FORM)
 
-    @checkbox.on 'click', (event) =>
+    checkbox.on 'click', (event) =>
       checkbox = $(event.currentTarget)
       card = checkbox.closest ".card"
-      @submitFormForColumn(checkbox, card)
+      @submitFormForColumn(checkbox, card, form)
 
-    @select.on 'change', (event) =>
+    select.on 'change', (event) =>
       select = $(event.currentTarget)
       card = select.closest ".card"
-      @submitFormForColumn(select, card)
+      @submitFormForColumn(select, card, form)
 
-    @edit_column.on 'click', (event) =>
+    edit_column.on 'click', (event) =>
       link = $(event.currentTarget)
       card = link.closest ".card"
       hidden_field = card.find("input[type='hidden']")
-      @submitFormForColumn(hidden_field, card)
+      @submitFormForColumn(hidden_field, card, form)
 
-  submitFormForColumn: (clickedElement, card) ->
+  submitFormForColumn: (clickedElement, card, form) ->
     form_data = {}
     form_data[clickedElement.attr('name')] = clickedElement.val()
     $.ajax
-      url: @form.attr('action')
+      url: form.attr('action')
       type: 'PATCH'
       dataType: 'script'
       data: form_data
