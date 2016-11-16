@@ -6,6 +6,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_filter :load_new_import, only: [:create, :new]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
 
+
+  def new
+    @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
+  end
+
   def create
     @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
     @import.status = :uploaded

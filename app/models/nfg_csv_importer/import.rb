@@ -1,5 +1,7 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
+    attr_accessor :import_template_id # captures the id of a previous import from which fields mappings should be generated
+
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
