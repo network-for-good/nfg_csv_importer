@@ -41,7 +41,7 @@
 }
 
 .background-individuals{
-  background-image: url("nfg_csv_importer/row-individuals.jpg");
+  background-image: image-url("nfg_csv_importer/row-individuals.jpg");
   @include media-breakpoint-up(lg){
     @include rem(padding-bottom, 140px);
   }
@@ -52,7 +52,7 @@
 }
 
 .background-success{
-  background-image: url("nfg_csv_importer/row-success.jpg");
+  background-image: image-url("nfg_csv_importer/row-success.jpg");
 
   @include media-breakpoint-up(lg){
     // @include rem(padding-bottom, 180px);
@@ -114,7 +114,7 @@
 
   &:after{
     content: "";
-    background-image: url("nfg_csv_importer/row-inset-shadow.png");
+    background-image: image-url("nfg_csv_importer/row-inset-shadow.png");
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: 100% 18px;
