@@ -7,7 +7,7 @@ describe NfgCsvImporter::FieldsMapper do
   let(:field_aliases) { nil }
   let(:mapped_fields) { fields_mapper.call }
   let(:subject) { mapped_fields[column_name] }
-  let(:previous_import) { create(:import, imported_for: imported_for, fields_mapping: { "bar" => "baz", "foo" => "bing" }, import_file: File.open("spec/fixtures/users_for_fields_mapping_test.xls")) }
+  let(:previous_import) { create(:import, imported_for: imported_for, fields_mapping: { "donor first name" => "baz", "foo" => "bing" }, import_file: File.open("spec/fixtures/users_for_fields_mapping_test.xls")) }
 
   context "when the definition has not field_aliases" do
     before do
@@ -92,9 +92,30 @@ describe NfgCsvImporter::FieldsMapper do
         import.import_template_id = previous_import.id
       end
 
-      it "should assign the mapping from the previous import to the new import" do
-        expect(mapped_fields).to eq({ "bar" => "baz", "foo" => "bing" })
+      context "for field mapped in the previous import" do
+        let(:column_name) { "donor first name" }
+
+        it "should return the mapped value from the previous import" do
+          expect(subject).to eq("baz")
+        end
       end
+
+      context "for a field not mapped in the previous import" do
+        let(:column_name) { "first name" }
+
+        it "should map using the other rules" do
+          expect(subject).to eq("first_name")
+        end
+      end
+
+      context "columns mapped in the previous import but not included in this import" do
+        let(:column_name) { "foo" }
+
+        it "should not be in the mapping" do
+          expect(subject).to eq(nil)
+        end
+      end
+
     end
   end
 end
