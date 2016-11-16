@@ -72,19 +72,12 @@
 
           %p.small.m-b-quarter
             = fa_icon "asterisk", class: "text-green"
-            %em Here’s a list of required columns that your spreadsheet must have:
+            %em Here are the requirements that your file will need to meet before it can be imported:
           / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
           / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
           .row
-            .col-xs-12
-              .label.label-default
-                First name
-              .label.label-default
-                Donation date
-              .label.label-default
-                Amount
-              .label.label-default
-                Payment Method
+            - @import.column_validation_rules.each do |column_rule|
+              = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, alert_class: "alert-blue", icon: "fa-info"
 
       .row.text-xs-center.row-expander.row-xs-center
         .col-xs-12
