@@ -13,7 +13,10 @@ describe NfgCsvImporter::ImportsController do
     fixture_file_upload(file_name, 'text/csv')
   end
 
-  before { controller.stubs(:current_user).returns(user) }
+  before do
+    controller.stubs(:current_user).returns(user)
+    controller.stubs(:entity).returns(entity)
+  end
 
   render_views
 

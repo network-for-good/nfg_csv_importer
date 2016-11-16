@@ -3,6 +3,7 @@ require 'rails_helper'
 describe "imports/new.html.haml" do
   before do
     view.stubs(:imported_for).returns(entity)
+    view.extend NfgCsvImporter::ImportsHelper
     assign(:import, import)
     view.stubs(:import_type).returns(import.import_type)
     render template: 'nfg_csv_importer/imports/new'
@@ -23,14 +24,6 @@ describe "imports/new.html.haml" do
         expect(field_div).to have_text(field)
       end
     end
-  end
-
-  it "should display a description" do
-    expect(rendered).to match(/#{import.description}/)
-  end
-
-  it "should display a message about what time_zone the date/times will use" do
-    expect(rendered).to match(/All date\/time fields will be assumed to be in Eastern Time/)
   end
 
 end

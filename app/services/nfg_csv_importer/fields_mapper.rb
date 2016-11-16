@@ -9,7 +9,7 @@ module NfgCsvImporter
     end
 
     def call
-      mapped_fields.merge(column_headers_mapper)
+      mapped_fields_from_template || mapped_fields.merge(column_headers_mapper)
     end
 
     private
@@ -60,6 +60,21 @@ module NfgCsvImporter
 
     def aliases_for_mapping
       field_aliases || {}
+    end
+
+    def import_as_template
+      @import_as_template ||= imported_for.imports.find_by(id: import.import_template_id)
+    end
+
+    def mapped_fields_from_template
+      return nil unless import.import_template_id
+      return nil unless import.imported_for
+      return nil unless import_as_template
+      import_as_template.fields_mapping
+    end
+
+    def imported_for
+      import.imported_for
     end
   end
 end

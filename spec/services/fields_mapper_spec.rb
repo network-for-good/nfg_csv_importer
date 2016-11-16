@@ -1,16 +1,18 @@
 require 'rails_helper'
 
 describe NfgCsvImporter::FieldsMapper do
-  before do
-    ::ImportDefinition.any_instance.expects(:send).with("user").at_least(1).returns(import_definition)
-  end
+  let(:imported_for) { create(:entity) }
   let(:fields_mapper) { NfgCsvImporter::FieldsMapper.new(import) }
-  let(:import) { create(:import, import_file: File.open("spec/fixtures/users_for_fields_mapping_test.xls")) }
+  let(:import) { create(:import, imported_for: imported_for, import_file: File.open("spec/fixtures/users_for_fields_mapping_test.xls")) }
   let(:field_aliases) { nil }
   let(:mapped_fields) { fields_mapper.call }
   let(:subject) { mapped_fields[column_name] }
+  let(:previous_import) { create(:import, imported_for: imported_for, fields_mapping: { "bar" => "baz", "foo" => "bing" }, import_file: File.open("spec/fixtures/users_for_fields_mapping_test.xls")) }
 
   context "when the definition has not field_aliases" do
+    before do
+      ::ImportDefinition.any_instance.expects(:send).with("user").at_least(1).returns(import_definition)
+    end
     let(:import_definition) { import_definition_base.delete_if { |k,v| k == :field_aliases } }
 
     context "when the header directly matches a field name" do
@@ -46,6 +48,9 @@ describe NfgCsvImporter::FieldsMapper do
   end
 
   context "when the definition has field aliases" do
+    before do
+      ::ImportDefinition.any_instance.expects(:send).with("user").at_least(1).returns(import_definition)
+    end
     let(:import_definition) { import_definition_base }
     let(:field_aliases) { { "first_name" => ["first"]} }
 
@@ -72,6 +77,24 @@ describe NfgCsvImporter::FieldsMapper do
         expect(subject).to eq(nil)
       end
 
+    end
+  end
+
+  context "when there is a previous import" do
+    let(:import_definition) { import_definition_base }
+
+    before do
+      previous_import
+    end
+
+    context 'and the id of the previous import is assigned to import_template_id' do
+      before do
+        import.import_template_id = previous_import.id
+      end
+
+      it "should assign the mapping from the previous import to the new import" do
+        expect(mapped_fields).to eq({ "bar" => "baz", "foo" => "bing" })
+      end
     end
   end
 end
