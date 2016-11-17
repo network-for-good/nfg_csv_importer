@@ -90,11 +90,11 @@
                           = ignored_column.name
 
             %hr
-    .text-xs-center
-      = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
-        = fa_icon "chevron-right", class: "m-l-quarter", text: "I'm Ready, Let's Import", right: true
-      %p.small or
-      %p.small
-        = link_to imports_path do
+            .text-xs-center
+              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
+                = fa_icon "chevron-right", class: "m-l-quarter", text: "I'm Ready, Let's Import", right: true
+              %p.small or
+              %p.small
+                = link_to imports_path do
 
-          = fa_icon "chevron-left", text: "Save & Come Back Later"
+                  = fa_icon "chevron-left", text: "Save & Come Back Later"

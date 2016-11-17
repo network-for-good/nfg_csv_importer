@@ -57,7 +57,7 @@
 
 .background-success{
   background-image: image-url("nfg_csv_importer/row-success.jpg");
-
+  background-size: 100% auto;
   @include media-breakpoint-up(lg){
     padding-bottom: 180px;
     padding-bottom: 250px;
