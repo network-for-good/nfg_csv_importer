@@ -92,6 +92,16 @@
     .fa-stack-2x{
       color: #dcdcdc;
     }
+
+    &.text-blue{
+      .fa-stack-2x{
+        color: $brand-primary;
+      }
+    }
+
+    &.small{
+      font-size: 20px;
+    }
   }
 
   p{
@@ -155,6 +165,20 @@
   background-color:rgba(#69c537, 0.15);
   padding: 10px;
   line-height: 1;
+}
+
+.row-mapped-columns{
+  padding-top: $spacer-half;
+  padding-bottom: $spacer-half;
+  font-size: 16px;
+
+  &:nth-child(odd){
+    background-color: #f7f7f7;
+  }
+
+  &.no-background{
+    background-color: transparent;
+  }
 }
 
 

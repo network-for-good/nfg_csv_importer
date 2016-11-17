@@ -19,3 +19,5 @@
 @include text-emphasis-variant('.text-danger', $brand-danger);
 
 .full-width{ width: 100%; }
+
+.text-uppercase{ text-transform: uppercase !important; }
