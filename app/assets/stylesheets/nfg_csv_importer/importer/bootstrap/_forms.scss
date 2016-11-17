@@ -1,0 +1,24 @@
+.form-group {
+  margin-bottom: $form-group-margin-bottom;
+  position: relative;
+}
+
+.text-help {
+  margin-top: $spacer-quarter;
+  font-weight: $font-weight-medium !important;
+  font-style: italic;
+  font-size: 14px !important;
+  line-height: 1.2;
+  color: $font-color-tertiary;
+  display: block;
+
+  small,
+  .small { font-size: 12px; }
+}
+
+label{
+  &.label-heading{
+    font-size: 20px;
+    font-weight: $font-weight-medium;
+  }
+}

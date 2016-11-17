@@ -13,11 +13,12 @@ class NfgCsvImporter.ShowAndHide
     elementToTarget = $($(clickedElement).data @dataTargetAttribute)
     fadeOutPreference = $(clickedElement).data "fade-out"
 
+    if fadeOutPreference == true
+      $(clickedElement).fadeTo 300, 0
+      $(clickedElement).css "pointer-events", "none"
     elementToTarget.slideToggle 300, ->
       $(@).data "show-hide", "show"
-      if fadeOutPreference == true
-        $(clickedElement).fadeTo 500, 0
-        $(clickedElement).css "pointer-events", "none"
+
 
 $(document).on 'turbolinks:load', ->
   el = $("[data-show-hide-target]")

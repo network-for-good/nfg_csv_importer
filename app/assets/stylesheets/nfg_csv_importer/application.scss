@@ -1,21 +1,37 @@
+// TODO: Consider removing BS vendor css once this is stabalized.
+
 
 // App Vendors
 .nfg-csv-importer{
+
   @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
   @import 'font-awesome';
   // @import 'redactor';
   // @import 'select2.min';
 
 
-  // Variables and mixins
-  @import "nfg_theme/variables";
-  @import "variables";
-  @import "nfg_theme/mixins/*";
-  @import "mixins";
 
+  // Variables and mixins
+  // @import "nfg_theme/variables";
+  @import "importer/nfg_theme/theme_variables";
+
+  // @import "variables";
+  @import "importer/bootstrap/variables";
+  @import "bootstrap4/variables";
+
+  // @import "nfg_theme/mixins/*";
+  @import "importer/importer_mixins/vendor_prefix";
+  @import "importer/importer_mixins/transition";
+
+  // @import "mixins";
+  @import "importer/bootstrap/mixins";
 
   // NFG Theme specific
-  // @import "nfg_theme/color_variations/*";
+  @import "importer/nfg_theme/color_variations/type";
+  @import "importer/nfg_theme/color_variations/background";
+  @import "importer/nfg_theme/color_variations/buttons";
+  @import "importer/nfg_theme/color_variations/links";
+  @import "importer/nfg_theme/color_variations/labels";
   // @import "nfg_theme/activity_feed";
   // @import "nfg_theme/advanced_search";
   // @import "nfg_theme/avatar";
@@ -34,24 +50,43 @@
   // Bootstrap Reset and dependencies
   // @import "bootstrap4/normalize";
   // @import "normalize";
+  @import "importer/bootstrap/normalize";
+
   // @import "bootstrap4/print";
 
 
   // Core Bootstrap CSS
-  // @import "bootstrap4/reboot";
+  @import "bootstrap4/reboot";
+
   // @import "reboot";
+  @import "importer/bootstrap/reboot";
+
+
+
+  // Should be able to remove these once firmed up
   // @import "bootstrap4/type";
-  // @import "type";
+  @import "type";
+  @import "importer/bootstrap/type";
+
+
+
   // @import "bootstrap4/images";
   // @import "images";
   // // @import "bootstrap4/code";
-  // @import "bootstrap4/grid";
+
+  @import "bootstrap4/grid";
   // @import "grid";
+  @import "importer/bootstrap/grid";
+
   // @import "bootstrap4/tables";
-  @import "bootstrap4/forms";
-  @import "forms";
-  @import "bootstrap4/buttons";
-  @import "buttons";
+
+  // @import "bootstrap4/forms";
+  // @import "forms";
+  @import "importer/bootstrap/forms";
+
+  // @import "bootstrap4/buttons";
+  // @import "buttons";
+  @import "importer/bootstrap/buttons";
 
 
   // Bootstrap Components
@@ -62,40 +97,63 @@
   // @import "button-group";
   // @import "bootstrap4/input-group";
   // @import "input-group";
-  // @import "bootstrap4/custom-forms";
-  // @import "custom-forms";
+
+  @import "bootstrap4/custom-forms";
+  @import "custom-forms";
+  // @import "importer/bootstrap/custom-forms";
+
   // @import "bootstrap4/nav";
   // @import "nav";
   // @import "bootstrap4/navbar";
   // @import "navbar";
+
   // @import "bootstrap4/card";
   // @import "card";
+  @import "importer/bootstrap/card";
+
   // // @import "bootstrap4/breadcrumb";
   // @import "bootstrap4/pagination";
   // @import "pagination";
   // // @import "bootstrap4/pager";
+
   // @import "bootstrap4/labels";
   // @import "labels";
+  @import "importer/bootstrap/labels";
+
   // @import "bootstrap4/jumbotron";
   // @import "jumbotron";
+  @import "importer/bootstrap/jumbotron";
+
   // @import "bootstrap4/alert";
   // @import "alert";
+  @import "importer/bootstrap/alert";
+
   // @import "bootstrap4/progress";
   // @import "progress";
+
   // @import "bootstrap4/media";
   // @import "media";
+  @import "importer/bootstrap/media";
+
   // @import "bootstrap4/list-group";
   // @import "list-group";
+  @import "importer/bootstrap/list-group";
+
   // @import "bootstrap4/responsive-embed";
   // @import "bootstrap4/close";
   // @import "close";
 
 
   // Bootstrap Components w/ JavaScript
+
   // @import "bootstrap4/modal";
   // @import "modal";
+  @import "importer/bootstrap/modal";
+
   // @import "bootstrap4/tooltip";
   // @import "tooltip";
+  @import "importer/bootstrap/tooltip";
+
   // // @import "bootstrap4/popover";
   // // @import "bootstrap4/carousel";
 
@@ -103,31 +161,32 @@
   // Bootstrap Utility classes
   // @import "bootstrap4/utilities";
   // @import "utilities";
+  @import "importer/bootstrap/utilities";
+
   // @import "bootstrap4/utilities-background";
   // @import "utilities-background";
+
   // @import "bootstrap4/utilities-spacing";
   // @import "utilities-spacing";
-  // @import "bootstrap4/utilities-responsive";
+  @import "importer/bootstrap/utilities-spacing";
+
+  @import "bootstrap4/utilities-responsive";
 
 
   // Alpha Bootstrap4 Patches
-  // @import "bootstrap_source_patches/grid-framework"; // Fixes chrome bug
+  @import "importer/bootstrap_source_patches/grid-framework"; // Fixes chrome bug
 
 
   // Vendor styles
-  @import "vendor/*";
+  // @import "vendor/*";
 
-  // Feature
-  // @import "importer/bootstrap/*";
-
-  @import "importer/bootstrap/*";
-  @import "importer/components/*";
-
-
-  // @import "importer/components/alert_growl";
-  // @import "importer/components/importer_interactions";
-  // @import "importer/components/modal_interstitial"; // needs to be outside of namespace for now due to body append javascript in modal.coffee
-  // @import "importer/components/header_bar";
+  // NFG CSV Importer Custom Components
+  @import "importer/components/alert_growl";
+  @import "importer/components/header_bar";
+  @import "importer/components/import_listing_row";
+  @import "importer/components/importer_interactions";
+  @import "importer/components/modal_interstitial";
+  @import "importer/components/new_import";
 
 }
 

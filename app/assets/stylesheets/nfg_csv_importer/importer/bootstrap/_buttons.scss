@@ -1,0 +1,110 @@
+.btn{
+  // @include default-hover-transition();
+  // cursor: pointer;
+  // @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+}
+
+.btn-white-bg {
+  color: $font-color-primary;
+  background-color: $white;
+  border-color: $white;
+
+  // @include hover { color: $white; }
+
+  // &:focus,
+  // &.focus,
+  // &:active,
+  // &.active {
+  //   color: $white;
+  //   background-image: none;
+  // }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    opacity: .4;
+  }
+}
+
+.btn-link{
+  font-weight: $font-weight-medium;
+
+  #{$icon} { color: inherit; }
+  @include hover-focus {
+    background-color: $bg-color-lightest;
+    #{$icon} { color: inherit; }
+  }
+}
+
+
+.btn {
+  @include default-hover-transition();
+  display: inline-block;
+  font-weight: $btn-font-weight;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: $input-btn-border-width solid transparent;
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+  outline: none !important;
+
+  &,
+  &:active,
+  &.active {
+    &:focus,
+    &.focus {
+      @include tab-focus();
+    }
+  }
+
+  @include hover-focus { @include box-shadow(none); }
+  &.focus {
+    text-decoration: none;
+  }
+
+  &:active,
+  &.active {
+    background-image: none;
+    outline: 0;
+    @include box-shadow(none);
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    cursor: $cursor-disabled;
+    pointer-events: none;
+    opacity: .4;
+    @include box-shadow(none);
+  }
+
+  #{$icon} {
+    @include default-hover-transition();
+  }
+}
+
+// Future-proof disabling of clicks on `<a>` elements
+a.btn.disabled,
+fieldset[disabled] a.btn {
+  pointer-events: none;
+}
+
+//
+// Alternate buttons
+//
+
+.btn-primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  #{$icon} { color: $white; }
+}
+
+//
+// Button Sizes
+//
+
+.btn-lg {
+  // line-height: ensure even-numbered height of button next to large input
+  @include button-size($btn-padding-y-lg, $btn-padding-x-lg, 16px, $line-height-lg, $btn-border-radius-lg);
+}

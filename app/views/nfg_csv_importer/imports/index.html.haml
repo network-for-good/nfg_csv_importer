@@ -11,16 +11,16 @@
 
 .nfg-csv-importer
   .container-fluid.container-flush
-    .jumbotron.jumbotron-fluid
+    .jumbotron.jumbotron-fluid.blue
       %h1.display-1
         Starting a
         %strong
           new
         data import?
-      .p-b-half
+      .p-b-base
         %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-      #import_type_row.row.m-t-base{ data: { show_hide: "hide" } }
+      #import_type_row.row{ data: { show_hide: "hide" } }
 
         - ImportDefinition.import_types.each do |import_type|
           - definition = ImportDefinition.get_definition(import_type, @imported_for)
@@ -38,9 +38,9 @@
                   Begin Import
                   = fa_icon "chevron-right", class: "m-l-quarter"
 
-      .jumbotron-footer.p-b-triple.p-t-base
-        %a.btn.btn-white-bg{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-          Get Started
+
+      %a.btn.btn-white-bg.m-b-triple.m-t-half{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+        Get Started
 
     = render(partial: 'shared/flash_messages') rescue nil
 

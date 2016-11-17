@@ -11,8 +11,8 @@
     border-width: 1px 1px;
     border-bottom: solid 1px #eeeeee;
     line-height: 1;
-    @include rem(height, 54px);
-    @include rem(padding, ($spacer-base * 0.75));
+    height: 54px;
+    padding: $spacer-base * 0.75;
     white-space: nowrap;
     overflow-x: hidden;
     text-overflow: ellipsis;

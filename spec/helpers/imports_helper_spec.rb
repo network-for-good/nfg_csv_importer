@@ -102,14 +102,14 @@ describe NfgCsvImporter::ImportsHelper do
       let(:status) { :uploaded }
 
       it { expect(subject).to match("cloud-upload") }
-      it { expect(subject).to match("text-primary") }
+      it { expect(subject).to match("text-blue") }
     end
 
     context "when status is :defined" do
       let(:status) { :defined }
 
       it { expect(subject).to match("table") }
-      it { expect(subject).to match("text-primary") }
+      it { expect(subject).to match("text-blue") }
     end
 
     context "when status is :queued" do

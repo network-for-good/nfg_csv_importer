@@ -128,7 +128,7 @@
                   .card-block
                     = description
 
-    #upload_file.container-new-import.blue
+    #upload_file.container-new-import.blue.no-shadow
       .row.text-xs-center
         .col-xs-12
           %h1.display-1
@@ -141,28 +141,37 @@
             or
             %strong
               xlsx
-      .row
-        .col-xs-12
+      .row.p-b-triple
+        .col-md-6.col-md-push-3.col-xs-12
           .form-group
-            .label.label-blue 1
-            = f.input :import_file, :hint => "Select either csv,xls or xlsx file" do
-              = f.file_field :import_file
+
+            .position-relative
+              .label.label-blue.label-top-left.label-circle 1
+              %label.file
+                = f.file_field :import_file
+                %span.file-custom{ data: { content: "Choose your file..." } }
             = hidden_field_tag 'import_type', @import_type
-          .form-group
-            .label.label-blue 2
-            %label
+
+          %hr.m-y-double
+
+          .form-group.text-xs-center.m-b-base-half
+
+            %label.label-heading.text-blue.m-b-0
               %em
-                Optionally
+                Optionally:
               pick your template
-            %p.form-text.text-muted
+            %p.text-help
               %em
                 This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software
 
-            %select.c-select
-              %option Select a previous import to map your columns to
-              %option My_file_name.xlsx &ndash; Oct. 12, 2016
-          %button.btn.btn-primary.btn-lg{ :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..." }
+            .position-relative.display-inline-block
+              .label.label-blue.label-top-left.label-circle 2
+              %select.c-select
+                %option Select a previous import to map your columns to
+                %option My_file_name.xlsx &ndash; Oct. 12, 2016
+          %button.btn.btn-primary.btn-lg.m-x-a.display-block{ :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..." }
             = fa_icon "chevron-right", class: "m-l-quarter", text: "Upload & Continue", right: true
+
 
 
   -# .import_new

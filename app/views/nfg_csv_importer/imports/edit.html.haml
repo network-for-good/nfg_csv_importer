@@ -43,23 +43,12 @@
     .row.p-x-base.p-t-base.p-b-triple
       .col-xs-6
         = link_to imports_path, class: "btn btn-secondary btn-lg" do
-          %i.fa.fa-chevron-left.m-r-quarter
-          Save & Come Back Later
-      .col-xs-6.text-xs-right
-        %a.btn.btn-primary.btn-lg{ href: "javascript:;", class: "#{ 'disabled' unless ready_for_import }" }
-          Review & Confirm Your Import
-          %i.fa.fa-chevron-right.m-l-quarter
+          = fa_icon "chevron-left fw", class: "m-r-quarter", text: "Save & Come Back Later"
+
+
 
 
   = render "nfg_csv_importer/imports/design_source/auto_save"
-
-
-  / = render partial: "nfg_csv_importer/imports/importer_modal", locals: {  modal_title: "Next Steps", modal_body: "Some standard advice", no_submit: true, component_id: "nfg_csv_importer_modal", resource_color: :blue }
-
-  =link_to "", data: { toggle: "modal", target: "#nfg_csv_importer_modal_first_visit" }, class: "btn btn-primary", remote: true do
-    Kick it off
-    %i.fa.fa-caret-right.fa-fw
-
 
   - if @mapped_column_count > 0
     #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }

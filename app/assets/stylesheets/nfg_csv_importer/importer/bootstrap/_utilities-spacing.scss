@@ -1,0 +1,77 @@
+// // Margin and Padding
+
+// .m-x-auto {
+//   margin-right: auto !important;
+//   margin-left:  auto !important;
+// }
+
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $size, $lengths in $spacers {
+    $length-x:   map-get($lengths, x);
+    $length-y:   map-get($lengths, y);
+
+    .#{$abbrev}-a-#{$size} { #{$prop}:        $length-y $length-x !important; } // a = All sides
+    .#{$abbrev}-t-#{$size} { #{$prop}-top:    $length-y !important; }
+    .#{$abbrev}-r-#{$size} { #{$prop}-right:  $length-x !important; }
+    .#{$abbrev}-b-#{$size} { #{$prop}-bottom: $length-y !important; }
+    .#{$abbrev}-l-#{$size} { #{$prop}-left:   $length-x !important; }
+
+    // Axes
+    .#{$abbrev}-x-#{$size} {
+      #{$prop}-right:  $length-x !important;
+      #{$prop}-left:   $length-x !important;
+    }
+    .#{$abbrev}-y-#{$size} {
+      #{$prop}-top:    $length-y !important;
+      #{$prop}-bottom: $length-y !important;
+    }
+
+
+    // Spacing based on breakpoint
+    // @each $bp in map-keys($grid-breakpoints) {
+    //   .#{$abbrev}-a-#{$size}-up-#{$bp} {
+    //     @include media-breakpoint-up($bp) { #{$prop}: $length-y $length-x !important; }
+    //   }
+    //   .#{$abbrev}-t-#{$size}-up-#{$bp} {
+    //     @include media-breakpoint-up($bp) { #{$prop}-top: $length-y !important; }
+    //   }
+    //   .#{$abbrev}-r-#{$size}-up-#{$bp} {
+    //     @include media-breakpoint-up($bp) { #{$prop}-right: $length-x !important; }
+    //   }
+    //   .#{$abbrev}-b-#{$size}-up-#{$bp} {
+    //     @include media-breakpoint-up($bp) { #{$prop}-bottom: $length-y !important; }
+    //   }
+    //   .#{$abbrev}-l-#{$size}-up-#{$bp} {
+    //     @include media-breakpoint-up($bp) { #{$prop}-left: $length-x !important; }
+    //   }
+    //   .#{$abbrev}-a-#{$size}-down-#{$bp} {
+    //     @include media-breakpoint-down($bp) { #{$prop}: $length-y $length-x !important; }
+    //   }
+    //   .#{$abbrev}-t-#{$size}-down-#{$bp} {
+    //     @include media-breakpoint-down($bp) { #{$prop}-top: $length-y !important; }
+    //   }
+    //   .#{$abbrev}-r-#{$size}-down-#{$bp} {
+    //     @include media-breakpoint-down($bp) { #{$prop}-right: $length-x !important; }
+    //   }
+    //   .#{$abbrev}-b-#{$size}-down-#{$bp} {
+    //     @include media-breakpoint-down($bp) { #{$prop}-bottom: $length-y !important; }
+    //   }
+    //   .#{$abbrev}-l-#{$size}-down-#{$bp} {
+    //     @include media-breakpoint-down($bp) { #{$prop}-left: $length-x !important; }
+    //   }
+    // }
+
+  }
+}
+
+.m-x-a{ margin: 0 auto; }
+
+// // Positioning
+
+// .pos-f-t {
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   left: 0;
+//   z-index: $zindex-navbar-fixed;
+// }

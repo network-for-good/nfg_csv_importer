@@ -69,8 +69,8 @@
     - if (mapped_column.status == :unmapped) || (mapped_column.status == :ignored)
       = mapped_column_name
       - unless mapped_column.status == :ignored
-        %sup
-          %i.fa.fa-info-circle{ title: "This column hasn't been mapped yet", data: { toggle: "tooltip", placement: "top" } }
+        %span.display-inline-block{ title: "This column hasn't been mapped yet", data: { toggle: "tooltip", placement: "top" } }
+          = fa_icon "info-circle"
     - else
       %s.text-muted= mapped_column.name
 

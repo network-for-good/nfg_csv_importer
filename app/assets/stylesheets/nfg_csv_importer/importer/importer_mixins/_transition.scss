@@ -1,0 +1,7 @@
+$default-transition-length: 0.2s;
+$default-transition-animation: ease-in-out;
+
+@mixin default-hover-transition{
+  @include transition(all $default-transition-length $default-transition-animation);
+}
+

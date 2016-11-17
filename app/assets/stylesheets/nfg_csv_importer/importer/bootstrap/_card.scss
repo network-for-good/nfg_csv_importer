@@ -4,18 +4,23 @@
 }
 
 .card-header{
-  @include rem(padding, ($spacer-base * 0.75));
+  padding: $spacer-base * 0.75;
   background-color:#efefef;
   border-top: solid 1px #dfdfdf;
   border-right: solid 1px #dfdfdf;
   border-left: solid 1px #dfdfdf;
   border-bottom: none;
-  @include rem(height, 115px);
+  height: 115px;
   transition: all .5s ease-in-out;
 
   .fa{
     color: $brand-info;
     transition: color 0.5s ease-in-out;
+  }
+
+  .c-select{
+    // width: 235px;
+    width: 100% !important;
   }
 
   h2,
@@ -36,15 +41,15 @@
   }
 
   .form-group{
-    @include rem(margin-bottom, ($spacer-base * 0.75));
+    margin-bottom: $spacer-base * 0.75;
   }
 
   .card-header-interactions{
     z-index:2;
     position:absolute;
     left:0;
-    @include rem(top, -25px);
-    @include rem(font-size, 12px);
+    top: -25px;
+    font-size: 12px;
 
     a,
     label{
@@ -120,10 +125,10 @@
 
 
 .card-block-importer-index{
-  @include rem(font-size, 10px);
+  font-size: 10px;
   line-height:1;
-  @include rem(padding-top, 2px);
-  @include rem(padding-bottom, 2px);
+  padding-top: 2px;
+  padding-bottom: 2px;
   background-color: $brand-primary;
   text-align: center;
   font-weight: $font-weight-bold;
@@ -143,7 +148,7 @@
     border-color: #b4d5e3;
 
    a.h3{
-      @include rem(font-size, 20px);
+      font-size: 20px;
       font-weight: $font-weight-normal;
       color: $brand-primary;
       display: block;
@@ -167,7 +172,7 @@
 
 
     a.h3{
-      @include rem(font-size, 20px);
+      font-size: 20px;
       font-weight: $font-weight-normal;
       display: block;
       color:#4d4d4d;
@@ -197,7 +202,7 @@
 
 
     a.h3{
-      @include rem(font-size, 20px);
+      font-size: 20px;
       font-weight: $font-weight-normal;
       display: block;
       color:#fff;

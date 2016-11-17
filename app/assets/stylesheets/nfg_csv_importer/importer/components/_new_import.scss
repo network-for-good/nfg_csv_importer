@@ -1,5 +1,7 @@
 @mixin new-import-container($color, $background-color: #fff){
   background-color: $background-color;
+  background-repeat: repeat-x;
+  background-position: center bottom;
 
   h1.display-1{
     color: $color !important;
@@ -21,7 +23,7 @@
     bottom:0;
     width: 100%;
     height: 85px;
-    @include rem(font-size, 20px);
+    font-size: 20px;
 
     a{
       color:#fff;
@@ -34,7 +36,7 @@
       .fa{
         color: #fff;
         line-height:1;
-        @include rem(font-size, 24px);
+        font-size: 24px;
       }
     }
   }
@@ -42,12 +44,14 @@
 
 .background-individuals{
   background-image: image-url("nfg_csv_importer/row-individuals.jpg");
+
+
   @include media-breakpoint-up(lg){
-    @include rem(padding-bottom, 140px);
+    padding-bottom: 140px;
   }
 
   @include media-breakpoint-down(lg){
-    @include rem(padding-bottom, 80px);
+    padding-bottom: 80px;
   }
 }
 
@@ -55,12 +59,12 @@
   background-image: image-url("nfg_csv_importer/row-success.jpg");
 
   @include media-breakpoint-up(lg){
-    // @include rem(padding-bottom, 180px);
-    @include rem(padding-bottom, 250px);
+    padding-bottom: 180px;
+    padding-bottom: 250px;
   }
 
   @include media-breakpoint-down(lg){
-    @include rem(padding-bottom, 120px);
+    padding-bottom: 120px;
   }
 }
 
@@ -69,10 +73,10 @@
   @extend .container-fluid;
   @extend .container-flush;
 
-  @include rem(padding-top, $spacer-double);
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: 100% auto;
+  padding-top: $spacer-double;
+  // background-repeat: no-repeat;
+  // background-position: center bottom;
+  // background-size: 100% auto;
 
   h1.display-1{
     font-weight: $font-weight-light;
@@ -83,7 +87,7 @@
   }
 
   .fa-stack{
-    @include rem(font-size, 36px);
+    font-size: 36px;
 
     .fa-stack-2x{
       color: #dcdcdc;
@@ -91,19 +95,19 @@
   }
 
   p{
-    @include rem(font-size, 22px);
+    font-size: 22px;
     font-weight: $font-weight-light;
     line-height: 1.3;
-    @include rem(margin-bottom, $spacer-base);
+    margin-bottom: $spacer-base;
 
     &.lead{
-      @include rem(font-size, 26px);
+      font-size: 26px;
       margin-bottom: 0;
     }
 
     &.small{
-      @include rem(font-size, 16px);
-      @include rem(margin-bottom, 10px);
+      font-size: 16px;
+      margin-bottom: 10px;
       font-weight: $font-weight-normal;
 
       &.text-muted{
@@ -118,7 +122,7 @@
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: 100% 18px;
-    @include rem(height, 18px);
+    height: 18px;
     width: 100%;
     position: absolute;
     z-index: 2;
@@ -139,10 +143,18 @@
   @include new-import-container(#fff, $brand-success);
 }
 
+.container-new-import.no-shadow{
+  &:after{
+    content: none;
+  }
+}
+
 .label-default{
   color: #919f89;
-  @include rem(font-size, 13px);
+  font-size: 13px;
   background-color:rgba(#69c537, 0.15);
-  @include rem(padding, 10px);
+  padding: 10px;
   line-height: 1;
 }
+
+

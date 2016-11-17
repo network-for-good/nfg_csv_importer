@@ -42,9 +42,9 @@
   // width: auto;
   max-width: 90%;
   // margin: 10px;
-  @include rem(margin-top, $spacer-half);
+  margin-top: $spacer-half;
   margin-right: auto;
-  @include rem(margin-bottom, $spacer-half);
+  margin-bottom: $spacer-half;
   margin-left: auto;
 }
 
@@ -106,7 +106,7 @@
 .modal-body {
   // position: relative;
   // padding: $modal-inner-padding;
-  @include rem(padding, $modal-inner-padding);
+  padding: $modal-inner-padding;
 }
 
 // // Footer (for actions)
@@ -114,7 +114,7 @@
   background-color: $modal-footer-bg;
   @include border-bottom-radius($border-radius);
   // padding: $modal-inner-padding;
-  @include rem(padding, $modal-footer-padding);
+  padding: $modal-footer-padding;
   // text-align: right; // right align buttons
   // border-top: 1px solid $modal-footer-border-color;
   // @include clearfix(); // clear it in case folks use .pull-* classes on buttons
@@ -149,9 +149,9 @@
   .modal-dialog {
     // width: $modal-md;
     // margin: 30px auto;
-    @include rem(margin-top, $spacer-base);
+    margin-top: $spacer-base;
     margin-right: auto;
-    @include rem(margin-bottom, $spacer-base);
+    margin-bottom: $spacer-base;
     margin-left: auto;
   }
   // .modal-content {

@@ -10,10 +10,10 @@ module NfgCsvImporter
       case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "cloud-upload"
-        import_status_class += " text-primary"
+        import_status_class += " text-blue"
       when :defined
         import_status_icon = "table"
-        import_status_class += " text-primary"
+        import_status_class += " text-blue"
       when :queued
         import_status_icon = "hourglass-2"
         import_status_class += " text-warning"

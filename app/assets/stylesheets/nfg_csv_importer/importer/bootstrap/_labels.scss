@@ -2,8 +2,54 @@
   .label{
     z-index:1;
     position:absolute;
-    @include rem(top, -9px);
-    @include rem(right, ($spacer-base * 0.75));
+    top: -9px;
+    right: $spacer-base * 0.75;
   }
 }
 
+.label{
+  font-size: 11px;
+  display: inline-block;
+  padding: 3px $spacer-quarter;
+  font-weight: $font-weight-normal;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  @include border-radius();
+  color: #fff;
+
+  &:empty { display: none; }
+  #{$icon} { color: $white; }
+
+  &.label-top-left{
+    position:absolute;
+    z-index:99;
+    left: -18px;
+    top: -15px;
+  }
+
+  &.label-circle{
+    font-size: 16px;
+    @include vendor-prefix((border-radius: 50%), webkit moz);
+    width: 34px;
+    height: 34px;
+    padding-top: 9px;
+    text-align: center;
+    font-weight: $font-weight-medium;
+  }
+}
+
+.label-pill {
+  padding-right: 6px;
+  padding-left: 6px;
+  @include border-radius(100px);
+}
+
+.label-success {
+  @include label-variant($label-success-bg);
+}
+
+.label-danger {
+  @include label-variant($label-danger-bg);
+}

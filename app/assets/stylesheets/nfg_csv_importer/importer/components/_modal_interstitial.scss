@@ -16,7 +16,7 @@
       display:inline-block;
 
       .fa{
-        @include rem(font-size, 40px);
+        font-size: 40px;
         color: #fff;
         text-shadow: 0px 0px 6px rgba(255, 255, 255, 0);
       }
@@ -80,7 +80,7 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     color:#fff;
-    @include rem(font-size, 60px);
+    font-size: 60px;
     font-weight: $font-weight-bold;
     padding:0;
     position: relative;
@@ -98,7 +98,7 @@
     }
 
     .fa-stack{
-      @include rem(font-size, 70px);
+      font-size: 70px;
 
       .fa-stack-2x{
         color: #3eb9f2;
@@ -114,14 +114,14 @@
 
     &,
     p{
-      @include rem(font-size, 40px);
+      font-size: 40px;
       font-weight: $font-weight-light;
       line-height:1.15;
       }
 
     small,
     .small{
-      @include rem(font-size, 16px);
+      font-size: 16px;
       font-weight: $font-weight-normal;
     }
   }

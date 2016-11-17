@@ -1,6 +1,6 @@
 - if import.duplicated_field_mappings.present? || import.invalid_column_rules.present?
   .container-fluid.container-flush.container-error
-    .row.m-y-base
+    .row.p-y-base
       .col-xs-12
         %h2.text-xs-center
           We found a few issues you’ll need to address
@@ -16,22 +16,24 @@
                   %i.fa.fa-circle.fa-stack-2x
                   %i.fa.fa-exclamation.fa-stack-1x
               .media-body
-                %h3.media-heading.m-b-quarter
-                  You can’t have multiple columns with the same mapped header.
-                  Time to
-                  %strong
-                    ignore
-                  or
-                  %strong
-                    adjust
-                  your columns.
+                .row
+                  .col-xs-12
+                    %h3.media-heading.m-b-quarter
+                      You can’t have multiple columns with the same mapped header.
+                      Time to
+                      %strong
+                        ignore
+                      or
+                      %strong
+                        adjust
+                      your columns.
 
-                %h3.media-heading.m-b-base
-                  Click a column header &ndash; e.g.
-                  %a.btn.btn-danger-outline.btn-sm{ href: "javascript:;", style: "pointer-events: none;" }
-                    Address
-                  &ndash;
-                  to navigate right to that column.
+                    %h3.media-heading.m-b-base
+                      Click a column header &ndash; e.g.
+                      %a.btn.btn-danger-outline.btn-sm{ href: "javascript:;", style: "pointer-events: none;" }
+                        Address
+                      &ndash;
+                      to navigate right to that column.
 
 
                 .row

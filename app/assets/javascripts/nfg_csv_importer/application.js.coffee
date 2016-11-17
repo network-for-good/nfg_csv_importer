@@ -34,6 +34,7 @@
 #= require nfg_csv_importer/tooltips
 #= require nfg_csv_importer/show_and_hide
 #= require nfg_csv_importer/smooth_scroll
+#= require nfg_csv_importer/bootstrap_custom_file_input
 
 window.NfgCsvImporter = {}
 

@@ -1,11 +1,24 @@
 // TODO: remove non mixin specific colors, etc from mixin.
 @mixin importer-alert($color){
   &.alert{
+    position: relative;
     background-color:#fff;
     border-bottom:solid 1px #eeeeee;
     border-right:solid 1px #eeeeee;
     border-left: solid 3px $color;
     font-weight: $font-weight-normal;
+    margin-bottom: $spacer-base;
+    padding: $alert-padding;
+
+    > p,
+    > ul {
+      margin-bottom: 0;
+    }
+    > p + p {
+      margin-top: 5px;
+    }
+
+    #{$icon} { color: $white; }
 
     .alert-link, a{
       color: $color !important;
@@ -86,11 +99,11 @@
     &.text-muted{
       color: #8a8a8a;
     }
-    @include rem(font-size, 14px);
+    font-size: 14px;
   }
 
   .media-heading{
-    @include rem(font-size, 16px);
+    font-size: 16px;
     font-weight: $font-weight-normal;
     line-height: 1.3;
   }
