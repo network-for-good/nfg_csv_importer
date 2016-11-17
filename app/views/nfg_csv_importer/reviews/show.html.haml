@@ -51,9 +51,8 @@
                   %strong
                     = @import.column_stats[:column_count]
                     columns
-                %a.btn.btn-primary-outline.btn-sm{ href: "javascript:;" }
+                = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm" do
                   = fa_icon "pencil", text: "Edit Mapped Columns"
-
             .row
               / see all button goes here for expand/collapse
 
