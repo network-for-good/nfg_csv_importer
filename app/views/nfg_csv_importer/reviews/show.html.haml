@@ -46,7 +46,7 @@
                 %p.lead.text-blue.display-inline-block
                   Importing
                   %strong
-                    = @mapped_column_count
+                    = @import.column_stats[:mapped_column_count]
                   of
                   %strong
                     = @import.column_stats[:column_count]
@@ -68,7 +68,7 @@
                   .col-xs-5.col-xs-push-2
                     %small.m-b-quarter.display-block.text-muted.text-uppercase Mapped
 
-                - @import.mapped_fields.each do |mapped_column|
+                - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
                   .row.row-mapped-columns
                     .col-xs-5
                       = fa_icon "check", class: "text-green small"
@@ -89,7 +89,7 @@
                   = @import.column_stats[:ignored_column_count]
                   Ignored Columns
 
-                - @import.mapped_fields.each do |ignored_column|
+                - @import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
 
                   .row.row-mapped-columns.no-background
                     .col-xs-12
