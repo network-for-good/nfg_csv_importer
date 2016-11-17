@@ -100,6 +100,10 @@ fieldset[disabled] a.btn {
   #{$icon} { color: $white; }
 }
 
+.btn-primary-outline {
+  @include button-outline-variant($btn-primary-bg);
+}
+
 //
 // Button Sizes
 //
@@ -107,4 +111,8 @@ fieldset[disabled] a.btn {
 .btn-lg {
   // line-height: ensure even-numbered height of button next to large input
   @include button-size($btn-padding-y-lg, $btn-padding-x-lg, 16px, $line-height-lg, $btn-border-radius-lg);
+}
+
+.btn-sm {
+  @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
 }

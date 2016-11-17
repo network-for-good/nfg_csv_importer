@@ -177,8 +177,7 @@
   @import "importer/bootstrap_source_patches/grid-framework"; // Fixes chrome bug
 
 
-  // Vendor styles
-  // @import "vendor/*";
+
 
   // NFG CSV Importer Custom Components
   @import "importer/components/alert_growl";
@@ -187,6 +186,9 @@
   @import "importer/components/importer_interactions";
   @import "importer/components/modal_interstitial";
   @import "importer/components/custom_importer_rows";
+
+  // Vendor styles
+  @import "importer/vendor/readmore";
 
 }
 

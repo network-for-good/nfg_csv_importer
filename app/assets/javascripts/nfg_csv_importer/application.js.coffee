@@ -20,6 +20,7 @@
 # directory ../../../vendor/assets/javascripts/linkify
 # Bootstrap4
 #= require bootstrap4/bootstrap.min
+#= require readmore.min
 # NFG_CSV_IMPORTER Coffee
 #= require_self
 # require nfg_csv_importer/ignore_importer_column
@@ -35,6 +36,7 @@
 #= require nfg_csv_importer/show_and_hide
 #= require nfg_csv_importer/smooth_scroll
 #= require nfg_csv_importer/bootstrap_custom_file_input
+#= require nfg_csv_importer/read_more
 
 window.NfgCsvImporter = {}
 
