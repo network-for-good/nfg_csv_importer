@@ -72,19 +72,12 @@
 
           %p.small.m-b-quarter
             = fa_icon "asterisk", class: "text-green"
-            %em Here’s a list of required columns that your spreadsheet must have:
+            %em Here are the requirements that your file will need to meet before it can be imported:
           / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
           / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
           .row
-            .col-xs-12
-              .label.label-default
-                First name
-              .label.label-default
-                Donation date
-              .label.label-default
-                Amount
-              .label.label-default
-                Payment Method
+            - @import.column_validation_rules.each do |column_rule|
+              = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, alert_class: "alert-blue", icon: "fa-info"
 
       .row.text-xs-center.row-expander.row-xs-center
         .col-xs-12
@@ -146,7 +139,8 @@
           .form-group
 
             .position-relative
-              .label.label-blue.label-top-left.label-circle 1
+              - if @previous_imports.present?
+                .label.label-blue.label-top-left.label-circle 1
               %label.file
                 = f.file_field :import_file
                 %span.file-custom{ data: { content: "Choose your file..." } }
@@ -154,58 +148,21 @@
 
           %hr.m-y-double
 
-          .form-group.text-xs-center.m-b-base-half
+          - if @previous_imports.present?
+            .form-group.text-xs-center.m-b-base-half
 
-            %label.label-heading.text-blue.m-b-0
-              %em
-                Optionally:
-              pick your template
-            %p.text-help
-              %em
-                This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software
+              %label.label-heading.text-blue.m-b-0
+                %em
+                  Optionally
+                apply a column mapping from a previous import.
+              %p.text-help
+                %em
+                  If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import.
 
-            .position-relative.display-inline-block
-              .label.label-blue.label-top-left.label-circle 2
-              %select.c-select
-                %option Select a previous import to map your columns to
-                %option My_file_name.xlsx &ndash; Oct. 12, 2016
+              .position-relative.display-inline-block
+                .label.label-blue.label-top-left.label-circle 2
+                = f.input :import_template_id, label: false do
+                  = f.select :import_template_id, options_from_collection_for_select(@previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { :prompt => 'Do not apply a mapping' }, { class: "c-select"}
+
           %button.btn.btn-primary.btn-lg.m-x-a.display-block{ :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..." }
             = fa_icon "chevron-right", class: "m-l-quarter", text: "Upload & Continue", right: true
-
-
-
-  -# .import_new
-    %h1.page
-      Import #{params[:import_type].humanize if params[:import_type]}
-    = simple_form_for(@import, :url => nfg_csv_importer.imports_path, :html => { :class => 'form-horizontal' }) do |f|
-
-      = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
-
-      #required_fields.panel.panel-default
-        .panel-heading
-          %h3.panel-title
-            Description
-
-        .panel-body
-          .list-group
-            .list-group-item
-              = simple_format(@import.description)
-            .list-group-item
-              = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.required_columns, header: 'Required Fields' }
-            .list-group-item
-              = render partial: 'nfg_csv_importer/imports/import_fields', locals: { fields: @import.optional_columns, header: 'Optional Fields' }
-            .list-group-item
-              %strong
-                IMPORTANT:
-              All date/time fields will be assumed to be in #{ @import.time_zone }
-      .panel.panel-default
-        .panel-heading
-          %h3.panel-title
-            Import
-        .panel-body
-
-          = f.input :import_file , :hint => "Select either csv,xls or xlsx file" do
-            = f.file_field :import_file
-          = hidden_field_tag 'import_type', @import_type
-        .panel-footer
-          = f.button :submit, 'Import', :class => 'btn btn-primary', :confirm => "Are you sure you want to import this file? Depending on the size of the file, this could take a few minutes.", disable_with: "Uploading and queueing, please wait..."

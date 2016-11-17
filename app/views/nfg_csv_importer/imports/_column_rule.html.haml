@@ -1,0 +1,13 @@
+- alert_class = 'alert-red' if local_assigns[:alert_class].nil?
+- icon = "fa-exclamation" if local_assigns[:icon].nil?
+
+.col-md-6
+  .alert{ class: alert_class }
+    .media
+      .media-left
+        %span.fa-stack.fa-lg
+          %i.fa.fa-circle.fa-stack-2x
+          %i.fa.fa-stack-1x{ class: icon }
+      .media-body
+        %h3.media-heading
+          = column_rule.message.html_safe

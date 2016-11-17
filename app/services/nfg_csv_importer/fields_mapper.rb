@@ -30,6 +30,10 @@ module NfgCsvImporter
       columns_for_mapping.detect { |field| field.gsub("_", "") == header_column.downcase }
     end
 
+    def column_header_mapped_to_previous_import_template(header_column)
+      mapped_fields_from_template[header_column]
+    end
+
     def column_header_mapped_to_aliases(header_column)
       # each alias should be a hash with the field
       # name as the key and an array of aliases as the value
@@ -44,9 +48,10 @@ module NfgCsvImporter
     def column_headers_mapper
       mapped_fields.inject({}) do |hsh, (header_column, field)|
         if field.blank? # we skip any field that has already been mapped
-          matching_field = column_header_mapped_to_field_names(header_column)
-          matching_field = column_header_mapped_to_humanized_field_names(header_column)  unless matching_field.present?
-          matching_field = column_header_mapped_to_un_underscored_field_names(header_column)  unless matching_field.present?
+          matching_field = column_header_mapped_to_previous_import_template(header_column)
+          matching_field = column_header_mapped_to_field_names(header_column) unless matching_field.present?
+          matching_field = column_header_mapped_to_humanized_field_names(header_column) unless matching_field.present?
+          matching_field = column_header_mapped_to_un_underscored_field_names(header_column) unless matching_field.present?
           matching_field = column_header_mapped_to_aliases(header_column) unless matching_field.present?
           hsh[header_column] = matching_field if matching_field
         end
@@ -60,6 +65,21 @@ module NfgCsvImporter
 
     def aliases_for_mapping
       field_aliases || {}
+    end
+
+    def import_as_template
+      @import_as_template ||= imported_for.imports.find_by(id: import.import_template_id)
+    end
+
+    def mapped_fields_from_template
+      return {} unless import.import_template_id
+      return {} unless import.imported_for
+      return {} unless import_as_template
+      import_as_template.fields_mapping
+    end
+
+    def imported_for
+      import.imported_for
     end
   end
 end

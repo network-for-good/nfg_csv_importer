@@ -1,5 +1,7 @@
 module NfgCsvImporter
   class Import < ActiveRecord::Base
+    attr_accessor :import_template_id # captures the id of a previous import from which fields mappings should be generated
+
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
@@ -20,7 +22,7 @@ module NfgCsvImporter
 
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
       :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows, :invalid_column_rules, :to => :service
+      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows, :invalid_column_rules, :column_validation_rules, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
