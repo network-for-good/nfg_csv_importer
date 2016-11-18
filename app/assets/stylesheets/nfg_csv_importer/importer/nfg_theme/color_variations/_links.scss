@@ -4,7 +4,6 @@
   a.text-#{nth($color, 1)} {
     &:not(.btn):not(.dropdown-item) {
       color: nth($color, 2);
-      @include default-hover-transition();
       @include hover-focus { color: nth($color, 3); }
     }
     // &.no-link-color {

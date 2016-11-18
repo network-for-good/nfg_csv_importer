@@ -1,5 +1,5 @@
 @each $color in $primary-colors-list  {
-  .#{nth($color, 1)} {
+  .#{nth($color, 1)}{
     // .btn-primary { @include button-variant($white, nth($color, 2), nth($color, 2)); }
     // .btn-secondary { @include button-variant(nth($color, 2), $white, $gray-light); }
     // .btn-link { color: nth($color, 2) !important; }
@@ -20,12 +20,18 @@
     // }
 
     // White buttons
-    .btn-white-bg {
-      color: nth($color, 2);
+    .btn-white-bg,
+    &.btn-white-bg {
+      color: nth($color, 2) !important;
 
       @include hover {
         background-color: lighten(nth($color, 3), 7%);
-            border-color: lighten(nth($color, 3), 7%);
+        border-color: lighten(nth($color, 3), 7%);
+        color:#fff !important;
+        #{$icon}{
+          color:#fff;
+        }
+
       }
 
       &:focus,

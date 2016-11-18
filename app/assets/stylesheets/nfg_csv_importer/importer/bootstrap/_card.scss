@@ -1,3 +1,25 @@
+.card-icon-column{
+
+  .card-title{
+    margin-bottom:0;
+    font-weight: $font-weight-normal;
+
+    &.small{
+      font-size: 16px;
+    }
+  }
+
+  .fa-stack{
+    font-size: 36px;
+  }
+
+  .card-text.lead{
+    font-size: 24px;
+    font-weight: $font-weight-normal;
+  }
+}
+
+
 .card{
   border: none;
   transition: all .5s ease-in-out;
