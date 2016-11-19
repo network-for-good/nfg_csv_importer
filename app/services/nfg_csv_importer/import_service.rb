@@ -151,7 +151,10 @@ class NfgCsvImporter::ImportService
       )
 
       if saved_object.is_a?(ActiveRecord::Base)
-        imported_record.importable = saved_object
+        if saved_object.previously_changed["id"].present?
+          imported_record.importable = saved_object
+          imported_record.action = ""
+        end
       elsif model_obj.is_a?(ActiveRecord::Base)
         imported_record.importable = model_obj
       end

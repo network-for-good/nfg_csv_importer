@@ -29,7 +29,6 @@
 # require nfg_csv_importer/import_spinner
 #= require nfg_csv_importer/header_bar
 #= require nfg_csv_importer/fields_mapper
-#= require nfg_csv_importer/scroll_importer_columns
 #= require nfg_csv_importer/modal
 #= require nfg_csv_importer/tooltips
 #= require nfg_csv_importer/show_and_hide
@@ -38,7 +37,7 @@
 
 window.NfgCsvImporter = {}
 
-$(document).on 'turbolinks:load', ->
+$(document).on 'ready page:load', ->
   $("a.text-glow").click ->
     fields_mapper = new NfgCsvImporter.FieldsMapper
     fields_mapper.toggleHighlights()

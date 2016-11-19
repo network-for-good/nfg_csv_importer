@@ -55,7 +55,13 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def index
-    @imports = @imported_for.imports.order_by_recent.page(params[:page]).per(10)
+    # if no pagination engine is available, just so the records
+    @imports = @imported_for.imports.order_by_recent
+    if defined?(WillPaginate)
+      @imports = @imports.paginate(page: params[:page], per_page: 10)
+    elsif defined?(Kaminari)
+      @imports = @imports.page(params[:page]).per(10)
+    end
   end
 
   def show

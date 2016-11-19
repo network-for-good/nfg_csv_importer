@@ -70,4 +70,7 @@
           = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
           .row.p-y-base-half
             .col-xs-12
-              = paginate @imports
+              - if defined?(WillPaginate)
+                = will_paginate @imports
+              - elsif defined?(Kaminari)
+                = paginate @imports

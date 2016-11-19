@@ -1,4 +1,4 @@
-$(document).on 'turbolinks:load', ->
+$(document).on 'ready page:load', ->
   $('input[type=\'file\']').change ->
     fieldVal = $(this).val()
     myRegexp = /[^\\]*$/g

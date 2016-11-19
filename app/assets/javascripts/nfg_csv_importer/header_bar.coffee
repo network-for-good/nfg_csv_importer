@@ -1,4 +1,4 @@
-$(document).on 'turbolinks:load', ->
+$(document).on 'ready page:load', ->
 
   $(window).scroll ->
     scroll = $(window).scrollTop()
