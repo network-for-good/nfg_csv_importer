@@ -1,5 +1,3 @@
-- columns_to_be_imported = @import.column_stats[:column_count] - @import.column_stats[:ignored_column_count]
-
 .nfg-csv-importer
   .container-new-import.blue.background-individuals
     .row.text-xs-center
@@ -41,7 +39,7 @@
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-blue small"
           .media-body
-            .row
+            .row.m-b-half
               .col-xs-12
                 %p.lead.text-blue.display-inline-block
                   Importing
@@ -51,59 +49,52 @@
                   %strong
                     = @import.column_stats[:column_count]
                     columns
-                = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm" do
-                  = fa_icon "pencil", text: "Edit Mapped Columns"
-            .row
-              / see all button goes here for expand/collapse
+                  = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-base" do
+                    = fa_icon "pencil", text: "Edit Mapped Columns"
+            .expandable{"data-max-height" => "300"}
+              .row
+                / see all button goes here for expand/collapse
 
-              .col-md-7
-                %h3.text-green.font-size-18
-                  = columns_to_be_imported
-                  Mapped Columns
+                .col-md-7
+                  %h3.text-green.font-size-18
+                    = @import.column_stats[:mapped_column_count]
+                    Mapped Columns
 
-                .row
-                  .col-xs-5
-                    %small.m-b-quarter.display-block.text-muted.text-uppercase Uploaded header
-                  .col-xs-5.col-xs-push-2
-                    %small.m-b-quarter.display-block.text-muted.text-uppercase Mapped
-
-                - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
-                  .row.row-mapped-columns
+                  .row
                     .col-xs-5
-                      = fa_icon "check", class: "text-green small"
+                      %small.m-b-quarter.display-block.text-muted.text-uppercase Uploaded header
+                    .col-xs-5.col-xs-push-2
+                      %small.m-b-quarter.display-block.text-muted.text-uppercase Mapped
 
-                      / Tom: This should be the name of the column that was originally uploaded
-                      %strong= mapped_column.name
-                    .col-xs-2
-                      = fa_icon "long-arrow-right", class: "text-muted fa-lg"
-                    .col-md-5
-                      / Tom: This should be the name that the column was mapped to
-                      = mapped_column.mapped_to
+                  - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
+                    .row.row-mapped-columns
+                      .col-xs-5
+                        = fa_icon "check", class: "text-green small"
+                        %strong= mapped_column.name
+                      .col-xs-2
+                        = fa_icon "long-arrow-right", class: "text-muted fa-lg"
+                      .col-md-5
+                        = mapped_column.mapped_to
 
+                .col-md-4.col-md-push-1
+                  %h3.text-red.font-size-18
+                    = @import.column_stats[:ignored_column_count]
+                    Ignored Columns
 
+                  - @import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
 
-
-              .col-md-4.col-md-push-1
-                %h3.text-red.font-size-18
-                  = @import.column_stats[:ignored_column_count]
-                  Ignored Columns
-
-                - @import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
-
-                  .row.row-mapped-columns.no-background
-                    .col-xs-12
-                      = fa_icon "close", class: "text-red small"
-                      %span.text-muted
-                        / Tom: This should be the name of the uploaded column that was marked as ignored
-                        = ignored_column.name
+                    .row.row-mapped-columns.no-background
+                      .col-xs-12
+                        = fa_icon "close", class: "text-red small"
+                        %span.text-muted
+                          = ignored_column.name
 
             %hr
+            .text-xs-center
+              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
+                = fa_icon "chevron-right", class: "m-l-quarter", text: "I'm Ready, Let's Import", right: true
+              %p.small or
+              %p.small
+                = link_to imports_path do
 
-    .text-xs-center
-
-      = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
-        = fa_icon "chevron-right", class: "m-l-quarter", text: "I'm Ready, Let's Import", right: true
-      %p.small or
-      %p.small
-        %a.btn.btn-link{ href: "javascript:;" }
-          = fa_icon "chevron-left", text: "Save & Come Back Later"
+                  = fa_icon "chevron-left", text: "Save & Come Back Later"

@@ -11,7 +11,7 @@
 
 .nfg-csv-importer
   .container-fluid.container-flush
-    .jumbotron.jumbotron-fluid.blue
+    .jumbotron.jumbotron-fluid.jumbotron-clouds
       %h1.display-1
         Starting a
         %strong
@@ -34,13 +34,14 @@
                 .card-text.m-b-base
                   = simple_format(definition.headline)
 
-                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg", id: "begin_import_#{ import_type }" do
+                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg blue", id: "begin_import_#{ import_type }" do
                   Begin Import
                   = fa_icon "chevron-right", class: "m-l-quarter"
 
 
-      %a.btn.btn-white-bg.m-b-triple.m-t-half{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+      %a.btn.btn-white-bg.blue.m-t-half{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
         Get Started
+        = fa_icon "chevron-right"
 
     = render(partial: 'shared/flash_messages') rescue nil
 

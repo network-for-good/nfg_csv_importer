@@ -74,11 +74,15 @@ a.text-glow{
   background-color: #f7f7f7;
 
   h2{
+    color: #ababab;
+  }
+}
+
+h2{
     font-size: 24px;
     font-weight: $font-weight-light;
     color: #ababab;
   }
-}
 
 hr {
   margin-top: $spacer-y;
@@ -89,4 +93,8 @@ hr {
 
 .font-size-18{
   font-size: 18px;
+}
+
+.font-size-16{
+  font-size: 16px;
 }

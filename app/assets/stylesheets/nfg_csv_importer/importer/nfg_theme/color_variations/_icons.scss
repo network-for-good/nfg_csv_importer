@@ -1,0 +1,9 @@
+@each $color in $primary-colors-list  {
+  .card-icon-column{
+    &.#{nth($color, 1)}{
+      .fa:not(.fa-inverse){
+        color: nth($color, 2) !important;
+      }
+    }
+  }
+}

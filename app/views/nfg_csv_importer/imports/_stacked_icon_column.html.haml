@@ -1,0 +1,13 @@
+- icon = "" if local_assigns[:icon].nil?
+- heading = "" if local_assigns[:heading].nil?
+- heading_class = "" if local_assigns[:heading_class].nil?
+- content = "" if local_assigns[:content].nil?
+- content_class = "" if local_assigns[:content_class].nil?
+- color = "blue" if local_assigns[:color].nil?
+
+%div{ class: "card card-block card-icon-column text-xs-center #{color}" }
+  = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter"
+  %h4{ class: "card-title #{heading_class}" }
+    = heading
+  %p.card-text{ class: content_class }
+    = content

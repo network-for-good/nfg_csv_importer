@@ -58,31 +58,34 @@
           = fa_icon "angle-down", class: "display-block text-green", text: "Next", right: true
 
     #new_import_row_2.container-new-import.green.background-success
-      .row.text-xs-center
+      .row
         .col-xs-12
-          %h1.display-1
-            Setting up for
-            %strong
-              success
+          .text-xs-center
+            %h1.display-1
+              Setting up for
+              %strong
+                success
 
-          %p
-            There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
-            %a.text-link{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
-              %strong Excel template
 
-          %p.small.m-b-quarter
-            = fa_icon "asterisk", class: "text-green"
-            %em Here are the requirements that your file will need to meet before it can be imported:
-          / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
-          / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+
+            %p
+              There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
+              %a.text-link{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
+                %strong Excel template
+
+            %p.small.m-b-base
+              = fa_icon "asterisk", class: "text-green"
+              %em Here are the requirements that your file will need to meet before it can be imported:
+            / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
+            / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
           .row
             - @import.column_validation_rules.each do |column_rule|
-              = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, alert_class: "alert-blue", icon: "fa-info"
+              = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-blue"
 
       .row.text-xs-center.row-expander.row-xs-center
         .col-xs-12
           %a.text-link{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
-            = fa_icon "angle-down", class: "display-block text-green", text: "Expand the full list of column headers", right: true
+            = fa_icon "angle-down", class: "display-block text-white", text: "Expand the full list of column headers", right: true
 
     #import_type_column_descriptions.container-new-import.bg-green{ data: { show_hide: "hide" } }
       .row

@@ -32,6 +32,8 @@
   @import "importer/nfg_theme/color_variations/buttons";
   @import "importer/nfg_theme/color_variations/links";
   @import "importer/nfg_theme/color_variations/labels";
+  @import "importer/nfg_theme/color_variations/icons";
+
   // @import "nfg_theme/activity_feed";
   // @import "nfg_theme/advanced_search";
   // @import "nfg_theme/avatar";
@@ -177,8 +179,7 @@
   @import "importer/bootstrap_source_patches/grid-framework"; // Fixes chrome bug
 
 
-  // Vendor styles
-  // @import "vendor/*";
+
 
   // NFG CSV Importer Custom Components
   @import "importer/components/alert_growl";
@@ -187,6 +188,9 @@
   @import "importer/components/importer_interactions";
   @import "importer/components/modal_interstitial";
   @import "importer/components/custom_importer_rows";
+
+  // Vendor styles
+  @import "importer/vendor/readmore";
 
 }
 
