@@ -89,7 +89,7 @@
         .row.m-b-double
           - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
             - description = @import.column_descriptions[required_field]
-            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : "No description"  }
+            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
 
       - if @import.optional_columns.any?
         .row
