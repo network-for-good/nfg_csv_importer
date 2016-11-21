@@ -45,5 +45,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "konacha"
   s.add_development_dependency "ejs"
+  s.add_development_dependency "jquery-rails"
   s.add_development_dependency "selenium-webdriver"
 end
