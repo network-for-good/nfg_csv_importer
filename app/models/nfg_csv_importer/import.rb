@@ -139,6 +139,15 @@ module NfgCsvImporter
       mapped_fields.select { |column| column.unmapped? }
     end
 
+    def time_remaining_message
+      return 'Unknown' if minutes_remaining < 0
+      hours = (minutes_remaining/60).floor
+      minutes = (minutes_remaining % 60)
+      str = hours > 0 ? "#{ ActionController::Base.helpers.pluralize(hours, "hour")} and " : ""
+      str += ActionController::Base.helpers.pluralize(minutes, "minute")
+      str
+    end
+
     private
 
     def service_name
@@ -151,6 +160,17 @@ module NfgCsvImporter
         hsh[dupe_field] = header.each.with_index.inject([]) { |arr, (field, index)| arr << (index + 1).to_s26.upcase if field == dupe_field; arr }
         hsh
       end
+    end
+
+    def minutes_remaining
+      return -1 if number_of_records.nil? || number_of_records == 0
+      return -1 if records_processed.nil? || records_processed == 0
+      return 0 if records_processed == number_of_records
+      return -1 if processing_started_at.nil?
+      minutes_processing = (Time.now - processing_started_at)/60
+      percent_complete = records_processed.to_f/number_of_records.to_f
+      estimated_total = minutes_processing.to_f/percent_complete.to_f
+      remaining_minutes = (estimated_total - minutes_processing).floor
     end
   end
 

@@ -7,3 +7,9 @@ en:
       delete_confirmation: 'Are you sure you want to remove this import along with all %{number_of_records} of its created %{import_type} records?'
     destroy:
       success: 'The import and its %{number_of_records} associated %{import_type} records have been successfully removed.'
+  imports:
+    show:
+      status:
+        processing: "processing"
+        complete: "imported"
+        deleting: "queued for deletion"

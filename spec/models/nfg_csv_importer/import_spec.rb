@@ -354,4 +354,70 @@ describe NfgCsvImporter::Import do
       end
     end
   end
+
+  describe "#time_remaining_message" do
+    let(:import) { FactoryGirl.build(:import,
+                                      imported_for: entity,
+                                      import_type: import_type,
+                                      imported_by: admin,
+                                      import_file: file,
+                                      error_file: error_file,
+                                      number_of_records: number_of_records,
+                                      records_processed: records_processed,
+                                      processing_started_at: processing_started_at
+                                      ) }
+    let(:number_of_records) { nil }
+    let(:records_processed) { nil }
+    let(:processing_started_at) { nil }
+
+    subject { import.time_remaining_message }
+    context 'when the number_of_records is nil' do
+      it "should return 'Unknown'" do
+        expect(subject).to eq("Unknown")
+      end
+    end
+
+    context 'when the number_of_records is not nil' do
+      let(:number_of_records) { 5000 }
+
+      context 'and the records_processed is nil' do
+        it "should return 'Unknown'" do
+          expect(subject).to eq("Unknown")
+        end
+      end
+
+      context "and the records_processed is not nil" do
+        let(:records_processed) { 500 }
+
+        context "and the processing_started_at is nil" do
+          it "should return 'Unknown'" do
+            expect(subject).to eq("Unknown")
+          end
+        end
+
+        context "and the processing_started_at is 5 minutes ago nil" do
+          let(:processing_started_at) { 5.minutes.ago }
+          it "should return a value calculated from the start time, total number of records, and number processed" do
+            expect(subject).to eq("45 minutes")
+          end
+        end
+
+        context 'and the processing_started_at is 1 hour ago' do
+          let(:processing_started_at) { (1.hour + 15.minutes).ago }
+
+          it "should return a value calculated from the start time, total number of records, and number processed" do
+            expect(subject).to eq("11 hours and 15 minutes")
+          end
+        end
+      end
+
+      context "and the records processed equals the number_of_records" do
+        let(:records_processed) { 5000 }
+
+        it "should be 0 minutes" do
+          expect(subject).to eq("0 minutes")
+        end
+      end
+    end
+  end
 end
