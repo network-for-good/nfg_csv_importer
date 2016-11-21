@@ -27,5 +27,5 @@
 }
 
 a{
-  @include default-hover-transition();
+  &, #{$icon}{ @include default-hover-transition(); }
 }

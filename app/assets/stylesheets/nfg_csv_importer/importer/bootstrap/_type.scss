@@ -24,7 +24,8 @@ p{
   }
 }
 
-h1.display-1{
+h1.display-1,
+.h1.display-1{
   font-size: 38px;
   font-weight: $font-weight-light;
   margin-bottom: $spacer-half;
