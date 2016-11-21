@@ -151,10 +151,7 @@ class NfgCsvImporter::ImportService
       )
 
       if saved_object.is_a?(ActiveRecord::Base)
-        if saved_object.previously_changed["id"].present?
-          imported_record.importable = saved_object
-          imported_record.action = ""
-        end
+        imported_record.importable = saved_object
       elsif model_obj.is_a?(ActiveRecord::Base)
         imported_record.importable = model_obj
       end
@@ -186,7 +183,11 @@ class NfgCsvImporter::ImportService
   end
 
   def get_action(record)
-    record.new_record? ? "create" : "update"
+    if record.new_record? || record.previous_changes["id"].present?
+      "create"
+    else
+      "update"
+    end
   end
 
   def all_headers_are_string_type?

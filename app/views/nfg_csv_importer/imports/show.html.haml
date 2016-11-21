@@ -1,10 +1,9 @@
 / TODO: Map this to a parameter passed in when people are sent here from reviews/show
-- redirected_from_review = true
 
 .nfg-csv-importer
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds
-      - if redirected_from_review
+      - if params["redirected_from_review"]
         %h1.display-1
           %strong
             Well done!
@@ -16,23 +15,14 @@
               = content_tag(:li, fa_icon("check-circle li", text: "You've mapped your column headers"))
               = content_tag(:li, fa_icon("check-circle li", text: "You've approved the official import to begin"))
       - else
-        - case @import.status
-        - when :processing
-          - import_status = "processed"
-        - when :complete
-          - import_status = "imported"
-        - when :deleting
-          - import_status = "queued for deletion"
-        - else
-          - import_status = @import.status
 
         %h1.display-1
           Your
           %strong
             = @import.import_type.pluralize.humanize.downcase
-          have been
+          are
           %strong
-            = import_status
+            = t("status.#{ @import.status }", default: @import.status)
 
         .p-t-half
           This data was imported by
@@ -41,42 +31,39 @@
 
     = render('shared/flash_messages') rescue nil
 
-    - if redirected_from_review
+    - if params["redirected_from_review"]
       .row.text-xs-center.m-b-base
         .col-xs-12
           %h2.text-blue.m-b-0
             Your
             %strong
               = @import.import_type.pluralize.humanize.downcase
-            import is being
+            import is
             %strong
-              - if @import.status == :processing
-                processed
-              - else
-                = @import.status
+              = t("status.#{ @import.status }", default: @import.status)
           %p.font-size-16
             %em
               We'll email you when your import is done and in the system.
 
     .row.p-b-triple
       .col-md-3
-        - if redirected_from_review
+        - unless @import.complete?
           - heading = "Estimated time remaining"
           / TODO: Make dynamic
-          - content = "3 hours"
+          - content = @import.time_remaining_message
         - else
           - heading = "Import completed on"
           / TODO: Make dynamic when an import was finalized and imported
-          - content = "Nov. 16, 2016"
+          - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
 
         = render partial: 'stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
 
       .col-md-3
-        - if redirected_from_review
+        - unless @import.complete?
           - heading = "Importing"
           - content = "#{@import.number_of_records} records"
         - else
-          - heading = "Records created"
+          - heading = "New records created"
           - content = @import.imported_records.count
 
         = render partial: 'stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
@@ -92,7 +79,7 @@
         - heading = "Errors within your data"
 
         - if @import.number_of_records_with_errors.to_i > 0
-          - icon "exclamation"
+          - icon = "exclamation"
           - color = "red"
           - content_class += " text-red"
           - content = @import.number_of_records_with_errors
@@ -118,49 +105,3 @@
               Download your original spreadsheet:
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
-
-
-/ %h1.page
-/   #{@import.import_type.titleize} Import
-
-
-/ .panel.panel-default
-/   .panel-body
-/     = render('shared/flash_messages') rescue nil
-/     - unless @import.import_file.file.nil?
-/       %p
-/         %b Import file:
-/         = link_to "Download", @import.import_file.url
-/     - unless @import.error_file.file.nil?
-/       %p
-/         %b Error file:
-/         = link_to "Download", @import.error_file.url
-/     %p
-/       %b Number of records:
-/       = @import.number_of_records
-/     %p
-/       %b Number of records with errors:
-/       = @import.number_of_records_with_errors
-/     %p
-/       %b Imported by:
-/       = @import.imported_by_name
-/     %p
-/       %b Created at:
-/       = @import.created_at.to_s(:us_time)
-/     %p
-/       %b Updated at:
-/       = @import.updated_at.to_s(:us_time)
-/     %p
-/       %b Status:
-/       = @import.status
-/     %p
-/       %b Rows processed:
-/       = @import.records_processed
-/     - if @import.imported_records.any?
-/       - unless @import.deleted?
-/         %p
-/           %b Records created:
-/           = @import.imported_records.count
-/       - if @import.can_be_deleted?
-/         %p
-/           = link_to 'Delete Import', import_path(@import), method: :delete, data: { confirm: t(:delete_confirmation, number_of_records: @import.imported_records.size, import_type: @import.import_type, scope: [:import, :show]) }, class: 'btn btn-danger'

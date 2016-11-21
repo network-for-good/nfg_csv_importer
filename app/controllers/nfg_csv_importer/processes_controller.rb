@@ -6,7 +6,7 @@ class NfgCsvImporter::ProcessesController < NfgCsvImporter::ApplicationControlle
   def create
     NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
     flash[:success] = "Your import has been queued for processing. You will be emailed when it is completed. You can refresh this page to get updates on the import's progress."
-    redirect_to @import
+    redirect_to import_path(@import, redirected_from_review: true)
   end
   alias_method :update, :create
 end
