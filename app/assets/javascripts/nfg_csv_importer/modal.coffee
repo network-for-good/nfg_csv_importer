@@ -5,7 +5,7 @@ $(document).on 'ready page:load', ->
 
   $("[data-modal-identifier='nfg_csv_importer_modal']").on 'show.bs.modal', ->
     setTimeout (->
-      $("[data-modal-identifier='nfg_csv_importer_modal']").wrap "<div class='nfg-csv-importer' data-modal-flag='on'></div>"
+      $("[data-modal-identifier='nfg_csv_importer_modal']").wrap "<span class='nfg-csv-importer' data-modal-flag='on'></div>"
     ), 1
 
     $("[data-modal-identifier='nfg_csv_importer_modal']").on 'hidden.bs.modal', ->
