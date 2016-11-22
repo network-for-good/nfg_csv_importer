@@ -6,7 +6,7 @@
       .bg-green
         = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
-    #new_import_row_1.container-new-import.blue.background-individuals
+    #new_import_row_1.container-new-import.blue
       .row.text-xs-center
         .col-xs-12
           %h1.display-1
@@ -50,7 +50,7 @@
         %a.btn.btn-scroll-to.text-xs-center{ data: { smooth_scroll_target: "#new_import_row_2" } }
           = fa_icon "angle-down", class: "display-block text-green", text: "Next", right: true
 
-    #new_import_row_2.container-new-import.green.background-success
+    #new_import_row_2.container-new-import.green
       .row
         .col-xs-12
           .text-xs-center

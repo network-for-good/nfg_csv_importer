@@ -1,12 +1,15 @@
 en:
   import:
     create:
-      notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
       error: 'There was an error when attempting to import 1 or more of the records. Any record not listed here has been imported successfully %{errors}'
     show:
       delete_confirmation: 'Are you sure you want to remove this import along with all %{number_of_records} of its created %{import_type} records?'
     destroy:
       success: 'The import and its %{number_of_records} associated %{import_type} records have been successfully removed.'
+  process:
+    create:
+      notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
+
   imports:
     show:
       status:

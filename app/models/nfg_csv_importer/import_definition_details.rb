@@ -38,7 +38,7 @@ module NfgCsvImporter
 
       @column_validation_rules << NfgCsvImporter::ColumnValidator.new(type: "all",
                                                                       fields: required_columns,
-                                                                      message: "At least one of the following required columns are missing: #{required_columns}") if required_columns.present?
+                                                                      message: "You must map columns to all of the following fields: #{required_columns}") if required_columns.present?
       @column_validation_rules
     end
   end

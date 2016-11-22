@@ -20,7 +20,7 @@ class NfgCsvImporter.ShowAndHide
       $(@).data "show-hide", "show"
 
 
-$(document).on 'turbolinks:load', ->
+$(document).on 'ready page:load', ->
   el = $("[data-show-hide-target]")
 
   # Turbolinks doesn't refresh the page; re-displays faded out elements, fix that here:
