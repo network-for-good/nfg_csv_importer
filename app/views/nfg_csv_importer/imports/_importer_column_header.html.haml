@@ -53,12 +53,14 @@
     - elsif mapped_column.status == :unmapped
       - all_fields = [""] + import.all_valid_columns
 
-      = select_tag field_name, options_for_select(all_fields.map { |f| f.humanize.titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
+      / we can't use humanize on the fields select options because it removes the
+      / ID from the name of the field
+      = select_tag field_name, options_for_select(all_fields.map { |f| f.downcase.tr("_", " ").titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
 
     - else
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
-        = mapped_column.mapped_to.humanize.titleize
+        = mapped_column.mapped_to.downcase.tr("_", " ").titleize
         %small{ title: "This column has been successfully mapped", data: { toggle: "tooltip", placement: "top" } }
           %i.fa.fa-icon.fa-check-circle.text-success
       = hidden_field_tag field_name
