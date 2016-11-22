@@ -18,7 +18,6 @@ else
   window.NfgCsvImporter.readyOrTurboLinksLoad = "ready"
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
-  alert("I'm in!")
   $("a.text-glow").click ->
     fields_mapper = new NfgCsvImporter.FieldsMapper
     fields_mapper.toggleHighlights()
