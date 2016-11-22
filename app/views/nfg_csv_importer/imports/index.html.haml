@@ -12,36 +12,38 @@
 .nfg-csv-importer
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds
-      %h1.display-1
-        Starting a
-        %strong
-          new
-        data import?
-      .p-b-base
-        %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
+      .container-fluid
+        %h1.text-xs-center
+          Starting a
+          %strong
+            new
+          data import?
+        .p-b-base.text-xs-center
+          %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-      #import_type_row.row{ data: { show_hide: "hide" } }
+        #import_type_row.row{ data: { show_hide: "hide" } }
 
-        - ImportDefinition.import_types.each do |import_type|
-          - definition = ImportDefinition.get_definition(import_type, @imported_for)
+          - ImportDefinition.import_types.each do |import_type|
+            - definition = ImportDefinition.get_definition(import_type, @imported_for)
 
-          %div{ class: import_type_column_structure_classes, id: import_type }
-            .card.flex-1
-              .card-block
-                %h4.card-title.m-b-half
-                  Import
-                  = import_type.to_s.pluralize.titleize
-                .card-text.m-b-base
-                  = simple_format(definition.headline)
+            %div{ class: import_type_column_structure_classes, id: import_type }
+              .card.flex-1
+                .card-block
+                  %h4.card-title.m-b-half
+                    Import
+                    = import_type.to_s.pluralize.titleize
+                  .card-text.m-b-base
+                    = simple_format(definition.headline)
 
-                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg blue", id: "begin_import_#{ import_type }" do
-                  Begin Import
-                  = fa_icon "chevron-right", class: "m-l-quarter"
+                  = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-white-bg blue", id: "begin_import_#{ import_type }" do
+                    Begin Import
+                    = fa_icon "chevron-right", class: "m-l-quarter"
 
 
-      %a.btn.btn-white-bg.blue.m-t-half{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-        Get Started
-        = fa_icon "chevron-right"
+        .text-xs-center
+          %a.btn.btn-primary.m-t-half{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+            Get Started
+            = fa_icon "chevron-right"
 
     = render(partial: 'shared/flash_messages') rescue nil
 
