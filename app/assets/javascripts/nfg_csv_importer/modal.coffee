@@ -1,4 +1,4 @@
-$(document).on 'ready page:load', ->
+$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   $("a[data-toggle='modal']").click ->
     $("[data-modal-identifier='nfg_csv_importer_modal']").appendTo "body"
     $("body").addClass "interstitial-open"

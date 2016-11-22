@@ -14,7 +14,7 @@ class NfgCsvImporter.SmoothScroll
         scrollTop: destinationToScrollTo.offset().top - 49
     }, 1000
 
-$(document).on 'ready page:load', ->
+$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   el = $("[data-smooth-scroll-target]")
   return unless el.length > 0
   inst = new NfgCsvImporter.SmoothScroll el

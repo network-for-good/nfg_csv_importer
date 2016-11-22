@@ -1,4 +1,4 @@
-$(document).on 'ready page:load', ->
+$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
 
   if !('ontouchstart' of window) # Disable tooltips on touch devices
     $('[data-toggle="tooltip"]').tooltip trigger: 'hover', container: 'body'

@@ -5,7 +5,7 @@ class NfgCsvImporter.ReadMore
       moreLink: '<a href="javascript:;" class="text-blue display-block text-xs-center"><i class="fa fa-chevron-down"></i> <strong>See All</strong></a>'
       lessLink: '<a href="javascript:;" class="text-blue display-block text-xs-center"><i class="fa fa-chevron-up"></i> <strong>Hide</strong></a>'
 
-$(document).on 'turbolinks:load', ->
+$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   expandables = $('.expandable')
   return unless expandables.length > 0
   expandables.each ->

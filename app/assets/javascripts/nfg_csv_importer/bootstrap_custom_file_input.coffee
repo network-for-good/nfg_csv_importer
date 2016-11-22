@@ -1,4 +1,4 @@
-$(document).on 'ready page:load', ->
+$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   $("input[type=\'file\']").change ->
     fieldVal = $(this).val()
     filenames = fieldVal.split("\\")
