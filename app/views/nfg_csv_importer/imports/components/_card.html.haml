@@ -1,0 +1,26 @@
+-# Wrapping Bootstrap Column:
+- equal_height_and_width_cards = false if local_assigns[:equal_height_and_width_cards].nil?
+- column_class = "" if local_assigns[:column_class].nil?
+
+-# Card component class
+- card_class = "" if local_assigns[:card_class].nil?
+
+-# Card innards
+- card_title = "" if local_assigns[:card_title].nil?
+- card_text = "" if local_assigns[:card_text].nil?
+- card_content = "" if local_assigns[:card_content].nil?
+
+
+-# Component:
+- if equal_height_and_width_cards
+  - column_class += " display-flex"
+  - card_class += " flex-1"
+
+%div{ class: column_class }
+  %div{ class: "card #{ card_class.to_s }" }
+    .card-block
+      - if card_title
+        %h4.card-title= card_title
+      - if card_content
+        %p.card-text= card_content
+

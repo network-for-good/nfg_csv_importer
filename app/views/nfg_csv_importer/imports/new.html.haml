@@ -1,10 +1,3 @@
-/ - case params[:import_type]
-/ - when "individual_donation"
-/   - container_new_import_background = "background-image: url(#{image_path 'nfg_csv_importer/row-individuals.jpg'})"
-/ - else
-/   - container_new_import_background = "background-image: none;"
-
-
 .nfg-csv-importer
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
 
@@ -61,13 +54,10 @@
       .row
         .col-xs-12
           .text-xs-center
-            %h1.display-1
+            %h2.h1.display-1
               Setting up for
               %strong
                 success
-
-
-
             %p
               There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
               %a.text-link{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
@@ -88,46 +78,32 @@
             = fa_icon "angle-down", class: "display-block text-white", text: "Expand the full list of column headers", right: true
 
     #import_type_column_descriptions.container-new-import.bg-green{ data: { show_hide: "hide" } }
-      .row
-        .col-xs-12.display-flex
-          %h2
-            =params[:import_type].humanize.titleize if params[:import_type]
-            Column Headers
-          %a{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
-            = fa_icon "cloud-download", class: "m-r-quarter", text: "Download a Cheatsheet"
+      .text-xs-center.m-b-base
+        %a{ bootstrap_tooltip("Coming soon", :top), class: "text-link", href: "javascript:;" }
+          = fa_icon "cloud-download", text: "Download a Column Headers Cheatsheet"
 
-      / Required
       - if @import.required_columns.any?
-        %h3 Required Column Headers
         .row
-          - @import.required_columns.each do |required_field|
+          .col-xs-12
+            %h3.text-xs-center.m-b-base Required Column Headers
+        .row.m-b-double
+          - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
             - description = @import.column_descriptions[required_field]
+            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
 
-            .col-md-4{ style: "border:solid 3px #fff;" }
-              .card.card-danger
-                .card-block
-                  %span.text-red *
-                  %h4= required_field
-                - if description.present?
-                  .card-block
-                    = description
       - if @import.optional_columns.any?
-        %h3 Optional Column Headers
         .row
-          - @import.optional_columns.each do |field|
+          .col-xs-12
+            %h3.text-xs-center.m-b-base Optional Column Headers
+        .row
+          - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
             - description = @import.column_descriptions[field]
-            .col-md-4
-              .card
-                .card-block
-                  %h4= field
-                - if description.present?
-                  .card-block
-                    = description
+            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
 
     #upload_file.container-new-import.blue.no-shadow
       .row.text-xs-center
         .col-xs-12
-          %h1.display-1
+          %h2.h1.display-1
             %strong
               Upload your spreadsheet
           %p

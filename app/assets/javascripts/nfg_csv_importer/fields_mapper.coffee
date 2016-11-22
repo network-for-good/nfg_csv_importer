@@ -150,8 +150,10 @@ class NfgCsvImporter.FieldsMapper
       @submitFormForColumn(hidden_field, card, form)
 
   submitFormForColumn: (clickedElement, card, form) ->
+    authenticity_token = form.find('input[name=authenticity_token]').val()
     form_data = {}
     form_data[clickedElement.attr('name')] = clickedElement.val()
+    form_data['authenticity_token'] = authenticity_token
     $.ajax
       url: form.attr('action')
       type: 'PATCH'

@@ -14,8 +14,8 @@
               = content_tag(:li, fa_icon("check-circle li", text: "You've uploaded your file"))
               = content_tag(:li, fa_icon("check-circle li", text: "You've mapped your column headers"))
               = content_tag(:li, fa_icon("check-circle li", text: "You've approved the official import to begin"))
-      - else
 
+      - else
         %h1.display-1
           Your
           %strong
@@ -49,11 +49,9 @@
       .col-md-3
         - unless @import.complete?
           - heading = "Estimated time remaining"
-          / TODO: Make dynamic
           - content = @import.time_remaining_message
         - else
           - heading = "Import completed on"
-          / TODO: Make dynamic when an import was finalized and imported
           - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
 
         = render partial: 'stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }

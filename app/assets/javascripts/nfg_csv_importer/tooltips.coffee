@@ -14,7 +14,7 @@ $(document).on 'ready page:load', ->
 
     $('[data-toggle="tooltip"]').on 'show.bs.tooltip', ->
       setTimeout (->
-        $('.tooltip').wrap "<div class='nfg-csv-importer' data-tooltip-flag='on'></div>"
+        $('.tooltip').wrap "<span class='nfg-csv-importer' data-tooltip-flag='on'></div>"
       ), 1   # Simple timeout removes flicker due to wrapping... 'shown.bs.tooltip' generates a flicker.
 
     $('[data-toggle="tooltip"]').on 'hidden.bs.tooltip', ->
