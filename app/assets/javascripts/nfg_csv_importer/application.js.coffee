@@ -1,5 +1,5 @@
-#= require jquery
-#= require jquery_ujs
+# require jquery
+# require jquery_ujs
 # mousetrap
 # keybindings
 # turbolinks
@@ -19,7 +19,7 @@
 # jquery.sticky
 # directory ../../../vendor/assets/javascripts/linkify
 # Bootstrap4
-#= require bootstrap4/bootstrap.min
+# require bootstrap4/bootstrap.min
 #= require readmore.min
 # NFG_CSV_IMPORTER Coffee
 #= require_self
