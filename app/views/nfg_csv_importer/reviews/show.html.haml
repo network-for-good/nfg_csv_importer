@@ -39,7 +39,7 @@
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-blue small"
           .media-body
-            .row.m-b-half
+            .row.m-b-1
               .col-xs-12
                 %p.lead.text-blue.display-inline-block
                   Importing
@@ -49,7 +49,7 @@
                   %strong
                     = @import.column_stats[:column_count]
                     columns
-                  = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-base" do
+                  = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-1" do
                     = fa_icon "pencil", text: "Edit Mapped Columns"
             .expandable{"data-max-height" => "300"}
               .row
@@ -62,9 +62,9 @@
 
                   .row
                     .col-xs-5
-                      %small.m-b-quarter.display-block.text-muted.text-uppercase Uploaded header
+                      %small.display-block.text-muted.text-uppercase Uploaded header
                     .col-xs-5.col-xs-push-2
-                      %small.m-b-quarter.display-block.text-muted.text-uppercase Mapped
+                      %small.display-block.text-muted.text-uppercase Mapped
 
                   - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
                     .row.row-mapped-columns
@@ -92,9 +92,8 @@
             %hr
             .text-xs-center
               = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
-                = fa_icon "chevron-right", class: "m-l-quarter", text: "I'm Ready, Let's Import", right: true
+                = fa_icon "chevron-right", text: "I'm Ready, Let's Import", right: true
               %p.small or
               %p.small
                 = link_to imports_path do
-
                   = fa_icon "chevron-left", text: "Save & Come Back Later"

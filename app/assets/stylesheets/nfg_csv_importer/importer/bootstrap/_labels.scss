@@ -3,14 +3,14 @@
     z-index:1;
     position:absolute;
     top: -9px;
-    right: $spacer-base * 0.75;
+    right: 18px;
   }
 }
 
 .label{
   font-size: 11px;
   display: inline-block;
-  padding: 3px $spacer-quarter;
+  padding: 3px 4px;
   font-weight: $font-weight-normal;
   line-height: 1;
   text-align: center;

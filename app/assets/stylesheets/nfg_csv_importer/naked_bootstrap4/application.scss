@@ -1,6 +1,6 @@
 .nfg-csv-importer{
   *{
-    box-sizing: border-box;
+    box-sizing: border-box !important;
   }
   @import "bootstrap4/bootstrap"
 }

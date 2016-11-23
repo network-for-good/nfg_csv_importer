@@ -1,76 +1,65 @@
 .nfg-csv-importer
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
-
-    / Not yet setup.
     - if @import.errors.any?
       .bg-green
         = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
-    #new_import_row_1.container-new-import.blue
-      .row.text-xs-center
-        .col-xs-12
-          %h1.display-1
-            Let’s import
-            %strong
-              #{params[:import_type].humanize.pluralize.downcase if params[:import_type]}!
+    .jumbotron.jumbotron-fluid.jumbotron-clouds
+      .container-fluid
+        %h1.text-xs-center
+          Let’s import
+          %strong
+            #{params[:import_type].humanize.pluralize.downcase if params[:import_type]}!
+        %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
 
-          %p
-            This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
-      .row.text-xs-center
-        .col-md-4
-          = fa_stacked_icon "cloud-upload inverse", base: "circle", class: "fa-lg"
-          %p.lead.text-blue
-            Step 1
-          %p.small.text-muted
-            Upload & configure your spreadsheet on this page
-        .col-md-4
-          = fa_stacked_icon "columns inverse", base: "circle", class: "fa-lg"
-          %p.lead.text-blue
-            Step 2
-          %p.small.text-muted
-            Map your column headers so we can import your data
-        .col-md-4
-          = fa_stacked_icon "thumbs-o-up inverse", base: "circle", class: "fa-lg"
-          %p.lead.text-blue
-            Step 3
-          %p.small.text-muted
-            Review your decisions and then approve the import
-      .row.text-xs-center
-        .col-xs-12
-          %a.btn.btn-primary.btn-lg.m-t-base.m-b-half{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
-            = fa_icon "chevron-right", class: "m-l-quarter", text: "Ready? Upload Your File", right: true
-
-          %p.small.text-muted
-            %em or
-          %p.small
-            %em
-              %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
-                Scroll down to learn more
-
-        %a.btn.btn-scroll-to.text-xs-center{ data: { smooth_scroll_target: "#new_import_row_2" } }
-          = fa_icon "angle-down", class: "display-block text-green", text: "Next", right: true
-
-    #new_import_row_2.container-new-import.green
+    .container-new-import.blue.p-b-3
       .row
-        .col-xs-12
-          .text-xs-center
-            %h2.h1.display-1
-              Setting up for
-              %strong
-                success
-            %p
-              There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
-              %a.text-link{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
-                %strong Excel template
+        .col-md-10.col-md-push-1.col-xs-12
+          .row.text-xs-center
+            .col-md-4
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-blue", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
 
-            %p.small.m-b-base
-              = fa_icon "asterisk", class: "text-green"
-              %em Here are the requirements that your file will need to meet before it can be imported:
-            / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
-            / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+            .col-md-4
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-blue", content_class: "small", heading: "Step 2", content: "Map your column headers so we can import your data" }
+
+            .col-md-4
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-blue", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
+
+          .row.text-xs-center
+            .col-xs-12
+              %a.btn.btn-primary.btn-lg.m-y-1{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
+                = fa_icon "chevron-right", class: "m-l-quarter", text: "Ready? Upload Your File", right: true
+
+              %p.small.text-muted
+                %em or
+              %p.small
+                %em
+                  %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
+                    Scroll down to learn more
+
+    #new_import_row_2.container-new-import.green.bg-faded.p-t-3
+      .row
+        .col-md-10.col-md-push-1.col-xs-12
           .row
-            - @import.column_validation_rules.each do |column_rule|
-              = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-blue"
+            .col-xs-12
+              .text-xs-center
+                %h2.h1.display-1
+                  Setting up for
+                  %strong
+                    success
+                %p
+                  There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our
+                  %a.text-link{ bootstrap_tooltip("Coming soon", :bottom), href: "javascript:;" }
+                    %strong Excel template
+
+                %p.small.m-b-1
+                  = fa_icon "asterisk", class: "text-green"
+                  %em Here are the requirements that your file will need to meet before it can be imported:
+                / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
+                / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+              .row
+                - @import.column_validation_rules.each do |column_rule|
+                  = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-blue"
 
       .row.text-xs-center.row-expander.row-xs-center
         .col-xs-12
@@ -78,29 +67,31 @@
             = fa_icon "angle-down", class: "display-block text-white", text: "Expand the full list of column headers", right: true
 
     #import_type_column_descriptions.container-new-import.bg-green{ data: { show_hide: "hide" } }
-      .text-xs-center.m-b-base
-        %a{ bootstrap_tooltip("Coming soon", :top), class: "text-link", href: "javascript:;" }
-          = fa_icon "cloud-download", text: "Download a Column Headers Cheatsheet"
+      .row.p-y-2
+        .col-xs-12
+          .text-xs-center
+            %a{ bootstrap_tooltip("Coming soon", :top), class: "text-link", href: "javascript:;" }
+              = fa_icon "cloud-download", text: "Download a Column Headers Cheatsheet"
 
-      - if @import.required_columns.any?
-        .row
-          .col-xs-12
-            %h3.text-xs-center.m-b-base Required Column Headers
-        .row.m-b-double
-          - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
-            - description = @import.column_descriptions[required_field]
-            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
+          - if @import.required_columns.any?
+            .row
+              .col-xs-12
+                %h3.text-xs-center.m-y-1 Required Column Headers
+            .row
+              - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
+                - description = @import.column_descriptions[required_field]
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
 
-      - if @import.optional_columns.any?
-        .row
-          .col-xs-12
-            %h3.text-xs-center.m-b-base Optional Column Headers
-        .row
-          - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
-            - description = @import.column_descriptions[field]
-            = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
+          - if @import.optional_columns.any?
+            .row
+              .col-xs-12
+                %h3.text-xs-center.m-y-1 Optional Column Headers
+            .row
+              - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+                - description = @import.column_descriptions[field]
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : "<span style='opacity:.4;'>No additional details</span>".html_safe  }
 
-    #upload_file.container-new-import.blue.no-shadow
+    #upload_file.container-new-import.blue.p-y-3
       .row.text-xs-center
         .col-xs-12
           %h2.h1.display-1
@@ -113,7 +104,7 @@
             or
             %strong
               xlsx
-      .row.p-b-triple
+      .row.p-b-3
         .col-md-6.col-md-push-3.col-xs-12
           .form-group
 
@@ -125,16 +116,15 @@
                 %span.file-custom{ data: { content: "Choose your file..." } }
             = hidden_field_tag 'import_type', @import_type
 
-          %hr.m-y-double
+          %hr.m-y-2
 
           - if @previous_imports.present?
-            .form-group.text-xs-center.m-b-base-half
-
+            .form-group.text-xs-center.m-b-2
               %label.label-heading.text-blue.m-b-0
                 %em
                   Optionally
                 apply a column mapping from a previous import.
-              %p.text-help
+              %p.small.m-b-2
                 %em
                   If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import.
 

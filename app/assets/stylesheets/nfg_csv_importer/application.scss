@@ -14,6 +14,7 @@
   // Variables and mixins
   // @import "nfg_theme/variables";
   @import "importer/nfg_theme/theme_variables";
+  @import "importer/nfg_theme/font_awesome";
 
   // @import "variables";
   @import "importer/bootstrap/variables";
@@ -167,6 +168,8 @@
 
   // @import "bootstrap4/utilities-background";
   // @import "utilities-background";
+  @import "importer/bootstrap/utilities-background";
+
 
   // @import "bootstrap4/utilities-spacing";
   // @import "utilities-spacing";
@@ -184,7 +187,7 @@
   // NFG CSV Importer Custom Components
   @import "importer/components/alert_growl";
   @import "importer/components/header_bar";
-  @import "importer/components/import_listing_row";
+  @import "importer/components/listing_row";
   @import "importer/components/importer_interactions";
   @import "importer/components/modal_interstitial";
   @import "importer/components/custom_importer_rows";

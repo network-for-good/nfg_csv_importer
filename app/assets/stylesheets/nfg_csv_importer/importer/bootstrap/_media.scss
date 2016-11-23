@@ -2,7 +2,7 @@
   .media {
     display: flex;
     margin-bottom: 0;
-    + .media { margin-top: $spacer-base; }
+    + .media { margin-top: 24px; }
   }
   .media-body {
     flex: 1;
@@ -64,11 +64,11 @@
 
 .media-right {
   // padding-left: 10px;
-  padding-left: $spacer-half;
+  padding-left: 12px;
 }
 .media-left {
   // padding-right: 10px;
-  padding-right: $spacer-half;
+  padding-right: 12px;
 }
 
 //

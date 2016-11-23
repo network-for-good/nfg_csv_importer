@@ -178,8 +178,8 @@
 .col-importer-stat{
   border-right: solid 1px #51bdef;
   text-align: center;
-  padding-top: $spacer-double;
-  padding-bottom: $spacer-double;
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 .container-importer{
@@ -187,8 +187,8 @@
   overflow-x: scroll;
   position: relative;
   z-index:0;
-  margin-bottom: $spacer-base;
-  padding: 90px 0 $spacer-base 0;
+  margin-bottom: 24px;
+  padding: 90px 0 24px 0;
   background-color:#fff;
   margin: 0;
 }

@@ -6,10 +6,12 @@ h1, h2, h3, h4, h5, h6,
 //   font-family: $headings-font-family;
   font-weight: $headings-font-weight;
 //   line-height: $headings-line-height;
-//   color: $headings-color;
+  color: $headings-color;
 }
 
 .line-height-1 { line-height: 1 !important; }
+
+.small, small { font-size: 14px; }
 
 p{
   font-size: $font-size-p;
@@ -24,11 +26,13 @@ p{
   }
 }
 
+
+
 h1.display-1,
 .h1.display-1{
   font-size: 38px;
   font-weight: $font-weight-light;
-  margin-bottom: $spacer-half;
+  margin-bottom: 12px;
 
   strong{
     font-weight: $font-weight-medium;
@@ -82,7 +86,6 @@ a.text-glow{
 h2{
     font-size: 24px;
     font-weight: $font-weight-light;
-    color: #ababab;
   }
 
 hr {

@@ -5,7 +5,7 @@
   h1{
     font-size: 38px;
     font-weight: $font-weight-light;
-    margin-bottom: $spacer-half;
+    margin-bottom: 12px;
 
     strong{
       font-weight: $font-weight-medium;
@@ -17,7 +17,7 @@
 
   padding-top: 20px;
   padding-bottom:0;
-  padding-top: $spacer-base-half;
+  padding-top: 36px;
 
   ul{
     margin-top: 20px;
@@ -123,12 +123,12 @@
         font-size: 16px !important;
         line-height: 1.25;
         font-weight: $font-weight-normal;
-        margin-bottom: $spacer-base;
+        margin-bottom: 24px;
       }
     }
 
     .card-block{
-      padding: $spacer-base;
+      padding: 24px;
     }
 
     .card-title{

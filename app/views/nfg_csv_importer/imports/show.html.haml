@@ -24,7 +24,7 @@
           %strong
             = t("status.#{ @import.status }", default: @import.status)
 
-        .p-t-half
+        .p-t-1
           This data was imported by
           %strong
             = @import.imported_by_name
@@ -32,7 +32,7 @@
     = render('shared/flash_messages') rescue nil
 
     - if params["redirected_from_review"]
-      .row.text-xs-center.m-b-base
+      .row.text-xs-center.m-b-1
         .col-xs-12
           %h2.text-blue.m-b-0
             Your
@@ -45,7 +45,7 @@
             %em
               We'll email you when your import is done and in the system.
 
-    .row.p-b-triple
+    .row.p-b-3
       .col-md-3
         - unless @import.complete?
           - heading = "Estimated time remaining"
@@ -54,7 +54,7 @@
           - heading = "Import completed on"
           - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
 
-        = render partial: 'stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
 
       .col-md-3
         - unless @import.complete?
@@ -64,13 +64,13 @@
           - heading = "New records created"
           - content = @import.imported_records.count
 
-        = render partial: 'stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
 
       .col-md-3
         - heading = "Processed rows"
         - content = @import.records_processed.to_i
 
-        = render partial: 'stacked_icon_column', locals: { icon: "navicon", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
 
       .col-md-3.red
         - content_class = "lead m-b-0"
@@ -88,15 +88,15 @@
           - content = "0"
           - content_class += " text-green"
 
-        = render partial: 'stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
 
         - if @import.number_of_records_with_errors.to_i > 0
           %p.small.text-xs-center.red
             = link_to @import.error_file.url do
-              = fa_icon "paperclip", class: "m-r-quarter", text: "Error file"
+              = fa_icon "paperclip", text: "Error file"
 
     - unless @import.import_file.file.nil?
-      .row.p-b-triple
+      .row.p-b-3
         .col-xs-12
           %p.text-xs-center
             %em

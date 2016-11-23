@@ -21,7 +21,7 @@
   margin-bottom: 0;
   // padding-left: 1.5rem;
   padding-top: 4px;
-  padding-left: $spacer-base;
+  padding-left: 24px;
   padding-bottom: 4px;
   min-width: 20px;
   min-height: 20px;
@@ -78,7 +78,7 @@
 
   + .c-input {
     // margin-left: 1rem;
-    margin-left: $spacer-half;
+    margin-left: 12px;
   }
 }
 .media-left > .c-input { padding: 0; } // Removes default padding on checkbox or radios within media-left (ex. used in slats and tasks)
@@ -210,7 +210,7 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  padding: $spacer-half $spacer-half $spacer-double;
+  padding: 12px 12px 48px;
   background-color: $bg-color-white;
   &:hover {
     .c-indicator { border-color: $border-color-dark; }
@@ -225,7 +225,7 @@
     @include transition(border .15s ease-in-out);
     &:before, &:after {
       top: auto;
-      bottom: $spacer-half;
+      bottom: 12px;
       left: 50%;
       margin-left: -10px;
     }
@@ -238,8 +238,8 @@
 // Toggle styles
 .c-toggle {
   margin-bottom: 0;
-  padding-left: $spacer-double;
-  min-width: $spacer-double;
+  padding-left: 48px;
+  min-width: 48px;
   min-height: 20px;
   font-size: $font-size-sm;
   line-height: $input-line-height;
@@ -300,7 +300,7 @@
       content: '';
     }
   }
-  + .c-toggle { margin-top: $spacer-half; } // spacing for multiple options
+  + .c-toggle { margin-top: 12px; } // spacing for multiple options
 }
 
 // Select
@@ -315,9 +315,9 @@
   // display: inline-block;
   // max-width: 100%;
   // padding: .375rem 1.75rem .375rem .75rem;
-  padding: 0 $spacer-base-half 0 $input-padding-x;
+  padding: 0 36px 0 $input-padding-x;
   // padding-right: .75rem \9;
-  padding-right: $spacer-triple \9;
+  padding-right: 72px \9;
   height: 36px;
   font-weight: $btn-font-weight;
   font-size: 13px;

@@ -15,7 +15,7 @@
   -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
   #columns_wrapper.container-fluid.container-flush
 
-    .bg-white.text-xs-center.p-t-double{ style: 'z-index:1; position: absolute; width: 100%;' }
+    .bg-white.text-xs-center.p-t-3{ style: 'z-index:1; position: absolute; width: 100%;' }
       %p.lead
         Review and map your column headers before importing your data
       %p
@@ -40,10 +40,10 @@
 
 
   .container-fluid.container-flush.bg-white
-    .row.p-x-base.p-t-base.p-b-triple
+    .row.p-x-1.p-t-1.p-b-3
       .col-xs-6
         = link_to imports_path, class: "btn btn-secondary btn-lg" do
-          = fa_icon "chevron-left fw", class: "m-r-quarter", text: "Save & Come Back Later"
+          = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
 
 
@@ -70,8 +70,8 @@
                         %i.fa.fa-thumbs-o-up.fa-stack-1x
                     .media-body
                       Great News!
-                .modal-body.m-b-base
-                  %p.m-b-double
+                .modal-body.m-b-1
+                  %p.m-b-2
                     We just saved you some time by automatically mapping
                     %strong
                       #{ @import.column_stats[:mapped_column_count] } column headers
@@ -81,13 +81,7 @@
 
                 .modal-footer
                   %a.btn.btn-white-bg.btn-lg{ type: "button", data: { dismiss: "modal" } }
-                    Great, Let's Go
-                    %i.fa.fa-chevron-right.m-l-quarter
-
-                  %a.text-link.small.m-l-base{ href: "javascript:;", type: "button", data: { dismiss: "modal" } }
-                    %i.fa.fa-times
-
-                    Close
+                    = fa_icon "chevron-right", text: "Great, Let's Go", right: true
 
     :javascript
       $("#nfg_csv_importer_modal_first_visit").appendTo("body");
