@@ -14,6 +14,7 @@
 
 -# Error File Tooltip for Imports That are Processing
 - processing_import_tooltip_for_error_file = false if local_assigns[:processing_import_tooltip_for_error_file].nil?
+- error_file_tooltip = {}
 - error_file_tooltip = bootstrap_tooltip(t("tooltips.error_file", scope: language_scope), :bottom) if processing_import_tooltip_for_error_file
 
 %h5.text-danger.line-height-1
