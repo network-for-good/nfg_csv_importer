@@ -22,7 +22,6 @@ en:
         number_of_records_with_errors: "Records with Errors"
         updated_at: "Last Updated"
         status: "Import Status"
-
       content:
         no_imports: "There are no imports"
       links:
@@ -34,6 +33,46 @@ en:
       tooltips:
         error_file: "Available once processing is complete"
         edit_import: "Once an import has been submitted, it's no longer editable"
+    new:
+      jumbotron:
+        headline: "Let's import <strong>%{import_type}!</strong>"
+        sub_headline: "We'll walk through this together &mdash; so let's get started and begin importing your data!"
+      headings:
+        prepare: "Setting up for <strong>success</strong>"
+        required_headers: "Required Column Headers"
+        optional_headers: "Optional Column Headers"
+        upload: "Upload your spreadsheet"
+      content:
+        prepare: "There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our"
+        requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
+        no_description: "<span style='opacity:.4;'>No additional details</span>"
+        file_types: "Acceptable file types are: %{acceptable_file_types}"
+
+      links:
+        ready_upload: "Ready? Upload Your File"
+        scroll_down: "Scroll down to learn more"
+        file: "Excel template"
+        expand_column_headers: "Expand the full list of column headers"
+        cheatsheet: "Download a Column Headers Cheatsheet"
+
+      tooltips:
+        coming_soon: "Coming Soon!"
+      form:
+        form_controls:
+          file: "Choose your file..."
+          selects:
+            prompt:
+              import_template_id: "Do not apply a mapping from a previous import"
+        labels:
+          import_template_id: "<em>Optionally</em> apply a column mapping from a previous import"
+        help_text:
+          import_template_id_show_hide: "Additional Info"
+          import_template_id: "If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import."
+        buttons:
+          upload: "Upload & Continue"
+          disable_with:
+            upload: "Preparing column mapping..."
+
     show:
       status:
         processing: "processing"
