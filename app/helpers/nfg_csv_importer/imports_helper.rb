@@ -10,10 +10,10 @@ module NfgCsvImporter
       case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "cloud-upload"
-        import_status_class += " text-blue"
+        import_status_class += " text-primary"
       when :defined
         import_status_icon = "table"
-        import_status_class += " text-blue"
+        import_status_class += " text-primary"
       when :queued
         import_status_icon = "hourglass-2"
         import_status_class += " text-warning"
@@ -32,7 +32,7 @@ module NfgCsvImporter
       end
 
       link_to import_path(import), class: import_status_class do
-        "#{ fa_icon import_status_icon, class: import_status_class } #{ import.status.titleize }".html_safe
+        fa_icon import_status_icon, text: import.status.titleize
       end
     end
 
@@ -45,25 +45,30 @@ module NfgCsvImporter
           import_with_errors_color_class = "text-muted"
           error_file_link_style = "pointer-events: none;"
           error_file_link_tabindex = "-1"
+          processing_import_tooltip_for_error_file = true
 
         else
           error_file_link_url = import.error_file.url
           import_with_errors_color_class = "text-danger"
           error_file_link_style = ""
           error_file_link_tabindex = nil
+          processing_import_tooltip_for_error_file = false
+
         end
 
-        html =
-          "<h5 class='text-danger line-height-1 m-b-quarter'>#{ error_records_count }</h4>
-           <p>
-             #{ fa_icon 'paperclip', class: import_with_errors_color_class }
-             #{ link_to "Error File", error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex }
-           </p>"
+        render partial: "import_error_information_on_listing_page",
+               locals: { error_records_count: error_records_count,
+                         error_file_link_url: error_file_link_url,
+                         import_with_errors_color_class: import_with_errors_color_class,
+                         error_file_link_style: error_file_link_style,
+                         error_file_link_tabindex: error_file_link_tabindex,
+                         processing_import_tooltip_for_error_file: processing_import_tooltip_for_error_file
+                       }
       else
-        html = fa_icon "minus", class: "text-muted"
+        fa_icon("minus", class: "text-muted").html_safe
       end
 
-      html.html_safe
+
     end
 
     def number_of_records_without_errors_based_on_import_status(import)

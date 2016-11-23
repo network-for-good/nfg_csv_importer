@@ -1,3 +1,5 @@
+- language_scope = [:imports, :index]
+
 - imports_listing_row_column_structure_class = "" if local_assigns[:imports_listing_row_column_structure_class].nil?
 
 .row.row-listing{ id: dom_id(import), data: { id: import.id } }
@@ -28,12 +30,10 @@
 
     - if import.status.to_sym == :uploaded
       = link_to edit_import_path(import), class: "btn btn-link" do
-        = fa_icon "pencil", class: "m-r-quarter"
-        Edit Import
+        = fa_icon "pencil", text: t("links.edit_import", scope: language_scope)
     - else
-      %span{ bootstrap_tooltip("Once an import has been processed, it's no longer editable", :top) }
+      %p.display-inline-block{ bootstrap_tooltip(t("tooltips.edit_import", scope: language_scope), :bottom) }
         %a.btn.btn-link.disabled{ href: "javascript:;" }
-          = fa_icon "pencil", class: "m-r-quarter text-muted"
-          Edit Import
+          = fa_icon "pencil", class: "text-muted", text: t("links.edit_import", scope: language_scope)
 
 

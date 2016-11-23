@@ -4,25 +4,29 @@
       .bg-green
         = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
-    .jumbotron.jumbotron-fluid.jumbotron-clouds
-      .container-fluid
-        %h1.text-xs-center
-          Let’s import
-          %strong
-            #{params[:import_type].humanize.pluralize.downcase if params[:import_type]}!
-        %p This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to.
+    .container-fluid.container-flush
+      .jumbotron.jumbotron-fluid.jumbotron-clouds
+        .container-fluid
+          .row
+            .col-md-10.col-md-push-1.col-xs-12
+              %h1.text-xs-center
+                Let’s import
+                %strong
+                  #{params[:import_type].humanize.pluralize.downcase if params[:import_type]}!
+              %p We'll walk through this together so let's get started
+
 
     .container-new-import.blue.p-b-3
       .row
         .col-md-10.col-md-push-1.col-xs-12
           .row.text-xs-center
-            .col-md-4
+            .col-md-4.col-xs-12
               = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-blue", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
 
-            .col-md-4
+            .col-md-4.col-xs-12
               = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-blue", content_class: "small", heading: "Step 2", content: "Map your column headers so we can import your data" }
 
-            .col-md-4
+            .col-md-4.col-xs-12
               = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-blue", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
 
           .row.text-xs-center
