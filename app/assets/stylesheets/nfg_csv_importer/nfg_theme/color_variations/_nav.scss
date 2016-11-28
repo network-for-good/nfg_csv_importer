@@ -1,9 +1,0 @@
-@each $color in $primary-colors-list {
-  .site-nav {
-    .nav-item.#{nth($color, 1)} {
-      .nav-link {
-        &:hover, &.active, &[aria-expanded="true"] { border-color: nth($color, 2); }
-      }
-    }
-  }
-}

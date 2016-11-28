@@ -2,7 +2,7 @@
   .container-new-import.blue
     .row.text-xs-center
       .col-xs-12
-        %h1.display-1
+        %h1.display-1.p-t-2
           You're
           %strong
             all set
@@ -13,9 +13,9 @@
       .col-xs-12
         .media
           .media-left
-            = fa_stacked_icon "check inverse", base: "circle", class: "text-blue small"
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
           .media-body
-            %p.lead.text-blue Import Type
+            %p.lead.text-primary Import Type
             %p.small= @import.import_type.humanize.titleize.pluralize
             %hr
 
@@ -23,9 +23,9 @@
       .col-xs-12
         .media
           .media-left
-            = fa_stacked_icon "check inverse", base: "circle", class: "text-blue small"
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
           .media-body
-            %p.lead.text-blue
+            %p.lead.text-primary
               Importing
               %strong
                 = number_with_delimiter(@import.number_of_records)
@@ -37,11 +37,11 @@
       .col-xs-12
         .media
           .media-left
-            = fa_stacked_icon "check inverse", base: "circle", class: "text-blue small"
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
           .media-body
             .row.m-b-1
               .col-xs-12
-                %p.lead.text-blue.display-inline-block
+                %p.lead.text-primary.display-inline-block
                   Importing
                   %strong
                     = @import.column_stats[:mapped_column_count]
@@ -53,10 +53,8 @@
                     = fa_icon "pencil", text: "Edit Mapped Columns"
             .expandable{"data-max-height" => "300"}
               .row
-                / see all button goes here for expand/collapse
-
                 .col-md-7
-                  %h3.text-green.font-size-18
+                  %h3.text-success.font-size-18
                     = @import.column_stats[:mapped_column_count]
                     Mapped Columns
 
@@ -69,7 +67,7 @@
                   - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
                     .row.row-mapped-columns
                       .col-xs-5
-                        = fa_icon "check", class: "text-green small"
+                        = fa_icon "check", class: "text-success small"
                         %strong= mapped_column.name
                       .col-xs-2
                         = fa_icon "long-arrow-right", class: "text-muted fa-lg"
@@ -77,7 +75,7 @@
                         = mapped_column.mapped_to
 
                 .col-md-4.col-md-push-1
-                  %h3.text-red.font-size-18
+                  %h3.text-danger.font-size-18
                     = @import.column_stats[:ignored_column_count]
                     Ignored Columns
 
@@ -85,7 +83,7 @@
 
                     .row.row-mapped-columns.no-background
                       .col-xs-12
-                        = fa_icon "close", class: "text-red small"
+                        = fa_icon "close", class: "text-danger small"
                         %span.text-muted
                           = ignored_column.name
 

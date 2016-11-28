@@ -1,0 +1,22 @@
+@each $color in $primary-colors-list {
+  // Links without icons
+  .#{nth($color, 1)} a,
+  a.#{nth($color, 1)},
+  a.text-#{nth($color, 1)}
+
+  // Links with icons
+  a.#{nth($color, 1)} #{$icon},
+  .#{nth($color, 1)} a #{$icon},
+  a.text-#{nth($color, 1)} #{$icon},
+  .text-#{nth($color, 1)} a #{$icon}
+   {
+    &:not(.btn):not(.dropdown-item) {
+      color: nth($color, 2) !important;
+      @include hover-focus { color: nth($color, 3) !important; }
+    }
+    // &.no-link-color {
+    //   color: inherit !important;
+    //   @include hover-focus { color: nth($color, 3) !important; }
+    // }
+  }
+}

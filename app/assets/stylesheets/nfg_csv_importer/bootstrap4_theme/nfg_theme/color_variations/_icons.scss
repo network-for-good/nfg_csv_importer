@@ -1,0 +1,15 @@
+$targeted-icon: "#{$icon}:not(.fa-inverse)";
+
+@each $color in $primary-colors-list  {
+  // .card-icon-column{
+  //   &.#{nth($color, 1)}{
+  //     .fa:not(.fa-inverse){
+  //       color: nth($color, 3) !important;
+  //     }
+  //   }
+  // }
+
+  [class*='#{nth($color, 1)}'] #{$targeted-icon}{ color: nth($color, 2); }
+
+  .btn-#{nth($color, 1)} #{$targeted-icon}{ color: #fff; }
+}

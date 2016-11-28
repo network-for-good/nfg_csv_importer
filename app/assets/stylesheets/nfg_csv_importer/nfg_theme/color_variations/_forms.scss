@@ -1,7 +1,0 @@
-@each $color in $primary-colors-list {
-  .#{nth($color, 1)} {
-    .form-control {
-      &:focus { border-color: nth($color, 2); }
-    }
-  }
-}

@@ -17,16 +17,4 @@
           %i{ class: "fa fa-circle fa-stack-2x #{ circle_color }" }
           %i{ class: "fa fa-stack-1x fa-#{ icon } fa-inverse" }
       .media-body
-        = content_tag( alert_class ? :h3 : :span, column_rule.message.html_safe )
-        / %h3.media-heading
-        / = column_rule.message.html_safe
-
-
-/ - else
-/   .col-md-6
-/     .card.card-block.card-translucent
-/       .media
-/         .media-left
-/           = fa_icon "info-circle", class: "text-blue"
-/         .media-body
-/           = column_rule.message.html_safe
+        = column_rule.message.html_safe

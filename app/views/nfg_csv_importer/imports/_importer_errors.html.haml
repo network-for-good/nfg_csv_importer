@@ -6,7 +6,6 @@
           We found a few issues you’ll need to address
 
     - if import.duplicated_field_mappings.present?
-      / Duplicate column error is always here. This full width alert is only used by duplicate columns error.
       .row
         .col-xs-12
           .alert.alert-red
@@ -59,7 +58,6 @@
                             = column
 
     - if import.invalid_column_rules.present?
-      / these individual / donation errors are always presented in a 6 col fashion. donation column errors get the fa-dollar icon, user column errors get the fa-user icon
       .row
         - import.invalid_column_rules.each do |column_rule|
           = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, alert_class: "alert-red"

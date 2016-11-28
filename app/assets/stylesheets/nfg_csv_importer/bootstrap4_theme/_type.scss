@@ -1,0 +1,178 @@
+h1, .h1 {
+  @include media-breakpoint-down(md) {
+    font-size: $font-size-h1;
+    line-height: $line-height-h1;
+  }
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-h1-lg;
+    line-height: $line-height-h1-lg;
+  }
+}
+
+h2, .h2 {
+  @include media-breakpoint-down(md) {
+    font-size: $font-size-h2;
+    line-height: $line-height-h2;
+  }
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-h2-lg;
+    line-height: $line-height-h2-lg;
+  }
+}
+
+h3, .h3 {
+  @include media-breakpoint-down(md) {
+    font-size: $font-size-h3;
+    line-height: $line-height-h3;
+  }
+  @include media-breakpoint-up(md) {
+    font-size: $font-size-h3-lg;
+    line-height: $line-height-h3-lg;
+  }
+}
+
+h4, .h4 {
+  font-size: $font-size-h4;
+  line-height: $line-height-h4;
+}
+
+h5, .h5 {
+  font-size: $font-size-h5;
+  line-height: 1.4118;
+}
+
+h6, .h6 {
+  font-size: $font-size-h6;
+  line-height: 1.7143;
+}
+
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: $headings-font-weight;
+  color: $headings-color;
+}
+
+.line-height-1 { line-height: 1 !important; }
+
+.small, small { font-size: 14px; }
+
+p{
+  font-size: $font-size-p;
+  &.small, small { font-size: 12px; }
+
+  &.lead,
+  .lead{
+    font-size: 20px;
+    font-weight: $font-weight-light;
+  }
+}
+
+
+
+h1.display-1,
+.h1.display-1{
+  font-size: 38px;
+  font-weight: $font-weight-light;
+  margin-bottom: 12px;
+
+  strong{
+    font-weight: $font-weight-medium;
+  }
+}
+
+.text-sub-headline{
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+
+.text-light-gray{ // TODO: This is probably not the right class name
+  color: #eee;
+}
+
+.text-muted{
+  color: $text-muted;
+}
+
+a.text-glow{
+  position: absolute;
+  bottom: 22px;
+  color:#fff !important;
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.7);
+  padding: 4px;
+  display:inline-block;
+  width: 100%;
+  font-size: 13px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+
+  @include hover-focus{
+    text-shadow: 0px 0px 12px rgba(255, 255, 255, 1);
+
+  }
+}
+
+.container-error{
+  background-color: #f7f7f7;
+
+  h2{
+    color: #ababab;
+  }
+}
+
+h2{
+    font-size: 24px;
+    font-weight: $font-weight-light;
+  }
+
+hr {
+  margin-top: $spacer-y;
+  margin-bottom: $spacer-y;
+  border: 0;
+  border-top: $hr-border-width solid $hr-border-color;
+}
+
+.font-size-18{
+  font-size: 18px;
+}
+
+.font-size-16{
+  font-size: 16px;
+}
+
+
+
+// Type display classes
+.display-1 {
+  // font-size: $display1-size;
+  font-size: $display1-size;
+  font-weight: $display1-weight;
+  line-height: 1;
+  color: $font-color-primary;
+}
+.display-2 {
+  // font-size: $display2-size;
+  font-size: $display2-size;
+  font-weight: $display2-weight;
+  line-height: 1;
+  color: $font-color-primary;
+}
+.display-3 {
+  // font-size: $display3-size;
+  font-size: $display3-size;
+  font-weight: $display3-weight;
+  line-height: 1;
+  color: $font-color-primary;
+}
+.display-4 {
+  // font-size: $display4-size;
+  font-size: $display4-size;
+  font-weight: $display4-weight;
+  line-height: 1;
+  color: $font-color-tertiary;
+  text-transform: uppercase;
+}

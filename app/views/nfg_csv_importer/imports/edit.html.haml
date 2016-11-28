@@ -46,10 +46,6 @@
           = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
 
-
-
-  = render "nfg_csv_importer/imports/design_source/auto_save"
-
   - if @mapped_column_count > 0
     #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
       %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
@@ -61,8 +57,6 @@
             .modal-dialog{:role => "document"}
               .modal-content
                 .modal-header
-
-
                   .media#modal_title_nfg_csv_importer_modal_first_visit
                     .media-left.hidden-sm-down
                       %span.fa-stack.fa-lg
@@ -80,7 +74,7 @@
                     %i As good as we are at this, you should still double check our work :)
 
                 .modal-footer
-                  %a.btn.btn-white-bg.btn-lg{ type: "button", data: { dismiss: "modal" } }
+                  %a.btn.btn-primary.btn-lg{ type: "button", data: { dismiss: "modal" } }
                     = fa_icon "chevron-right", text: "Great, Let's Go", right: true
 
     :javascript

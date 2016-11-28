@@ -1,4 +1,0 @@
-@each $color in $primary-colors-list {
-  .#{nth($color, 1)} #{$icon} { color: nth($color, 2); }
-  #{$icon}.#{nth($color, 1)} { color: nth($color, 2) !important; }
-}
