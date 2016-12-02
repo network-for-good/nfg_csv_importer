@@ -90,7 +90,7 @@
 
         = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
 
-        - if @import.number_of_records_with_errors.to_i > 0
+        - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
           %p.small.text-xs-center.red
             = link_to @import.error_file.url do
               = fa_icon "paperclip", text: "Error file"
