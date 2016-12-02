@@ -37,7 +37,7 @@
         .row
           .col-md-10.col-md-push-1.col-xs-12
             .text-xs-center.m-t-1
-              %a.btn.btn-primary{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+              %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
                 = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
 
     = render(partial: 'shared/flash_messages') rescue nil

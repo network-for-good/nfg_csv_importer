@@ -13,7 +13,7 @@ describe "imports/index.html.haml" do
 
   context 'when there are no previous imports' do
     it "should indicate there are no imports" do
-      expect(subject).to match(/There are no Imports/)
+      expect(subject).to match(/There are no imports/)
     end
   end
 

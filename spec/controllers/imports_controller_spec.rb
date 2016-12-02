@@ -71,15 +71,10 @@ describe NfgCsvImporter::ImportsController do
         subject
       end
 
-      #it "should add import job to queue" do
-        #NfgCsvImporter::ProcessImportJob.expects(:perform_later).once
-        #subject
-      #end
-
-      it "should display success message" do
-        subject
-        expect(flash[:notice]).to eq I18n.t('import.create.notice')
+      it "should redirect to the edit import path with the column count included" do
+        expect(subject).to redirect_to(edit_import_path(import, mapped_column_count: import.column_stats[:mapped_column_count]))
       end
+
     end
 
     context "when the import is not valid" do
