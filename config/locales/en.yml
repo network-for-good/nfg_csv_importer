@@ -13,7 +13,7 @@ en:
     index:
       jumbotron:
         headline: "Starting a <strong>new</strong> data import?"
-        sub_headline: "This self-guided importing tool is here to give you the flxibility to import your own data whenever you need to."
+        sub_headline: "This self-guided importing tool is here to give you the flexibility to import your own data whenever you need to."
         import_types: "Import %{import_type}"
       headings:
         past_imports: "Past Uploads & Imports"
