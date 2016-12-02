@@ -40,7 +40,8 @@ module NfgCsvImporter
       # i.e. "first_name" => ["first", "donor first name", "contact first name"]
       field = nil
       aliases_for_mapping.each do |f, alias_values|
-        break field = f if header_column.match(/#{ alias_values.join('|') }/i)
+        field_regex = alias_values.respond_to?(:join) ? alias_values.join('|') : alias_values
+        break field = f if header_column.match(/#{ field_regex }/i)
       end
       field
     end
