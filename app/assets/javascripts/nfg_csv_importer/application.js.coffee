@@ -9,6 +9,7 @@
 #= require nfg_csv_importer/smooth_scroll
 #= require nfg_csv_importer/bootstrap_custom_file_input
 #= require nfg_csv_importer/read_more
+#= require nfg_csv_importer/full_page_height
 
 window.NfgCsvImporter = {}
 

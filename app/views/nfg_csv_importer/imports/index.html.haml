@@ -10,6 +10,7 @@
   - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
   - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
 
+
 .nfg-csv-importer
   .container-fluid.container-flush.bg-white
     .jumbotron.jumbotron-fluid.jumbotron-clouds
@@ -20,7 +21,6 @@
             %p.text-xs-center= t("jumbotron.sub_headline", scope: language_scope)
 
         #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
-
           - ImportDefinition.import_types.each do |import_type|
             - definition = ImportDefinition.get_definition(import_type, @imported_for)
 
@@ -30,7 +30,6 @@
                   %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
                   .card-text.m-b-1
                     = simple_format(definition.headline)
-
                   = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
                     = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
 
@@ -42,16 +41,16 @@
 
     = render(partial: 'shared/flash_messages') rescue nil
 
-    #imports_listing.row.p-x-3
-      .col-xs-12
-        .row
-          .col-xs-12
-            %h2= t("headings.past_imports", scope: language_scope)
-        .row
-          - if @imports.empty?
+    - if @imports.empty?
+      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true"} }
+
+    - else
+      #imports_listing.row.p-x-3
+        .col-xs-12
+          .row
             .col-xs-12
-              %p= t("content.no_imports", scope: language_scope)
-          -else
+              %h2= t("headings.past_imports", scope: language_scope)
+          .row
             .col-xs-12
               .row.row-listing-header.m-b-1
                 - imports_listing_row_column_structure_class = "col-md-2"
