@@ -12,8 +12,8 @@ describe "imports/index.html.haml" do
   subject { render template: 'nfg_csv_importer/imports/index' }
 
   context 'when there are no previous imports' do
-    it "should indicate there are no imports" do
-      expect(subject).to match(/There are no imports/)
+    it "should display an empty content area that includes a unique data attribute" do
+      expect(subject).to have_selector("[data-set-full-page='true']")
     end
   end
 
