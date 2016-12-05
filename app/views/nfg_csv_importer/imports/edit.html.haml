@@ -48,34 +48,50 @@
 
   - if @mapped_column_count > 0
     #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
-      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
+      %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
         %span{"aria-hidden" => "true"}
           %i.fa.fa-times-circle
+          - unless browser.mobile?
+            %br
+            %small.text-uppercase
+              %strong Close
       .container-fluid
         .row.row-xs-center{ style: "height: 100%;" }
-          .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2.col-xl-6.col-xl-push-3
-            .modal-dialog{:role => "document"}
+          .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2
+            .modal-dialog.text-xs-center{:role => "document"}
               .modal-content
                 .modal-header
-                  .media#modal_title_nfg_csv_importer_modal_first_visit
-                    .media-left.hidden-sm-down
-                      %span.fa-stack.fa-lg
-                        %i.fa.fa-circle.fa-stack-2x
-                        %i.fa.fa-thumbs-o-up.fa-stack-1x
-                    .media-body
-                      Great News!
+                  %h1#modal_title_nfg_csv_importer_modal_first_visit Great News!
                 .modal-body.m-b-1
-                  %p.m-b-2
-                    We just saved you some time by automatically mapping
-                    %strong
-                      #{ @import.column_stats[:mapped_column_count] } column headers
-                    of the #{ @import.column_stats[:column_count] } columns in your file for you.
-                  .small
-                    %i As good as we are at this, you should still double check our work :)
+                  .row
+                    .col-xs-12
+                      %p.lead
+                        We just saved you some time by by evaluating your columns and
+                        %strong applying automatic matches:
+                  .row.m-t-2
+                    .col-xl-10.col-xl-push-1.col-xs-12
+                      .row
+                        .col-md-6.col-xs-12
+                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported" }
 
-                .modal-footer
-                  %a.btn.btn-primary.btn-lg{ type: "button", data: { dismiss: "modal" } }
-                    = fa_icon "chevron-right", text: "Great, Let's Go", right: true
+                        .col-md-6.col-xs-12
+                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count] } do
+                            %p.card-text.line-height-normal
+                              Automatically Mapped Columns
+                              %br
+
+                              = fa_icon "asterisk inverse", class: "sup", text: "<i class='small'>Be sure to double check these</i>".html_safe
+
+
+
+                  - if browser.mobile?
+                    .row
+                      .col-xs-12
+                        %button.btn.btn-primary{ "data-dismiss" => "modal" }
+                          = fa_icon "times", text: "Close"
+
+
+
 
     :javascript
       $("#nfg_csv_importer_modal_first_visit").appendTo("body");

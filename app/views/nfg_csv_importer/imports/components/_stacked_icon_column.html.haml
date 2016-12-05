@@ -9,5 +9,9 @@
   = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter"
   %h4{ class: "card-title #{heading_class}" }
     = heading
-  %p.card-text{ class: content_class }
-    = content
+  - if content.present?
+    %p.card-text{ class: content_class }
+      = content
+  - else
+    = yield
+
