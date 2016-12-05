@@ -1,7 +1,10 @@
+class NfgCsvImporter.FullPageHeight
+  constructor: (@el) ->
+    @fullPageDivBeginsAtY = @el.offset().top
+    @setFullPageDivHeightTo = $(window).height() - @fullPageDivBeginsAtY
+    @el.height(@setFullPageDivHeightTo)
+
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
-  fullPageDiv = $("[data-set-full-page='true']")
-  fullPageDivBeginsAtY = fullPageDiv.offset().top
-  setFullPageDivHeightTo = $(window).height() - fullPageDivBeginsAtY
-
-  fullPageDiv.height(setFullPageDivHeightTo)
-
+  el = $("[data-set-full-page='true']")
+  return unless el.length > 0
+  inst = new NfgCsvImporter.FullPageHeight el

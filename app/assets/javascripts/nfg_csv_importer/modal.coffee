@@ -5,12 +5,12 @@ $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
 
   $("[data-modal-identifier='nfg_csv_importer_modal']").on 'show.bs.modal', ->
     setTimeout (->
-      $("[data-modal-identifier='nfg_csv_importer_modal']").wrap "<span class='nfg-csv-importer' data-modal-flag='on'></div>"
+      $("[data-modal-identifier='nfg_csv_importer_modal']").wrap "<span class='nfg-csv-importer' data-modal-status='present'></div>"
     ), 1
 
     $("[data-modal-identifier='nfg_csv_importer_modal']").on 'hidden.bs.modal', ->
       # setTimeout (->
-      $("[data-modal-flag='on']").remove()
+      $("[data-modal-status='present']").remove()
       # ), 100   # Simple timeout removes flicker due to wrapping... 'shown.bs.tooltip' generates a flicker.
 
     # $("[data-modal-identifier='nfg_csv_importer_modal']").wrap "<div class='nfg-csv-importer'></div>"
