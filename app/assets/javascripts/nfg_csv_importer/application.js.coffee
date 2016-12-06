@@ -12,7 +12,7 @@
 
 window.NfgCsvImporter = {}
 
-if $("head [data-turbolinks-track='true']")
+if $("head [data-turbolinks-track='true']").length > 0
   window.NfgCsvImporter.readyOrTurboLinksLoad = "turbolinks:load"
 else
   window.NfgCsvImporter.readyOrTurboLinksLoad = "ready"
