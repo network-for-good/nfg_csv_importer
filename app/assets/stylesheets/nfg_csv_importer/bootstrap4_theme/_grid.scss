@@ -1,5 +1,4 @@
 @if $enable-flex {
-  // @include make-grid-columns();
   %grid-column{
     float: none;
   }

@@ -30,11 +30,11 @@
       - if @import.column_stats[:unmapped_column_count] > 0
         %a.text-glow{ href: "javascript:;" }
           %span#turn_highlights_on
-            %i.fa.fa-lightbulb-o.text-white
+            = fa_icon "lightbulb-o inverse"
             %strong
               Highlight Columns
           %span#turn_highlights_off{ style: "display: none;"}
-            %i.fa.fa-eye-slash.text-white
+            = fa_icon "eye-slash inverse"
             %strong
               Turn Highlight Off
 
