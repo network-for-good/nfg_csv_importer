@@ -4,10 +4,8 @@
   .row.row-importer-header
     .col-xs-12
       %h1
-        = link_to @import.import_file.url do
-          %i.fa.fa-paperclip
-          = @import.import_file_name
+        = link_to @import.import_file.url, data: { filename: @import.import_file_name } do
+          = fa_icon "paperclip inverse", text: @import.import_file_name
       = link_to imports_path, class: "import-header-link" do
-        %i.fa.fa-chevron-left.m-r-quarter
-        Back to Imports
+        = fa_icon "chevron-left inverse", text: "Back to Imports"
 

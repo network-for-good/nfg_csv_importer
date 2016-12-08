@@ -1,4 +1,5 @@
 / TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
+
 - ready_for_import = false
 
 #edit.importer-gem{ data: { unmapped_highlight: 'disabled'} }
@@ -23,12 +24,10 @@
           Navigate by scrolling left or right or by clicking the arrow buttons
 
     %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "left" } }
-      %i.fa.fa-arrow-circle-left
-
+      = fa_icon "arrow-circle-left"
 
     %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "right" } }
-      %i.fa.fa-arrow-circle-right
-
+      = fa_icon "arrow-circle-right"
 
     .container-importer
       = form_for @import, html: { id: "fields_mapping" } do
@@ -46,6 +45,9 @@
           = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
   - if @mapped_column_count > 0
+    / TODO: Leverage modal partial when ready
+    / = render partial: "nfg_csv_importer/imports/components/modal/modal", locals: { interstitial: false }
+
     #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_modal_on_page_load: "true" } }
       %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
         %span{"aria-hidden" => "true"}

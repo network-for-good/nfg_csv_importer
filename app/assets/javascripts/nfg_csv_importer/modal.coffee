@@ -51,8 +51,8 @@ class NfgCsvImporter.ImporterGemModal
       ), 1
 
   removeModal: ->
-    returningModal = @importerGemModal.detach()
-    @placeholderSpan.replaceWith returningModal
+    originalModal = @importerGemModal.detach()
+    @placeholderSpan.replaceWith originalModal
     $("[#{@modalIsPresentFlag}]").remove()
 
   launchModalOnPageLoad: (targetModal) ->
