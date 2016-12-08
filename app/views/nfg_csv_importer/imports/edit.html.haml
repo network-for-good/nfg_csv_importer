@@ -45,12 +45,8 @@
         = link_to imports_path, class: "btn btn-secondary btn-lg" do
           = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
-
-
-  / %a{ data: { toggle: "modal", target: "#importer_gem_modal_first_visit", importer_gem_modal_toggle: "true" } }
-  /   Hit me
   - if @mapped_column_count > 0
-    #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_on_page_load: "true" } }
+    #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_modal_on_page_load: "true" } }
       %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
         %span{"aria-hidden" => "true"}
           %i.fa.fa-times-circle
@@ -85,16 +81,10 @@
 
                               = fa_icon "asterisk inverse", class: "sup", text: "<i class='small'>Be sure to double check these</i>".html_safe
 
-
-
                   - if browser.mobile?
                     .row
                       .col-xs-12
                         %button.btn.btn-primary{ "data-dismiss" => "modal" }
                           = fa_icon "times", text: "Close"
 
-
-
-    / :javascript
-    /   window.NfgCsvImporter.ImporterGemModal.launchModal( $("#importer_gem_modal_first_visit") );
 

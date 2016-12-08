@@ -1,6 +1,8 @@
-# To manually fire an importer gem modal,
-# add this data attribute to your button/link
-# <a data-importer-gem-modal-toggle: "true">
+# To manually fire an importer gem modal, add this data attribute to your button/link
+# <a data-importer-gem-modal-toggle="true" ...>
+
+# To force a modal to fire on pageload, include this data attribute in the modal element
+# <div data-launch-modal-on-page-load='true' ...>
 
 class NfgCsvImporter.ImporterGemModal
   constructor: (@importerGemModal)->
@@ -9,6 +11,9 @@ class NfgCsvImporter.ImporterGemModal
     @importerGemInterstitialWrapperClass = "modal-interstitial-wrapper"
     @importerGemModalToggles = $("[data-importer-gem-modal-toggle='true']")
     @modalIsPresentFlag = "data-importer-gem-modal-status='present'"
+    @launchModalOnPageLoadFlags = "data-launch-modal-on-page-load='true'"
+    @launchModalOnPageLoadObject = $("[#{@launchModalOnPageLoadFlags}]")
+
     @placeholderSpan = $("<span data-describe='importer-gem-modal-placeholder'></span>")
 
     @importerGemModalToggles.on "click", (event) =>
@@ -18,10 +23,8 @@ class NfgCsvImporter.ImporterGemModal
     @importerGemModal.on "hidden.bs.modal", =>
       @removeModal()
 
-    # console.log $("[data-launch-on-page-load]").data "launch-on-page-load"
-
-    # if @importerGemModal.data("launch-on-page-load") == "true"
-    #   console.log "you have me"
+    if @launchModalOnPageLoadObject.length > 0
+      @launchModalOnPageLoad(@launchModalOnPageLoadObject)
 
 
   launchModal: (targetModal) ->
@@ -52,6 +55,13 @@ class NfgCsvImporter.ImporterGemModal
     @placeholderSpan.replaceWith returningModal
     $("[#{@modalIsPresentFlag}]").remove()
 
+  launchModalOnPageLoad: (targetModal) ->
+    console.log "launched modal on page function"
+    launchableOnPageLoadModal = $("#"+targetModal.attr('id'))
+    if targetModal.data @launchModalOnPageLoadFlag
+      @launchModal launchableOnPageLoadModal
+    else
+      return false
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
 
