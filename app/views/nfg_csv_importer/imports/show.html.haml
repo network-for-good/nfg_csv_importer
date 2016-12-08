@@ -1,6 +1,4 @@
-/ TODO: Map this to a parameter passed in when people are sent here from reviews/show
-
-.nfg-csv-importer
+.importer-gem
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds
       - if params["redirected_from_review"]
@@ -11,9 +9,9 @@
         .row
           .col-xs-4.col-xs-push-4.text-xs-left
             %ul.fa-ul
-              = content_tag(:li, fa_icon("check-circle li", text: "You've uploaded your file"))
-              = content_tag(:li, fa_icon("check-circle li", text: "You've mapped your column headers"))
-              = content_tag(:li, fa_icon("check-circle li", text: "You've approved the official import to begin"))
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've uploaded your file"))
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've mapped your column headers"))
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've approved the official import to begin"))
 
       - else
         %h1.display-1
@@ -78,13 +76,13 @@
 
         - if @import.number_of_records_with_errors.to_i > 0
           - icon = "exclamation"
-          - color = "red"
-          - content_class += " text-red"
+          - color = "text-danger"
+          - content_class += " text-danger"
           - content = @import.number_of_records_with_errors
 
         - else
           - icon = "check"
-          - color = "green"
+          - color = "text-success"
           - content = "0"
           - content_class += " text-green"
 

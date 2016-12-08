@@ -30,11 +30,11 @@
       - if @import.column_stats[:unmapped_column_count] > 0
         %a.text-glow{ href: "javascript:;" }
           %span#turn_highlights_on
-            %i.fa.fa-lightbulb-o.text-white
+            = fa_icon "lightbulb-o inverse"
             %strong
               Highlight Columns
           %span#turn_highlights_off{ style: "display: none;"}
-            %i.fa.fa-eye-slash.text-white
+            = fa_icon "eye-slash inverse"
             %strong
               Turn Highlight Off
 
@@ -42,14 +42,14 @@
       .text-headline.m-b-base
         .small
           - if import.ready_to_import?
-            %i.fa.fa-check-circle.text-white
+            = fa_icon "check-circle inverse"
             %br
             Ready to import
           - else
-            %i.fa.fa-times-circle.text-white
+            = fa_icon "times-circle inverse"
             %br
             Not ready to import
       %p.m-t-1
         = link_to import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
-          %i.fa.fa-chevron-right.text-white
-          Review & Confirm
+          = fa_icon "chevron-right inverse", text: "Review & Confirm", right: true
+

@@ -1,7 +1,8 @@
 / TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
+
 - ready_for_import = false
 
-.nfg-csv-importer{ data: { unmapped_highlight: 'disabled'} }
+#edit.importer-gem{ data: { unmapped_highlight: 'disabled'} }
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
@@ -23,12 +24,10 @@
           Navigate by scrolling left or right or by clicking the arrow buttons
 
     %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "left" } }
-      %i.fa.fa-arrow-circle-left
-
+      = fa_icon "arrow-circle-left"
 
     %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "right" } }
-      %i.fa.fa-arrow-circle-right
-
+      = fa_icon "arrow-circle-right"
 
     .container-importer
       = form_for @import, html: { id: "fields_mapping" } do
@@ -45,9 +44,11 @@
         = link_to imports_path, class: "btn btn-secondary btn-lg" do
           = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
-
   - if @mapped_column_count > 0
-    #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
+    / TODO: Leverage modal partial when ready
+    / = render partial: "nfg_csv_importer/imports/components/modal/modal", locals: { interstitial: false }
+
+    #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_modal_on_page_load: "true" } }
       %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
         %span{"aria-hidden" => "true"}
           %i.fa.fa-times-circle
@@ -61,7 +62,7 @@
             .modal-dialog.text-xs-center{:role => "document"}
               .modal-content
                 .modal-header
-                  %h1#modal_title_nfg_csv_importer_modal_first_visit Great News!
+                  %h1#importer_gem_modal_first_visit_title Great News!
                 .modal-body.m-b-1
                   .row
                     .col-xs-12
@@ -82,20 +83,10 @@
 
                               = fa_icon "asterisk inverse", class: "sup", text: "<i class='small'>Be sure to double check these</i>".html_safe
 
-
-
                   - if browser.mobile?
                     .row
                       .col-xs-12
                         %button.btn.btn-primary{ "data-dismiss" => "modal" }
                           = fa_icon "times", text: "Close"
-
-
-
-
-    :javascript
-      $("#nfg_csv_importer_modal_first_visit").appendTo("body");
-      $("body").addClass("nfg-csv-importer-modal-open nfg-csv-importer");
-      $("#nfg_csv_importer_modal_first_visit").modal();
 
 

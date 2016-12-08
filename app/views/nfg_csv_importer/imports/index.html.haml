@@ -11,7 +11,7 @@
   - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
 
 
-.nfg-csv-importer
+.importer-gem
   .container-fluid.container-flush.bg-white
     .jumbotron.jumbotron-fluid.jumbotron-clouds
       .container-fluid
@@ -25,7 +25,7 @@
             - definition = ImportDefinition.get_definition(import_type, @imported_for)
 
             %div{ class: import_type_column_structure_classes, id: import_type }
-              .card.flex-1
+              .card.flex-1.m-b-2
                 .card-block
                   %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
                   .card-text.m-b-1

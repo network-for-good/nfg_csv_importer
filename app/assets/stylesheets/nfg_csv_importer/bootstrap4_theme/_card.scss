@@ -99,6 +99,7 @@
     label{
       font-size:12px;
       line-height:1;
+      font-weight: $font-weight-normal;
       .fa{
         margin-right:3px;
       }
@@ -223,8 +224,9 @@
       text-decoration:none;
 
       @include hover-focus{
+        color: $brand-primary;
         text-decoration: underline;
-        @include vendor-prefix((text-decoration-style, dotted) mo);
+        @include vendor-prefix((text-decoration-style, dotted) webkit moz ms o);
       }
     }
 

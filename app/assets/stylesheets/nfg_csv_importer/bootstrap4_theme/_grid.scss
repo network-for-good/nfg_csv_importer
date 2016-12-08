@@ -1,3 +1,18 @@
+@if $enable-flex {
+  %grid-column{
+    float: none;
+  }
+
+  .row{
+    &::before,
+    &::after {
+      content: none;
+      display: initial;
+      clear: initial;
+    }
+  }
+}
+
 .display-flex{
   display: flex;
 }
@@ -9,13 +24,16 @@
 .flex-1{
   flex: 1;
 }
-
+.container-fluid{
+  z-index:0;
+}
 .container-flush{
   // margin: 0 -24px 0 -24px;
   // margin: 0 (-($grid-gutter-width /2));
   padding-left:0;
   padding-right: 0;
   position: relative;
+  z-index:0;
 
   > .row{
     margin-left:0;

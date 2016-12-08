@@ -176,12 +176,6 @@
   background-color: $gray-lightest;
 }
 
-.container-new-import.no-shadow{
-  &:after{
-    content: none;
-  }
-}
-
 .row-mapped-columns{
   padding-top: 12px;
   padding-bottom: 12px;
