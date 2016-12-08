@@ -56,7 +56,6 @@ class NfgCsvImporter.ImporterGemModal
     $("[#{@modalIsPresentFlag}]").remove()
 
   launchModalOnPageLoad: (targetModal) ->
-    console.log "launched modal on page function"
     launchableOnPageLoadModal = $("#"+targetModal.attr('id'))
     if targetModal.data @launchModalOnPageLoadFlag
       @launchModal launchableOnPageLoadModal

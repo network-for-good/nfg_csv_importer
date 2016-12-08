@@ -1,16 +1,16 @@
 .importer-gem
   .container-new-import.blue
     .row.text-xs-center
-      .col-xs-12
-        %h1.display-1.p-t-2
+      .col-md-10.col-md-push-1.col-xs-12
+        %h1.display-1.p-t-3
           You're
           %strong
             all set
           to import!
         %p Please review your selections below before importing your data.
 
-    .row
-      .col-xs-12
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -19,8 +19,8 @@
             %p.small= @import.import_type.humanize.titleize.pluralize
             %hr
 
-    .row
-      .col-xs-12
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -33,8 +33,8 @@
               of data
             %hr
 
-    .row
-      .col-xs-12
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -88,8 +88,8 @@
                           = ignored_column.name
 
             %hr
-            .text-xs-center
-              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg", method: :post do
+            .text-xs-center.p-y-3
+              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg m-b-1", method: :post do
                 = fa_icon "chevron-right", text: "I'm Ready, Let's Import", right: true
               %p.small or
               %p.small
