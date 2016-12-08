@@ -18,8 +18,7 @@ $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
       ), 1   # Simple timeout removes flicker due to wrapping... 'shown.bs.tooltip' generates a flicker.
 
     $('[data-toggle="tooltip"]').on 'hidden.bs.tooltip', ->
-      # setTimeout (->
       $("[data-tooltip-status='present']").remove()
-      # ), 100   # Simple timeout removes flicker due to wrapping... 'shown.bs.tooltip' generates a flicker.
+
 
 

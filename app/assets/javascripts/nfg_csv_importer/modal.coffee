@@ -60,8 +60,6 @@ class NfgCsvImporter.ImporterGemModal
     launchableOnPageLoadModal = $("#"+targetModal.attr('id'))
     if targetModal.data @launchModalOnPageLoadFlag
       @launchModal launchableOnPageLoadModal
-    else
-      return false
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
 
