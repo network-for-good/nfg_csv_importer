@@ -1,7 +1,7 @@
 / TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
 - ready_for_import = false
 
-.nfg-csv-importer{ data: { unmapped_highlight: 'disabled'} }
+#edit.importer-gem{ data: { unmapped_highlight: 'disabled'} }
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
@@ -46,8 +46,11 @@
           = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
 
+
+  / %a{ data: { toggle: "modal", target: "#importer_gem_modal_first_visit", importer_gem_modal_toggle: "true" } }
+  /   Hit me
   - if @mapped_column_count > 0
-    #nfg_csv_importer_modal_first_visit.modal.interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "modal_title_nfg_csv_importer_modal_first_visit", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "nfg_csv_importer_modal", backdrop: "static" } }
+    #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_on_page_load: "true" } }
       %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
         %span{"aria-hidden" => "true"}
           %i.fa.fa-times-circle
@@ -61,7 +64,7 @@
             .modal-dialog.text-xs-center{:role => "document"}
               .modal-content
                 .modal-header
-                  %h1#modal_title_nfg_csv_importer_modal_first_visit Great News!
+                  %h1#importer_gem_modal_first_visit_title Great News!
                 .modal-body.m-b-1
                   .row
                     .col-xs-12
@@ -92,10 +95,6 @@
 
 
 
-
-    :javascript
-      $("#nfg_csv_importer_modal_first_visit").appendTo("body");
-      $("body").addClass("nfg-csv-importer-modal-open nfg-csv-importer");
-      $("#nfg_csv_importer_modal_first_visit").modal();
-
+    / :javascript
+    /   window.NfgCsvImporter.ImporterGemModal.launchModal( $("#importer_gem_modal_first_visit") );
 

@@ -1,3 +1,19 @@
+@if $enable-flex {
+  // @include make-grid-columns();
+  %grid-column{
+    float: none;
+  }
+
+  .row{
+    &::before,
+    &::after {
+      content: none;
+      display: initial;
+      clear: initial;
+    }
+  }
+}
+
 .display-flex{
   display: flex;
 }

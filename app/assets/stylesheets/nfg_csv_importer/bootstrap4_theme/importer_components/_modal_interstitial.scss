@@ -1,6 +1,5 @@
-&.nfg-csv-importer-modal-open{
-
-  .interstitial{
+&.modal-interstitial-wrapper{
+  .modal-interstitial{
     .close{
       transition: all 0.5s ease-in-out;
       opacity: 1;
@@ -105,7 +104,7 @@
     margin-right: -4px;
   }
 
-  .modal-backdrop{
+  &.modal-backdrop{
     background-color:$brand-primary;
 
     &.in{
@@ -187,4 +186,6 @@
   @include media-breakpoint-up(md) {
     .modal-lg { width: 100%; }
   }
+
+
 }

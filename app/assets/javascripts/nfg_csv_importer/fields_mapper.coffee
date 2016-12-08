@@ -1,5 +1,5 @@
 class NfgCsvImporter.FieldsMapper
-  @MAIN_CONTAINER_CLASS: ".nfg-csv-importer"
+  @MAIN_CONTAINER_CLASS: ".importer-gem"
   @IMPORT_CONTAINER_CLASS: ".container-importer"
   @SCROLL_BUTTONS_FINDER: "a.horizontal-scroll-btn"
   @DUPLICATE_SCROLL_BUTTON_FINDER: "a.btn-horizontal-scroll"

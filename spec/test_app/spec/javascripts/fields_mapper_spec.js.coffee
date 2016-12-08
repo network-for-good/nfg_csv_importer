@@ -11,9 +11,9 @@ describe "NfgCsvImporter::FieldsMapper", ->
       @fieldsMapper = new NfgCsvImporter.FieldsMapper
 
     it "changes the data-unmapped-highlight value from enabled to disabled", ->
-      expect($('.nfg-csv-importer')).to.have.attr('data-unmapped-highlight', 'enabled')
+      expect($('.importer-gem')).to.have.attr('data-unmapped-highlight', 'enabled')
       @fieldsMapper.toggleHighlights()
-      expect($('.nfg-csv-importer')).to.have.attr('data-unmapped-highlight', 'disabled')
+      expect($('.importer-gem')).to.have.attr('data-unmapped-highlight', 'disabled')
 
     it "should call the setHighLightsBasedOnStatus function", ->
       spy = chai.spy.on(@fieldsMapper, "setHighlightsBasedOnStatus")

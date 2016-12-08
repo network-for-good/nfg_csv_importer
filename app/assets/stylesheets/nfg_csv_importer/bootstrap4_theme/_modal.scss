@@ -3,6 +3,6 @@
 }
 
 .modal-backdrop{
-  z-index: 99 !important;
+  z-index: $zindex-modal + 999 !important;
   position: absolute;
 }

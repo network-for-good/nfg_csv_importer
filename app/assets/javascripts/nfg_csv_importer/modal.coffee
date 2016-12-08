@@ -1,3 +1,7 @@
+# To manually fire an importer gem modal,
+# add this data attribute to your button/link
+# <a data-importer-gem-modal-toggle: "true">
+
 class NfgCsvImporter.ImporterGemModal
   constructor: (@importerGemModal)->
     @importerGemCssNamespace = "importer-gem"
@@ -13,6 +17,11 @@ class NfgCsvImporter.ImporterGemModal
 
     @importerGemModal.on "hidden.bs.modal", =>
       @removeModal()
+
+    # console.log $("[data-launch-on-page-load]").data "launch-on-page-load"
+
+    # if @importerGemModal.data("launch-on-page-load") == "true"
+    #   console.log "you have me"
 
 
   launchModal: (targetModal) ->

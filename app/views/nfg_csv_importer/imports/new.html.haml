@@ -1,6 +1,6 @@
 - language_scope = [:imports, :new]
 
-.nfg-csv-importer
+.importer-gem
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
     / TODO: Setup alert for this
     - if @import.errors.any?
@@ -101,7 +101,7 @@
             %strong= t("headings.upload", scope: language_scope)
           %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
       .row.p-b-3
-        .col-md-6.col-md-push-3.col-xs-12
+        .col-md-8.col-md-push-2.col-xs-12
           .form-group
 
             .position-relative

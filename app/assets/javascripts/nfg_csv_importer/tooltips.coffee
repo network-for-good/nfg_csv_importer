@@ -14,7 +14,7 @@ $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
 
     $('[data-toggle="tooltip"]').on 'show.bs.tooltip', ->
       setTimeout (->
-        $('.tooltip').wrap "<span class='nfg-csv-importer' data-tooltip-status='present'></div>"
+        $('.tooltip').wrap "<span class='importer-gem' data-tooltip-status='present'></div>"
       ), 1   # Simple timeout removes flicker due to wrapping... 'shown.bs.tooltip' generates a flicker.
 
     $('[data-toggle="tooltip"]').on 'hidden.bs.tooltip', ->
