@@ -1,4 +1,4 @@
-.importer-gem
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds
       - if params["redirected_from_review"]
@@ -29,8 +29,9 @@
 
     = render('shared/flash_messages') rescue nil
 
+  .container-fluid.container-flush.bg-white
     - if params["redirected_from_review"]
-      .row.text-xs-center.m-b-1
+      .row.text-xs-center
         .col-xs-12
           %h2.text-blue.m-b-0
             Your
@@ -84,7 +85,7 @@
           - icon = "check"
           - color = "text-success"
           - content = "0"
-          - content_class += " text-green"
+          - content_class += " text-success"
 
         = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
 
@@ -94,10 +95,15 @@
               = fa_icon "paperclip", text: "Error file"
 
     - unless @import.import_file.file.nil?
-      .row.p-b-3
+      .row.p-b-1
         .col-xs-12
           %p.text-xs-center
             %em
               Download your original spreadsheet:
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
+    .row.p-b-3
+      .col-xs-12.text-xs-center
+        %strong
+          = link_to imports_path, class: "btn btn-link text-uppercase" do
+            = fa_icon "chevron-left", text: "Back to Imports"

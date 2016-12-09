@@ -2,7 +2,7 @@
 
 - ready_for_import = false
 
-#edit.importer-gem{ data: { unmapped_highlight: 'disabled'} }
+#edit.importer-gem{ data: { unmapped_highlight: 'disabled', view_wrapper: "importer-gem" } }
 
   = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
 
@@ -73,10 +73,10 @@
                     .col-xl-10.col-xl-push-1.col-xs-12
                       .row
                         .col-md-6.col-xs-12
-                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported" }
+                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported", color: "" }
 
                         .col-md-6.col-xs-12
-                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count] } do
+                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], color: "" } do
                             %p.card-text.line-height-normal
                               Automatically Mapped Columns
                               %br
