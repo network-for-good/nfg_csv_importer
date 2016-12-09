@@ -1,4 +1,4 @@
-.importer-gem{ data: { view_wrapper: "importer-gem", set_full_page: "true" } }
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds
       - if params["redirected_from_review"]
@@ -29,6 +29,7 @@
 
     = render('shared/flash_messages') rescue nil
 
+  .container-fluid.container-flush.bg-white
     - if params["redirected_from_review"]
       .row.text-xs-center
         .col-xs-12
@@ -94,10 +95,15 @@
               = fa_icon "paperclip", text: "Error file"
 
     - unless @import.import_file.file.nil?
-      .row.p-b-3
+      .row.p-b-1
         .col-xs-12
           %p.text-xs-center
             %em
               Download your original spreadsheet:
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
+    .row.p-b-3
+      .col-xs-12.text-xs-center
+        %strong
+          = link_to imports_path, class: "btn btn-link text-uppercase" do
+            = fa_icon "chevron-left", text: "Back to Imports"

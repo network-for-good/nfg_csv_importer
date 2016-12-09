@@ -5,8 +5,8 @@
 - content_class = "" if local_assigns[:content_class].nil?
 - color = "text-primary" if local_assigns[:color].nil?
 
-%div{ class: "card card-block card-icon-column text-xs-center #{color}" }
-  = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter"
+%div{ class: "card card-block card-icon-column text-xs-center" }
+  = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter #{color}"
   %h4{ class: "card-title #{heading_class}" }
     = heading
   - if content.present?
