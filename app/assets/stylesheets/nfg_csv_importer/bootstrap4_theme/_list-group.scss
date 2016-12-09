@@ -1,15 +1,19 @@
-
-
 .list-group-flush{
   &.list-group{
     border-bottom: solid 1px #dfdfdf;
     border-right: solid 1px #dfdfdf;
     border-left: solid 1px #dfdfdf;
     transition: all .5s ease-in-out;
+
   }
   .list-group-item{
-    border-width: 1px 1px;
-    border-bottom: solid 1px #eeeeee;
+    border-radius: 0;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #eeeeee;
     line-height: 1;
     height: 54px;
     padding: 18px;
@@ -33,19 +37,20 @@
 .card-ignored{
   .list-group-flush{
     &.list-group{
-      border-color: #575757;
+      border-bottom: solid 1px #575757;
+      border-right: solid 1px #575757;
+      border-left: solid 1px #575757;
       transition: all .5s ease-in-out;
     }
 
     .list-group-item{
-      border-bottom: solid 1px #656565;
+      border-bottom-color:#656565;
       background-color: #676767;
       color: #9e9e9e;
       transition: all .5s ease-in-out;
 
       &:nth-child(even){
         background-color: #717171;
-
         transition: all .5s ease-in-out;
       }
       &:last-child{
@@ -58,11 +63,12 @@
 .card-active{
   .list-group-flush{
     &.list-group{
-      border-color: #b4d5e3;
+      border-bottom: solid 1px #b4d5e3;
+      border-right: solid 1px #b4d5e3;
+      border-left: solid 1px #b4d5e3;
       transition: all .5s ease-in-out;
     }
     .list-group-item{
-
       background-color:#f5f9fa;
       border-bottom-color: #deeaed;
       color:#45a1cb;
@@ -83,7 +89,9 @@
 .card-mapped{
   .list-group-flush{
     &.list-group{
-      border-color: #a7e2fc;
+      border-bottom: solid 1px #a7e2fc;
+      border-right: solid 1px #a7e2fc;
+      border-left: solid 1px #a7e2fc;
       transition: all .5s ease-in-out;
     }
     .list-group-item{
@@ -108,11 +116,12 @@
 .card-duplicate{
   .list-group-flush{
     &.list-group{
-      border-color: darken($brand-danger, 12%);
+      border-bottom: solid 1px darken($brand-danger, 12%);
+      border-right: solid 1px darken($brand-danger, 12%);
+      border-left: solid 1px darken($brand-danger, 12%);
       transition: all .5s ease-in-out;
     }
     .list-group-item{
-
       background-color:#ff7d49;
       transition: all .5s ease-in-out;
       border-bottom-color: #ff6d33;
@@ -133,7 +142,10 @@
 .card-highlight{
   .list-group-flush{
     &.list-group{
-      border-color: lighten($brand-warning, 30%);
+      border-bottom: solid 1px lighten($brand-warning, 30%);
+      border-right: solid 1px lighten($brand-warning, 30%);
+      border-left: solid 1px lighten($brand-warning, 30%);
+
     }
     .list-group-item{
       border-bottom-color: rgba($brand-warning, .25);

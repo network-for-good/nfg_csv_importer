@@ -1,13 +1,13 @@
 - language_scope = [:imports, :new]
 
-.importer-gem
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
     / TODO: Setup alert for this
     - if @import.errors.any?
       = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
     .container-fluid.container-flush
-      .jumbotron.jumbotron-fluid.jumbotron-clouds
+      .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
         .container-fluid
           .row
             .col-md-10.col-md-push-1.col-xs-12
@@ -15,7 +15,7 @@
                 = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
               %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
 
-    .container-new-import.blue.p-b-3
+    .container-new-import.container-flush.blue.p-b-3
       .row
         .col-md-10.col-md-push-1.col-xs-12
           .row.text-xs-center
@@ -40,7 +40,7 @@
                   %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
                     = t("links.scroll_down", scope: language_scope)
 
-    #new_import_row_2.container-new-import.green.bg-faded.p-t-3
+    #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
       .row
         .col-md-10.col-md-push-1.col-xs-12
           .row
@@ -69,7 +69,7 @@
           %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
             = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
 
-    #import_type_column_descriptions.container-new-import.bg-green{ data: { show_hide: "hide" } }
+    #import_type_column_descriptions.container-new-import.container-flush.bg-green{ data: { show_hide: "hide" } }
       .row.p-y-2
         .col-xs-12
           .text-xs-center
@@ -94,7 +94,7 @@
                 - description = @import.column_descriptions[field]
                 = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
 
-    #upload_file.container-new-import.blue.p-y-3
+    #upload_file.container-new-import.container-flush.blue.p-y-3
       .row.text-xs-center
         .col-xs-12
           %h2.h1.display-1
@@ -116,7 +116,7 @@
 
           - if @previous_imports.present?
             .form-group.text-xs-center.m-b-2
-              %label.label-heading.text-blue.m-b-0= t("form.labels.import_template_id", scope: language_scope).html_safe
+              %label.label-heading.text-primary.m-b-0= t("form.labels.import_template_id", scope: language_scope).html_safe
               .m-b-1
                 %a.small{ href: "javascript:;", data: { show_hide_target: "#column_mapping_help" } }
                   = fa_icon "info-circle", text: t("form.help_text.import_template_id_show_hide", scope: language_scope)

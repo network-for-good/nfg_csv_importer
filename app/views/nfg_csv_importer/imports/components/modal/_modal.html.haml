@@ -1,0 +1,47 @@
+- interstitial = false if local_assigns[:interstitial].nil?
+- theme_color = "blue" if local_assigns[:theme_color].nil?
+
+- modal_classes = "modal fade #{theme_color}"
+- if interstitial
+  - modal_classes += " modal-interstitial"
+
+
+
+/ .modal.modal-interstitial.blue.fade
+#importer_gem_modal_first_visit{ class: modal_classes, "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_modal_on_page_load: "true" } }
+  - if interstitial
+    = render partial: "nfg_csv_importer/imports/components/modal/modal_close_button", locals: { interstitial: interstitial }
+  .container-fluid
+    .row.row-xs-center{ style: "height: 100%;" }
+      .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2
+        .modal-dialog.text-xs-center{:role => "document"}
+          .modal-content
+            .modal-header
+              - unless interstitial
+                = render partial: "nfg_csv_importer/imports/components/modal/modal_close_button", locals: { interstitial: interstitial }
+              %h1#importer_gem_modal_first_visit_title Great News!
+            .modal-body.m-b-1
+              .row
+                .col-xs-12
+                  %p.lead
+                    We just saved you some time by by evaluating your columns and
+                    %strong applying automatic matches:
+              .row.m-t-2
+                .col-xl-10.col-xl-push-1.col-xs-12
+                  .row
+                    .col-md-6.col-xs-12
+                      = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported" }
+
+                    .col-md-6.col-xs-12
+                      = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count] } do
+                        %p.card-text.line-height-normal
+                          Automatically Mapped Columns
+                          %br
+
+                          = fa_icon "asterisk inverse", class: "sup", text: "<i class='small'>Be sure to double check these</i>".html_safe
+
+              - if browser.mobile?
+                .row
+                  .col-xs-12
+                    %button.btn.btn-primary{ "data-dismiss" => "modal" }
+                      = fa_icon "times", text: "Close"

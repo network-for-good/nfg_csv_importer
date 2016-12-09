@@ -1,5 +1,5 @@
-.importer-gem
-  .container-new-import.blue
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
+  .container-new-import.container-flush.blue
     .row.text-xs-center
       .col-md-10.col-md-push-1.col-xs-12
         %h1.display-1.p-t-3
@@ -88,7 +88,7 @@
                           = ignored_column.name
 
             %hr
-            .text-xs-center.p-y-3
+            .text-xs-center.p-t-1
               = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg m-b-1", method: :post do
                 = fa_icon "chevron-right", text: "I'm Ready, Let's Import", right: true
               %p.small or

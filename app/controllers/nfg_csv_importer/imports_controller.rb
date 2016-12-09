@@ -26,7 +26,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     end
   end
 
-  # if failure, will update the edit page -- undesirable
   def update
     import_params["fields_mapping"].each do |header_name, mapped_field_name|
       next unless @import.fields_mapping.has_key?(header_name) # don't do an assignment if something strange was submitted

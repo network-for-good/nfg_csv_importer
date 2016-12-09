@@ -63,7 +63,6 @@
 .container-new-import{
 
   @extend .container-fluid;
-  @extend .container-flush;
 
   background-color:#fff;
 
@@ -89,7 +88,7 @@
       color: #dcdcdc;
     }
 
-    &.text-blue{
+    &.text-primary{
       .fa-stack-2x{
         color: $brand-primary;
       }

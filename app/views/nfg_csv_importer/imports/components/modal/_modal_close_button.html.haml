@@ -1,0 +1,10 @@
+
+- interstitial = false if local_assigns[:interstitial].nil?
+
+%button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
+  %span{"aria-hidden" => "true"}
+    = fa_icon (interstitial ? "times-circle" : "times")
+    - if interstitial || !browser.mobile?
+      %br
+      %small.text-uppercase
+        %strong Close
