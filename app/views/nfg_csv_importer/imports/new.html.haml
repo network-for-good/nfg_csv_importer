@@ -130,13 +130,11 @@
                   = f.select :import_template_id, options_from_collection_for_select(@previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "c-select"}
 
 
-          %button#upload_file_button.btn.btn-primary.btn-lg.m-x-a.display-block{ data: { disable_with: t("form.buttons.disable_with.upload", scope: language_scope) } }
+          %button#upload_file_button.btn.btn-primary.btn-lg.m-x-a.display-block.disabled{ data: { disable_with: t("form.buttons.disable_with.upload", scope: language_scope) }, disabled: "disabled"  }
             = fa_icon "chevron-right", text: t("form.buttons.upload", scope: language_scope), right: true
 
   :javascript
-    if( $("#import_import_file + .file-custom").data("content") == "Choose your file..." )
-      $("#upload_file_button").addClass("disabled").attr("disabled");
     $("input[type=\'file\']").change(function() {
-      $("#upload_file_button").removeClass("disabled").removeAttr("disabled");
+      $("#upload_file_button").removeClass("disabled").attr("disabled", false);
     });
 

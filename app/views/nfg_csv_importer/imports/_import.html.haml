@@ -3,7 +3,7 @@
 - imports_listing_row_column_structure_class = "" if local_assigns[:imports_listing_row_column_structure_class].nil?
 
 .row.row-listing{ id: dom_id(import), data: { id: import.id } }
-  %div{ class: imports_listing_row_column_structure_class }
+  %div{ class: imports_listing_row_column_structure_class, id: "#{dom_id(import)}_name" }
     %h5.m-b-quarter
       = import.imported_by_name
     .small.text-truncate
