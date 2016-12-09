@@ -11,7 +11,7 @@ gemspec
 # your gem to rubygems.org.
 
 # so we can play with the amount of time allowed before opening the browser
-gem 'konacha', github: "network-for-good/konacha.git", branch: 'master'
+gem 'konacha', github: "network-for-good/konacha", branch: 'master'
 
 # Our version upgrades the modules to the current versions
 gem 'konacha-chai-matchers', :git => 'https://github.com/network-for-good/konacha-chai-matchers.git', branch: 'master'
