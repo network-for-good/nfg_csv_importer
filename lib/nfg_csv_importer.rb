@@ -3,6 +3,10 @@ require "roo"
 require "carrierwave"
 require "haml"
 require "simple_form"
+require "coffee-script"
+require "sass-rails"
+require "font-awesome-rails"
+require "browser"
 
 module NfgCsvImporter
   module ApplicationHelper

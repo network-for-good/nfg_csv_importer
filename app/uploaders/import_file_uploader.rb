@@ -1,4 +1,5 @@
 class ImportFileUploader < CarrierWave::Uploader::Base
+  before :cache, :save_original_filename
 
   def store_dir
     "uploads/#{class_name_for_store_dir}/#{mounted_as}/#{model.id}"
@@ -17,5 +18,10 @@ class ImportFileUploader < CarrierWave::Uploader::Base
       @name ||= Digest::MD5.hexdigest(File.dirname(current_path))
       "#{@name}.#{file.extension}"
     end
+  end
+
+  private
+  def save_original_filename(file)
+    model.import_file_name ||= file.original_filename if file.respond_to?(:original_filename)
   end
 end

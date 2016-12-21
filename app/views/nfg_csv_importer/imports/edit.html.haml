@@ -1,0 +1,92 @@
+/ TODO: need a way to tell the importer that it's ready so it can turn on buttons (below importer columns) and change the content for the stats partial.
+
+- ready_for_import = false
+
+#edit.importer-gem{ data: { unmapped_highlight: 'disabled', view_wrapper: "importer-gem" } }
+
+  = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
+
+  = render 'nfg_csv_importer/imports/import_header_stats', import: @import, ready_for_import: ready_for_import
+
+  / Doesn't work yet
+  / - if @errors
+  #importer_errors
+    = render "nfg_csv_importer/imports/importer_errors", import: @import
+
+  -# TODO: Consider: when horizontal scroll is detected on window, focus this container so we can avoid the user leveraging the browsser back / forward action from swiping.
+  #columns_wrapper.container-fluid.container-flush
+
+    .bg-white.text-xs-center.p-t-3{ style: 'z-index:1; position: absolute; width: 100%;' }
+      %p.lead
+        Review and map your column headers before importing your data
+      %p
+        %i.text-muted
+          Navigate by scrolling left or right or by clicking the arrow buttons
+
+    %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "left" } }
+      = fa_icon "arrow-circle-left"
+
+    %a.horizontal-scroll-btn{ href: "javascript:;", data: { horizontal_scroll_button: "right" } }
+      = fa_icon "arrow-circle-right"
+
+    .container-importer
+      = form_for @import, html: { id: "fields_mapping" } do
+        .row.row-no-wrap
+          - @import.mapped_fields.each_with_index do |mapped_column, index|
+            = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
+
+        %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
+
+
+  .container-fluid.container-flush.bg-white
+    .row.p-x-1.p-t-1.p-b-3
+      .col-xs-6
+        = link_to imports_path, class: "btn btn-secondary btn-lg" do
+          = fa_icon "chevron-left fw", text: "Save & Come Back Later"
+
+  - if @mapped_column_count > 0
+    / TODO: Leverage modal partial when ready
+    / = render partial: "nfg_csv_importer/imports/components/modal/modal", locals: { interstitial: false }
+
+    #importer_gem_modal_first_visit.modal.modal-interstitial.blue.fade{ "aria-hidden" => "true", "aria-labelledby" => "importer_gem_modal_first_visit_title", :role => "dialog", :tabindex => "-1", data: { modal_identifier: "importer_gem_modal", backdrop: "static", launch_modal_on_page_load: "true" } }
+      %button.close.text-xs-center{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button" }
+        %span{"aria-hidden" => "true"}
+          %i.fa.fa-times-circle
+          - unless browser.mobile?
+            %br
+            %small.text-uppercase
+              %strong Close
+      .container-fluid
+        .row.row-xs-center{ style: "height: 100%;" }
+          .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2
+            .modal-dialog.text-xs-center{:role => "document"}
+              .modal-content
+                .modal-header
+                  %h1#importer_gem_modal_first_visit_title Great News!
+                .modal-body.m-b-1
+                  .row
+                    .col-xs-12
+                      %p.lead
+                        We just saved you some time by by evaluating your columns and
+                        %strong applying automatic matches:
+                  .row.m-t-2
+                    .col-xl-10.col-xl-push-1.col-xs-12
+                      .row
+                        .col-md-6.col-xs-12
+                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported", color: "" }
+
+                        .col-md-6.col-xs-12
+                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], color: "" } do
+                            %p.card-text.line-height-normal
+                              Automatically Mapped Columns
+                              %br
+
+                              = fa_icon "asterisk inverse", class: "sup", text: "<i class='small'>Be sure to double check these</i>".html_safe
+
+                  - if browser.mobile?
+                    .row
+                      .col-xs-12
+                        %button.btn.btn-primary{ "data-dismiss" => "modal" }
+                          = fa_icon "times", text: "Close"
+
+

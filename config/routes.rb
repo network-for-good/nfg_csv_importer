@@ -1,3 +1,6 @@
 NfgCsvImporter::Engine.routes.draw do
-  resources :imports, :only => [:show, :new, :create, :index, :destroy], path: ''
+  resources :imports, path: '' do
+    resource :review, only: :show
+    resource :process, only: :create
+  end
 end

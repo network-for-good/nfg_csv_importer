@@ -4,14 +4,16 @@ describe "imports/index.html.haml" do
   include Capybara::RSpecMatchers
   before do
     assign(:imports, imports)
+    assign(:imported_for, entity)
   end
   let(:imports) { [] }
+  let(:entity) { create(:entity) }
 
   subject { render template: 'nfg_csv_importer/imports/index' }
 
   context 'when there are no previous imports' do
-    it "should indicate there are no imports" do
-      expect(subject).to match(/There are no Imports/)
+    it "should display an empty content area that includes a unique data attribute" do
+      expect(subject).to have_selector("[data-set-full-page='true']")
     end
   end
 
@@ -31,8 +33,8 @@ describe "imports/index.html.haml" do
     end
 
     it "should display a link to each of the types" do
-      expect(subject).to have_selector(".panel-heading a[href$='/new?import_type=user']")
-      expect(subject).to have_selector(".panel-heading a[href$='/new?import_type=donation']")
+      expect(subject).to have_selector(".card .card-block a[href$='/new?import_type=user']")
+      expect(subject).to have_selector(".card .card-block a[href$='/new?import_type=donation']")
     end
   end
 end

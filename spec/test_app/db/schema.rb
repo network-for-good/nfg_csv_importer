@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161029144121) do
+ActiveRecord::Schema.define(version: 20161121145004) do
 
   create_table "entities", force: :cascade do |t|
     t.string   "subdomain"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 20161029144121) do
     t.datetime "updated_at"
     t.text     "fields_mapping"
     t.string   "import_file_name"
+    t.datetime "processing_started_at"
+    t.datetime "processing_finished_at"
   end
 
   create_table "projects", force: :cascade do |t|

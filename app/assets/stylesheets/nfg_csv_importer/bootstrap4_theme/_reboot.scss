@@ -1,0 +1,31 @@
+& {
+  margin: 0;
+  padding: 0;
+
+  @include vendor-prefix((text-size-adjust, 100%), ms webkit);
+  font-family: $font-family-base;
+  font-size: 16px;
+  // line-height: $line-height;
+  // Go easy on the eyes and use something other than `#000` for text
+  color: $body-color;
+  // By default, `<body>` has no `background-color` so we set one as a best practice.
+  background-color: #fff;
+  font-smooth: always;
+  @include vendor-prefix((font-smoothing: antialiased), webkit moz);
+  text-rendering: optimizeLegibility;
+
+
+
+  // @include media-breakpoint-down(md) {
+  //   overflow-x: hidden;
+  //   -webkit-overflow-scrolling: auto;
+  // }
+}
+
+*{
+  box-sizing: border-box !important;
+}
+
+a{
+  &, #{$icon}{ @include default-hover-transition(); }
+}
