@@ -1,0 +1,55 @@
+- import = nil if local_assigns[:import].nil?
+
+#importer_header_stats.container-fluid.container-flush
+  %span.header-bar-arrow
+  .row.row-xs-center.row-importer-stats
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .text-headline
+        = number_with_delimiter(@import.number_of_records)
+      .text-sub-headline
+        Rows
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .text-headline
+        = @import.column_stats[:column_count]
+      .text-sub-headline
+        Columns
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .text-headline
+        = @import.column_stats[:ignored_column_count]
+      .text-sub-headline
+        Ignored Columns
+
+    .col-md-2.col-xs-center.col-importer-stat
+      .text-headline
+        = @import.column_stats[:unmapped_column_count]
+      .text-sub-headline
+        Unmapped Columns
+      - if @import.column_stats[:unmapped_column_count] > 0
+        %a.text-glow{ href: "javascript:;" }
+          %span#turn_highlights_on
+            = fa_icon "lightbulb-o inverse"
+            %strong
+              Highlight Columns
+          %span#turn_highlights_off{ style: "display: none;"}
+            = fa_icon "eye-slash inverse"
+            %strong
+              Turn Highlight Off
+
+    .col-md-4.col-md-center.text-xs-center
+      .text-headline.m-b-base
+        .small
+          - if import.ready_to_import?
+            = fa_icon "check-circle inverse"
+            %br
+            Ready to import
+          - else
+            = fa_icon "times-circle inverse"
+            %br
+            Not ready to import
+      %p.m-t-1
+        = link_to import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
+          = fa_icon "chevron-right inverse", text: "Review & Confirm", right: true
+

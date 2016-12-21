@@ -1,24 +1,75 @@
-#imports
-  %h1
-    Imports
-  .panel.panel-default
-    .panel-heading
-      - ImportDefinition.import_types.each do |import_type|
-        = link_to "Import #{import_type.to_s.pluralize.titleize}",NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary"
-    .panel-body
-      // This partial should libe within the parent app's views/ subdirectory
-      = render(partial: 'shared/flash_messages') rescue nil
-      #import_links.import_links
-      - if @imports.empty?
-        There are no Imports
-      -else
-        .table-responsive
-          %table.table.table-striped#imports_table
-            %thead
-              %tr
-                %th.first Admin
-                %th No. of Records
-                %th No. of Records with errors
-                %th Last updated
-                %th.last Status
-            = render :partial => 'import', :collection => @imports
+- language_scope = [:imports, :index]
+- count_of_import_types = ImportDefinition.import_types.size
+- import_type_column_structure_classes = "display-flex"
+
+- if count_of_import_types == 0
+  - import_type_column_structure_classes << " col-md-6 col-xl-1"
+- elsif count_of_import_types > 4
+  - import_type_column_structure_classes << " col-md-6 col-xl-3"
+- else
+  - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
+  - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
+
+
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
+  .container-fluid.container-flush.bg-white
+    .jumbotron.jumbotron-fluid.jumbotron-clouds
+      .container-fluid
+        .row
+          .col-xs-12.p-x-2
+            %h1.text-xs-center= t("jumbotron.headline", scope: language_scope).html_safe
+            %p.text-xs-center= t("jumbotron.sub_headline", scope: language_scope)
+
+        #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
+          - ImportDefinition.import_types.each do |import_type|
+            - definition = ImportDefinition.get_definition(import_type, @imported_for)
+
+            %div{ class: import_type_column_structure_classes, id: import_type }
+              .card.flex-1.m-b-2
+                .card-block
+                  %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
+                  .card-text.m-b-1
+                    = simple_format(definition.headline)
+                  = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
+                    = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
+
+        .row
+          .col-md-10.col-md-push-1.col-xs-12
+            .text-xs-center.m-t-1
+              %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+                = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+
+    = render(partial: 'shared/flash_messages') rescue nil
+
+    - if @imports.empty?
+      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true"} }
+
+    - else
+      #imports_listing.row.p-x-3
+        .col-xs-12
+          .row
+            .col-xs-12
+              %h2= t("headings.past_imports", scope: language_scope)
+          .row
+            .col-xs-12
+              .row.row-listing-header.m-b-1
+                - imports_listing_row_column_structure_class = "col-md-2"
+
+                %div{ class: imports_listing_row_column_structure_class }
+                  %small= t("headings.imported_by_name", scope: language_scope)
+                %div{ class: imports_listing_row_column_structure_class }
+                  %small= t("headings.number_of_records", scope: language_scope)
+                %div{ class: imports_listing_row_column_structure_class }
+                  %small= t("headings.number_of_records_with_errors", scope: language_scope)
+                %div{ class: imports_listing_row_column_structure_class }
+                  %small= t("headings.updated_at", scope: language_scope)
+                %div{ class: imports_listing_row_column_structure_class }
+                  %small= t("headings.status", scope: language_scope)
+                %div{ class: imports_listing_row_column_structure_class }
+              = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
+              .row.p-y-1
+                .col-xs-12
+                  - if defined?(WillPaginate)
+                    = will_paginate @imports
+                  - elsif defined?(Kaminari)
+                    = paginate @imports

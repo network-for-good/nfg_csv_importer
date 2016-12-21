@@ -1,0 +1,91 @@
+$initial-opacity: 0.9;
+$ending-opacity: 1;
+$transition-speed: 0.15s;
+
+$final-scale: 1.5;
+
+a.horizontal-scroll-btn{
+
+
+  position: absolute;
+  z-index:8;
+  top: 55%;
+
+  background-color: transparent;
+  font-size: 60px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color:#fff;
+  line-height:1;
+  margin: 0;
+  @include box-shadow(0px 0px 15px 0px rgba(0,0,0,0.15));
+  transition: all 0.2s ease-in-out;
+  opacity: $initial-opacity;
+
+  .fa{
+    top:-6px;
+    position: relative;
+    line-height:1;
+    color: $brand-warning !important;
+    transition: all 0.07s ease-in-out;
+
+    @include hover-focus{
+      color:lighten($brand-warning, 10%) !important;
+      transform: scale(1.2);
+    }
+  }
+
+  &[data-horizontal-scroll-button="right"]{
+    right: 30px;
+
+
+  }
+
+  &[data-horizontal-scroll-button="left"]{
+    left: 30px;
+
+  }
+
+  @include hover-focus{
+    opacity: 1;
+    @include box-shadow(0px 0px 20px 0px rgba(0,0,0,0.2));
+  }
+
+
+  &.active{
+    opacity: $ending-opacity;
+    animation: activeHover $transition-speed ease-in-out;
+    transform: scale($final-scale);
+  }
+
+  &.active-out{
+    opacity: $initial-opacity;
+    animation: activeHoverOut $transition-speed ease-in-out;
+    transform: scale(1);
+  }
+}
+
+@keyframes activeHover {
+  0%{
+    opacity: $initial-opacity;
+    transform: scale(1);
+  }
+  100%{
+    opacity: $ending-opacity;
+    transform: scale($final-scale);
+  }
+}
+
+@keyframes activeHoverOut {
+  0%{
+    opacity: $ending-opacity;
+    transform: scale($final-scale);
+  }
+  100%{
+    opacity: $initial-opacity;
+    transform: scale(1);
+  }
+}
+
+

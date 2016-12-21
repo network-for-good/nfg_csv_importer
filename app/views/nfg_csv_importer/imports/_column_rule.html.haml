@@ -1,0 +1,20 @@
+- alert_class = nil if local_assigns[:alert_class].nil?
+- icon = "exclamation" if local_assigns[:icon].nil?
+- circle_color = nil if local_assigns[:circle_color].nil?
+
+- if alert_class
+  - wrapping_component = "alert #{alert_class}"
+- else
+  - wrapping_component = "card card-block card-translucent small"
+
+
+
+.col-md-6
+  %div{ class: wrapping_component }
+    .media
+      .media-left
+        %span{ class: "fa-stack #{ alert_class ? 'fa-lg' : 'small' }" }
+          %i{ class: "fa fa-circle fa-stack-2x #{ circle_color }" }
+          %i{ class: "fa fa-stack-1x fa-#{ icon } fa-inverse" }
+      .media-body
+        = column_rule.message.html_safe

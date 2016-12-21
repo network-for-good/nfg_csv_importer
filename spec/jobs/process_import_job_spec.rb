@@ -19,13 +19,20 @@ describe NfgCsvImporter::ProcessImportJob do
     expect{ subject }.to change{ import.reload.number_of_records }
   end
 
+  it "should update the processing_started_at" do
+    expect{ subject }.to change{ import.reload.processing_started_at }
+  end
+
   it "should send the mail to admin with imported result" do
     NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver: true))
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
     subject
   end
 
   it { expect { subject }.to change { import.reload.status }.from(nil).to("complete") }
+
+  it { expect { subject }.to change { import.reload.processing_finished_at }.from(nil) }
+
 
   it "should set status to processing" do
     NfgCsvImporter::Import.stubs(:find).returns(import)

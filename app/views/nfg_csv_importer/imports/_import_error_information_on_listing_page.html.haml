@@ -1,0 +1,25 @@
+- language_scope = [:imports, :index]
+
+-# Error Count
+- error_records_count = nil if local_assigns[:error_records_count].nil?
+
+-# Error File Link
+- error_file_link_url = "" if local_assigns[:error_file_link_url].nil?
+
+-# Error File Configuration
+- import_with_errors_color_class = "" if local_assigns[:import_with_errors_color_class].nil?
+- error_file_link_style = "" if local_assigns[:error_file_link_style].nil?
+- error_file_link_tabindex = "" if local_assigns[:error_file_link_tabindex].nil?
+- import_with_errors_color_class = "" if local_assigns[:import_with_errors_color_class].nil?
+
+-# Error File Tooltip for Imports That are Processing
+- processing_import_tooltip_for_error_file = false if local_assigns[:processing_import_tooltip_for_error_file].nil?
+- error_file_tooltip = {}
+- error_file_tooltip = bootstrap_tooltip(t("tooltips.error_file", scope: language_scope), :bottom) if processing_import_tooltip_for_error_file
+
+%h5.text-danger.line-height-1
+  = error_records_count
+
+%p.display-inline-block{ error_file_tooltip }
+  =link_to error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex do
+    = fa_icon "paperclip", class: import_with_errors_color_class, text: t("links.error_file", scope: language_scope)

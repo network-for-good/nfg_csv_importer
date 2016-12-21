@@ -1,0 +1,56 @@
+- if import.duplicated_field_mappings.present? || import.invalid_column_rules.present?
+  .container-fluid.container-flush.container-error
+    .row.p-y-base
+      .col-xs-12
+        %h2.text-xs-center
+          We found a few issues you’ll need to address
+
+    - if import.duplicated_field_mappings.present?
+      .row
+        .col-xs-12
+          .alert.alert-red
+            .media
+              .media-left
+                %span.fa-stack.fa-lg
+                  %i.fa.fa-circle.fa-stack-2x
+                  %i.fa.fa-exclamation.fa-stack-1x
+              .media-body
+                .row
+                  .col-xs-12
+                    %h3.media-heading.m-b-quarter
+                      You can’t have multiple columns with the same mapped header. Click a column header &ndash; e.g.
+                      %a.btn.btn-danger-outline.btn-sm{ href: "javascript:;", style: "pointer-events: none;" }
+                        Address
+                      &ndash;
+                      to navigate to that column.
+
+                    %h3.media-heading.m-b-base
+
+
+
+                .row
+
+                  - import.duplicated_field_mappings.each do |field, columns|
+
+                    .col-md-4.col-xs-12.m-b-quarter
+                      %p.line-height-normal.m-b-half
+                        %small.text-muted
+                          %i
+                            Both column headers are currently:
+                        %br
+                        %strong
+                          "#{field.humanize.titleize}"
+
+                      - columns.each do |column|
+
+                        %a.btn.btn-danger-outline.m-b-half.m-l-0.m-r-quarter.btn-horizontal-scroll{ href: "#card_header_#{ column.downcase.tr(" ", "_") }" }
+                          %small.text-muted
+                            Your Original Header:
+                          %br
+                          %span.linked-text
+                            = column
+
+    - if import.invalid_column_rules.present?
+      .row
+        - import.invalid_column_rules.each do |column_rule|
+          = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, alert_class: "alert-red"

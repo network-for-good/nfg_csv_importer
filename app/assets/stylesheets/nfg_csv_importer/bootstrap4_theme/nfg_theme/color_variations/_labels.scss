@@ -1,0 +1,7 @@
+@each $color in $primary-colors-list {
+  .label-#{nth($color, 1)} {
+    background-color: nth($color, 2);
+    @include default-hover-transition();
+  }
+}
+

@@ -1,0 +1,26 @@
+- mapped_column = nil if local_assigns[:mapped_column].nil?
+- import = nil if local_assigns[:import].nil?
+
+- card_classes = "card"
+
+- case mapped_column.status
+- when :unmapped
+  - card_data = { mapped: "false" }
+- when :active
+  - card_classes += " card-active"
+- when :mapped
+  - card_classes += " card-mapped"
+- when :ignored
+  - card_classes += " card-ignored"
+- when :duplicate
+  - card_classes += " card-duplicate"
+
+.col-importer{ data: { column_name: mapped_column.name }}
+  %div{ class: card_classes, data: card_data }
+    = render 'nfg_csv_importer/imports/importer_column_header', mapped_column: mapped_column, import: import
+    .card-block.card-block-importer-index
+      = index_alphabetize[index]
+    .list-group.list-group-flush
+      - (0..(@first_x_rows.length - 1)).each do |i|
+        .list-group-item
+          =@first_x_rows[i][mapped_column.name]

@@ -1,44 +1,109 @@
-%h1.page
-  #{@import.import_type.titleize} Import
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
+  .container-fluid.container-flush
+    .jumbotron.jumbotron-fluid.jumbotron-clouds
+      - if params["redirected_from_review"]
+        %h1.display-1
+          %strong
+            Well done!
+          You’re all set, we’ve got it from here
+        .row
+          .col-xs-4.col-xs-push-4.text-xs-left
+            %ul.fa-ul
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've uploaded your file"))
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've mapped your column headers"))
+              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've approved the official import to begin"))
 
+      - else
+        %h1.display-1
+          Your
+          %strong
+            = @import.import_type.pluralize.humanize.downcase
+          are
+          %strong
+            = t("status.#{ @import.status }", default: @import.status)
 
-.panel.panel-default
-  .panel-body
+        .p-t-1
+          This data was imported by
+          %strong
+            = @import.imported_by_name
+
     = render('shared/flash_messages') rescue nil
+
+  .container-fluid.container-flush.bg-white
+    - if params["redirected_from_review"]
+      .row.text-xs-center
+        .col-xs-12
+          %h2.text-blue.m-b-0
+            Your
+            %strong
+              = @import.import_type.pluralize.humanize.downcase
+            import is
+            %strong
+              = t("status.#{ @import.status }", default: @import.status)
+          %p.font-size-16
+            %em
+              We'll email you when your import is done and in the system.
+
+    .row.p-b-3
+      .col-md-3
+        - unless @import.complete?
+          - heading = "Estimated time remaining"
+          - content = @import.time_remaining_message
+        - else
+          - heading = "Import completed on"
+          - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
+
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+
+      .col-md-3
+        - unless @import.complete?
+          - heading = "Importing"
+          - content = "#{@import.number_of_records} records"
+        - else
+          - heading = "New records created"
+          - content = @import.imported_records.count
+
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+
+      .col-md-3
+        - heading = "Processed rows"
+        - content = @import.records_processed.to_i
+
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+
+      .col-md-3.red
+        - content_class = "lead m-b-0"
+        - heading = "Errors within your data"
+
+        - if @import.number_of_records_with_errors.to_i > 0
+          - icon = "exclamation"
+          - color = "text-danger"
+          - content_class += " text-danger"
+          - content = @import.number_of_records_with_errors
+
+        - else
+          - icon = "check"
+          - color = "text-success"
+          - content = "0"
+          - content_class += " text-success"
+
+        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
+
+        - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
+          %p.small.text-xs-center.red
+            = link_to @import.error_file.url do
+              = fa_icon "paperclip", text: "Error file"
+
     - unless @import.import_file.file.nil?
-      %p
-        %b Import file:
-        = link_to "Download", @import.import_file.url
-    - unless @import.error_file.file.nil?
-      %p
-        %b Error file:
-        = link_to "Download", @import.error_file.url
-    %p
-      %b Number of records:
-      = @import.number_of_records
-    %p
-      %b Number of records with errors:
-      = @import.number_of_records_with_errors
-    %p
-      %b Imported by:
-      = @import.imported_by_name
-    %p
-      %b Created at:
-      = @import.created_at.to_s(:us_time)
-    %p
-      %b Updated at:
-      = @import.updated_at.to_s(:us_time)
-    %p
-      %b Status:
-      = @import.status
-    %p
-      %b Rows processed:
-      = @import.records_processed
-    - if @import.imported_records.any?
-      - unless @import.deleted?
-        %p
-          %b Records created:
-          = @import.imported_records.count
-      - if @import.can_be_deleted?
-        %p
-          = link_to 'Delete Import', import_path(@import), method: :delete, data: { confirm: t(:delete_confirmation, number_of_records: @import.imported_records.size, import_type: @import.import_type, scope: [:import, :show]) }, class: 'btn btn-danger'
+      .row.p-b-1
+        .col-xs-12
+          %p.text-xs-center
+            %em
+              Download your original spreadsheet:
+              = link_to @import.import_file.url do
+                = fa_icon "paperclip", text: @import.import_file_name
+    .row.p-b-3
+      .col-xs-12.text-xs-center
+        %strong
+          = link_to imports_path, class: "btn btn-link text-uppercase" do
+            = fa_icon "chevron-left", text: "Back to Imports"

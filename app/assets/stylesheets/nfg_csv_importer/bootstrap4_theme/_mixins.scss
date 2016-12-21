@@ -1,0 +1,62 @@
+// CSS3 mixins
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {
+    box-shadow: $shadow;
+  }
+}
+
+@mixin transition($transition...) {
+  @if $enable-transitions {
+    transition: $transition;
+  }
+}
+
+@mixin transform($transform...) {
+  @include vendor-prefix((transform: $transform), webkit ms);
+}
+
+
+// // Utilities
+@import "bootstrap4/mixins/breakpoints";
+@import "bootstrap4/mixins/hover";
+// @import "bootstrap4/mixins/image";
+@import "bootstrap4/mixins/label";
+// @import "bootstrap4/mixins/reset-filter";
+// @import "bootstrap4/mixins/resize";
+// @import "bootstrap4/mixins/screen-reader";
+// @import "bootstrap4/mixins/size";
+@import "bootstrap4/mixins/tab-focus";
+@import "bootstrap4/mixins/reset-text";
+@import "bootstrap4/mixins/text-emphasis";
+// @import "bootstrap4/mixins/text-hide";
+@import "bootstrap4/mixins/text-truncate";
+
+
+// // Components
+// @import "bootstrap4/mixins/alert";
+@import "bootstrap4/mixins/buttons";
+@import "./mixins/buttons"; // NFG custom styles
+// @import "bootstrap4/mixins/cards";
+// @import "bootstrap4/mixins/pagination";
+// @import "bootstrap4/mixins/lists";
+// @import "bootstrap4/mixins/list-group";
+// @import "bootstrap4/mixins/nav-divider";
+// @import "bootstrap4/mixins/forms";
+// @import "./mixins/forms"; // NFG custom styles
+// @import "bootstrap4/mixins/progress";
+// @import "bootstrap4/mixins/table-row";
+
+
+// // Skins
+// @import "bootstrap4/mixins/background-variant";
+@import "bootstrap4/mixins/border-radius";
+@import "bootstrap4/mixins/gradients";
+
+
+// // Layout
+@import "bootstrap4/mixins/clearfix";
+// @import "bootstrap4/mixins/center-block";
+// // @import "bootstrap4/mixins/navbar-align";
+@import "bootstrap4/mixins/grid-framework";
+@import "bootstrap4/mixins/grid";
+// @import "bootstrap4/mixins/pulls";

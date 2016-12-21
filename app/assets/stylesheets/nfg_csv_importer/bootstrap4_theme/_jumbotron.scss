@@ -1,0 +1,153 @@
+
+
+.jumbotron{
+
+  border-radius: 0;
+
+  h1{
+    font-size: 38px;
+    font-weight: $font-weight-light;
+    margin-bottom: 12px;
+
+    strong{
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  text-align:center;
+  color:#fff;
+
+  // padding-top: 20px;
+  padding-bottom:0;
+  padding-top: 36px;
+  padding-left: 24px;
+  padding-right: 24px;
+
+  ul{
+    margin-top: 20px;
+
+    li{
+      font-size: 18px;
+      margin-bottom: 15px;
+
+      &:last-child{
+        margin-bottom:0;
+      }
+    }
+
+    .fa-li{
+      font-size: 30px;
+      margin-top: -6px;
+      left: -55px;
+    }
+  }
+
+  &.jumbotron-clouds{
+    background-color: $brand-primary;
+    background-image: image-url("nfg_csv_importer/jumbotron_clouds.jpg");
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto;
+    padding-bottom: 9%;
+  }
+
+  p{
+    font-size: 22px;
+    font-weight: $font-weight-light;
+    line-height: 1.2;
+  }
+
+  h1{
+    color: #fff;
+  }
+
+  a{
+    display: inline-block;
+  }
+
+  .btn-primary{
+    font-size: 20px;
+    padding: 20px;
+    // background-color: #fff;
+    @include box-shadow(0px 0px 13px 0px rgba(0,0,0,0.1));
+    // color: $brand-primary;
+    // border: #fff;
+
+    // #{$icon}{
+    //   color: $brand-primary !important;
+    // }
+    //  @include hover {
+    //   background-color: lighten($brand-primary, 7%);
+    //   border-color: lighten($brand-primary, 7%);
+    //   color:#fff !important;
+    //   #{$icon}{
+    //     color:#fff !important;
+    //   }
+
+    // }
+
+    // &:focus,
+    // &.focus,
+    // &:active,
+    // &.active {
+    //   background-color: lighten($brand-primary, 7%);
+    //       border-color: lighten($brand-primary, 7%);
+    // }
+  }
+
+  .card{
+    background-color: rgba(#35b8f5, 0.9);
+    border: none;
+    @include box-shadow(none);
+    border-radius: 6px;
+
+    &:hover{
+      @include box-shadow(none);
+    }
+
+    .btn{
+      @include vendor-prefix((transform, translateX(-50%)), webkit);
+      font-size: 16px;
+      padding: 15px;
+      @include box-shadow(0px 0px 20px 0px rgba(255,255,255,.3));
+
+      @include hover-focus{
+        background-color: #fff !important;
+        color: $brand-primary !important;
+        border-color: #fff;
+        @include box-shadow(0px 0px 20px 0px rgba(255,255,255,.7));
+
+        #{$icon}{
+          color: $brand-primary !important;
+        }
+      }
+    }
+
+    .card-text{
+      p{
+        font-size: 16px !important;
+        line-height: 1.25;
+        font-weight: $font-weight-normal;
+        margin-bottom: 24px;
+      }
+    }
+
+    .card-block{
+      padding: 24px;
+    }
+
+    .card-title{
+      font-size: 20px;
+      // font-weight: $font-weight-normal;
+    }
+  }
+}
+
+.jumbotron-fluid{
+  position: relative;
+
+  .row{
+    margin-left:0;
+    margin-right:0;
+  }
+}

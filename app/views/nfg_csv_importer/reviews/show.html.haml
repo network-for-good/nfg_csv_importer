@@ -1,0 +1,97 @@
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
+  .container-new-import.container-flush.blue
+    .row.text-xs-center
+      .col-md-10.col-md-push-1.col-xs-12
+        %h1.display-1.p-t-3
+          You're
+          %strong
+            all set
+          to import!
+        %p Please review your selections below before importing your data.
+
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
+        .media
+          .media-left
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
+          .media-body
+            %p.lead.text-primary Import Type
+            %p.small= @import.import_type.humanize.titleize.pluralize
+            %hr
+
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
+        .media
+          .media-left
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
+          .media-body
+            %p.lead.text-primary
+              Importing
+              %strong
+                = number_with_delimiter(@import.number_of_records)
+                rows
+              of data
+            %hr
+
+    .row.p-b-2
+      .col-md-10.col-md-push-1.col-xs-12
+        .media
+          .media-left
+            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
+          .media-body
+            .row.m-b-1
+              .col-xs-12
+                %p.lead.text-primary.display-inline-block
+                  Importing
+                  %strong
+                    = @import.column_stats[:mapped_column_count]
+                  of
+                  %strong
+                    = @import.column_stats[:column_count]
+                    columns
+                  = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-1" do
+                    = fa_icon "pencil", text: "Edit Mapped Columns"
+            .expandable{"data-max-height" => "300"}
+              .row
+                .col-md-7
+                  %h3.text-success.font-size-18
+                    = @import.column_stats[:mapped_column_count]
+                    Mapped Columns
+
+                  .row
+                    .col-xs-5
+                      %small.display-block.text-muted.text-uppercase Uploaded header
+                    .col-xs-5.col-xs-push-2
+                      %small.display-block.text-muted.text-uppercase Mapped
+
+                  - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
+                    .row.row-mapped-columns
+                      .col-xs-5
+                        = fa_icon "check", class: "text-success small"
+                        %strong= mapped_column.name
+                      .col-xs-2
+                        = fa_icon "long-arrow-right", class: "text-muted fa-lg"
+                      .col-md-5
+                        = mapped_column.mapped_to
+
+                .col-md-4.col-md-push-1
+                  %h3.text-danger.font-size-18
+                    = @import.column_stats[:ignored_column_count]
+                    Ignored Columns
+
+                  - @import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
+
+                    .row.row-mapped-columns.no-background
+                      .col-xs-12
+                        = fa_icon "close", class: "text-danger small"
+                        %span.text-muted
+                          = ignored_column.name
+
+            %hr
+            .text-xs-center.p-t-1
+              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg m-b-1", method: :post do
+                = fa_icon "chevron-right", text: "I'm Ready, Let's Import", right: true
+              %p.small or
+              %p.small
+                = link_to imports_path do
+                  = fa_icon "chevron-left", text: "Save & Come Back Later"

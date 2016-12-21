@@ -16,7 +16,7 @@ describe "admin/imports/_import_fields.html.haml" do
     let(:fields) { [] }
 
     it "should not contain fieldset" do
-      expect(subject).to be_empty
+      expect(subject).to eql("")
     end
   end
 

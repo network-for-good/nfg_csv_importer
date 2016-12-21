@@ -30,6 +30,10 @@ Gem::Specification.new do |s|
   s.add_dependency "carrierwave"
   s.add_dependency "haml"
   s.add_dependency "simple_form"
+  s.add_dependency "coffee-script"
+  s.add_dependency "sass-rails", "~> 5.0"
+  s.add_dependency "font-awesome-rails", "~> 4.7"
+  s.add_dependency "browser", "~> 1.1" # browser/device detection
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails", '~> 3.4.0'
@@ -37,4 +41,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "shoulda-matchers"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-byebug"
+  s.add_development_dependency "ejs"
+  s.add_development_dependency "jquery-rails"
+  s.add_development_dependency "selenium-webdriver"
 end

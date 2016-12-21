@@ -3,19 +3,21 @@ class NfgCsvImporter::ImportService
   require 'roo'
   require 'roo-xls'
 
+  IGNORE_COLUMN_NAME = "ignore_column"
+
   attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record,
                 :starting_row, :start_timestamp, :current_row
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
-           :description, :to => :import_definition
+           :description, :field_aliases, :column_validation_rules, :to => :import_definition
+
+  delegate :fields_mapping, to: :import_record
 
   alias_attribute :import_model, :model
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    service = ::ImportDefinition.new
-    service.imported_for = imported_for
-    OpenStruct.new service.send(type)
+    @import_definition ||= ::ImportDefinition.get_definition(type, imported_for)
   end
 
   def import
@@ -29,12 +31,14 @@ class NfgCsvImporter::ImportService
     @transaction_id ||= SecureRandom.urlsafe_base64
   end
 
+  # column validation related methods
+
   def headers_valid?
-    (all_headers_are_string_type? && header_has_all_required_columns? && unknown_columns.empty?)
+    (all_headers_are_string_type? && all_column_rules_valid?)
   end
 
-  def valid_file_extension?
-    %w{.csv .xls .xlsx}.include? file_extension
+  def all_column_rules_valid?
+    invalid_column_rules.empty?
   end
 
   def unknown_columns
@@ -42,8 +46,16 @@ class NfgCsvImporter::ImportService
     stripped_headers - all_valid_columns - ['']
   end
 
-  def missing_required_columns
-    required_columns - stripped_headers
+  def invalid_column_rules
+    column_validation_rules.select do |rule|
+      !rule.validate(fields_mapping) # keep rule if validate is false
+    end
+  end
+
+  ## End column validation methods
+
+  def valid_file_extension?
+    %w{.csv .xls .xlsx}.include? file_extension
   end
 
   def no_of_records
@@ -54,16 +66,32 @@ class NfgCsvImporter::ImportService
     errors_list ? errors_list.count : 0
   end
 
-  def header_has_all_required_columns?
-    missing_required_columns.empty?
-  end
-
   def run_time_limit_reached?
     max_run_time && run_time >= max_run_time
   end
 
   def starting_row
     @starting_row ||= 2
+  end
+
+  def header
+    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip)
+  end
+
+  def all_valid_columns
+    @all_valid_columns ||= (new_model.attributes.keys + required_columns + optional_columns + [IGNORE_COLUMN_NAME]).uniq!
+  end
+
+  def first_x_rows(x = 6)
+    @first_x_rows ||= (starting_row..x).map do |i|
+                      Hash[[header, spreadsheet.row(i)].transpose]
+                    end
+  end
+
+  def maybe_set_import_number_of_records
+    unless import_record.number_of_records
+      import_record.update(number_of_records: no_of_records)
+    end
   end
 
   protected
@@ -77,19 +105,13 @@ class NfgCsvImporter::ImportService
 
   private
 
-  def maybe_set_import_number_of_records
-    unless import_record.number_of_records
-      import_record.update(number_of_records: no_of_records)
-    end
-  end
-
   def load_and_persist_imported_objects
     self.errors_list = []
     (starting_row..spreadsheet.last_row).map do |i|
       self.current_row = i
       break if run_time_limit_reached?
 
-      row = Hash[[header, spreadsheet.row(i)].transpose]
+      row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
       row = strip_data(row)
       set_zone_for_date_fields(row)
       # this record lookup conflicts with DM, where the ID field is assumed
@@ -160,14 +182,13 @@ class NfgCsvImporter::ImportService
     @spreadsheet ||= open_spreadsheet
   end
 
-  def header
-    @header ||= spreadsheet.row(1).map(&:to_s).map(&:strip).map(&:downcase)
-  end
-
   def get_action(record)
-    record.new_record? ? "create" : "update"
+    if record.new_record? || record.previous_changes["id"].present?
+      "create"
+    else
+      "update"
+    end
   end
-
 
   def all_headers_are_string_type?
     header.collect{|header| header.is_a?(String) }.all?
@@ -177,13 +198,9 @@ class NfgCsvImporter::ImportService
     (all_headers_are_string_type? ? header.collect(&:strip) : header )
   end
 
-  def all_valid_columns
-    (new_model.attributes.keys + required_columns + optional_columns).uniq!
-  end
-
   def set_obj_attributes(row,object)
     # this requires that the object have a attributes= method, which ActiveModel classes do not
-    object.attributes = assign_defaults(striped_attributes(row,object))
+    object.attributes = assign_defaults(stripped_attributes(row,object))
   end
 
   def set_zone_for_date_fields(data)
@@ -199,7 +216,7 @@ class NfgCsvImporter::ImportService
     }
   end
 
-  def striped_attributes(row,object)
+  def stripped_attributes(row,object)
     row.slice( *(object.attributes.keys + import_definition.alias_attributes) )
   end
 
@@ -207,6 +224,19 @@ class NfgCsvImporter::ImportService
     blank_attributes = attributes.select{|key, value| value.blank? }
     blank_attributes.merge!(defaults(attributes).select { |k| blank_attributes.keys.include?(k) || !attributes.keys.include?(k) })
     attributes.merge(blank_attributes)
+  end
+
+  def convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
+    Hash[[mapped_fields_from_fields_mapping , spreadsheet.row(i)].transpose].select { |field, value| field != NfgCsvImporter::Import.ignore_column_value }
+  end
+
+  def mapped_fields_from_fields_mapping
+    # if no fields mapping have been created, then use the file's headers
+    return header.map(&:downcase) unless fields_mapping.present?
+
+    # Return the mapped fields in the same order as the headers. if any header was not mapped
+    # return the header
+    header.map { |header_name| fields_mapping[header_name] || header_name }
   end
 
   def defaults(attributes)
