@@ -137,4 +137,5 @@ then use the following command to start the server
 ````
 bundle exec rake konacha:serve
 ````
+
 Then browse to http://localhost:3500/
