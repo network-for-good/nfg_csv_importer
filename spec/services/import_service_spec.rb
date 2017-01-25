@@ -31,6 +31,8 @@ describe NfgCsvImporter::ImportService do
 		it { expect(subject.imported_for).to be entity }
 		it { expect(subject.imported_by).to be admin }
 
+		it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
+
 		before(:each) do
 			NfgCsvImporter::ImportService.any_instance.stubs(:file).returns(file)
 			NfgCsvImporter::Import.stubs(:find).returns(import)
