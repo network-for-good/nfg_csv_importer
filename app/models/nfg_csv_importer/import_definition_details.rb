@@ -29,6 +29,18 @@ module NfgCsvImporter
       self["field_aliases"] || {}
     end
 
+    def fields_that_allow_multiple_mappings
+      self["fields_that_allow_multiple_mappings"] || []
+    end
+
+    def can_be_viewed_by(user)
+      return true if can_be_viewed_by_rule.nil?
+
+      return !!can_be_viewed_by_rule unless can_be_viewed_by_rule.respond_to?(:call)
+
+      can_be_viewed_by_rule.call(user)
+    end
+
     def column_validation_rules
       return @column_validation_rules if @column_validation_rules
 
@@ -40,6 +52,12 @@ module NfgCsvImporter
                                                                       fields: required_columns,
                                                                       message: "You must map columns to all of the following fields: #{required_columns}") if required_columns.present?
       @column_validation_rules
+    end
+
+    private
+
+    def can_be_viewed_by_rule
+      self["can_be_viewed_by"]
     end
   end
 end
