@@ -29,7 +29,7 @@ module NfgCsvImporter
     end
 
     def can_be_deleted?
-      imported_records.created.any? && complete? && !Rails.env.production?
+      imported_records.created.any? && complete?
     end
 
     def column_stats
