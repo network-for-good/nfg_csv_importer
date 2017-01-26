@@ -97,6 +97,7 @@ describe NfgCsvImporter::ImportsController do
       NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
       NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
+      controller.stubs(:can?).returns(true)
     end
 
     subject { delete :destroy, params }
@@ -114,6 +115,23 @@ describe NfgCsvImporter::ImportsController do
     it "sets the import's status to deleting" do
       subject
       expect(import.reload.status).to eql("deleting")
+    end
+
+    it 'redirects back to index with a success flash message' do
+      subject
+      expect(response).to redirect_to imports_path
+      expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
+    end
+
+    context "when current admin doesn't have the ability to delete imports" do
+      before { controller.stubs(:can?).returns(false) }
+
+      it 'redirects back to show with a error flash message' do
+        subject
+        expect(import.reload.status).to eql("complete")
+        expect(response).to redirect_to import_path(import)
+        expect(flash[:error]).to eq I18n.t(:cannot_delete, scope: [:import, :destroy])
+      end
     end
   end
 end
