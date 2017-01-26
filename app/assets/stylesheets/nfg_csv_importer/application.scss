@@ -1,7 +1,5 @@
 // TODO: Once final styling is complete, clean out commented css.
 
-@import 'font-awesome';
-
 // App Vendors
 .importer-gem{
   background-color: #fff;
@@ -9,8 +7,7 @@
   @import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
   // // @import 'redactor';
   // // @import 'select2.min';
-
-
+  @import 'font-awesome';
 
   // // Variables and mixins
   // // @import "nfg_theme/variables";
@@ -58,7 +55,6 @@
 
   // // @import "bootstrap4/print";
 
-
   // // Core Bootstrap CSS
   @import "bootstrap4/reboot";
 
@@ -66,12 +62,10 @@
   @import "bootstrap4_theme/reboot";
 
 
-
   // // Should be able to remove these once firmed up
   // // @import "bootstrap4/type";
   // // @import "type";
   @import "bootstrap4_theme/type";
-
 
 
   // // @import "bootstrap4/images";
@@ -160,7 +154,6 @@
   // // // @import "bootstrap4/popover";
   // // // @import "bootstrap4/carousel";
 
-
   // // Bootstrap Utility classes
   // // @import "bootstrap4/utilities";
   // // @import "utilities";
@@ -170,19 +163,14 @@
   // // @import "utilities-background";
   @import "bootstrap4_theme/utilities-background";
 
-
   // // @import "bootstrap4/utilities-spacing";
   // // @import "utilities-spacing";
   @import "bootstrap4_theme/utilities-spacing";
-
   @import "bootstrap4/utilities-responsive";
 
 
   // // Alpha Bootstrap4 Patches
   @import "bootstrap4_theme/bootstrap_source_patches/grid-framework"; // Fixes chrome bug
-
-
-
 
   // // NFG CSV Importer Custom Components
   @import "bootstrap4_theme/importer_components/header_bar";
