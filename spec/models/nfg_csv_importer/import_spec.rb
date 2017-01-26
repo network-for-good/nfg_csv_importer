@@ -69,7 +69,7 @@ describe NfgCsvImporter::Import do
     end
 
     context "with invalid file extensions" do
-      let(:file_name) { '/icon.jpg'}
+      let(:file) { '/icon.jpg'}
 
       it { expect(subject).not_to be }
 
