@@ -77,6 +77,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
       NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
     end
+
     flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     redirect_to imports_path
   end
