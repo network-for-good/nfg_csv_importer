@@ -89,7 +89,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#destroy" do
-    let!(:import) { create(:import, imported_for: entity) }
+    let!(:import) { create(:import, imported_for: entity, status: 'complete') }
     let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
 
@@ -121,16 +121,5 @@ describe NfgCsvImporter::ImportsController do
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
     end
-
-    # context "when current admin doesn't have the ability to delete imports" do
-    #   before { controller.stubs(:can?).returns(false) }
-    # 
-    #   it 'redirects back to show with a error flash message' do
-    #     subject
-    #     expect(import.reload.status).to eql("complete")
-    #     expect(response).to redirect_to import_path(import)
-    #     expect(flash[:error]).to eq I18n.t(:cannot_delete, scope: [:import, :destroy])
-    #   end
-    # end
   end
 end
