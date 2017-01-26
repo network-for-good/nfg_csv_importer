@@ -103,7 +103,7 @@
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
 
-    - if @import.can_be_deleted? && can?(:delete, :imports)
+    - if @import.can_be_deleted? && can?(:destroy, :imports)
       .row.p-b-1
         .col-xs-12
           %p.text-xs-center
