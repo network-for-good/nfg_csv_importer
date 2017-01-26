@@ -14,7 +14,7 @@ describe NfgCsvImporter::ImportsController do
 
   let(:entity) { create(:entity) }
   let(:user) { create(:user) }
-  let(:import_type) { 'user' }
+  let(:import_type) { 'users' }
   let(:file_name) {"spec/fixtures/subscribers.csv"}
   let(:import) { assigns(:import) }
   let(:params) { { import_type: import_type, use_route: :nfg_csv_importer } }

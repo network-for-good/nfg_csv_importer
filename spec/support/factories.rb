@@ -11,7 +11,7 @@ FactoryGirl.define do
     association :imported_for, factory: :entity
     association :imported_by, factory: :user
     import_file { File.open("spec/fixtures/subscribers.csv") }
-    import_type 'user'
+    import_type 'users'
     status nil
   end
 

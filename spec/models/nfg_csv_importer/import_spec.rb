@@ -32,7 +32,7 @@ describe NfgCsvImporter::Import do
   end
 
   let(:entity) { create(:entity) }
-  let(:import_type) { "user" }
+  let(:import_type) { "users" }
   let(:file_type) { 'csv' }
 
   let(:file) do

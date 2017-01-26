@@ -1,14 +1,18 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
-  IMPORT_TYPES = [:user]
+
+  def self.import_types
+    %w{users donation}
+  end
+
   attr_accessor :imported_for
-  def user
+  def users
     {
       required_columns: %w{ email },
       optional_columns: %w{first_name last_name full_name},
-      default_values: { "first_name" => lambda { |row| row["email"][/[^@]+/] } },
+      default_values: { "first_name" => lambda { |row| row["email"].try(:split, "@").try(:first) } },
       field_aliases: { "first_name" => ["first", "donor first name"],
                       "last_name" => ["last", "donor last name"],
-                      "salutation" => ["prefix"]
+                      "email" => ["email"]
                       },
       column_validation_rules: [
                                   { type: "any",
@@ -19,7 +23,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       class_name: "User",
       alias_attributes: [],
       column_descriptions: {},
-      description: %Q{Allows you to import subscribers that then can receive daily, weekly, or newsletter emails. All of the columns listed above must be included in your file. Only the Email column is required to have a value. If first_name is blank, the system will set it to the text prior to the @ in the email.}
+      description: %Q{Allows you to import subscribers.}
     }
   end
 
@@ -27,12 +31,12 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
     {
       required_columns: %w{ amount donated_at },
       optional_columns: %w{description},
-      default_values: { "first_name" => lambda { |row| row["email"][/[^@]+/] } },
-      class_name: "User",
+      default_values: {},
+      class_name: "Donation",
       alias_attributes: [],
       column_descriptions: {},
-      can_be_viewed_by: -> (user) { Ability.new(user).can_view_import },
-      description: %Q{Allows you to import subscribers that then can receive daily, weekly, or newsletter emails. All of the columns listed above must be included in your file. Only the Email column is required to have a value. If first_name is blank, the system will set it to the text prior to the @ in the email.}
+      can_be_viewed_by: -> (user) { user.last_name == "Smith" },
+      description: %Q{Allows you to import donations}
     }
   end
 end

@@ -4,6 +4,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def entity
-    @entity ||= Entity.find_by(subdomain: request.subdomain)
+    @entity ||= (Entity.find_by(subdomain: request.subdomain) || Entity.first)
   end
+
+  def current_user
+    @current_user ||= entity.users.first
+  end
+  helper_method :current_user
 end

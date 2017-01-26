@@ -10,5 +10,9 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= jquery
+//= require jquery
+//= require jquery_ujs
+//= require tether.min
+//= require bootstrap4/bootstrap.min
+//= require nfg_csv_importer/application
 //= require_tree .
