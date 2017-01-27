@@ -3,7 +3,6 @@
 // This is critical for legacy browsers which don't know how to interpret (invalid) syntax like @font-face{ .importer-gem{ etc... } }
 // This is a know challenge with SASS output & namespacing @font-face
 // The font-awesome gem is still used so we can take advantage of helper methods; we simply do not @import "font-awesome" stylesheets from the gem.
-// Do not namespace fontawesome variables and path
 @import "font_awesome/application";
 
 .importer-gem{
