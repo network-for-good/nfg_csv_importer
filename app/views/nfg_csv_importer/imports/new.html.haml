@@ -108,8 +108,8 @@
               - if @previous_imports.present?
                 .label.label-blue.label-top-left.label-circle 1
               %label.file
-                = f.file_field :import_file
-                %span.file-custom{ data: { content: t("form.form_controls.file", scope: language_scope) } }
+            = f.file_field :import_file
+
             = hidden_field_tag 'import_type', @import_type
 
           %hr.m-y-2
