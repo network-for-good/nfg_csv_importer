@@ -3,12 +3,13 @@ require 'rails_helper'
 describe "Running through the full import process", js: true do
   let!(:entity) { Entity.create(subdomain: "test") }
   let(:upload_button_name) { I18n.t("imports.new.form.buttons.upload") }
-  before(:each) do
-    @user = User.create(first_name: "Jim", last_name: "Smith", email: "jim@smith.com", entity: entity)
-  end
 
   describe "from the new import page" do
     let(:new_import_path) { nfg_csv_importer.new_import_path(import_type: 'users') }
+
+    before(:each) do
+      @user = User.create(first_name: "Jim", last_name: "Smith", email: "jim@smith.com", entity: entity)
+    end
 
     it "should be able to import users" do
       visit new_import_path
@@ -127,30 +128,51 @@ describe "Running through the full import process", js: true do
   end
 
   describe "imports index page" do
-    let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan") }
-    let(:user_2) { FactoryGirl.create(:user, first_name: "Smith") }
-    let(:file) { File.open('spec/fixtures/subscribers.csv')}
+    let(:file) { File.open('spec/fixtures/users_for_full_import_spec.xls')}
+    let(:donation_file) { File.open('spec/fixtures/donations.xlsx')}
 
     before do
       FactoryGirl.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded")
-      FactoryGirl.create(:import, imported_by: user_2, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
-      @import = FactoryGirl.create(:import, imported_by: @user, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
+      FactoryGirl.create(:import, imported_by: user_1, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
+      @import = FactoryGirl.create(:import, imported_by: user_1, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
+      @donation_import = FactoryGirl.create(:import, import_type: "donation", imported_by: user_1, updated_at: 8.minutes.ago, import_file: donation_file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
       visit imports_path
       sleep 1
-      # click_link "Previous Imports"
     end
 
-    it "should display all the imports sorted in recent order" do
-      expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(6) # 2 for each import
-      within("#import_#{@import.id}_name h5") do
-       expect(page).to have_content(@user.name)
-      end
+    context "when the user is allowed to see all of the files" do
+      # the import definition for the donation import excludes users with "Smith" as the last name
+      let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Jones") }
 
-      # clicking status will take the user to the show page
-      within("#import_#{@import.id}") do
-        click_link @import.status.titleize
+      it "should display all the imports sorted in recent order" do
+        expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(8) # 2 for each import
+        within("#import_#{ @import.id }_name h5") do
+         expect(page).to have_content(user_1.name)
+        end
+
+        within("#import_#{ @donation_import.id }_name h5") do
+         expect(page).to have_content(user_1.name)
+        end
+
+        expect(page).to have_content("donations.xlsx")
+
+        # clicking status will take the user to the show page
+        within("#import_#{ @import.id }") do
+          click_link @import.status.titleize
+        end
+        expect(current_path).to eq(nfg_csv_importer.import_path(@import))
       end
-      expect(current_path).to eq(nfg_csv_importer.import_path(@import))
+    end
+
+    context "when the user is NOT allowed to see certain files" do
+      # the import definition for the donation import excludes users with "Smith" as the last name
+      let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Smith") }
+
+      it "should display all the imports sorted in recent order" do
+        expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(6) # 2 for each import
+        expect(page).not_to have_css("#import_#{ @donation_import.id }")
+        expect(page).not_to have_content("donation.xlsx")
+      end
     end
   end
 end
