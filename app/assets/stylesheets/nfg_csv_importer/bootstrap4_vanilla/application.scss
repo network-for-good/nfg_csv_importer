@@ -1,6 +1,69 @@
+// Fonts
+// Font awesome fonts & styling must be manually imported to generate validated CSS for namespaced fonts.
+// This is critical for legacy browsers which don't know how to interpret (invalid) syntax like @font-face{ .importer-gem{ etc... } }
+// This is a know challenge with SASS output & namespacing @font-face
+// The font-awesome gem is still used so we can take advantage of helper methods; we simply do not @import "font-awesome" stylesheets from the gem.
+// Do not namespace fontawesome variables and path
+@import "font_awesome/application";
+
 .importer-gem{
   *{
     box-sizing: border-box !important;
   }
-  @import "bootstrap4/bootstrap"
+  // Core variables and mixins
+  @import "bootstrap-4_0_0-alpha_2/variables";
+  @import "./mixins"; // patched to utilize alpha5 grid mixins.
+
+  // Reset and dependencies
+  @import "bootstrap-4_0_0-alpha_2/normalize";
+  @import "bootstrap-4_0_0-alpha_2/print";
+
+  // Core CSS
+  @import "bootstrap-4_0_0-alpha_2/reboot";
+  @import "bootstrap-4_0_0-alpha_2/type";
+  @import "bootstrap-4_0_0-alpha_2/images";
+  @import "bootstrap-4_0_0-alpha_2/code";
+  @import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/grid"; // patched
+  @import "bootstrap-4_0_0-alpha_2/tables";
+  @import "bootstrap-4_0_0-alpha_2/forms";
+  @import "bootstrap-4_0_0-alpha_2/buttons";
+
+  // Components
+  @import "bootstrap-4_0_0-alpha_2/animation";
+  @import "bootstrap-4_0_0-alpha_2/dropdown";
+  @import "bootstrap-4_0_0-alpha_2/button-group";
+  @import "bootstrap-4_0_0-alpha_2/input-group";
+  @import "bootstrap-4_0_0-alpha_2/custom-forms";
+  @import "bootstrap-4_0_0-alpha_2/nav";
+  @import "bootstrap-4_0_0-alpha_2/navbar";
+  @import "bootstrap-4_0_0-alpha_2/card";
+  @import "bootstrap-4_0_0-alpha_2/breadcrumb";
+  @import "bootstrap-4_0_0-alpha_2/pagination";
+  @import "bootstrap-4_0_0-alpha_2/pager";
+  @import "bootstrap-4_0_0-alpha_2/labels";
+  @import "bootstrap-4_0_0-alpha_2/jumbotron";
+  @import "bootstrap-4_0_0-alpha_2/alert";
+  @import "bootstrap-4_0_0-alpha_2/progress";
+  @import "bootstrap-4_0_0-alpha_2/media";
+  @import "bootstrap-4_0_0-alpha_2/list-group";
+  @import "bootstrap-4_0_0-alpha_2/responsive-embed";
+  @import "bootstrap-4_0_0-alpha_2/close";
+
+  // Components w/ JavaScript
+  @import "bootstrap-4_0_0-alpha_2/modal";
+  @import "bootstrap-4_0_0-alpha_2/tooltip";
+  @import "bootstrap-4_0_0-alpha_2/popover";
+  @import "bootstrap-4_0_0-alpha_2/carousel";
+
+  // Utility classes
+  @import "bootstrap-4_0_0-alpha_2/utilities";
+  @import "bootstrap-4_0_0-alpha_2/utilities-background";
+  @import "bootstrap-4_0_0-alpha_2/utilities-spacing";
+  @import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/utilities/flex"; // new flex alignment from alpha5; column / row based alignment has been replaced with universal utility classes
+  @import "bootstrap-4_0_0-alpha_2/utilities-responsive";
+
+  // Legacy browser support
+  @import "legacy_browser_support/flexbox_tweener/application";
+  @import "legacy_browser_support/internet_explorer/application"; // ONLY fixes where modernizr can't detect browser support
 }
+

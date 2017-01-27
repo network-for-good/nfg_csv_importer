@@ -1,0 +1,9 @@
+// Fixes issue with padding on select fields
+select {
+  padding-left: 10px;
+  padding-right: 15px;
+}
+input[type='file'] {
+  padding: 0;
+  border: none;
+}
