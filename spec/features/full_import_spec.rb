@@ -15,10 +15,9 @@ describe "Running through the full import process", js: true do
       # upload and continue button should be disabled prior to adding file
       sleep 1
       # click_link(I18n.t("imports.new.links.ready_upload"))
-      sleep 3
       expect(page).to have_button(upload_button_name, disabled: true)
       attach_file("import_import_file", File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))
-      sleep 0.1
+      sleep 1
       # button should be enabled after attaching the file
       expect(page).to have_button(upload_button_name)
       expect { submit_import_file_form }.to change(NfgCsvImporter::Import, :count).by(1)
@@ -30,7 +29,7 @@ describe "Running through the full import process", js: true do
       expect(current_path).to eq(nfg_csv_importer.edit_import_path(new_import))
       within("#importer_header_stats") do
         expect(page).to have_content("6 ROWS")
-        expect(page).to have_content("5 COLUMNS")
+        expect(page).to have_content("4 COLUMNS")
         expect(page).to have_content("0 IGNORED COLUMNS")
         expect(page).to have_content("1 UNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
@@ -75,23 +74,32 @@ describe "Running through the full import process", js: true do
         expect(page).to have_content("Your Original Header: other")
       end
 
+      # unmap the other column and allow for editing
+      within("div[data-column-name='other']") do
+        click_link "Edit Column"
+      end
+
+      # click to ignore the unmapped column
+      within("div[data-column-name='other'] .card-header-interactions") do
+        find("label").click
+      end
+
       # unmap a column and allow for editing
       within("div[data-column-name='first_name']") do
         click_link "Edit Column"
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("0 IGNORED COLUMNS")
+        expect(page).to have_content("1 IGNORED COLUMNS")
         expect(page).to have_content("1 UNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
       end
-
 
       # map the unmapped column to a valid field
       within("div[data-column-name='first_name']") do
         select "First Name", from: "import_fields_mapping_first_name"
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("0 IGNORED COLUMNS")
+        expect(page).to have_content("1 IGNORED COLUMNS")
         expect(page).to have_content("0 UNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
@@ -102,7 +110,7 @@ describe "Running through the full import process", js: true do
       expect(current_path).to eq(nfg_csv_importer.import_review_path(new_import))
 
       expect do
-        with_resque { click_link "I'm Ready, Let's Import" }
+        click_link "I'm Ready, Let's Import"
       end.to change(User, :count).by(3)
 
       expect(current_path).to eq(nfg_csv_importer.import_path(new_import))
@@ -124,11 +132,12 @@ describe "Running through the full import process", js: true do
     let(:file) { File.open('spec/fixtures/subscribers.csv')}
 
     before do
-      FactoryGirl.create(:import, imported_by:admin_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded")
-      FactoryGirl.create(:import, imported_by:admin_2, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete")
-      @import = FactoryGirl.create(:import, imported_by:@user, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete")
-      click_link "Import"
-      click_link "Previous Imports"
+      FactoryGirl.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded")
+      FactoryGirl.create(:import, imported_by: user_2, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
+      @import = FactoryGirl.create(:import, imported_by: @user, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
+      visit imports_path
+      sleep 1
+      # click_link "Previous Imports"
     end
 
     it "should display all the imports sorted in recent order" do
