@@ -10,14 +10,14 @@
       .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
         .container-fluid
           .row
-            .col-md-10.col-md-push-1.col-xs-12
+            .col-md-10.offset-md-1.col-xs-12
               %h1.text-xs-center
                 = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
               %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
 
     .container-new-import.container-flush.blue.p-b-3
       .row
-        .col-md-10.col-md-push-1.col-xs-12
+        .col-md-10.offset-md-1.col-xs-12
           .row.text-xs-center
             .col-md-4.col-xs-12
               = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
@@ -42,7 +42,7 @@
 
     #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
       .row
-        .col-md-10.col-md-push-1.col-xs-12
+        .col-md-10.offset-md-1.col-xs-12
           .row
             .col-xs-12
               .text-xs-center
@@ -64,7 +64,7 @@
                 - @import.column_validation_rules.each do |column_rule|
                   = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-info"
 
-      .row.text-xs-center.row-expander.row-xs-center
+      .row.text-xs-center.row-expander.flex-items-xs-middle
         .col-xs-12
           %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
             = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
@@ -101,15 +101,15 @@
             %strong= t("headings.upload", scope: language_scope)
           %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
       .row.p-b-3
-        .col-md-8.col-md-push-2.col-xs-12
+        .col-md-8.offset-md-2.col-xs-12
           .form-group
 
             .position-relative
               - if @previous_imports.present?
                 .label.label-blue.label-top-left.label-circle 1
               %label.file
-                = f.file_field :import_file
-                %span.file-custom{ data: { content: t("form.form_controls.file", scope: language_scope) } }
+            = f.file_field :import_file
+
             = hidden_field_tag 'import_type', @import_type
 
           %hr.m-y-2

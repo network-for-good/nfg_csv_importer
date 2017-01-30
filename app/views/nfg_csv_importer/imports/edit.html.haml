@@ -57,8 +57,8 @@
             %small.text-uppercase
               %strong Close
       .container-fluid
-        .row.row-xs-center{ style: "height: 100%;" }
-          .col-xs-12.col-xs-push-0.col-md-8.col-md-push-2
+        .row.flex-items-xs-middle.h-100
+          .col-xs-12.offset-xs-0.col-md-8.offset-md-2
             .modal-dialog.text-xs-center{:role => "document"}
               .modal-content
                 .modal-header
@@ -67,10 +67,10 @@
                   .row
                     .col-xs-12
                       %p.lead
-                        We just saved you some time by by evaluating your columns and
+                        We just saved you some time by evaluating your columns and
                         %strong applying automatic matches:
                   .row.m-t-2
-                    .col-xl-10.col-xl-push-1.col-xs-12
+                    .col-xl-10.offset-xl-1.col-xs-12
                       .row
                         .col-md-6.col-xs-12
                           = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported", color: "" }

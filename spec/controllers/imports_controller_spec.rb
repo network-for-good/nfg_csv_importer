@@ -1,10 +1,20 @@
 require 'rails_helper'
 
+shared_examples_for "an action that requires authorization" do
+  context "when the import type is not viewable by the user" do
+    let(:can_be_viewed_by) { false }
+
+    it "should redirect the user to the index page" do
+      expect(subject).to redirect_to(imports_path)
+    end
+  end
+end
+
 describe NfgCsvImporter::ImportsController do
 
   let(:entity) { create(:entity) }
   let(:user) { create(:user) }
-  let(:import_type) { 'user' }
+  let(:import_type) { 'users' }
   let(:file_name) {"spec/fixtures/subscribers.csv"}
   let(:import) { assigns(:import) }
   let(:params) { { import_type: import_type, use_route: :nfg_csv_importer } }
@@ -12,37 +22,26 @@ describe NfgCsvImporter::ImportsController do
     extend ActionDispatch::TestProcess
     fixture_file_upload(file_name, 'text/csv')
   end
+  let(:can_be_viewed_by) { true }
 
   before do
     controller.stubs(:current_user).returns(user)
     controller.stubs(:entity).returns(entity)
+    NfgCsvImporter::Import.any_instance.stubs(:can_be_viewed_by).with(user).returns(can_be_viewed_by)
   end
 
   render_views
-
-  it "should assign subscriber import service" do
-    get :new, params
-    expect(import.import_type).to eq(import_type)
-  end
-
-  it "should assign import status" do
-    get :new, params
-    expect(import.status).to eq("queued")
-  end
-
-  it "new action should render new template" do
-    get :new, params
-    expect(response).to render_template(:new)
-  end
 
   it "create action should render new template on import error" do
     post :create, params
     expect(response).to render_template(:new)
   end
 
-
   describe "#create" do
     subject { post :create, params }
+
+    it_behaves_like "an action that requires authorization"
+
     context "when the import is valid" do
       before do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(true)
@@ -83,8 +82,6 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it { expect { subject }.not_to change(NfgCsvImporter::Import, :count) }
-
-
     end
   end
 
@@ -100,6 +97,8 @@ describe NfgCsvImporter::ImportsController do
     end
 
     subject { delete :destroy, params }
+
+    it_behaves_like "an action that requires authorization"
 
     it "adds the job to the queue" do
       NfgCsvImporter::DestroyImportJob.expects(:perform_later).twice
@@ -121,5 +120,47 @@ describe NfgCsvImporter::ImportsController do
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
     end
+  end
+
+  describe "#new" do
+
+    subject { get :new, params }
+
+    it_behaves_like "an action that requires authorization"
+
+    it "should assign subscriber import service" do
+      subject
+      expect(import.import_type).to eq(import_type)
+    end
+
+    it "should assign import status" do
+      subject
+      expect(import.status).to eq("queued")
+    end
+
+    it "new action should render new template" do
+      subject
+      expect(response).to render_template(:new)
+    end
+  end
+
+  describe "#update" do
+    let!(:import) { create(:import, imported_for: entity) }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+
+    subject { patch :update, params}
+
+    it_behaves_like "an action that requires authorization"
+
+  end
+
+  describe "#edit" do
+    let!(:import) { create(:import, imported_for: entity) }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+
+    subject { get :edit, params}
+
+    it_behaves_like "an action that requires authorization"
+
   end
 end

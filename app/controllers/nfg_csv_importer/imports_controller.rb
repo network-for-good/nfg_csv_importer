@@ -5,7 +5,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
-
+  before_filter :authorize_user, except: [:index]
 
   def new
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
@@ -95,5 +95,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def set_import_type
     redirect_to imports_path unless params[:import_type]
     @import_type ||= params[:import_type]
+  end
+
+  def authorize_user
+    redirect_to imports_path unless @import.can_be_viewed_by(current_user)
   end
 end
