@@ -22,6 +22,20 @@ RSpec.configure do |config|
   config.include Rails.application.routes.url_helpers
   config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
+
+ config.include SeleniumHelper, :type => :feature
+
+ config.before(:suite) do
+   DatabaseCleaner.strategy = :truncation
+ end
+
+ config.before(:each, js: true) do
+   DatabaseCleaner.start
+ end
+
+ config.after(:each, js: true) do
+   DatabaseCleaner.clean
+ end
 end
 
 Shoulda::Matchers.configure do |config|
@@ -29,4 +43,8 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end

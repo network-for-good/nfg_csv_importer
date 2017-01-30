@@ -22,6 +22,8 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:field_aliases).to(:service)}
   it { should delegate_method(:first_x_rows).to(:service)}
   it { should delegate_method(:invalid_column_rules).to(:service)}
+  it { should delegate_method(:can_be_viewed_by).to(:service)}
+
 
   context "when file is nil" do
     let(:file) { nil }
@@ -30,7 +32,7 @@ describe NfgCsvImporter::Import do
   end
 
   let(:entity) { create(:entity) }
-  let(:import_type) { "user" }
+  let(:import_type) { "users" }
   let(:file_type) { 'csv' }
 
   let(:file) do

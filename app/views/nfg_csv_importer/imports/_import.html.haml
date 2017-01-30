@@ -2,38 +2,39 @@
 
 - imports_listing_row_column_structure_class = "" if local_assigns[:imports_listing_row_column_structure_class].nil?
 
-.row.row-listing{ id: dom_id(import), data: { id: import.id } }
-  %div{ class: imports_listing_row_column_structure_class, id: "#{dom_id(import)}_name" }
-    %h5.m-b-quarter
-      = import.imported_by_name
-    .small.text-truncate
-      = link_to import.import_file.url do
-        = fa_icon "paperclip fw", class: "m-r-quarter", text: import.import_file_name
-    .small
-      = fa_icon "cloud-upload fw", class: "m-r-quarter text-muted", text: import.created_at.to_s(:abrev_month_yyyy)
+- if import.can_be_viewed_by(current_user)
+  .row.row-listing{ id: dom_id(import), data: { id: import.id } }
+    %div{ class: imports_listing_row_column_structure_class, id: "#{dom_id(import)}_name" }
+      %h5.m-b-quarter
+        = import.imported_by_name
+      .small.text-truncate
+        = link_to import.import_file.url do
+          = fa_icon "paperclip fw", class: "m-r-quarter", text: import.import_file_name
+      .small
+        = fa_icon "cloud-upload fw", class: "m-r-quarter text-muted", text: import.created_at.to_s(:abrev_month_yyyy)
 
-  %div{ class: imports_listing_row_column_structure_class }
-    = number_of_records_without_errors_based_on_import_status(import)
+    %div{ class: imports_listing_row_column_structure_class }
+      = number_of_records_without_errors_based_on_import_status(import)
 
-  %div{ class: imports_listing_row_column_structure_class }
-    = number_of_records_with_errors_based_on_import_status(import)
+    %div{ class: imports_listing_row_column_structure_class }
+      = number_of_records_with_errors_based_on_import_status(import)
 
-  %div{ class: imports_listing_row_column_structure_class }
-    %h5.line-height-1.m-b-quarter= import.updated_at.to_s(:abrev_month_yyyy)
-    %p.small= import.updated_at.to_s(:abrev_time_alternative)
+    %div{ class: imports_listing_row_column_structure_class }
+      %h5.line-height-1.m-b-quarter= import.updated_at.to_s(:abrev_month_yyyy)
+      %p.small= import.updated_at.to_s(:abrev_time_alternative)
 
-  %div{ class: imports_listing_row_column_structure_class }
-    %p
-      %strong= import_status_icon_and_text(import)
+    %div{ class: imports_listing_row_column_structure_class }
+      %p
+        %strong= import_status_icon_and_text(import)
 
-  %div{ class: imports_listing_row_column_structure_class }
+    %div{ class: imports_listing_row_column_structure_class }
 
-    - if import.status.to_sym == :uploaded
-      = link_to edit_import_path(import), class: "btn btn-link" do
-        = fa_icon "pencil", text: t("links.edit_import", scope: language_scope)
-    - else
-      %p.display-inline-block{ bootstrap_tooltip(t("tooltips.edit_import", scope: language_scope), :bottom) }
-        %a.btn.btn-link.disabled{ href: "javascript:;" }
-          = fa_icon "pencil", class: "text-muted", text: t("links.edit_import", scope: language_scope)
+      - if import.status.to_sym == :uploaded
+        = link_to edit_import_path(import), class: "btn btn-link" do
+          = fa_icon "pencil", text: t("links.edit_import", scope: language_scope)
+      - else
+        %p.display-inline-block{ bootstrap_tooltip(t("tooltips.edit_import", scope: language_scope), :bottom) }
+          %a.btn.btn-link.disabled{ href: "javascript:;" }
+            = fa_icon "pencil", class: "text-muted", text: t("links.edit_import", scope: language_scope)
 
 

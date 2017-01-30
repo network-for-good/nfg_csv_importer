@@ -7,7 +7,7 @@
             Well done!
           You’re all set, we’ve got it from here
         .row
-          .col-xs-4.col-xs-push-4.text-xs-left
+          .col-xs-4.offset-xs-4.text-xs-left
             %ul.fa-ul
               = content_tag(:li, fa_icon("check-circle li inverse", text: "You've uploaded your file"))
               = content_tag(:li, fa_icon("check-circle li inverse", text: "You've mapped your column headers"))
@@ -102,6 +102,14 @@
               Download your original spreadsheet:
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
+
+    - if @import.can_be_deleted? && can?(:destroy, :imports)
+      .row.p-b-1
+        .col-xs-12
+          %p.text-xs-center
+            = link_to import_path(@import), method: :delete, data: { confirm: t(:delete_confirmation, number_of_records: @import.imported_records.size, scope: [:import, :show]) }, class: 'btn btn-link' do
+              = fa_icon 'trash', text: 'Delete Import'
+
     .row.p-b-3
       .col-xs-12.text-xs-center
         %strong
