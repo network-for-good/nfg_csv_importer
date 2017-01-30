@@ -62,6 +62,9 @@
   @import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/utilities/flex"; // new flex alignment from alpha5; column / row based alignment has been replaced with universal utility classes
   @import "bootstrap-4_0_0-alpha_2/utilities-responsive";
 
+  // Interstitial Modal -- Theme Component Source... needs to be adjusted to look like bootstrap4 theme
+  @import "nfg_csv_importer/bootstrap4_theme/importer_components/modal_interstitial";
+
   // Legacy browser support
   @import "nfg_csv_importer/legacy_browser_support/flexbox_tweener/application";
   @import "nfg_csv_importer/legacy_browser_support/internet_explorer/application"; // ONLY fixes where modernizr can't detect browser support
