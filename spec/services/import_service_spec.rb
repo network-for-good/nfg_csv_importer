@@ -22,6 +22,16 @@ describe NfgCsvImporter::ImportService do
 	let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
 	let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }
 
+	it { should delegate_method(:class_name).to(:import_definition)}
+	it { should delegate_method(:required_columns).to(:import_definition)}
+	it { should delegate_method(:optional_columns).to(:import_definition)}
+	it { should delegate_method(:column_descriptions).to(:import_definition)}
+	it { should delegate_method(:description).to(:import_definition)}
+	it { should delegate_method(:field_aliases).to(:import_definition)}
+	it { should delegate_method(:column_validation_rules).to(:import_definition)}
+	it { should delegate_method(:fields_that_allow_multiple_mappings).to(:import_definition)}
+	it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
+
 	describe "subscriber" do
     let!(:csv_data) { mock }
 
@@ -30,8 +40,6 @@ describe NfgCsvImporter::ImportService do
 		it { expect(subject.type).to be import_type }
 		it { expect(subject.imported_for).to be entity }
 		it { expect(subject.imported_by).to be admin }
-
-		it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
 
 		before(:each) do
 			NfgCsvImporter::ImportService.any_instance.stubs(:file).returns(file)
@@ -145,6 +153,44 @@ describe NfgCsvImporter::ImportService do
 			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
           expect(class_to_be_imported.find_by_email("pavan@gmail.com").last_name).to eq("pavan")
 			  	expect(class_to_be_imported.find_by_email("bert@smert.com").last_name).to eq("Smert")
+			  end
+
+			end
+		end
+
+		context "when fields that can be merged are provided" do
+			before do
+				ImportDefinition.any_instance
+								.stubs(:users)
+								.returns({
+								required_columns: %w{email first_name last_name note},
+								optional_columns: [],
+								alias_attributes: [],
+								default_values: {},
+								fields_that_allow_multiple_mappings: ["note"],
+								class_name: "User"
+								})
+			end
+
+			let(:file_name) { "/users_for_merge_field_spec.xls" }
+			let(:import_type) { "users" }
+
+			context "and the field is mapped to a single column" do
+				let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "ignore_column" } }
+
+				it "should assign that column's value to the field" do
+					NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import).import
+					expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP")
+				end
+
+			end
+
+			context "and the field is mapped to multiple columns" do
+				let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "note" } }
+
+			  it "should assign both values to the single field with a separator" do
+			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
+					expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP#{ NfgCsvImporter::ImportService::MERGE_FIELD_SEPARATOR}This is an other field")
 			  end
 
 			end

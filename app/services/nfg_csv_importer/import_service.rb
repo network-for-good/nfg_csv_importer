@@ -4,6 +4,7 @@ class NfgCsvImporter::ImportService
   require 'roo-xls'
 
   IGNORE_COLUMN_NAME = "ignore_column"
+  MERGE_FIELD_SEPARATOR = "\r\n"
 
   attr_accessor :type, :file, :imported_by, :imported_for, :errors_list, :import_record,
                 :starting_row, :start_timestamp, :current_row
@@ -111,7 +112,6 @@ class NfgCsvImporter::ImportService
     (starting_row..spreadsheet.last_row).map do |i|
       self.current_row = i
       break if run_time_limit_reached?
-
       row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
       row = strip_data(row)
       set_zone_for_date_fields(row)
@@ -228,7 +228,19 @@ class NfgCsvImporter::ImportService
   end
 
   def convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
-    Hash[[mapped_fields_from_fields_mapping , spreadsheet.row(i)].transpose].select { |field, value| field != NfgCsvImporter::Import.ignore_column_value }
+    mapped_fields_from_fields_mapping.each_with_index.inject({}) do |hsh, (field, index)|
+      # ignored columns do not get added to the hash of fields and values
+      next hsh if field == NfgCsvImporter::Import.ignore_column_value
+
+      if hsh[field].nil?
+        hsh[field] = spreadsheet.row(i)[index]
+      else
+        hsh[field] << MERGE_FIELD_SEPARATOR # not sure if we always want a carriage return
+        hsh[field] << spreadsheet.row(i)[index]
+      end
+      hsh
+    end
+    # Hash[[mapped_fields_from_fields_mapping , spreadsheet.row(i)].transpose].select { |field, value| field != NfgCsvImporter::Import.ignore_column_value }
   end
 
   def mapped_fields_from_fields_mapping
