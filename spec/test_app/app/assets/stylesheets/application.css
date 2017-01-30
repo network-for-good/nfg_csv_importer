@@ -12,7 +12,7 @@
  *
  *= require nfg_csv_importer/application
  *= require font-awesome
- *= require bootstrap4/bootstrap
+ *= require nfg_csv_importer/bootstrap4_vanilla/application
  *= require_tree .
  *= require_self
  */
