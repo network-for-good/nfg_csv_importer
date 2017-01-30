@@ -24,7 +24,7 @@
 
   %div{ class: imports_listing_row_column_structure_class }
     %p
-      %strong= import_status_icon_and_text(import)
+      %strong= import_status_link(import)
 
   %div{ class: imports_listing_row_column_structure_class }
 
@@ -35,5 +35,3 @@
       %p.display-inline-block{ bootstrap_tooltip(t("tooltips.edit_import", scope: language_scope), :bottom) }
         %a.btn.btn-link.disabled{ href: "javascript:;" }
           = fa_icon "pencil", class: "text-muted", text: t("links.edit_import", scope: language_scope)
-
-
