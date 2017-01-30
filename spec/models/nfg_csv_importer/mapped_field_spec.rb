@@ -1,8 +1,10 @@
 require "rails_helper"
 
 describe NfgCsvImporter::MappedField do
-  let(:mapped_field) { NfgCsvImporter::MappedField.new(header_column: header_column, field: field) }
+  let(:mapped_field) { NfgCsvImporter::MappedField.new(mapped_field_params) }
   let(:header_column) { "first_name" }
+  let(:default_params) { { header_column: header_column, field: field } }
+  let(:mapped_field_params) { default_params }
   let(:field) { nil }
 
   describe "#status" do
@@ -129,6 +131,62 @@ describe NfgCsvImporter::MappedField do
 
       it "should strip out the special characters" do
         expect(subject).to eq("donor__of_donations")
+      end
+    end
+  end
+
+  describe "#mergeable?" do
+    subject { mapped_field.mergeable? }
+
+    let(:mapped_field_params) { default_params.merge(merge_field_params) }
+    let(:merge_field_params) { {} }
+
+    context "when the field has not been mapped" do
+      it "should be false" do
+        expect(subject).not_to be
+      end
+    end
+
+    context "when the field has been mapped" do
+      let(:field) { "note" }
+
+      context "when no list of mergeable fields is provided" do
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "when the list of mergeable fields is nil" do
+        subject { mapped_field.mergeable? }
+        let(:merge_field_params) { { fields_that_allow_multiple_mappings: nil } }
+
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "when the list of mergeable fields is an empty hash" do
+        let(:merge_field_params) { { fields_that_allow_multiple_mappings: [] } }
+
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "when the list of mergeable fields contains values but not for the field referenced in the mapping" do
+        let(:merge_field_params) { { fields_that_allow_multiple_mappings: ["other"] } }
+
+        it "should be false" do
+          expect(subject).not_to be
+        end
+      end
+
+      context "when the list of mergeable fields contains values including the field references in the mapping" do
+        let(:merge_field_params) { { fields_that_allow_multiple_mappings: ["other", "note"] } }
+
+        it "should be true" do
+          expect(subject).to be
+        end
       end
     end
   end

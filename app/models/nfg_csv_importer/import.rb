@@ -86,9 +86,15 @@ module NfgCsvImporter
       return @mapped_fields if @mapped_fields && !header_column
       # passing in a header column will return the mapped field object for just that header column
       if header_column
-        fields_mapping.has_key?(header_column) ? NfgCsvImporter::MappedField.new(header_column: header_column, field: fields_mapping[header_column]) : nil
+        fields_mapping.has_key?(header_column) ? NfgCsvImporter::MappedField.new(
+                                                          header_column: header_column,
+                                                          field: fields_mapping[header_column],
+                                                          fields_that_allow_multiple_mappings: fields_that_allow_multiple_mappings) : nil
       else
-        @mapped_fields = fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(header_column: header_column, field: field)}
+        @mapped_fields = fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(
+                                                                                                      header_column: header_column,
+                                                                                                      field: field, fields_that_allow_multiple_mappings:
+                                                                                                      fields_that_allow_multiple_mappings)}
       end
     end
 
