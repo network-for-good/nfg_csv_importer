@@ -161,15 +161,15 @@ describe NfgCsvImporter::ImportService do
 		context "when fields that can be merged are provided" do
 			before do
 				ImportDefinition.any_instance
-								.stubs(:users)
-								.returns({
-								required_columns: %w{email first_name last_name note},
-								optional_columns: [],
-								alias_attributes: [],
-								default_values: {},
-								fields_that_allow_multiple_mappings: ["note"],
-								class_name: "User"
-								})
+					.stubs(:users)
+					.returns({
+						required_columns: %w{email first_name last_name note},
+						optional_columns: [],
+						alias_attributes: [],
+						default_values: {},
+						fields_that_allow_multiple_mappings: ["note"],
+						class_name: "User"
+					})
 			end
 
 			let(:file_name) { "/users_for_merge_field_spec.xls" }
