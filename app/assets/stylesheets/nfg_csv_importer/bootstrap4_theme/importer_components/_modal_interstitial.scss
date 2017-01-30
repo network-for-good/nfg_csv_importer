@@ -27,7 +27,8 @@
 
 
       .fa{
-        @include default-hover-transition();
+        // @include default-hover-transition();
+        transition: all 0.2s ease-in-out;
         font-size: 40px;
         color: #fff;
         text-shadow: 0px 0px 6px rgba(255, 255, 255, 0);
@@ -80,7 +81,7 @@
     border: none;
     border-radius: 0;
     color: #fff;
-    @include vendor-prefix((box-shadow: none), webkit moz ms o);
+    box-shadow: none;
   }
 
   .card{
