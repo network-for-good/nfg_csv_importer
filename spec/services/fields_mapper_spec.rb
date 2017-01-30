@@ -11,7 +11,7 @@ describe NfgCsvImporter::FieldsMapper do
 
   context "when the definition has not field_aliases" do
     before do
-      ::ImportDefinition.any_instance.expects(:send).with("user").at_least(1).returns(import_definition)
+      ::ImportDefinition.any_instance.expects(:send).with("users").at_least(1).returns(import_definition)
     end
     let(:import_definition) { import_definition_base.delete_if { |k,v| k == :field_aliases } }
 
@@ -49,7 +49,7 @@ describe NfgCsvImporter::FieldsMapper do
 
   context "when the definition has field aliases" do
     before do
-      ::ImportDefinition.any_instance.expects(:send).with("user").at_least(1).returns(import_definition)
+      ::ImportDefinition.any_instance.expects(:send).with("users").at_least(1).returns(import_definition)
     end
     let(:import_definition) { import_definition_base }
     let(:field_aliases) { { "first_name" => ["first"]} }
