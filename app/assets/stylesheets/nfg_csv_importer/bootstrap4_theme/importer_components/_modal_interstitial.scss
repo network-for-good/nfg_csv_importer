@@ -1,11 +1,20 @@
 &.modal-interstitial-wrapper{
   .modal-interstitial{
+
+    @at-root{
+      .modal-open {
+        overflow: hidden;
+      }
+    }
     .close{
+      outline: none;
       transition: all 0.5s ease-in-out;
       opacity: 1;
       text-shadow: none;
       color: #fff;
-      z-index: $zindex-modal + 1001 !important;
+      z-index: $zindex-modal + 1010 !important;
+      background: none;
+      border: none;
 
       @include media-breakpoint-up(md) {
         position: fixed !important;
@@ -106,11 +115,15 @@
   }
 
   &.modal-backdrop{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-color:$brand-primary;
 
-    &.in{
-      opacity: 0.95;
-    }
+    &.fade { opacity: 0; }
+    &.in { opacity: 0.95; }
   }
 
   .modal-header{
