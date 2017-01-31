@@ -108,7 +108,7 @@
               - if @previous_imports.present?
                 .label.label-blue.label-top-left.label-circle 1
               %label.file
-            = f.file_field :import_file
+                = f.file_field :import_file
 
             = hidden_field_tag 'import_type', @import_type
 
