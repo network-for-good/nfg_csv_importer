@@ -170,6 +170,16 @@ $container-max-widths: (
 $grid-columns                               : 12;
 $grid-gutter-width                          : 24px; // 24px
 
+// Bootstrap 4 alpha5 grid variables
+$grid-gutter-width-base: $grid-gutter-width;
+
+$grid-gutter-widths: (
+  xs: $grid-gutter-width-base,
+  sm: $grid-gutter-width-base,
+  md: $grid-gutter-width-base,
+  lg: $grid-gutter-width-base,
+  xl: $grid-gutter-width-base
+);
 
 // Typography
 //
