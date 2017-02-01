@@ -22,9 +22,15 @@ describe "Running through the full import process", js: true do
       # button should be enabled after attaching the file
       expect(page).to have_button(upload_button_name)
       expect { submit_import_file_form }.to change(NfgCsvImporter::Import, :count).by(1)
-      expect(page).to have_content("Great News! We just saved you some time by by evaluating your columns and applying automatic matches:")
-      expect(page).to have_content("4 Columns To Be Imported")
-      expect(page).to have_content("3 Automatically Mapped Columns")
+
+      sleep 1
+
+      within("#importer_gem_modal_first_visit") do
+        expect(page).to have_content("Great News")
+        expect(page).to have_content("4 Columns To Be Imported")
+        expect(page).to have_content("3 Automatically Mapped Columns")
+      end
+
       find("button.close").click
       new_import = NfgCsvImporter::Import.last
       expect(current_path).to eq(nfg_csv_importer.edit_import_path(new_import))
