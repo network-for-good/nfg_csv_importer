@@ -1,0 +1,18 @@
+@import "./variables"; // Leverage Font Awesome's CDN
+@import "font_awesome/variables";
+@import "font_awesome/path";
+
+.importer-gem{
+  // Namespaced FontAwesome source component CSS (icon adjustments / inconsistent font sizes won't interfere with external apps that have different font-sizes set at <html> level)
+  @import "font_awesome/mixins";
+  @import "font_awesome/core";
+  @import "font_awesome/larger";
+  @import "font_awesome/fixed-width";
+  @import "font_awesome/list";
+  @import "font_awesome/bordered-pulled";
+  @import "font_awesome/animated";
+  @import "font_awesome/rotated-flipped";
+  @import "font_awesome/stacked";
+  @import "font_awesome/icons";
+  @import "font_awesome/screen-reader";
+}
