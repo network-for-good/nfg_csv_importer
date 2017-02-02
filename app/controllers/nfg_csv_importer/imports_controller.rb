@@ -67,6 +67,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def destroy
+    unless @import.can_be_deleted_by?(current_user)
+      flash[:error] = t(:cannot_delete, scope: [:import, :destroy])
+      return redirect_to import_path(@import)
+    end
+
     number_of_records = @import.imported_records.size
     @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
     @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|

@@ -120,6 +120,18 @@ describe NfgCsvImporter::ImportsController do
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
     end
+
+    context "when the import can't be deleted by the current user" do
+      before do
+        NfgCsvImporter::Import.any_instance.stubs(:can_be_deleted_by?).with(user).returns(false)
+      end
+
+      it 'redirects back to show with an error flash message' do
+        subject
+        expect(response).to redirect_to import_path(import)
+        expect(flash[:error]).to eq I18n.t(:cannot_delete, scope: [:import, :destroy])
+      end
+    end
   end
 
   describe "#new" do

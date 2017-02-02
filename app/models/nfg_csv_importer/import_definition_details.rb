@@ -41,6 +41,14 @@ module NfgCsvImporter
       can_be_viewed_by_rule.call(user)
     end
 
+    # Follows same pattern as can_be_viewed_by - passes user to a proc and lets
+    # the parent app decide.
+    def can_be_deleted_by?(user)
+      return false if can_be_deleted_by_rule.nil?
+      return !!can_be_deleted_by_rule unless can_be_deleted_by_rule.respond_to?(:call)
+      can_be_deleted_by_rule.call(user)
+    end
+
     def column_validation_rules
       return @column_validation_rules if @column_validation_rules
 
@@ -58,6 +66,10 @@ module NfgCsvImporter
 
     def can_be_viewed_by_rule
       self["can_be_viewed_by"]
+    end
+
+    def can_be_deleted_by_rule
+      self["can_be_deleted_by"]
     end
   end
 end
