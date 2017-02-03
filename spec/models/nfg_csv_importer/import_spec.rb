@@ -23,7 +23,7 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:first_x_rows).to(:service)}
   it { should delegate_method(:invalid_column_rules).to(:service)}
   it { should delegate_method(:can_be_viewed_by).to(:service)}
-
+  it { should delegate_method(:can_be_deleted_by?).to(:service)}
 
   context "when file is nil" do
     let(:file) { nil }

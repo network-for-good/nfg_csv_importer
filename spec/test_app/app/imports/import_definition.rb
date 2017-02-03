@@ -23,7 +23,8 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       class_name: "User",
       alias_attributes: [],
       column_descriptions: {},
-      description: %Q{Allows you to import subscribers.}
+      description: %Q{Allows you to import subscribers.},
+      can_be_deleted_by: -> (user) { user.last_name != "Jones" },
     }
   end
 
