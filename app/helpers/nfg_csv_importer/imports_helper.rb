@@ -5,11 +5,11 @@ module NfgCsvImporter
       Hash.new { |hash, key| hash[key] = hash[key - 1].next }.merge({ 0 => 'A' })
     end
 
-    def import_status_icon_and_text(import)
+    def import_status_link(import)
       import_status_class = "m-r-quarter"
       case import.status.try(:to_sym)
       when :uploaded
-        import_status_icon = "cloud-upload"
+        import_status_icon = "gear"
         import_status_class += " text-primary"
       when :defined
         import_status_icon = "table"
@@ -32,7 +32,7 @@ module NfgCsvImporter
       end
 
       link_to import_path(import), class: import_status_class do
-        fa_icon import_status_icon, text: import.status.titleize
+        fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
       end
     end
 

@@ -20,8 +20,7 @@
             = @import.import_type.pluralize.humanize.downcase
           are
           %strong
-            = t("status.#{ @import.status }", default: @import.status)
-
+            = t("status.#{@import.status}", default: @import.status, scope: [:imports, :show])
         .p-t-1
           This data was imported by
           %strong

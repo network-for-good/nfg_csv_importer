@@ -34,6 +34,8 @@ en:
       tooltips:
         error_file: "Available once processing is complete"
         edit_import: "Once an import has been submitted, it's no longer editable"
+      status:
+        uploaded: "review & mapping"
     new:
       jumbotron:
         headline: "Let's import <strong>%{import_type}!</strong>"
@@ -48,14 +50,12 @@ en:
         requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
         no_description: "<span style='opacity:.4;'>No additional details</span>"
         file_types: "Acceptable file types are: %{acceptable_file_types}"
-
       links:
         ready_upload: "Ready? Upload Your File"
         scroll_down: "Scroll down to learn more"
         file: "Excel template"
         expand_column_headers: "Expand the full list of column headers"
         cheatsheet: "Download a Column Headers Cheatsheet"
-
       tooltips:
         coming_soon: "Coming Soon!"
       form:
@@ -73,9 +73,8 @@ en:
           upload: "Upload & Continue"
           disable_with:
             upload: "Preparing column mapping..."
-
     show:
       status:
-        processing: "processing"
         complete: "imported"
         deleting: "queued for deletion"
+        uploaded: "in review"
