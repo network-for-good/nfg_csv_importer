@@ -82,8 +82,9 @@
                 %h3.text-xs-center.m-y-1= t("headings.required_headers", scope: language_scope)
             .row
               - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
+                - name = import_column_display_name(@import.import_type, required_field)
                 - description = @import.column_descriptions[required_field]
-                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: name, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
 
           - if @import.optional_columns.any?
             .row
@@ -91,8 +92,9 @@
                 %h3.text-xs-center.m-y-1= t("headings.optional_headers", scope: language_scope)
             .row
               - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+                - name = import_column_display_name(@import.import_type, field)
                 - description = @import.column_descriptions[field]
-                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: name, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
 
     #upload_file.container-new-import.container-flush.blue.p-y-3
       .row.text-xs-center
@@ -137,4 +139,3 @@
     $("input[type=\'file\']").change(function() {
       $("#upload_file_button").removeClass("disabled").attr("disabled", false);
     });
-

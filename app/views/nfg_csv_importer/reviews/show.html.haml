@@ -72,7 +72,7 @@
                       .col-xs-2
                         = fa_icon "long-arrow-right", class: "text-muted fa-lg"
                       .col-md-5
-                        = mapped_column.mapped_to
+                        = import_column_display_name(@import.import_type, mapped_column.mapped_to)
 
                 .col-md-4.offset-md-1
                   %h3.text-danger.font-size-18
