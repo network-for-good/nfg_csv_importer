@@ -7,10 +7,13 @@ module NfgCsvImporter
 
     def import_status_link(import)
       import_status_class = "m-r-quarter"
+      path = import_path(import)
+
       case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "gear"
         import_status_class += " text-primary"
+        path = edit_import_path(import)
       when :defined
         import_status_icon = "table"
         import_status_class += " text-primary"
@@ -31,7 +34,7 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      link_to import_path(import), class: import_status_class do
+      link_to path, class: import_status_class do
         fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
       end
     end
