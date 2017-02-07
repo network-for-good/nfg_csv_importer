@@ -264,7 +264,7 @@ class NfgCsvImporter::ImportService
 
   def generate_errors_csv
     return if errors_list.empty?
-    CSV.generate(:col_sep => "\t") do |csv|
+    CSV.generate do |csv|
       csv << errors_list.first.keys
       errors_list.each do |error_hash|
         csv << error_hash.values
