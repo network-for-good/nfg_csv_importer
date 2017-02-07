@@ -3,6 +3,7 @@ require 'rails_helper'
 describe "imports/new.html.haml" do
   before do
     view.stubs(:imported_for).returns(entity)
+    view.extend NfgCsvImporter::ApplicationHelper
     view.extend NfgCsvImporter::ImportsHelper
     assign(:import, import)
     view.stubs(:import_type).returns(import.import_type)
