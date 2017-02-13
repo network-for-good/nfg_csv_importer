@@ -1,11 +1,20 @@
 &.modal-interstitial-wrapper{
   .modal-interstitial{
+
+    @at-root{
+      .modal-open {
+        overflow: hidden;
+      }
+    }
     .close{
+      outline: none;
       transition: all 0.5s ease-in-out;
       opacity: 1;
       text-shadow: none;
       color: #fff;
-      z-index: $zindex-modal + 1001 !important;
+      z-index: $zindex-modal + 1010 !important;
+      background: none;
+      border: none;
 
       @include media-breakpoint-up(md) {
         position: fixed !important;
@@ -27,7 +36,8 @@
 
 
       .fa{
-        @include default-hover-transition();
+        // @include default-hover-transition();
+        transition: all 0.2s ease-in-out;
         font-size: 40px;
         color: #fff;
         text-shadow: 0px 0px 6px rgba(255, 255, 255, 0);
@@ -52,7 +62,7 @@
         padding-top: 60px;
       }
 
-      > .row-xs-center{
+      > .flex-items-xs-middle{
         height: 100%;
       }
     }
@@ -80,7 +90,7 @@
     border: none;
     border-radius: 0;
     color: #fff;
-    @include vendor-prefix((box-shadow: none), webkit moz ms o);
+    box-shadow: none;
   }
 
   .card{
@@ -105,11 +115,17 @@
   }
 
   &.modal-backdrop{
-    background-color:$brand-primary;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: $brand-primary;
+    z-index: $zindex-modal + 990 !important;
+    position: absolute !important;
 
-    &.in{
-      opacity: 0.95;
-    }
+    &.fade { opacity: 0; }
+    &.in { opacity: 0.95; }
   }
 
   .modal-header{

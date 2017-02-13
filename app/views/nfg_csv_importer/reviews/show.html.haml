@@ -1,7 +1,7 @@
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-new-import.container-flush.blue
     .row.text-xs-center
-      .col-md-10.col-md-push-1.col-xs-12
+      .col-md-10.offset-md-1.col-xs-12
         %h1.display-1.p-t-3
           You're
           %strong
@@ -10,7 +10,7 @@
         %p Please review your selections below before importing your data.
 
     .row.p-b-2
-      .col-md-10.col-md-push-1.col-xs-12
+      .col-md-10.offset-md-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -20,7 +20,7 @@
             %hr
 
     .row.p-b-2
-      .col-md-10.col-md-push-1.col-xs-12
+      .col-md-10.offset-md-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -34,7 +34,7 @@
             %hr
 
     .row.p-b-2
-      .col-md-10.col-md-push-1.col-xs-12
+      .col-md-10.offset-md-1.col-xs-12
         .media
           .media-left
             = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
@@ -61,7 +61,7 @@
                   .row
                     .col-xs-5
                       %small.display-block.text-muted.text-uppercase Uploaded header
-                    .col-xs-5.col-xs-push-2
+                    .col-xs-5.offset-xs-2
                       %small.display-block.text-muted.text-uppercase Mapped
 
                   - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
@@ -72,9 +72,9 @@
                       .col-xs-2
                         = fa_icon "long-arrow-right", class: "text-muted fa-lg"
                       .col-md-5
-                        = mapped_column.mapped_to
+                        = import_column_display_name(@import.import_type, mapped_column.mapped_to)
 
-                .col-md-4.col-md-push-1
+                .col-md-4.offset-md-1
                   %h3.text-danger.font-size-18
                     = @import.column_stats[:ignored_column_count]
                     Ignored Columns

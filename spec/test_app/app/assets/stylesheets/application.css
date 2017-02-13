@@ -10,6 +10,10 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require nfg_csv_importer/application
+
+ * Vanilla theme not yet ready
+ * require nfg_csv_importer/bootstrap4_vanilla/application
  *= require_tree .
  *= require_self
  */

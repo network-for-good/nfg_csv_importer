@@ -23,7 +23,7 @@
         #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
           - ImportDefinition.import_types.each do |import_type|
             - definition = ImportDefinition.get_definition(import_type, @imported_for)
-
+            - next unless definition.can_be_viewed_by(current_user)
             %div{ class: import_type_column_structure_classes, id: import_type }
               .card.flex-1.m-b-2
                 .card-block
@@ -34,7 +34,7 @@
                     = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
 
         .row
-          .col-md-10.col-md-push-1.col-xs-12
+          .col-md-10.offset-md-1.col-xs-12
             .text-xs-center.m-t-1
               %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
                 = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
@@ -42,7 +42,7 @@
     = render(partial: 'shared/flash_messages') rescue nil
 
     - if @imports.empty?
-      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true"} }
+      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true" } }
 
     - else
       #imports_listing.row.p-x-3

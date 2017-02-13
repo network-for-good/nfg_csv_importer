@@ -3,9 +3,10 @@ en:
     create:
       error: 'There was an error when attempting to import 1 or more of the records. Any record not listed here has been imported successfully %{errors}'
     show:
-      delete_confirmation: 'Are you sure you want to remove this import along with all %{number_of_records} of its created %{import_type} records?'
+      delete_confirmation: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
     destroy:
-      success: 'The import and its %{number_of_records} associated %{import_type} records have been successfully removed.'
+      cannot_delete: 'You cannot delete this import.'
+      success: 'The import and its %{number_of_records} associated records have been successfully removed.'
   process:
     create:
       notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
@@ -33,6 +34,8 @@ en:
       tooltips:
         error_file: "Available once processing is complete"
         edit_import: "Once an import has been submitted, it's no longer editable"
+      status:
+        uploaded: "review & mapping"
     new:
       jumbotron:
         headline: "Let's import <strong>%{import_type}!</strong>"
@@ -47,14 +50,12 @@ en:
         requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
         no_description: "<span style='opacity:.4;'>No additional details</span>"
         file_types: "Acceptable file types are: %{acceptable_file_types}"
-
       links:
         ready_upload: "Ready? Upload Your File"
         scroll_down: "Scroll down to learn more"
         file: "Excel template"
         expand_column_headers: "Expand the full list of column headers"
         cheatsheet: "Download a Column Headers Cheatsheet"
-
       tooltips:
         coming_soon: "Coming Soon!"
       form:
@@ -72,11 +73,8 @@ en:
           upload: "Upload & Continue"
           disable_with:
             upload: "Preparing column mapping..."
-
     show:
       status:
-        processing: "processing"
         complete: "imported"
         deleting: "queued for deletion"
-
-
+        uploaded: "in review"

@@ -22,6 +22,8 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:field_aliases).to(:service)}
   it { should delegate_method(:first_x_rows).to(:service)}
   it { should delegate_method(:invalid_column_rules).to(:service)}
+  it { should delegate_method(:can_be_viewed_by).to(:service)}
+  it { should delegate_method(:can_be_deleted_by?).to(:service)}
 
   context "when file is nil" do
     let(:file) { nil }
@@ -30,7 +32,7 @@ describe NfgCsvImporter::Import do
   end
 
   let(:entity) { create(:entity) }
-  let(:import_type) { "user" }
+  let(:import_type) { "users" }
   let(:file_type) { 'csv' }
 
   let(:file) do
@@ -111,16 +113,16 @@ describe NfgCsvImporter::Import do
   end
 
   describe "#upload_error_file(errors)" do
-    let(:errors_csv) { "email\tfirst_name\tlast_name\tErrors\npavan@gmail.com\tArnold\tGilbert\tEmail is invalid\n" }
+    let(:errors_csv) { "email,first_name,last_name,Errors\npavan@gmail.com,Arnold,Gilbert,Email is invalid\n" }
     subject { import.set_upload_error_file(errors_csv) }
 
     it "should uploaded file and store path in error_file attribute" do
       expect { subject }.to change { import.error_file.url }.from(nil).to(String)
     end
 
-    it "should have xls extension" do
+    it "should have csv extension" do
       subject
-      expect(import.error_file.file.extension).to eq "xls"
+      expect(import.error_file.file.extension).to eq "csv"
     end
 
   end

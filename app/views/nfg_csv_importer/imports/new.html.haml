@@ -10,14 +10,14 @@
       .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
         .container-fluid
           .row
-            .col-md-10.col-md-push-1.col-xs-12
+            .col-md-10.offset-md-1.col-xs-12
               %h1.text-xs-center
                 = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
               %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
 
     .container-new-import.container-flush.blue.p-b-3
       .row
-        .col-md-10.col-md-push-1.col-xs-12
+        .col-md-10.offset-md-1.col-xs-12
           .row.text-xs-center
             .col-md-4.col-xs-12
               = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
@@ -42,7 +42,7 @@
 
     #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
       .row
-        .col-md-10.col-md-push-1.col-xs-12
+        .col-md-10.offset-md-1.col-xs-12
           .row
             .col-xs-12
               .text-xs-center
@@ -64,7 +64,7 @@
                 - @import.column_validation_rules.each do |column_rule|
                   = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-info"
 
-      .row.text-xs-center.row-expander.row-xs-center
+      .row.text-xs-center.row-expander.flex-items-xs-middle
         .col-xs-12
           %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
             = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
@@ -82,8 +82,9 @@
                 %h3.text-xs-center.m-y-1= t("headings.required_headers", scope: language_scope)
             .row
               - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
+                - name = import_column_display_name(@import.import_type, required_field)
                 - description = @import.column_descriptions[required_field]
-                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: required_field, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: name, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
 
           - if @import.optional_columns.any?
             .row
@@ -91,8 +92,9 @@
                 %h3.text-xs-center.m-y-1= t("headings.optional_headers", scope: language_scope)
             .row
               - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+                - name = import_column_display_name(@import.import_type, field)
                 - description = @import.column_descriptions[field]
-                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: field, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
+                = render partial: "nfg_csv_importer/imports/components/card", locals: { equal_height_and_width_cards: true, column_class: "col-md-4", card_class: "card-softlight", card_title: name, card_content: description.present? ? description : t("content.no_description", scope: language_scope).html_safe  }
 
     #upload_file.container-new-import.container-flush.blue.p-y-3
       .row.text-xs-center
@@ -101,7 +103,7 @@
             %strong= t("headings.upload", scope: language_scope)
           %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
       .row.p-b-3
-        .col-md-8.col-md-push-2.col-xs-12
+        .col-md-8.offset-md-2.col-xs-12
           .form-group
 
             .position-relative
@@ -109,7 +111,7 @@
                 .label.label-blue.label-top-left.label-circle 1
               %label.file
                 = f.file_field :import_file
-                %span.file-custom{ data: { content: t("form.form_controls.file", scope: language_scope) } }
+
             = hidden_field_tag 'import_type', @import_type
 
           %hr.m-y-2
@@ -137,4 +139,3 @@
     $("input[type=\'file\']").change(function() {
       $("#upload_file_button").removeClass("disabled").attr("disabled", false);
     });
-
