@@ -91,6 +91,17 @@ describe NfgCsvImporter::Import do
         expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
       end
     end
+
+    context "when there's an error reading the file" do
+      before do
+        import.stubs(:duplicated_headers).raises(StandardError)
+      end
+
+      it "should add errors to base" do
+        subject
+        expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
+      end
+    end
   end
 
   describe "#service" do
