@@ -4,7 +4,9 @@
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
     / TODO: Setup alert for this
     - if @import.errors.any?
-      = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
+      .container-fluid.container-flush
+        .alert.alert-danger.m-b-0
+          = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
 
     .container-fluid.container-flush
       .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0

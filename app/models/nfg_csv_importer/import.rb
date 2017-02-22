@@ -75,7 +75,7 @@ module NfgCsvImporter
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
         errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
       rescue  => e
-        errors.add :base, "File import failed: #{e.message}"
+        errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")
         return false
