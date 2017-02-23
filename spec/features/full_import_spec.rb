@@ -118,6 +118,7 @@ describe "Running through the full import process", js: true do
 
       expect do
         click_link "I'm Ready, Let's Import"
+        sleep 1
       end.to change(User, :count).by(3)
 
       expect(current_path).to eq(nfg_csv_importer.import_path(new_import))
