@@ -65,7 +65,7 @@ describe NfgCsvImporter::ImportService do
         end
 
         it "sets the importable" do
-          subject.import
+					subject.import
           expect(NfgCsvImporter::ImportedRecord.last.importable).to eql(User.last)
         end
 
