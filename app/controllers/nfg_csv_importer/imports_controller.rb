@@ -2,8 +2,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
 
   before_filter :load_imported_for
-  before_filter :set_import_type, only: [:create, :new]
-  before_filter :load_new_import, only: [:create, :new]
+  before_filter :set_import_type, only: [:create, :new, :template]
+  before_filter :load_new_import, only: [:create, :new, :template]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
   before_filter :authorize_user, except: [:index]
 
@@ -80,6 +80,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
     flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     redirect_to imports_path
+  end
+
+  def template
+    send_data @import.template_as_csv, type: "text/csv", filename: "#{@import.import_type}_import_template.csv", disposition: 'attachment'
   end
 
   protected

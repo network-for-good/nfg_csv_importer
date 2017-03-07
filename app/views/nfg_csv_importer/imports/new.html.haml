@@ -52,7 +52,7 @@
                   = t("headings.prepare", scope: language_scope).html_safe
                 %p
                   = t("content.prepare", scope: language_scope)
-                  %a.text-link{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :bottom), href: "javascript:;" }
+                  %a.text-link{  href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: @import_type) }
                     %strong= t("links.file", scope: language_scope)
 
                 %p.small.m-b-1

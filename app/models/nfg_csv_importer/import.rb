@@ -150,6 +150,16 @@ module NfgCsvImporter
       str
     end
 
+    def template_as_csv
+      CSV.generate(:col_sep => ",") do |csv|
+        csv << ["Field","Description"]
+        column_descriptions.each do |key, value|
+          description = required_columns.include?(key) ? "REQUIRED #{value}" : value
+          csv << [key, description]
+        end
+      end
+    end
+
     private
 
     def service_name
