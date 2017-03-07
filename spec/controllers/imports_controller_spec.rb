@@ -175,4 +175,14 @@ describe NfgCsvImporter::ImportsController do
     it_behaves_like "an action that requires authorization"
 
   end
+
+  describe "#template" do
+    subject { get :template, params}
+
+    it "generate CSV" do
+      subject
+      expect(response.header['Content-Type']).to include 'text/csv'
+      expect(response.body).to include('Field,Description')
+    end
+  end
 end
