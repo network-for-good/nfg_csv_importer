@@ -31,7 +31,7 @@ module NfgCsvImporter
     end
 
     def can_be_deleted?(admin)
-      imported_records.created.any? && complete? && can_be_deleted_by?(admin)
+      uploaded? || (complete? && can_be_deleted_by?(admin))
     end
 
     def column_stats
