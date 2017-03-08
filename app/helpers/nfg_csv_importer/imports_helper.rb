@@ -5,12 +5,15 @@ module NfgCsvImporter
       Hash.new { |hash, key| hash[key] = hash[key - 1].next }.merge({ 0 => 'A' })
     end
 
-    def import_status_icon_and_text(import)
+    def import_status_link(import)
       import_status_class = "m-r-quarter"
+      path = import_path(import)
+
       case import.status.try(:to_sym)
       when :uploaded
-        import_status_icon = "cloud-upload"
+        import_status_icon = "gear"
         import_status_class += " text-primary"
+        path = edit_import_path(import)
       when :defined
         import_status_icon = "table"
         import_status_class += " text-primary"
@@ -31,8 +34,8 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      link_to import_path(import), class: import_status_class do
-        fa_icon import_status_icon, text: import.status.titleize
+      link_to path, class: import_status_class do
+        fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
       end
     end
 
@@ -94,6 +97,13 @@ module NfgCsvImporter
 
     def is_browser_a_touch_device?
       browser.mobile? || browser.tablet?
+    end
+
+    def import_column_display_name(import_type, column, titleize = false)
+      display_name = ""
+      display_name = t("imports.column_display_names.#{import_type}.#{column}", default: column) if column.present?
+      display_name = display_name.downcase.tr("_", " ").titleize if titleize
+      display_name
     end
   end
 end

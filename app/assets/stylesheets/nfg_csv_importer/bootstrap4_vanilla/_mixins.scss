@@ -1,0 +1,55 @@
+// Toggles
+//
+// Used in conjunction with global variables to enable certain theme features.
+
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {
+    box-shadow: $shadow;
+  }
+}
+
+@mixin transition($transition...) {
+  @if $enable-transitions {
+    transition: $transition;
+  }
+}
+
+// Utilities
+@import "bootstrap-4_0_0-alpha_2/mixins/breakpoints";
+@import "bootstrap-4_0_0-alpha_2/mixins/hover";
+@import "bootstrap-4_0_0-alpha_2/mixins/image";
+@import "bootstrap-4_0_0-alpha_2/mixins/label";
+@import "bootstrap-4_0_0-alpha_2/mixins/reset-filter";
+@import "bootstrap-4_0_0-alpha_2/mixins/resize";
+@import "bootstrap-4_0_0-alpha_2/mixins/screen-reader";
+@import "bootstrap-4_0_0-alpha_2/mixins/size";
+@import "bootstrap-4_0_0-alpha_2/mixins/tab-focus";
+@import "bootstrap-4_0_0-alpha_2/mixins/reset-text";
+@import "bootstrap-4_0_0-alpha_2/mixins/text-emphasis";
+@import "bootstrap-4_0_0-alpha_2/mixins/text-hide";
+@import "bootstrap-4_0_0-alpha_2/mixins/text-truncate";
+
+// // Components
+@import "bootstrap-4_0_0-alpha_2/mixins/alert";
+@import "bootstrap-4_0_0-alpha_2/mixins/buttons";
+@import "bootstrap-4_0_0-alpha_2/mixins/cards";
+@import "bootstrap-4_0_0-alpha_2/mixins/pagination";
+@import "bootstrap-4_0_0-alpha_2/mixins/lists";
+@import "bootstrap-4_0_0-alpha_2/mixins/list-group";
+@import "bootstrap-4_0_0-alpha_2/mixins/nav-divider";
+@import "bootstrap-4_0_0-alpha_2/mixins/forms";
+@import "bootstrap-4_0_0-alpha_2/mixins/progress";
+@import "bootstrap-4_0_0-alpha_2/mixins/table-row";
+
+// // Skins
+@import "bootstrap-4_0_0-alpha_2/mixins/background-variant";
+@import "bootstrap-4_0_0-alpha_2/mixins/border-radius";
+@import "bootstrap-4_0_0-alpha_2/mixins/gradients";
+
+// // Layout
+@import "bootstrap-4_0_0-alpha_2/mixins/clearfix";
+@import "bootstrap-4_0_0-alpha_2/mixins/center-block";
+// @import "mixins/navbar-align";
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/mixins/grid-framework"; // Fixes grid issues on older browsers, BS4 alpha5
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/mixins/grid"; // Fixes grid issues on older browsers, BS4 alpha5
+@import "bootstrap-4_0_0-alpha_2/mixins/pulls";

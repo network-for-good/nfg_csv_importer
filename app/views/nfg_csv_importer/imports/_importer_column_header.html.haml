@@ -8,17 +8,17 @@
 
 - when :active
   - label_status = "success"
-  - label_icon = "fa-check-circle"
+  - label_icon = "check-circle"
   - label_text = "Mapping Column"
   - mapped_column_name = mapped_column.name
 - when :mapped
   - label_status = "success"
-  - label_icon = "fa-check-circle"
+  - label_icon = "check-circle"
   - label_text = "Mapped"
   - mapped_column_name = mapped_column.mapped_to
 - when :ignored
   - label_status = "danger"
-  - label_icon = "fa-exclamation-circle"
+  - label_icon = "exclamation-circle"
   - label_text = "Won't be imported"
   - mapped_column_name = mapped_column.name
 
@@ -30,7 +30,8 @@
     -# 3. Shrink label to fit checkmark
     -# 4. Expand label out to reveal "Mapped"
     %div{ class: "label label-pill label-#{label_status}" }
-      %i{ class: "fa #{label_icon} text-white" }
+      / %i{ class: "fa #{label_icon} text-white" }
+      = fa_icon "#{label_icon} inverse"
       = label_text
   .card-header-interactions
     - if (mapped_column.status == :ignored) || (mapped_column.status == :unmapped)
@@ -51,16 +52,17 @@
       = hidden_field_tag field_name, NfgCsvImporter::Import.ignore_column_value
 
     - elsif mapped_column.status == :unmapped
-      - all_fields = [""] + import.all_valid_columns
+      - columns = [""] + import.all_valid_columns
+      - display_names = columns.map { |c| import_column_display_name(import.import_type, c, true) }
 
       / we can't use humanize on the fields select options because it removes the
       / ID from the name of the field
-      = select_tag field_name, options_for_select(all_fields.map { |f| f.downcase.tr("_", " ").titleize }.zip(all_fields)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
+      = select_tag field_name, options_for_select(display_names.zip(columns)), include_blank: false, prompt: "Select Header", class: "c-select", data: { describe: "select-column-header" }
 
     - else
       -# Kicks off edit, just like the edit button above.
       %a.h3.text-xs-center.m-t-half{ href: "javascript:;", data: { edit_column: "true" } }
-        = mapped_column.mapped_to.downcase.tr("_", " ").titleize
+        = import_column_display_name(import.import_type, mapped_column.mapped_to, true)
         %small{ title: "This column has been successfully mapped", data: { toggle: "tooltip", placement: "top" } }
           = fa_icon "check-circle", class: "text-success"
       = hidden_field_tag field_name
@@ -75,5 +77,3 @@
           = fa_icon "info-circle"
     - else
       %s.text-muted= mapped_column.name
-
-

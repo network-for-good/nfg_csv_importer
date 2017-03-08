@@ -9,7 +9,9 @@ class NfgCsvImporter::ImportService
                 :starting_row, :start_timestamp, :current_row
 
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
-           :description, :field_aliases, :column_validation_rules, :to => :import_definition
+           :description, :field_aliases, :column_validation_rules,
+           :fields_that_allow_multiple_mappings, :can_be_viewed_by,
+           :can_be_deleted_by?, :to => :import_definition
 
   delegate :fields_mapping, to: :import_record
 
@@ -99,11 +101,21 @@ class NfgCsvImporter::ImportService
   def additional_class_attributes(row, object)
   end
 
-  def validate_object(object)
-    object.valid?
+  private
+
+  def record_error_msg(model_obj)
+    if model_obj.try(:errors)
+      model_obj.errors.full_messages.join(', ')
+    else
+      'Invalid record'
+    end
   end
 
-  private
+  def handle_record_errors(model_obj, row)
+    NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors, import_id)
+    row['Errors'] = record_error_msg(model_obj)
+    errors_list << row
+  end
 
   def load_and_persist_imported_objects
     self.errors_list = []
@@ -138,30 +150,38 @@ class NfgCsvImporter::ImportService
 
   def persist_valid_record(model_obj, index, row)
     NfgCsvImporter::Import.increment_counter(:records_processed, import_id)
-    if validate_object(model_obj)
-      saved_object = model_obj.save
 
-      imported_record = NfgCsvImporter::ImportedRecord.new(
-        import_id: import_id,
-        imported_by_id: imported_by.id,
-        imported_for_id: imported_for.id,
-        transaction_id: transaction_id,
-        action: get_action(model_obj),
-        row_data: row
-      )
-
-      if saved_object.is_a?(ActiveRecord::Base)
-        imported_record.importable = saved_object
-      elsif model_obj.is_a?(ActiveRecord::Base)
-        imported_record.importable = model_obj
-      end
-
-      imported_record.save!
-    else
-      NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors, import_id)
-      row['Errors'] = "#{model_obj.errors.full_messages.join(', ')}"
-      errors_list << row
+    unless model_obj.try(:valid?)
+      handle_record_errors(model_obj, row)
+      return
     end
+
+    saved_object = model_obj.save
+
+    # This condition is needed b/c in donor management, model_obj is typically
+    # a data loader instance.
+    importable = nil
+    if saved_object.is_a?(ActiveRecord::Base)
+      importable = saved_object
+    elsif model_obj.is_a?(ActiveRecord::Base)
+      importable = model_obj
+    end
+
+    # Final check to ensure we have a valid/saved importable object.
+    unless importable.try(:valid?) && importable.try(:persisted?)
+      handle_record_errors(importable, row)
+      return
+    end
+
+    NfgCsvImporter::ImportedRecord.create(
+      import_id: import_id,
+      imported_by_id: imported_by.id,
+      imported_for_id: imported_for.id,
+      importable: importable,
+      transaction_id: transaction_id,
+      action: get_action(model_obj),
+      row_data: row
+    )
   end
 
   def open_spreadsheet
@@ -262,7 +282,7 @@ class NfgCsvImporter::ImportService
 
   def generate_errors_csv
     return if errors_list.empty?
-    CSV.generate(:col_sep => "\t") do |csv|
+    CSV.generate do |csv|
       csv << errors_list.first.keys
       errors_list.each do |error_hash|
         csv << error_hash.values

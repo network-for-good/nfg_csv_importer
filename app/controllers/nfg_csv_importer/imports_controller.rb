@@ -5,7 +5,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
-
+  before_filter :authorize_user, except: [:index]
 
   def new
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
@@ -67,12 +67,18 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def destroy
+    unless @import.can_be_deleted_by?(current_user)
+      flash[:error] = t(:cannot_delete, scope: [:import, :destroy])
+      return redirect_to import_path(@import)
+    end
+
     number_of_records = @import.imported_records.size
     @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
     @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
       NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
     end
-    flash[:success] = t(:success, number_of_records: number_of_records, import_type: @import.import_type, scope: [:import, :destroy])
+
+    flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     redirect_to imports_path
   end
 
@@ -94,5 +100,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def set_import_type
     redirect_to imports_path unless params[:import_type]
     @import_type ||= params[:import_type]
+  end
+
+  def authorize_user
+    redirect_to imports_path unless @import.can_be_viewed_by(current_user)
   end
 end

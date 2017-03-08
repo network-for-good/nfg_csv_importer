@@ -3,8 +3,8 @@ require 'roo'
 describe NfgCsvImporter::ImportService do
 
 	let(:entity) { create(:entity) }
-	let(:import_type) { "user" }
-  let(:class_to_be_imported) { import_type.capitalize.constantize }
+	let(:import_type) { "users" }
+  let(:class_to_be_imported) { User }
 	let(:file_type) { 'csv' }
 
 	let(:file) do
@@ -31,13 +31,15 @@ describe NfgCsvImporter::ImportService do
 		it { expect(subject.imported_for).to be entity }
 		it { expect(subject.imported_by).to be admin }
 
+		it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
+
 		before(:each) do
 			NfgCsvImporter::ImportService.any_instance.stubs(:file).returns(file)
 			NfgCsvImporter::Import.stubs(:find).returns(import)
 		end
 
 		it "should get proper import definition" do
-			expect(subject.import_definition.class_name).to eq import_type.camelize
+			expect(subject.import_definition.class_name).to eq "User"
 		end
 
 		it "should set the time zone value" do
@@ -63,17 +65,15 @@ describe NfgCsvImporter::ImportService do
         end
 
         it "sets the importable" do
-          subject.import
+					subject.import
           expect(NfgCsvImporter::ImportedRecord.last.importable).to eql(User.last)
         end
 
-        context "when the model isn't active record (unlikely to ever happen but just to be safe" do
-          let(:non_model_object) { mock("NonModelObject") }
-
-
+        context "when importable is blank, invalid, or not persisted" do
           it "leaves importable empty" do
-            User.any_instance.stubs(:save).returns(non_model_object)
-            expect { subject.import }.to raise_error(ActiveRecord::RecordInvalid)
+            User.any_instance.stubs(:save).returns(nil)
+						subject.import
+            expect(subject.errors_list.size).to eq 1
           end
         end
       end
@@ -115,7 +115,7 @@ describe NfgCsvImporter::ImportService do
 		context "when default values present" do
 			before do
 				ImportDefinition.any_instance
-								.stubs(:user)
+								.stubs(:users)
 								.returns({
 								required_columns: %w{email first_name last_name},
 								optional_columns: [],
@@ -137,7 +137,7 @@ describe NfgCsvImporter::ImportService do
 			end
 
 			context "when the default value is a lambda" do
-			  let(:default_value) { lambda { |row| row["email"][/[^@]+/] } }
+			  let(:default_value) { lambda { |row| row["email"].try(:split, "@").try(:first) } }
 
 			  it "should assign default values for blank fields and not change non-blank values" do
 			  	NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
@@ -346,23 +346,6 @@ describe NfgCsvImporter::ImportService do
 			it { expect(subject).not_to be }
 		end
 
-	end
-
-	describe "#validate_object(object)" do
-		subject { import_service.send(:validate_object,object) }
-    let(:object) { FactoryGirl.build(:user, email: email) }
-
-    context "when object is invalid" do
-    	let(:email) { '' }
-
-    	it { expect(subject).not_to be }
-    end
-
-    context "when object is valid" do
-    	let(:email) { 'pavan@networkforgood.com' }
-
-    	it { expect(subject).to be }
-    end
 	end
 
 	describe "#no_of_records" do
