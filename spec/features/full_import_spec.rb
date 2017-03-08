@@ -23,8 +23,6 @@ describe "Running through the full import process", js: true do
       expect(page).to have_button(upload_button_name)
       expect { submit_import_file_form }.to change(NfgCsvImporter::Import, :count).by(1)
 
-      sleep 1
-
       within("#importer_gem_modal_first_visit") do
         expect(page).to have_content("Great News")
         expect(page).to have_content("4 Columns To Be Imported")
@@ -192,4 +190,5 @@ end
 
 def submit_import_file_form
   click_button "Upload & Continue"
+  sleep 1
 end

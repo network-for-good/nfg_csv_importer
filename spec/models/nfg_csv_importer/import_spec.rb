@@ -433,4 +433,39 @@ describe NfgCsvImporter::Import do
       end
     end
   end
+
+  describe '#can_be_deleted?' do
+    subject { import.can_be_deleted?(admin) }
+
+    context 'when import status is uploaded' do
+      before { import.uploaded! }
+
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+
+    context 'when import status is complete' do
+      before do
+        import.complete!
+        import.stubs(:can_be_deleted_by?).with(admin).returns(can_be_deleted_by_admin)
+      end
+
+      context 'when current_user can delete' do
+        let(:can_be_deleted_by_admin) { true }
+
+        it 'returns true' do
+          expect(subject).to eq true
+        end
+      end
+
+      context 'when current_user cannot delete' do
+        let(:can_be_deleted_by_admin) { false }
+
+        it 'returns false' do
+          expect(subject).to eq false
+        end
+      end
+    end
+  end
 end

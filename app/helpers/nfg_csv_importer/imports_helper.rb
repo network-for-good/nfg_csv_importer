@@ -5,6 +5,14 @@ module NfgCsvImporter
       Hash.new { |hash, key| hash[key] = hash[key - 1].next }.merge({ 0 => 'A' })
     end
 
+    def import_delete_confirmation(import)
+      if import.uploaded?
+        t('imports.confirmations.delete_without_records')
+      else
+        t('imports.confirmations.delete', number_of_records: import.imported_records.size)
+      end
+    end
+
     def import_status_link(import)
       import_status_class = "m-r-quarter"
       path = import_path(import)
