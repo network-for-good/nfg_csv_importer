@@ -2,15 +2,17 @@ en:
   import:
     create:
       error: 'There was an error when attempting to import 1 or more of the records. Any record not listed here has been imported successfully %{errors}'
-    show:
-      delete_confirmation: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
     destroy:
       cannot_delete: 'You cannot delete this import.'
       success: 'The import and its %{number_of_records} associated records have been successfully removed.'
+      success_without_records: 'The import has been successfully removed.'
   process:
     create:
       notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
   imports:
+    confirmations:
+      delete: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
+      delete_without_records: 'Are you sure you want to remove this import?'
     index:
       jumbotron:
         headline: "Starting a <strong>new</strong> data import?"
@@ -28,7 +30,8 @@ en:
       links:
         begin_import: "Begin Import"
         error_file: "Error File"
-        edit_import: "Edit Import"
+        edit_import: "Edit"
+        delete_import: "Delete"
         begin_import: "Begin Import"
         start: "Get Started"
       tooltips:
@@ -36,6 +39,8 @@ en:
         edit_import: "Once an import has been submitted, it's no longer editable"
       status:
         uploaded: "review & mapping"
+      confirmations:
+        delete: "Are you sure want to delete this import?"
     new:
       jumbotron:
         headline: "Let's import <strong>%{import_type}!</strong>"
