@@ -71,55 +71,49 @@
           %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
             = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
 
-    #import_type_column_descriptions.container-new-import.container-flush.bg-green{ data: { show_hide: "hide" } }
-      .row.p-y-2
-        .col-xs-12
-          .text-xs-center
-            %a{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :top), class: "text-link", href: "javascript:;" }
-              = fa_icon "cloud-download", text: t("links.cheatsheet", scope: language_scope)
+    #import_type_column_descriptions.container-new-import.container-flush.bg-green.p-y-2{ data: { show_hide: "hide" } }
+      - if @import.required_columns.any?
+        .row
+          .col-xs-12
+            %h2.h1.font-weight-normal.text-xs-center.m-y-1
+              = t("headings.required_headers", scope: language_scope)
+        %div{ class: "row #{ @import.optional_columns.any? ? 'm-b-3' : '' }" }
+          .col-xs-12.col-md-10.offset-md-1.m-x-auto
+            - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
+              .row.row-column-headers-listing.flex-items-md-middle
+                .col-xs-12.col-md-6.text-md-right
+                  .media
+                    .media-body
+                      %h4.media-heading.force-text-wrap.line-height-normal
+                        = import_column_display_name(@import.import_type, required_field)
+                    .media-right.flex-sm-middle.hidden-sm-down.text-sm-right
+                      = fa_icon "long-arrow-right inverse"
 
-          - if @import.required_columns.any?
-            .row
-              .col-xs-12
-                %h2.h1.font-weight-normal.text-xs-center.m-y-1
-                  = t("headings.required_headers", scope: language_scope)
-            %div{ class: "row #{ @import.optional_columns.any? ? 'm-b-3' : '' }" }
-              .col-xs-12.col-md-10.offset-md-1.m-x-auto
-                - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
-                  .row.row-column-headers-listing.flex-items-md-middle
-                    .col-xs-12.col-md-6.text-md-right
-                      .media
-                        .media-body
-                          %h4.media-heading.force-text-wrap.line-height-normal
-                            = import_column_display_name(@import.import_type, required_field)
-                        .media-right.flex-sm-middle.hidden-sm-down.text-sm-right
-                          = fa_icon "long-arrow-right inverse"
+                .col-xs-12.col-md-6
+                  - description = @import.column_descriptions[required_field]
+                  = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
 
-                    .col-xs-12.col-md-6
-                      - description = @import.column_descriptions[required_field]
-                      = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
+      - if @import.optional_columns.any?
+        .row
+          .col-xs-12
+            %h2.h1.font-weight-normal.text-xs-center.m-y-1
+              = t("headings.optional_headers", scope: language_scope)
+        .row
+          .col-xs-12.col-md-10.offset-md-1.m-x-auto
+            - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+              .row.row-column-headers-listing.flex-items-md-middle
+                .col-xs-12.col-md-6.text-md-right
+                  .media
+                    .media-body
+                      %h4.media-heading.force-text-wrap.line-height-normal
+                        = import_column_display_name(@import.import_type, field)
+                    .media-right.flex-sm-middle.hidden-sm-down.m-l-1
+                      = fa_icon "long-arrow-right inverse"
 
-          - if @import.optional_columns.any?
-            .row
-              .col-xs-12
-                %h2.h1.font-weight-normal.text-xs-center.m-y-1
-                  = t("headings.optional_headers", scope: language_scope)
-            .row
-              .col-xs-12.col-md-10.offset-md-1.m-x-auto
-                - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
-                  .row.row-column-headers-listing.flex-items-md-middle
-                    .col-xs-12.col-md-6.text-md-right
-                      .media
-                        .media-body
-                          %h4.media-heading.force-text-wrap.line-height-normal
-                            = import_column_display_name(@import.import_type, field)
-                        .media-right.flex-sm-middle.hidden-sm-down.m-l-1
-                          = fa_icon "long-arrow-right inverse"
-
-                    .col-xs-12.col-md-6.p-x-0
-                      - description = @import.column_descriptions[field]
-                      .m-l-1
-                        = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
+                .col-xs-12.col-md-6.p-x-0
+                  - description = @import.column_descriptions[field]
+                  .m-l-1
+                    = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
 
     #upload_file.container-new-import.container-flush.blue.p-y-3
       .row.text-xs-center
