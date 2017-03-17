@@ -106,7 +106,7 @@
       .row.p-b-1
         .col-xs-12
           %p.text-xs-center
-            = link_to import_path(@import), method: :delete, data: { confirm: t(:delete_confirmation, number_of_records: @import.imported_records.size, scope: [:import, :show]) }, class: 'btn btn-link' do
+            = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-link' do
               = fa_icon 'trash', text: 'Delete Import'
 
     .row.p-b-3

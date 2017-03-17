@@ -123,7 +123,7 @@ describe NfgCsvImporter::ImportsController do
 
     context "when the import can't be deleted by the current user" do
       before do
-        NfgCsvImporter::Import.any_instance.stubs(:can_be_deleted_by?).with(user).returns(false)
+        NfgCsvImporter::Import.any_instance.stubs(:can_be_deleted?).with(user).returns(false)
       end
 
       it 'redirects back to show with an error flash message' do

@@ -65,17 +65,15 @@ describe NfgCsvImporter::ImportService do
         end
 
         it "sets the importable" do
-          subject.import
+					subject.import
           expect(NfgCsvImporter::ImportedRecord.last.importable).to eql(User.last)
         end
 
-        context "when the model isn't active record (unlikely to ever happen but just to be safe" do
-          let(:non_model_object) { mock("NonModelObject") }
-
-
+        context "when importable is blank, invalid, or not persisted" do
           it "leaves importable empty" do
-            User.any_instance.stubs(:save).returns(non_model_object)
-            expect { subject.import }.to raise_error(ActiveRecord::RecordInvalid)
+            User.any_instance.stubs(:save).returns(nil)
+						subject.import
+            expect(subject.errors_list.size).to eq 1
           end
         end
       end
@@ -348,23 +346,6 @@ describe NfgCsvImporter::ImportService do
 			it { expect(subject).not_to be }
 		end
 
-	end
-
-	describe "#validate_object(object)" do
-		subject { import_service.send(:validate_object,object) }
-    let(:object) { FactoryGirl.build(:user, email: email) }
-
-    context "when object is invalid" do
-    	let(:email) { '' }
-
-    	it { expect(subject).not_to be }
-    end
-
-    context "when object is valid" do
-    	let(:email) { 'pavan@networkforgood.com' }
-
-    	it { expect(subject).to be }
-    end
 	end
 
 	describe "#no_of_records" do
