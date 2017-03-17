@@ -182,7 +182,7 @@ describe NfgCsvImporter::ImportsController do
     it "generate CSV" do
       subject
       expect(response.header['Content-Type']).to include 'text/csv'
-      expect(response.body).to include('Field,Description')
+      expect(response.body).to include('email,first_name,last_name,full_name')
     end
   end
 end

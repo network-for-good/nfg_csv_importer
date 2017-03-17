@@ -83,7 +83,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def template
-    send_data @import.template_as_csv, type: "text/csv", filename: "#{@import.import_type}_import_template.csv", disposition: 'attachment'
+    import_template_service = NfgCsvImporter::ImportTemplateService.new(import: @import, format: 'csv')
+    send_data import_template_service.call, type: "text/csv", filename: "#{@import.import_type}_import_template.#{import_template_service.format}", disposition: 'attachment'
   end
 
   protected

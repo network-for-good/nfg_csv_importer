@@ -433,23 +433,4 @@ describe NfgCsvImporter::Import do
       end
     end
   end
-
-  describe '#template_as_csv' do
-    let(:required_columns) { %w{email first_name last_name} }
-    let(:column_descriptions) { { 'email' => 'Must be a valid email address',
-      'first_name' => "The first name of the subscriber (i.e. John, Samantha, Mary Catherine, etc)",
-      'last_name' => "The last name of the subscriber (i.e. Cena, Sainte, Bateson, etc)" } }
-
-    before do
-      import.stubs(:column_descriptions).returns(column_descriptions)
-      import.stubs(:required_columns).returns(required_columns)
-    end
-
-    subject { import.template_as_csv }
-
-    it { expect(subject).to include "Field,Description" }
-    it { expect(subject).to include "email,REQUIRED Must be a valid email address" }
-    it { expect(subject).to include 'first_name,"REQUIRED The first name of the subscriber (i.e. John, Samantha, Mary Catherine, etc)"' }
-    it { expect(subject).to include 'last_name,"REQUIRED The last name of the subscriber (i.e. Cena, Sainte, Bateson, etc)"' }
-  end
 end
