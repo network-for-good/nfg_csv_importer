@@ -8,7 +8,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
   def users
     {
       required_columns: %w{ email },
-      optional_columns: %w{first_name last_name full_name},
+      optional_columns: %w{first_name last_name full_name tribue_attribute_and_notification_preference_with_salutation surname wealth_score college_degree last_donation_date },
       default_values: { "first_name" => lambda { |row| row["email"].try(:split, "@").try(:first) } },
       field_aliases: { "first_name" => ["first", "donor first name"],
                       "last_name" => ["last", "donor last name"],
