@@ -22,6 +22,8 @@ describe NfgCsvImporter::ImportService do
   let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
   let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }
 
+  it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
+
   describe "subscriber" do
     let!(:csv_data) { mock }
 
@@ -30,8 +32,6 @@ describe NfgCsvImporter::ImportService do
     it { expect(subject.type).to be import_type }
     it { expect(subject.imported_for).to be entity }
     it { expect(subject.imported_by).to be admin }
-
-    it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
 
     before(:each) do
       NfgCsvImporter::ImportService.any_instance.stubs(:file).returns(file)
@@ -53,7 +53,6 @@ describe NfgCsvImporter::ImportService do
         csv_data.stubs(:last_row).returns(2)
         NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
       end
-
 
       it "should persist the record " do
         expect(subject.import).to be_nil
