@@ -158,44 +158,6 @@ describe NfgCsvImporter::ImportService do
       end
     end
 
-    context "when fields that can be merged are provided" do
-      before do
-        ImportDefinition.any_instance
-          .stubs(:users)
-          .returns({
-            required_columns: %w{email first_name last_name note},
-            optional_columns: [],
-            alias_attributes: [],
-            default_values: {},
-            fields_that_allow_multiple_mappings: ["note"],
-            class_name: "User"
-          })
-      end
-
-      let(:file_name) { "/users_for_merge_field_spec.xls" }
-      let(:import_type) { "users" }
-
-      context "and the field is mapped to a single column" do
-        let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "ignore_column" } }
-
-        it "should assign that column's value to the field" do
-          NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import).import
-          expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP")
-        end
-
-      end
-
-      context "and the field is mapped to multiple columns" do
-        let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "note" } }
-
-        it "should assign both values to the single field with a separator" do
-          NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
-          expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP#{ NfgCsvImporter::ImportService::MERGE_FIELD_SEPARATOR}This is an other field")
-        end
-
-      end
-    end
-
     it "should support csv import" do
       expect(subject.send(:open_spreadsheet)).to be_an_instance_of(Roo::CSV)
     end
@@ -499,6 +461,44 @@ describe NfgCsvImporter::ImportService do
 
     it 'sets start_timestamp to current timestamp' do
       expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
+    end
+  end
+
+  context "when fields that can be merged are provided" do
+    before do
+      ImportDefinition.any_instance
+        .stubs(:users)
+        .returns({
+          required_columns: %w{email first_name last_name note},
+          optional_columns: [],
+          alias_attributes: [],
+          default_values: {},
+          fields_that_allow_multiple_mappings: ["note"],
+          class_name: "User"
+        })
+    end
+
+    let(:file_name) { "/users_for_merge_field_spec.xls" }
+    let(:import_type) { "users" }
+
+    context "and the field is mapped to a single column" do
+      let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "ignore_column" } }
+
+      it "should assign that column's value to the field" do
+        NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import).import
+        expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP")
+      end
+
+    end
+
+    context "and the field is mapped to multiple columns" do
+      let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "note" } }
+
+      it "should assign both values to the single field with a separator" do
+        NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
+        expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP#{ NfgCsvImporter::ImportService::MERGE_FIELD_SEPARATOR}This is an other field")
+      end
+
     end
   end
 end
