@@ -358,23 +358,6 @@ describe NfgCsvImporter::ImportService do
 
   end
 
-  describe "#validate_object(object)" do
-    subject { import_service.send(:validate_object,object) }
-    let(:object) { FactoryGirl.build(:user, email: email) }
-
-    context "when object is invalid" do
-      let(:email) { '' }
-
-      it { expect(subject).not_to be }
-    end
-
-    context "when object is valid" do
-      let(:email) { 'pavan@networkforgood.com' }
-
-      it { expect(subject).to be }
-    end
-  end
-
   describe "#no_of_records" do
     subject { import_service.no_of_records }
 
@@ -461,6 +444,23 @@ describe NfgCsvImporter::ImportService do
 
     it 'sets start_timestamp to current timestamp' do
       expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
+    end
+  end
+
+  describe "#validate_object(object)" do
+    subject { import_service.send(:validate_object,object) }
+    let(:object) { FactoryGirl.build(:user, email: email) }
+
+    context "when object is invalid" do
+      let(:email) { '' }
+
+      it { expect(subject).not_to be }
+    end
+
+    context "when object is valid" do
+      let(:email) { 'pavan@networkforgood.com' }
+
+      it { expect(subject).to be }
     end
   end
 
