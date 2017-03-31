@@ -23,9 +23,8 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:first_x_rows).to(:service)}
   it { should delegate_method(:invalid_column_rules).to(:service)}
   it { should delegate_method(:can_be_viewed_by).to(:service)}
+  it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
-
-
 
   context "when file is nil" do
     let(:file) { nil }
@@ -93,6 +92,17 @@ describe NfgCsvImporter::Import do
         expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
       end
     end
+
+    context "when there's an error reading the file" do
+      before do
+        import.stubs(:duplicated_headers).raises(StandardError)
+      end
+
+      it "should add errors to base" do
+        subject
+        expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
+      end
+    end
   end
 
   describe "#service" do
@@ -115,16 +125,16 @@ describe NfgCsvImporter::Import do
   end
 
   describe "#upload_error_file(errors)" do
-    let(:errors_csv) { "email\tfirst_name\tlast_name\tErrors\npavan@gmail.com\tArnold\tGilbert\tEmail is invalid\n" }
+    let(:errors_csv) { "email,first_name,last_name,Errors\npavan@gmail.com,Arnold,Gilbert,Email is invalid\n" }
     subject { import.set_upload_error_file(errors_csv) }
 
     it "should uploaded file and store path in error_file attribute" do
       expect { subject }.to change { import.error_file.url }.from(nil).to(String)
     end
 
-    it "should have xls extension" do
+    it "should have csv extension" do
       subject
-      expect(import.error_file.file.extension).to eq "xls"
+      expect(import.error_file.file.extension).to eq "csv"
     end
 
   end
@@ -429,6 +439,41 @@ describe NfgCsvImporter::Import do
 
         it "should be 0 minutes" do
           expect(subject).to eq("0 minutes")
+        end
+      end
+    end
+  end
+
+  describe '#can_be_deleted?' do
+    subject { import.can_be_deleted?(admin) }
+
+    context 'when import status is uploaded' do
+      before { import.uploaded! }
+
+      it 'returns true' do
+        expect(subject).to eq true
+      end
+    end
+
+    context 'when import status is complete' do
+      before do
+        import.complete!
+        import.stubs(:can_be_deleted_by?).with(admin).returns(can_be_deleted_by_admin)
+      end
+
+      context 'when current_user can delete' do
+        let(:can_be_deleted_by_admin) { true }
+
+        it 'returns true' do
+          expect(subject).to eq true
+        end
+      end
+
+      context 'when current_user cannot delete' do
+        let(:can_be_deleted_by_admin) { false }
+
+        it 'returns false' do
+          expect(subject).to eq false
         end
       end
     end

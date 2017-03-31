@@ -14,16 +14,11 @@ describe "Running through the full import process", js: true do
     it "should be able to import users" do
       visit new_import_path
       # upload and continue button should be disabled prior to adding file
-      sleep 1
-      # click_link(I18n.t("imports.new.links.ready_upload"))
       expect(page).to have_button(upload_button_name, disabled: true)
       attach_file("import_import_file", File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))
-      sleep 1
       # button should be enabled after attaching the file
       expect(page).to have_button(upload_button_name)
       expect { submit_import_file_form }.to change(NfgCsvImporter::Import, :count).by(1)
-
-      sleep 1
 
       within("#importer_gem_modal_first_visit") do
         expect(page).to have_content("Great News")
@@ -118,6 +113,7 @@ describe "Running through the full import process", js: true do
 
       expect do
         click_link "I'm Ready, Let's Import"
+        sleep 1
       end.to change(User, :count).by(3)
 
       expect(current_path).to eq(nfg_csv_importer.import_path(new_import))
@@ -191,4 +187,5 @@ end
 
 def submit_import_file_form
   click_button "Upload & Continue"
+  sleep 1
 end

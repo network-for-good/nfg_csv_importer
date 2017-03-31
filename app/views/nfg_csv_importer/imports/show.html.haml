@@ -20,8 +20,7 @@
             = @import.import_type.pluralize.humanize.downcase
           are
           %strong
-            = t("status.#{ @import.status }", default: @import.status)
-
+            = t("status.#{@import.status}", default: @import.status, scope: [:imports, :show])
         .p-t-1
           This data was imported by
           %strong
@@ -102,6 +101,14 @@
               Download your original spreadsheet:
               = link_to @import.import_file.url do
                 = fa_icon "paperclip", text: @import.import_file_name
+
+    - if @import.can_be_deleted?(current_user)
+      .row.p-b-1
+        .col-xs-12
+          %p.text-xs-center
+            = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-link' do
+              = fa_icon 'trash', text: 'Delete Import'
+
     .row.p-b-3
       .col-xs-12.text-xs-center
         %strong

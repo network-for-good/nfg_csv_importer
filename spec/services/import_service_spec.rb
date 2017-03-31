@@ -62,7 +62,6 @@ describe NfgCsvImporter::ImportService do
         NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
       end
 
-
       it "should persist the record " do
         expect(subject.import).to be_nil
       end
@@ -77,13 +76,11 @@ describe NfgCsvImporter::ImportService do
           expect(NfgCsvImporter::ImportedRecord.last.importable).to eql(User.last)
         end
 
-        context "when the model isn't active record (unlikely to ever happen but just to be safe" do
-          let(:non_model_object) { mock("NonModelObject") }
-
-
+        context "when importable is blank, invalid, or not persisted" do
           it "leaves importable empty" do
-            User.any_instance.stubs(:save).returns(non_model_object)
-            expect { subject.import }.to raise_error(ActiveRecord::RecordInvalid)
+            User.any_instance.stubs(:save).returns(nil)
+            subject.import
+            expect(subject.errors_list.size).to eq 1
           end
         end
       end
@@ -444,61 +441,6 @@ describe NfgCsvImporter::ImportService do
 
     it 'sets start_timestamp to current timestamp' do
       expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
-    end
-  end
-
-  describe "#validate_object(object)" do
-    subject { import_service.send(:validate_object,object) }
-    let(:object) { FactoryGirl.build(:user, email: email) }
-
-    context "when object is invalid" do
-      let(:email) { '' }
-
-      it { expect(subject).not_to be }
-    end
-
-    context "when object is valid" do
-      let(:email) { 'pavan@networkforgood.com' }
-
-      it { expect(subject).to be }
-    end
-  end
-
-  context "when fields that can be merged are provided" do
-    before do
-      ImportDefinition.any_instance
-        .stubs(:users)
-        .returns({
-          required_columns: %w{email first_name last_name note},
-          optional_columns: [],
-          alias_attributes: [],
-          default_values: {},
-          fields_that_allow_multiple_mappings: ["note"],
-          class_name: "User"
-        })
-    end
-
-    let(:file_name) { "/users_for_merge_field_spec.xls" }
-    let(:import_type) { "users" }
-
-    context "and the field is mapped to a single column" do
-      let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "ignore_column" } }
-
-      it "should assign that column's value to the field" do
-        NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import).import
-        expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP")
-      end
-
-    end
-
-    context "and the field is mapped to multiple columns" do
-      let(:fields_mapping) { { "email address" => "email", "first_name" => "first_name", "last name" => "last_name", "note" => "note", "other" => "note" } }
-
-      it "should assign both values to the single field with a separator" do
-        NfgCsvImporter::ImportService.new(imported_for:entity,type:import_type,file:file,imported_by: admin, import_record: import).import
-        expect(class_to_be_imported.find_by_email("tim@farlow.com").note).to eq("Tim is a VIP#{ NfgCsvImporter::ImportService::MERGE_FIELD_SEPARATOR}This is an other field")
-      end
-
     end
   end
 end

@@ -67,12 +67,24 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def destroy
-    number_of_records = @import.imported_records.size
-    @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
-    @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
-      NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
+    unless @import.can_be_deleted?(current_user)
+      flash[:error] = t(:cannot_delete, scope: [:import, :destroy])
+      return redirect_to import_path(@import)
     end
-    flash[:success] = t(:success, number_of_records: number_of_records, import_type: @import.import_type, scope: [:import, :destroy])
+
+    if @import.uploaded?
+      @import.destroy
+      flash[:success] = t(:success_without_records, scope: [:import, :destroy])
+    else # completed?
+      number_of_records = @import.imported_records.size
+      @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
+      @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
+        NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
+      end
+      flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
+    end
+
+
     redirect_to imports_path
   end
 

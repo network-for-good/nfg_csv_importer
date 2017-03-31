@@ -23,14 +23,15 @@ module NfgCsvImporter
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
       :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
       :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
-      :invalid_column_rules, :column_validation_rules, :can_be_viewed_by, :fields_that_allow_multiple_mappings, :to => :service
+      :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
+      :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
     end
 
-    def can_be_deleted?
-      imported_records.created.any? && complete? && !Rails.env.production?
+    def can_be_deleted?(admin)
+      uploaded? || (complete? && can_be_deleted_by?(admin))
     end
 
     def column_stats
@@ -74,7 +75,7 @@ module NfgCsvImporter
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
         errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
       rescue  => e
-        errors.add :base, "File import failed: #{e.message}"
+        errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
         Rails.logger.error e.message
         Rails.logger.error e.backtrace.join("\n")
         return false
@@ -100,9 +101,9 @@ module NfgCsvImporter
 
     def maybe_append_to_existing_errors(errors_csv)
       if error_file.present?
-        errors_csv = CSV.generate(col_sep: "\t") do |csv|
-          CSV.parse(error_file.read, col_sep: "\t") { |row| csv << row }
-          CSV.parse(errors_csv, headers: true, col_sep: "\t") { |row| csv << row }
+        errors_csv = CSV.generate do |csv|
+          CSV.parse(error_file.read) { |row| csv << row }
+          CSV.parse(errors_csv, headers: true) { |row| csv << row }
         end
       end
 
@@ -129,7 +130,7 @@ module NfgCsvImporter
     def set_upload_error_file(errors_csv)
       errors_csv = maybe_append_to_existing_errors(errors_csv)
       csv_file = FilelessIO.new(errors_csv)
-      csv_file.original_filename = "import_error_file.xls"
+      csv_file.original_filename = "import_error_file.csv"
       self.error_file = csv_file
       self.save!
     end

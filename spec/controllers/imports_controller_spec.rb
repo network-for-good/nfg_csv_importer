@@ -86,7 +86,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#destroy" do
-    let!(:import) { create(:import, imported_for: entity) }
+    let!(:import) { create(:import, imported_for: entity, status: 'complete') }
     let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
 
@@ -113,6 +113,24 @@ describe NfgCsvImporter::ImportsController do
     it "sets the import's status to deleting" do
       subject
       expect(import.reload.status).to eql("deleting")
+    end
+
+    it 'redirects back to index with a success flash message' do
+      subject
+      expect(response).to redirect_to imports_path
+      expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
+    end
+
+    context "when the import can't be deleted by the current user" do
+      before do
+        NfgCsvImporter::Import.any_instance.stubs(:can_be_deleted?).with(user).returns(false)
+      end
+
+      it 'redirects back to show with an error flash message' do
+        subject
+        expect(response).to redirect_to import_path(import)
+        expect(flash[:error]).to eq I18n.t(:cannot_delete, scope: [:import, :destroy])
+      end
     end
   end
 

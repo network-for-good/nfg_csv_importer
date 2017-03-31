@@ -1,4 +1,5 @@
 require 'rails_helper'
+include NfgCsvImporter::Engine.routes.url_helpers
 
 describe NfgCsvImporter::ImportsHelper do
   describe "#index_alphabetize" do
@@ -92,8 +93,8 @@ describe NfgCsvImporter::ImportsHelper do
     it { expect(subject).to eq "<i class=\"fa fa-minus text-muted\"></i>" }
   end
 
-  describe "#import_status_icon_and_text" do
-    subject { helper.import_status_icon_and_text(import) }
+  describe "#import_status_link" do
+    subject { helper.import_status_link(import) }
     before { helper.stubs(:import_path).returns("/imports") }
     let(:import) { build_stubbed(:import, status: status, number_of_records: 4) }
     let(:status) { }
@@ -101,7 +102,8 @@ describe NfgCsvImporter::ImportsHelper do
     context "when status is :uploaded" do
       let(:status) { :uploaded }
 
-      it { expect(subject).to match("cloud-upload") }
+      it { expect(subject).to match("gear") }
+      it { expect(subject).to match("Review &amp; Mapping") }
     end
 
     context "when status is :defined" do
