@@ -31,3 +31,19 @@
 .font-weight-light   { font-weight: $font-weight-light; }
 .font-weight-normal  { font-weight: $font-weight-normal; }
 .font-weight-bold    { font-weight: $font-weight-medium; }
+
+// Source: https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+.force-text-wrap {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+}

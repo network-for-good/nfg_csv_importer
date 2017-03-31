@@ -60,7 +60,7 @@ en:
         scroll_down: "Scroll down to learn more"
         file: "Template (CSV)"
         expand_column_headers: "Expand the full list of column headers"
-        cheatsheet: "Download a Column Headers Cheatsheet"
+        cheatsheet: "Download a Template For This Import"
       tooltips:
         coming_soon: "Coming Soon!"
       form:
