@@ -2,8 +2,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
 
   before_filter :load_imported_for
-  before_filter :set_import_type, only: [:create, :new]
-  before_filter :load_new_import, only: [:create, :new]
+  before_filter :set_import_type, only: [:create, :new, :template]
+  before_filter :load_new_import, only: [:create, :new, :template]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
   before_filter :authorize_user, except: [:index]
 
@@ -86,6 +86,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
 
     redirect_to imports_path
+  end
+
+  def template
+    import_template_service = NfgCsvImporter::ImportTemplateService.new(import: @import, format: 'csv')
+    send_data import_template_service.call, type: "text/csv", filename: "#{@import.import_type}_import_template.#{import_template_service.format}", disposition: 'attachment'
   end
 
   protected
