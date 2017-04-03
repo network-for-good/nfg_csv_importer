@@ -148,6 +148,12 @@ class NfgCsvImporter::ImportService
     self.start_timestamp = Time.now.to_i
   end
 
+  # We validate the importable object with this method so that we can overrite it
+  # in a non-AR class like Evo's ProjectImportService
+  def validate_object(importable)
+    importable.try(:valid?)
+  end
+
   def persist_valid_record(model_obj, index, row)
     NfgCsvImporter::Import.increment_counter(:records_processed, import_id)
 
@@ -168,7 +174,7 @@ class NfgCsvImporter::ImportService
     end
 
     # Final check to ensure we have a valid/saved importable object.
-    unless importable.try(:valid?) && importable.try(:persisted?)
+    unless validate_object(importable) && importable.try(:persisted?)
       handle_record_errors(importable, row)
       return
     end
