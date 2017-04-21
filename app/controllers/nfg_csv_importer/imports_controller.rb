@@ -2,6 +2,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
 
   before_filter :load_imported_for
+  before_filter :load_imported_by
   before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
@@ -12,10 +13,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def create
-    @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
     @import.status = :uploaded
-    @import.import_type = @import_type
-    @import.imported_for = @imported_for
 
     if @import.save
       @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
@@ -100,7 +98,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_new_import
-    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for))
+    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by))
   end
 
   def set_import_type
