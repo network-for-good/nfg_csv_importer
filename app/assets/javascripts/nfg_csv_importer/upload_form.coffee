@@ -7,8 +7,8 @@ class NfgCsvImporter.UploadForm
 
     # Errors
     @errorContainer = @el.next "[data-toggle='error']"
-    @error = "Shoot! You can only upload <strong>csv, xls, or xlsx</strong> files."
-    @errorClasses = 'text-danger small'
+    @error = "<strong>Shoot!</strong> You can only upload <strong>csv, xls, or xlsx</strong> files."
+    @errorClasses = 'text-inverse'
     @tooltip = @button.closest "span[data-toggle='tooltip']"
 
     @el.on 'change', (e) =>
@@ -20,9 +20,14 @@ class NfgCsvImporter.UploadForm
       @validateFileType()
 
     else if (e.which == 27) || (@el.val().length == 0)
+      @errorContainer.html ''
+      @el
+        .attr 'aria-invalid', 'false'
+        .closest '.form-group'
+        .removeClass 'has-danger'
+
       @addTooltip()
       @disableButton()
-      @errorContainer.html ''
 
   validateFileType: ->
     fileType = [
@@ -57,10 +62,11 @@ class NfgCsvImporter.UploadForm
     @disableButton()
 
   validationSuccess: ->
-    if @error.length
-      @errorContainer.html ''
-    if @el.attr('aria-invalid') == 'true'
-      @el.attr 'aria-invalid', 'false'
+    @el
+      .attr 'aria-invalid', 'false'
+      .closest '.form-group'
+      .removeClass 'has-danger'
+    @errorContainer.html ''
 
     @enableButton()
     @removeTooltip()
