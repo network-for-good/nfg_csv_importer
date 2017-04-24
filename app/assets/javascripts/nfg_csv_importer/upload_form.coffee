@@ -12,12 +12,17 @@ class NfgCsvImporter.UploadForm
     @tooltip = @button.closest "span[data-toggle='tooltip']"
 
     @el.on 'change', (e) =>
-      @beginValidation()
+      @beginValidation e
 
-  beginValidation: ->
-    if @el.val() == ''
+  beginValidation: (e) ->
+    if @el.val().length # a file was chosen
       @addTooltip()
       @validateFileType()
+
+    else if (e.which == 27) || (@el.val().length == 0)
+      @addTooltip()
+      @disableButton()
+      @errorContainer.html ''
 
   validateFileType: ->
     fileType = [
