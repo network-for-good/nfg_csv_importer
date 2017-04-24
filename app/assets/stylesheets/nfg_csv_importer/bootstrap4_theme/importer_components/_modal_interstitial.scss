@@ -122,7 +122,6 @@
     left: 0;
     background-color: $brand-primary;
     z-index: $zindex-modal + 990 !important;
-    position: absolute !important;
 
     &.fade { opacity: 0; }
     &.in { opacity: 0.95; }
