@@ -14,9 +14,9 @@ class NfgCsvImporter.ShowAndHide
     fadeOutPreference = $(clickedElement).data "fade-out"
 
     if fadeOutPreference == true
-      $(clickedElement).fadeTo 2000, 0
+      $(clickedElement).fadeTo 400, 0
       $(clickedElement).css "pointer-events", "none"
-    elementToTarget.slideToggle 2000, ->
+    elementToTarget.slideToggle 400, ->
       $(@).data "show-hide", "show"
 
 
