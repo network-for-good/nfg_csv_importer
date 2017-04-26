@@ -3,10 +3,7 @@
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   / TODO: Setup alert for this
   - if @import.errors.any?
-    .container-fluid.container-flush
-      .alert.alert-danger.m-b-0
-        %p
-          = @import.errors.full_messages.join("<br/>").html_safe
+    = render 'import_file_errors', errors: @import.errors.full_messages
 
   .container-fluid.container-flush
     .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
@@ -128,4 +125,4 @@
         %h2.h1.display-1
           %strong= t("headings.upload", scope: language_scope)
         %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
-    = render partial: 'nfg_csv_importer/imports/upload_form', locals: { language_scope: language_scope, url: nfg_csv_importer.imports_path, import: @import, import_type: @import_type, previous_imports: @previous_imports}
+    = render partial: 'nfg_csv_importer/imports/upload_form', locals: { language_scope: language_scope, import: @import, import_type: @import_type, previous_imports: @previous_imports}

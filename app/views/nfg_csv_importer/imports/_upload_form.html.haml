@@ -1,7 +1,7 @@
 - previous_imports = [] if local_assigns[:previous_imports].nil?
 - language_scope = local_assigns[:language_scope]
 
-= simple_form_for(import, :url => url) do |f|
+= simple_form_for(import, :url => nfg_csv_importer.imports_path) do |f|
   .row.p-b-3
     .col-md-8.offset-md-2.col-xs-12
       .form-group
@@ -12,6 +12,7 @@
           %label.file
             = f.file_field :import_file, aria: { invalid: 'false' }
             %span{ data: { toggle: 'error' } }
+            #errors
 
         = hidden_field_tag 'import_type', import_type
 
