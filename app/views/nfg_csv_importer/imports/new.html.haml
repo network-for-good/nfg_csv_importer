@@ -1,131 +1,131 @@
 - language_scope = [:imports, :new]
 
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
-  = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
-    / TODO: Setup alert for this
-    - if @import.errors.any?
-      .container-fluid.container-flush
-        .alert.alert-danger.m-b-0
-          = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
-
+  / TODO: Setup alert for this
+  - if @import.errors.any?
     .container-fluid.container-flush
-      .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
-        .container-fluid
-          .row
-            .col-md-10.offset-md-1.col-xs-12
-              %h1.text-xs-center
-                = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
-              %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
+      .alert.alert-danger.m-b-0
+        %p
+          = @import.errors.full_messages.join("<br/>").html_safe
 
-    .container-new-import.container-flush.blue.p-b-3
-      .row
-        .col-md-10.offset-md-1.col-xs-12
-          .row.text-xs-center
-            .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
+  .container-fluid.container-flush
+    .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
+      .container-fluid
+        .row
+          .col-md-10.offset-md-1.col-xs-12
+            %h1.text-xs-center
+              = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
+            %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
 
-            .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", content_class: "small", heading: "Step 2", content: "Map your column headers so we can import your data" }
+  .container-new-import.container-flush.blue.p-b-3
+    .row
+      .col-md-10.offset-md-1.col-xs-12
+        .row.text-xs-center
+          .col-md-4.col-xs-12
+            = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
 
-            .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
+          .col-md-4.col-xs-12
+            = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", content_class: "small", heading: "Step 2", content: "Map your column headers so we can import your data" }
 
-          .row.text-xs-center
-            .col-xs-12
-              %a.btn.btn-primary.btn-lg.m-y-1{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
-                = fa_icon "chevron-right", text: t("links.ready_upload", scope: language_scope), right: true
+          .col-md-4.col-xs-12
+            = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
 
-              %p.small.text-muted
-                %em or
-              %p.small
-                %em
-                  %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
-                    = t("links.scroll_down", scope: language_scope)
+        .row.text-xs-center
+          .col-xs-12
+            %a.btn.btn-primary.btn-lg.m-y-1{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
+              = fa_icon "chevron-right", text: t("links.ready_upload", scope: language_scope), right: true
 
-    #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
-      .row
-        .col-md-10.offset-md-1.col-xs-12
-          .row
-            .col-xs-12
-              .text-xs-center
-                %h2.h1.display-1
-                  = t("headings.prepare", scope: language_scope).html_safe
-                %p
-                  = t("content.prepare", scope: language_scope)
-                  %a.text-link{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :bottom), href: "javascript:;" }
-                    %strong= t("links.file", scope: language_scope)
+            %p.small.text-muted
+              %em or
+            %p.small
+              %em
+                %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
+                  = t("links.scroll_down", scope: language_scope)
 
-                %p.small.m-b-1
-                  = fa_icon "asterisk", class: "text-success", text: t("content.requirements", scope: language_scope).html_safe
-
-                / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
-                / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
-
-              / TODO: Set these as a display flex for same width and height
-              .row.m-y-2
-                - @import.column_validation_rules.each do |column_rule|
-                  = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-info"
-
-      .row.text-xs-center.row-expander.flex-items-xs-middle
-        .col-xs-12
-          %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
-            = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
-
-    #import_type_column_descriptions.container-new-import.container-flush.bg-green.p-y-2{ data: { show_hide: "hide" } }
-      .row
-        .col-xs-12
-          .text-xs-center
-            %span.display-inline-block{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :top) }
-              = link_to "javascript:;", class: "text-link" do
-                = fa_icon "cloud-download", text: t("links.cheatsheet", scope: language_scope)
-
-      - if @import.required_columns.any?
+  #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
+    .row
+      .col-md-10.offset-md-1.col-xs-12
         .row
           .col-xs-12
-            %h2.h1.font-weight-normal.text-xs-center.m-y-1
-              = t("headings.required_headers", scope: language_scope)
-        %div{ class: "row #{ @import.optional_columns.any? ? 'm-b-3' : '' }" }
-          .col-xs-12.col-md-10.offset-md-1.m-x-auto
-            - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
-              .row.row-column-headers-listing.flex-items-md-middle
-                .col-xs-12.col-md-6.text-md-right
-                  .media
-                    .media-body
-                      %h4.media-heading.force-text-wrap.line-height-normal
-                        = import_column_display_name(@import.import_type, required_field)
-                    .media-right.flex-sm-middle.hidden-sm-down.text-sm-right
-                      = fa_icon "long-arrow-right inverse"
+            .text-xs-center
+              %h2.h1.display-1
+                = t("headings.prepare", scope: language_scope).html_safe
+              %p
+                = t("content.prepare", scope: language_scope)
+                %a.text-link{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :bottom), href: "javascript:;" }
+                  %strong= t("links.file", scope: language_scope)
 
-                .col-xs-12.col-md-6
-                  - description = @import.column_descriptions[required_field]
+              %p.small.m-b-1
+                = fa_icon "asterisk", class: "text-success", text: t("content.requirements", scope: language_scope).html_safe
+
+              / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
+              / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+
+            / TODO: Set these as a display flex for same width and height
+            .row.m-y-2
+              - @import.column_validation_rules.each do |column_rule|
+                = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-info"
+
+    .row.text-xs-center.row-expander.flex-items-xs-middle
+      .col-xs-12
+        %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
+          = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
+
+  #import_type_column_descriptions.container-new-import.container-flush.bg-green.p-y-2{ data: { show_hide: "hide" } }
+    .row
+      .col-xs-12
+        .text-xs-center
+          %span.display-inline-block{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :top) }
+            = link_to "javascript:;", class: "text-link" do
+              = fa_icon "cloud-download", text: t("links.cheatsheet", scope: language_scope)
+
+    - if @import.required_columns.any?
+      .row
+        .col-xs-12
+          %h2.h1.font-weight-normal.text-xs-center.m-y-1
+            = t("headings.required_headers", scope: language_scope)
+      %div{ class: "row #{ @import.optional_columns.any? ? 'm-b-3' : '' }" }
+        .col-xs-12.col-md-10.offset-md-1.m-x-auto
+          - @import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |required_field|
+            .row.row-column-headers-listing.flex-items-md-middle
+              .col-xs-12.col-md-6.text-md-right
+                .media
+                  .media-body
+                    %h4.media-heading.force-text-wrap.line-height-normal
+                      = import_column_display_name(@import.import_type, required_field)
+                  .media-right.flex-sm-middle.hidden-sm-down.text-sm-right
+                    = fa_icon "long-arrow-right inverse"
+
+              .col-xs-12.col-md-6
+                - description = @import.column_descriptions[required_field]
+                = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
+
+    - if @import.optional_columns.any?
+      .row
+        .col-xs-12
+          %h2.h1.font-weight-normal.text-xs-center.m-y-1
+            = t("headings.optional_headers", scope: language_scope)
+      .row
+        .col-xs-12.col-md-10.offset-md-1.m-x-auto
+          - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+            .row.row-column-headers-listing.flex-items-md-middle
+              .col-xs-12.col-md-6.text-md-right
+                .media
+                  .media-body
+                    %h4.media-heading.force-text-wrap.line-height-normal
+                      = import_column_display_name(@import.import_type, field)
+                  .media-right.flex-sm-middle.hidden-sm-down.m-l-1
+                    = fa_icon "long-arrow-right inverse"
+
+              .col-xs-12.col-md-6.p-x-0
+                - description = @import.column_descriptions[field]
+                .m-l-1
                   = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
 
-      - if @import.optional_columns.any?
-        .row
-          .col-xs-12
-            %h2.h1.font-weight-normal.text-xs-center.m-y-1
-              = t("headings.optional_headers", scope: language_scope)
-        .row
-          .col-xs-12.col-md-10.offset-md-1.m-x-auto
-            - @import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
-              .row.row-column-headers-listing.flex-items-md-middle
-                .col-xs-12.col-md-6.text-md-right
-                  .media
-                    .media-body
-                      %h4.media-heading.force-text-wrap.line-height-normal
-                        = import_column_display_name(@import.import_type, field)
-                    .media-right.flex-sm-middle.hidden-sm-down.m-l-1
-                      = fa_icon "long-arrow-right inverse"
-
-                .col-xs-12.col-md-6.p-x-0
-                  - description = @import.column_descriptions[field]
-                  .m-l-1
-                    = description.present? ? description : t("content.no_description", scope: language_scope).html_safe
-
-    #upload_file.container-new-import.container-flush.blue.p-y-3
-      .row.text-xs-center
-        .col-xs-12
-          %h2.h1.display-1
-            %strong= t("headings.upload", scope: language_scope)
-          %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
-      = render partial: 'nfg_csv_importer/imports/upload_form', locals: { f: f, language_scope: language_scope }
+  #upload_file.container-new-import.container-flush.blue.p-y-3
+    .row.text-xs-center
+      .col-xs-12
+        %h2.h1.display-1
+          %strong= t("headings.upload", scope: language_scope)
+        %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
+    = render partial: 'nfg_csv_importer/imports/upload_form', locals: { language_scope: language_scope, url: nfg_csv_importer.imports_path, import: @import, import_type: @import_type, previous_imports: @previous_imports}

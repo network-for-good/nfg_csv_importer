@@ -1,37 +1,40 @@
+- previous_imports = [] if local_assigns[:previous_imports].nil?
 - language_scope = local_assigns[:language_scope]
-.row.p-b-3
-  .col-md-8.offset-md-2.col-xs-12
-    .form-group
 
-      .position-relative
-        - if @previous_imports.present?
-          .label.label-blue.label-top-left.label-circle 1
-        %label.file
-          = f.file_field :import_file, aria: { invalid: 'false' }
-          %span{ data: { toggle: 'error' } }
+= simple_form_for(import, :url => url) do |f|
+  .row.p-b-3
+    .col-md-8.offset-md-2.col-xs-12
+      .form-group
 
-      = hidden_field_tag 'import_type', @import_type
+        .position-relative
+          - if previous_imports.present?
+            .label.label-blue.label-top-left.label-circle 1
+          %label.file
+            = f.file_field :import_file, aria: { invalid: 'false' }
+            %span{ data: { toggle: 'error' } }
 
-    %hr.m-y-2
+        = hidden_field_tag 'import_type', import_type
 
-    - if @previous_imports.present?
-      .form-group.text-xs-center.m-b-2
-        %label.label-heading.text-primary.m-b-0= t("form.labels.import_template_id", scope: language_scope).html_safe
-        .m-b-1
-          %a.small{ href: "javascript:;", data: { show_hide_target: "#column_mapping_help" } }
-            = fa_icon "info-circle", text: t("form.help_text.import_template_id_show_hide", scope: language_scope)
-        %p#column_mapping_help.small{ data: { show_hide: "hide" } }
-          = t("form.help_text.import_template_id", scope: language_scope)
+      %hr.m-y-2
+
+      - if previous_imports.present?
+        .form-group.text-xs-center.m-b-2
+          %label.label-heading.text-primary.m-b-0= t("form.labels.import_template_id", scope: language_scope).html_safe
+          .m-b-1
+            %a.small{ href: "javascript:;", data: { show_hide_target: "#column_mapping_help" } }
+              = fa_icon "info-circle", text: t("form.help_text.import_template_id_show_hide", scope: language_scope)
+          %p#column_mapping_help.small{ data: { show_hide: "hide" } }
+            = t("form.help_text.import_template_id", scope: language_scope)
 
 
-        .position-relative.display-inline-block.m-t-1
-          .label.label-blue.label-top-left.label-circle 2
-          = f.input :import_template_id, label: false do
-            = f.select :import_template_id, options_from_collection_for_select(@previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "c-select"}
+          .position-relative.display-inline-block.m-t-1
+            .label.label-blue.label-top-left.label-circle 2
+            = f.input :import_template_id, label: false do
+              = f.select :import_template_id, options_from_collection_for_select(previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "c-select"}
 
-    %span{ bootstrap_tooltip("Choose a file first", :top) }
-      %button#upload_file_button.btn.btn-primary.btn-lg.m-x-a.display-block.disabled{ type: 'submit', data: { disable_with: t("form.buttons.disable_with.upload", scope: language_scope) }, disabled: "disabled"  }
-        = fa_icon "chevron-right", text: t("form.buttons.upload", scope: language_scope), right: true
+      %span{ bootstrap_tooltip("Choose a file first", :top) }
+        %button#upload_file_button.btn.btn-primary.btn-lg.m-x-a.display-block.disabled{ type: 'submit', data: { disable_with: t("form.buttons.disable_with.upload", scope: language_scope) }, disabled: "disabled"  }
+          = fa_icon "chevron-right", text: t("form.buttons.upload", scope: language_scope), right: true
 
 
   / :javascript
@@ -39,6 +42,6 @@
   /     $("#upload_file_button").removeClass("disabled").attr("disabled", false);
 
   /     $('#disabled_button_tooltip').tooltip('dispose');
-      
-      
+
+
   /   });
