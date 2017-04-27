@@ -82,6 +82,15 @@ describe NfgCsvImporter::Import do
       end
     end
 
+    context "when the file contains an empty header" do
+      let(:header_data) { ["first_name", "email", "", "last_name"] }
+      it { should_not be }
+      it " should add an error to base" do
+        subject
+        expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
+      end
+    end
+
     context 'when the file contains duplicate headers' do
       let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
 
