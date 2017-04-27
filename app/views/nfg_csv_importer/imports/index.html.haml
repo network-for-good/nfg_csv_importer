@@ -22,7 +22,7 @@
 
         #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
           - ImportDefinition.import_types.each do |import_type|
-            - definition = ImportDefinition.get_definition(import_type, @imported_for)
+            - definition = ImportDefinition.get_definition(import_type, @imported_for, @imported_by)
             - next unless definition.can_be_viewed_by(current_user)
             %div{ class: import_type_column_structure_classes, id: import_type }
               .card.flex-1.m-b-2
