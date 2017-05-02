@@ -32,7 +32,6 @@
                       = simple_format(definition.headline)
                     = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
                       = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
-
         .row
           .col-md-10.offset-md-1.col-xs-12
             .text-xs-center.m-t-1

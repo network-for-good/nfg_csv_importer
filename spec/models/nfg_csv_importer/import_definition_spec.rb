@@ -5,9 +5,10 @@ describe NfgCsvImporter::ImportDefinition do
     NfgCsvImporter::ImportDefinition.any_instance.stubs(:users).returns(import_definition_hash)
   end
   let(:imported_for) { stub }
+  let(:imported_by) { stub }
   let(:import_definition_hash) { user_import_definition }
 
-  let(:import_definition) { NfgCsvImporter::ImportDefinition.get_definition("users", imported_for) }
+  let(:import_definition) { NfgCsvImporter::ImportDefinition.get_definition("users", imported_for, imported_by) }
 
   describe "#required_columns" do
     subject { import_definition.required_columns }

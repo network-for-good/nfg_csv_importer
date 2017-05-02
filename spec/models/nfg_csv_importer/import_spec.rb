@@ -24,6 +24,7 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:invalid_column_rules).to(:service)}
   it { should delegate_method(:can_be_viewed_by).to(:service)}
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
+  it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
   context "when file is nil" do
     let(:file) { nil }
@@ -78,6 +79,15 @@ describe NfgCsvImporter::Import do
       it "should add errors to base" do
         subject
         expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
+      end
+    end
+
+    context "when the file contains an empty header" do
+      let(:header_data) { ["first_name", "email", "", "last_name"] }
+      it { should_not be }
+      it " should add an error to base" do
+        subject
+        expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
       end
     end
 
@@ -239,6 +249,15 @@ describe NfgCsvImporter::Import do
         import.stubs(:fields_mapping).returns({ "First Name" => nil, "Donor Email" => "email", "Donor First Name" => nil})
       end
       it "should not include the ignore column dupes in the list" do
+        expect(subject).to eq({})
+      end
+    end
+
+    context "when the fields mapping contains duplicated fields but those fields are listed in the merge_columns_to_single_field definition attribute" do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => "note", "Donor Email" => "email", "Donor First Name" => "note"})
+      end
+      it "should not include the merge fields as dupes in the list" do
         expect(subject).to eq({})
       end
     end

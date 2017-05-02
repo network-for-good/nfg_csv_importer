@@ -1,21 +1,21 @@
 class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
+  include NfgCsvImporter::Concerns::StatusChecks
 
   before_filter :load_imported_for
-  before_filter :set_import_type, only: [:create, :new]
-  before_filter :load_new_import, only: [:create, :new]
+  before_filter :load_imported_by
+  before_filter :set_import_type, only: [:create, :new, :template]
+  before_filter :load_new_import, only: [:create, :new, :template]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
   before_filter :authorize_user, except: [:index]
+  before_filter :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
   end
 
   def create
-    @import.imported_by = self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}")
     @import.status = :uploaded
-    @import.import_type = @import_type
-    @import.imported_for = @imported_for
 
     if @import.save
       @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
@@ -88,6 +88,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     redirect_to imports_path
   end
 
+  def template
+    import_template_service = NfgCsvImporter::ImportTemplateService.new(import: @import, format: 'csv')
+    send_data import_template_service.call, type: "text/csv", filename: "#{@import.import_type}_import_template.#{import_template_service.format}", disposition: 'attachment'
+  end
+
   protected
   # the standard event tracking (defined in application controller) attempts to include
   # the imported file, which crashes the write to the db. So here we only track the type of import
@@ -100,7 +105,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_new_import
-    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for))
+    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by))
   end
 
   def set_import_type
