@@ -1,7 +1,7 @@
 - language_scope = [:imports, :index]
 - count_of_import_types = ImportDefinition.import_types.size
 - import_type_column_structure_classes = "display-flex"
-- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition)
+- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
 - start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
 - if count_of_import_types == 0
   - import_type_column_structure_classes << " col-md-6 col-xl-1"

@@ -116,9 +116,9 @@ module NfgCsvImporter
 
 
 
-    def user_import_definitions(imported_for:, user: , definition_class: )
+    def user_import_definitions(imported_for:, user:, definition_class:, imported_by: )
       definition_class.import_types.reduce({}) do |hash, import_type|
-        definition = definition_class.get_definition(import_type, imported_for)
+        definition = definition_class.get_definition(import_type, imported_for, imported_by)
         definition.can_be_viewed_by(user) ? hash.merge(import_type => definition) : hash
       end
     end
