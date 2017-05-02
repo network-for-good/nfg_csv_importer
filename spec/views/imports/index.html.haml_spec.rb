@@ -55,7 +55,7 @@ describe "imports/index.html.haml" do
     end
   end
 
-  context "when only one import definition can be viwed" do
+  context "when only one import definition can be viewed" do
     before do
       ImportDefinition.stubs(:import_types).returns([:users])
       NfgCsvImporter::ImportDefinitionDetails.any_instance.expects(:can_be_viewed_by).with(current_user).returns(true).once

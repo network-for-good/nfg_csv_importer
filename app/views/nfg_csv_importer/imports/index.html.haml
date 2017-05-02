@@ -2,6 +2,7 @@
 - count_of_import_types = ImportDefinition.import_types.size
 - import_type_column_structure_classes = "display-flex"
 - import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition)
+- start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
 - if count_of_import_types == 0
   - import_type_column_structure_classes << " col-md-6 col-xl-1"
 - elsif count_of_import_types > 4
@@ -35,20 +36,7 @@
         .row
           .col-md-10.offset-md-1.col-xs-12
             .text-xs-center.m-t-1
-              / Original code from Pavan:
-              / - if import_definitions.size == 1
-              /   %a.btn.btn-primary#get_started{ href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first)}
-              /     = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
-              / - else
-              /   %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" }}
-              /     = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
-
-              / Jon's thoughts:
-              - if import_definitions.size == 1
-                - button_options = { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) }
-              - else
-                - button_options = { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-              %a.btn.btn-primary#get_started{ button_options }
+              %a.btn.btn-primary#get_started{ start_button_options }
                 = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
 
     = render(partial: 'shared/flash_messages') rescue nil
