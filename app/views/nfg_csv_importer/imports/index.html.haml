@@ -35,12 +35,21 @@
         .row
           .col-md-10.offset-md-1.col-xs-12
             .text-xs-center.m-t-1
+              / Original code from Pavan:
+              / - if import_definitions.size == 1
+              /   %a.btn.btn-primary#get_started{ href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first)}
+              /     = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+              / - else
+              /   %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" }}
+              /     = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+
+              / Jon's thoughts:
               - if import_definitions.size == 1
-                %a.btn.btn-primary#get_started{ href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first)}
-                  = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+                - button_options = { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) }
               - else
-                %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" }}
-                  = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+                - button_options = { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
+              %a.btn.btn-primary#get_started{ button_options }
+                = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
 
     = render(partial: 'shared/flash_messages') rescue nil
 
