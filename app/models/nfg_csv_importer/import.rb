@@ -73,6 +73,7 @@ module NfgCsvImporter
     def import_validation
       begin
         errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
+        errors.add :base, "At least one empty column header was detected. Please ensure that all column headers contain a value." if empty_column_headers.present?
         errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
       rescue  => e
         errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
@@ -154,6 +155,10 @@ module NfgCsvImporter
 
     def service_name
       "#{import_type.capitalize}".classify + "ImportService"
+    end
+
+    def empty_column_headers
+      header.select { |h| h.blank? }
     end
 
     def duplicated_headers
