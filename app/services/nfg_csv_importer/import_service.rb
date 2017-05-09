@@ -20,7 +20,7 @@ class NfgCsvImporter::ImportService
   alias_attribute :import_class_name, :class_name
 
   def import_definition
-    @import_definition ||= ::ImportDefinition.get_definition(type, imported_for)
+    @import_definition ||= ::ImportDefinition.get_definition(type, imported_for, imported_by)
   end
 
   def import
