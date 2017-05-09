@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", '~> 4.2.0'
   s.add_dependency "roo", '2.6.0'
   s.add_dependency "roo-xls"
-  s.add_dependency "carrierwave"
+  s.add_dependency "carrierwave", '1.0.0'
   s.add_dependency "haml"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"

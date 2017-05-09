@@ -1,11 +1,13 @@
 class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   include ActionView::Helpers::TextHelper
+  include NfgCsvImporter::Concerns::StatusChecks
 
   before_filter :load_imported_for
   before_filter :set_import_type, only: [:create, :new]
   before_filter :load_new_import, only: [:create, :new]
   before_filter :load_import, only: [:show, :destroy, :edit, :update]
   before_filter :authorize_user, except: [:index]
+  before_filter :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
