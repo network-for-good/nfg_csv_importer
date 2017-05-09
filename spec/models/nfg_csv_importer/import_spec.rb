@@ -24,6 +24,7 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:invalid_column_rules).to(:service)}
   it { should delegate_method(:can_be_viewed_by).to(:service)}
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
+  it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
   context "when file is nil" do
     let(:file) { nil }
@@ -248,6 +249,15 @@ describe NfgCsvImporter::Import do
         import.stubs(:fields_mapping).returns({ "First Name" => nil, "Donor Email" => "email", "Donor First Name" => nil})
       end
       it "should not include the ignore column dupes in the list" do
+        expect(subject).to eq({})
+      end
+    end
+
+    context "when the fields mapping contains duplicated fields but those fields are listed in the merge_columns_to_single_field definition attribute" do
+      before do
+        import.stubs(:fields_mapping).returns({ "First Name" => "note", "Donor Email" => "email", "Donor First Name" => "note"})
+      end
+      it "should not include the merge fields as dupes in the list" do
         expect(subject).to eq({})
       end
     end

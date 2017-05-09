@@ -8,7 +8,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
   def users
     {
       required_columns: %w{ email },
-      optional_columns: %w{first_name last_name full_name tribue_attribute_and_notification_preference_with_salutation surname wealth_score college_degree last_donation_date },
+      optional_columns: %w{first_name last_name full_name tribue_attribute_and_notification_preference_with_salutation surname wealth_score college_degree last_donation_date note },
       default_values: { "first_name" => lambda { |row| row["email"].try(:split, "@").try(:first) } },
       field_aliases: { "first_name" => ["first", "donor first name"],
                       "last_name" => ["last", "donor last name"],
@@ -20,6 +20,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
                                     message: "You must map a column to either <strong>First Name</strong> or <strong>Full Name</strong>"
                                   }
                                 ],
+      fields_that_allow_multiple_mappings: ["note"],
       class_name: "User",
       alias_attributes: [],
       column_descriptions: {

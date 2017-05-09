@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121145004) do
+ActiveRecord::Schema.define(version: 20170130141053) do
 
   create_table "entities", force: :cascade do |t|
     t.string   "subdomain"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20161121145004) do
     t.integer  "entity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "note"
   end
 
 end

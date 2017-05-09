@@ -77,7 +77,7 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it "should set the number of rows" do
-        NfgCsvImporter::Import.any_instance.expects(:service).returns(mock(maybe_set_import_number_of_records: true)) #when the importer is created
+        NfgCsvImporter::ImportService.any_instance.expects(:maybe_set_import_number_of_records).returns(:true)
         subject
       end
 
