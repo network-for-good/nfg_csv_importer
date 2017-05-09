@@ -72,13 +72,6 @@
             = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
 
     #import_type_column_descriptions.container-new-import.container-flush.bg-green.p-y-2{ data: { show_hide: "hide" } }
-      .row
-        .col-xs-12
-          .text-xs-center
-            %span.display-inline-block{ bootstrap_tooltip(t("tooltips.coming_soon", scope: language_scope), :top) }
-              = link_to "javascript:;", class: "text-link" do
-                = fa_icon "cloud-download", text: t("links.cheatsheet", scope: language_scope)
-
       - if @import.required_columns.any?
         .row
           .col-xs-12
