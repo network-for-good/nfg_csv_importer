@@ -10,6 +10,17 @@ shared_examples_for "an action that requires authorization" do
   end
 end
 
+shared_examples_for "an action that requires an uploading status" do
+  context 'when the import is not uploaded' do
+    before { import.processing! }
+
+    it "should redirect the user to the import show page" do
+      expect(subject).to redirect_to(import_path(import))
+      expect(flash[:error]).to eq I18n.t('import.cant_edit_or_reprocess')
+    end
+  end
+end
+
 describe NfgCsvImporter::ImportsController do
 
   let(:entity) { create(:entity) }
@@ -163,7 +174,7 @@ describe NfgCsvImporter::ImportsController do
     subject { patch :update, params}
 
     it_behaves_like "an action that requires authorization"
-
+    it_behaves_like "an action that requires an uploading status"
   end
 
   describe "#edit" do
@@ -173,6 +184,16 @@ describe NfgCsvImporter::ImportsController do
     subject { get :edit, params}
 
     it_behaves_like "an action that requires authorization"
+    it_behaves_like "an action that requires an uploading status"
+  end
 
+  describe "#template" do
+    subject { get :template, params}
+
+    it "generate CSV" do
+      subject
+      expect(response.header['Content-Type']).to include 'text/csv'
+      expect(response.body).to include('email,first_name,last_name,full_name')
+    end
   end
 end
