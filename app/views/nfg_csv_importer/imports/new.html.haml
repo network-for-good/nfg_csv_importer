@@ -27,7 +27,50 @@
           .col-md-4.col-xs-12
             = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
 
-        .row.text-xs-center
+          .row.text-xs-center
+            .col-xs-12
+              %a.btn.btn-primary.btn-lg.m-y-1{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
+                = fa_icon "chevron-right", text: t("links.ready_upload", scope: language_scope), right: true
+
+              %p.small.text-muted
+                %em or
+              %p.small
+                %em
+                  %a{ href: "javascript:;", data: { smooth_scroll_target: "#new_import_row_2" } }
+                    = t("links.scroll_down", scope: language_scope)
+
+    #new_import_row_2.container-new-import.container-flush.green.bg-faded.p-t-3
+      .row
+        .col-md-10.offset-md-1.col-xs-12
+          .row
+            .col-xs-12
+              .text-xs-center
+                %h2.h1.display-1
+                  = t("headings.prepare", scope: language_scope).html_safe
+                %p
+                  = t("content.prepare", scope: language_scope)
+                  = link_to NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: @import_type), class: 'text-link' do
+                    %strong= t("links.file", scope: language_scope)
+
+                %p.small.m-b-1
+                  = fa_icon "asterisk", class: "text-success", text: t("content.requirements", scope: language_scope).html_safe
+
+                / TODO: Add optinoal / expandable descriptions for them when available (or see if this makes more sense in the expandable columns area)
+                / Figure out how to bring in the validation columns in addition to the required columns, e.g.: if donations... donation date required, etc.
+
+              / TODO: Set these as a display flex for same width and height
+              .row.m-y-2
+                - @import.column_validation_rules.each do |column_rule|
+                  = render 'nfg_csv_importer/imports/column_rule', column_rule: column_rule, icon: "info", circle_color: "text-info"
+
+      .row.text-xs-center.row-expander.flex-items-xs-middle
+        .col-xs-12
+          %a{ href: "javascript:;", data: { show_hide_target: "#import_type_column_descriptions" } }
+            = fa_icon "angle-down", class: "display-block", text: t("links.expand_column_headers", scope: language_scope), right: true
+
+    #import_type_column_descriptions.container-new-import.container-flush.bg-green.p-y-2{ data: { show_hide: "hide" } }
+      - if @import.required_columns.any?
+        .row
           .col-xs-12
             %a.btn.btn-primary.btn-lg.m-y-1{ href: "javascript:;", data: { smooth_scroll_target: "#upload_file" } }
               = fa_icon "chevron-right", text: t("links.ready_upload", scope: language_scope), right: true
