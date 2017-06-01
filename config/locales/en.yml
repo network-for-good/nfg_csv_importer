@@ -58,7 +58,6 @@ en:
         no_description: "<span style='opacity:.4;'>No additional details</span>"
         file_types: "Acceptable file types are: %{acceptable_file_types}"
       links:
-        cheatsheet: 'Download a Cheatsheet'
         ready_upload: "Ready? Upload Your File"
         scroll_down: "Scroll down to learn more"
         file: "Template (CSV)"
