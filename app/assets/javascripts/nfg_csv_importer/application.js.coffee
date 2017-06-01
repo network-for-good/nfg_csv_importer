@@ -11,7 +11,6 @@
 #= require nfg_csv_importer/bootstrap_custom_file_input
 #= require nfg_csv_importer/read_more
 #= require nfg_csv_importer/full_page_height
-#= require nfg_csv_importer/upload_form
 
 # Legacy browser support
 #= require_directory ../../../../vendor/assets/javascripts/legacy_browser_support
