@@ -17,8 +17,8 @@ en:
       delete_without_records: 'Are you sure you want to remove this import?'
     index:
       jumbotron:
-        headline: "Starting a <strong>new</strong> data import?"
-        sub_headline: "This self-guided importing tool is here to give you the flexibility to import your own data whenever you need to."
+        headline: "Ready to start a <b>new</b> import?"
+        sub_headline: "Just click 'Start Import' and we'll walk you through the process of importing your contacts and donations."
         import_types: "Import %{import_type}"
       headings:
         past_imports: "Past Uploads & Imports"
@@ -35,7 +35,7 @@ en:
         edit_import: "Edit"
         delete_import: "Delete"
         begin_import: "Begin Import"
-        start: "Get Started"
+        start: "Start Import"
       tooltips:
         error_file: "Available once processing is complete"
         edit_import: "Once an import has been submitted, it's no longer editable"
