@@ -1,20 +1,18 @@
 class NfgCsvImporter.SmoothScroll
   constructor: (@el) ->
     @dataTargetAttribute = "smooth-scroll-target"
-    @offset = @el.data "smooth-scroll-offset"
 
-    @el.click (event) =>
-      event.preventDefault
-      clickedElement = $(event.currentTarget)
-      @smoothScrollTo(clickedElement, @offset)
+    @el.click (e) =>
+      e.preventDefault
+      clickedElement = $(e.currentTarget)
+      @smoothScrollTo clickedElement
 
-  smoothScrollTo: (clickedElement, offset) ->
-    @offset ||= 0
+  smoothScrollTo: (clickedElement) ->
     destinationToScrollTo = $($(clickedElement).data @dataTargetAttribute)
 
     $("body").animate {
-        scrollTop: destinationToScrollTo.offset().top - 49 - @offset
-    }, 1000
+        scrollTop: destinationToScrollTo.offset().top - 49
+    }, 600
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   el = $("[data-smooth-scroll-target]")

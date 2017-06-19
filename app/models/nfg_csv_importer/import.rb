@@ -16,7 +16,7 @@ module NfgCsvImporter
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
     validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
-    validate :import_validation
+    validate :import_validation, on: [:create]
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
