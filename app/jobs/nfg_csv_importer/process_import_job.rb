@@ -13,7 +13,7 @@ module NfgCsvImporter
       import.set_upload_error_file(errors_csv) if errors_csv.present?
 
       if import_service.run_time_limit_reached?
-        Rails.logger.info "ProcessImportJob #{import_id}: reached run time limit of #{import_service.max_run_time} at row #{import_service.current_row}"
+        Rails.logger.info "ProcessImportJob #{import_id}: reached run time limit of #{NfgCsvImporter.configuration.max_run_time} at row #{import_service.current_row}"
         NfgCsvImporter::ProcessImportJob.perform_later(import_id, import_service.current_row)
       else
         import.complete!
