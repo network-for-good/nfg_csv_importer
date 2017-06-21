@@ -22,10 +22,9 @@
 
 
 .row-listing-header{
-  small{
-    font-size: 12px;
-  }
   color: #9a9a9a;
   font-weight: $font-weight-medium;
   text-transform: uppercase;
+
+  small{ font-size: 12px; }
 }
