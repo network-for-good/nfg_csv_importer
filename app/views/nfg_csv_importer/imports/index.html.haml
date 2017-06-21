@@ -14,7 +14,7 @@
 
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-fluid.container-flush.bg-white
-    = render 'index_header', language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options
+    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
 
     = render(partial: 'shared/flash_messages') rescue nil
 
