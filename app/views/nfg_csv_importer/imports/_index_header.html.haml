@@ -1,0 +1,23 @@
+.jumbotron.jumbotron-fluid.jumbotron-clouds
+  .container-fluid
+    .row
+      .col-xs-12.p-x-2
+        %h1.text-xs-center= t("jumbotron.headline", scope: language_scope).html_safe
+        %p.text-xs-center= t("jumbotron.sub_headline", scope: language_scope)
+        Hello World
+    - if import_definitions.size > 1
+      #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
+        - import_definitions.each do |import_type, definition|
+          %div{ class: import_type_column_structure_classes, id: import_type }
+            .card.flex-1.m-b-2
+              .card-block
+                %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
+                .card-text.m-b-1
+                  = simple_format(definition.headline)
+                = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
+                  = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
+    .row
+      .col-md-10.offset-md-1.col-xs-12
+        .text-xs-center.m-t-1
+          %a.btn.btn-primary#get_started{ start_button_options }
+            = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
