@@ -1,7 +1,4 @@
-
-
 .jumbotron{
-
   border-radius: 0;
 
   h1{
@@ -49,6 +46,11 @@
     background-position: center bottom;
     background-size: 100% auto;
     padding-bottom: 9%;
+
+    .container-fluid{
+      position: relative;
+      z-index: 20;
+    }
   }
 
   p{

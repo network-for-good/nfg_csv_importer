@@ -1,9 +1,10 @@
 module NfgCsvImporter
   class MappedField
     attr_accessor :name, :mapped_to
-    def initialize(header_column:, field:)
+    def initialize(header_column:, field:, fields_that_allow_multiple_mappings: [])
       @name = header_column
       @mapped_to = field
+      @fields_that_allow_multiple_mappings = fields_that_allow_multiple_mappings || []
     end
 
     def status
@@ -14,7 +15,6 @@ module NfgCsvImporter
 
     def dom_id
       name.downcase.gsub(/[^a-z0-9_ ]/, '').gsub(/( )/, '_')
-
     end
 
     def mapped?
@@ -27,6 +27,10 @@ module NfgCsvImporter
 
     def ignored?
       status == :ignored
+    end
+
+    def mergeable?
+      @fields_that_allow_multiple_mappings.include?(mapped_to)
     end
 
     private

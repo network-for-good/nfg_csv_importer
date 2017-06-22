@@ -13,6 +13,8 @@ describe "Running through the full import process", js: true do
 
     it "should be able to import users" do
       visit new_import_path
+      # should have download template link
+      expect(page).to have_link(I18n.t("links.file", scope: [:imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
       # upload and continue button should be disabled prior to adding file
       expect(page).to have_button(upload_button_name, disabled: true)
       attach_file("import_import_file", File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))

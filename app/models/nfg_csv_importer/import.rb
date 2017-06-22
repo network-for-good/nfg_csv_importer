@@ -16,7 +16,7 @@ module NfgCsvImporter
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
     validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
-    validate :import_validation
+    validate :import_validation, on: [:create]
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
@@ -24,7 +24,7 @@ module NfgCsvImporter
       :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
       :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
       :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
-      :can_be_deleted_by?, :to => :service
+      :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -53,7 +53,7 @@ module NfgCsvImporter
     def duplicated_field_mappings
       return {} unless fields_mapping.present?
       fields = fields_mapping.values
-      duplicates = fields.select { |f|  fields.count(f) > 1 && f != NfgCsvImporter::Import.ignore_column_value && f.present? }.uniq
+      duplicates = fields.select { |f|  has_a_non_permitted_duplicate(f, fields) }.uniq
       duplicates.inject({}) do |hsh, dupe_field|
         hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
         hsh
@@ -88,9 +88,15 @@ module NfgCsvImporter
       return @mapped_fields if @mapped_fields && !header_column
       # passing in a header column will return the mapped field object for just that header column
       if header_column
-        fields_mapping.has_key?(header_column) ? NfgCsvImporter::MappedField.new(header_column: header_column, field: fields_mapping[header_column]) : nil
+        fields_mapping.has_key?(header_column) ? NfgCsvImporter::MappedField.new(
+                                                          header_column: header_column,
+                                                          field: fields_mapping[header_column],
+                                                          fields_that_allow_multiple_mappings: fields_that_allow_multiple_mappings) : nil
       else
-        @mapped_fields = fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(header_column: header_column, field: field)}
+        @mapped_fields = fields_mapping.blank? ? [] : fields_mapping.map { |header_column, field| NfgCsvImporter::MappedField.new(
+                                                                                                      header_column: header_column,
+                                                                                                      field: field, fields_that_allow_multiple_mappings:
+                                                                                                      fields_that_allow_multiple_mappings)}
       end
     end
 
@@ -178,6 +184,19 @@ module NfgCsvImporter
       percent_complete = records_processed.to_f/number_of_records.to_f
       estimated_total = minutes_processing.to_f/percent_complete.to_f
       remaining_minutes = (estimated_total - minutes_processing).floor
+    end
+
+    def has_a_non_permitted_duplicate(mapped_field, fields)
+      mapped_field.present? &&
+      fields.count(mapped_field) > 1 &&
+      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
+      !field_allowed_to_be_duplicated?(mapped_field)
+    end
+
+    def field_allowed_to_be_duplicated?(mapped_field)
+      # fields can be duplicated if they are listed in the definition
+      # as fields_that_allow_multiple_mappings
+      fields_that_allow_multiple_mappings.include?(mapped_field)
     end
   end
 

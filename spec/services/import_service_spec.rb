@@ -22,6 +22,14 @@ describe NfgCsvImporter::ImportService do
   let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
   let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }
 
+  it { should delegate_method(:class_name).to(:import_definition)}
+  it { should delegate_method(:required_columns).to(:import_definition)}
+  it { should delegate_method(:optional_columns).to(:import_definition)}
+  it { should delegate_method(:column_descriptions).to(:import_definition)}
+  it { should delegate_method(:description).to(:import_definition)}
+  it { should delegate_method(:field_aliases).to(:import_definition)}
+  it { should delegate_method(:column_validation_rules).to(:import_definition)}
+  it { should delegate_method(:fields_that_allow_multiple_mappings).to(:import_definition)}
   it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
 
   describe "subscriber" do
