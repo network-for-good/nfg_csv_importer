@@ -48,7 +48,7 @@ class NfgCsvImporter.ImporterGemModal
       setTimeout (=>
         targetModal.wrap @modalWrapper
         $(".modal-backdrop").addClass @modalNamespaceClasses
-      ), 1
+      ), 10
 
   removeModal: ->
     originalModal = @importerGemModal.detach()

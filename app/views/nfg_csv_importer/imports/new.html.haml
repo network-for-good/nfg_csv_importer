@@ -1,8 +1,8 @@
 - language_scope = [:imports, :new]
 
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
+  / TODO: Setup alert for this
   = simple_form_for(@import, :url => nfg_csv_importer.imports_path) do |f|
-    / TODO: Setup alert for this
     - if @import.errors.any?
       .container-fluid.container-flush
         .alert.alert-danger.m-b-0
@@ -75,7 +75,7 @@
       - if @import.required_columns.any?
         .row
           .col-xs-12
-            %h2.h1.font-weight-normal.text-xs-center.m-y-1
+            %h2.font-weight-normal.text-xs-center.m-y-1
               = t("headings.required_headers", scope: language_scope)
         %div{ class: "row #{ @import.optional_columns.any? ? 'm-b-3' : '' }" }
           .col-xs-12.col-md-10.offset-md-1.m-x-auto
@@ -96,7 +96,7 @@
       - if @import.optional_columns.any?
         .row
           .col-xs-12
-            %h2.h1.font-weight-normal.text-xs-center.m-y-1
+            %h2.font-weight-normal.text-xs-center.m-y-1
               = t("headings.optional_headers", scope: language_scope)
         .row
           .col-xs-12.col-md-10.offset-md-1.m-x-auto

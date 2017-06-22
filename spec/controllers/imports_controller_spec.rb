@@ -77,7 +77,7 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it "should set the number of rows" do
-        NfgCsvImporter::Import.any_instance.expects(:service).returns(mock(maybe_set_import_number_of_records: true)) #when the importer is created
+        NfgCsvImporter::ImportService.any_instance.expects(:maybe_set_import_number_of_records).returns(:true)
         subject
       end
 
@@ -90,9 +90,15 @@ describe NfgCsvImporter::ImportsController do
     context "when the import is not valid" do
       before do
         NfgCsvImporter::Import.any_instance.stubs(:valid?).returns(false)
+        NfgCsvImporter::Import.any_instance.stubs(:errors).returns(stub(full_messages: [error_message], "any?" => true))
       end
 
-      it { expect { subject }.not_to change(NfgCsvImporter::Import, :count) }
+      let(:error_message) { "The file does not have the correct format" }
+
+      it "should display the message and not create a new import record" do
+        expect { subject }.not_to change(NfgCsvImporter::Import, :count)
+        expect(response.body).to have_text(error_message)
+      end
     end
   end
 

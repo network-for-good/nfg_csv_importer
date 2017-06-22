@@ -1,7 +1,8 @@
 - language_scope = [:imports, :index]
 - count_of_import_types = ImportDefinition.import_types.size
 - import_type_column_structure_classes = "display-flex"
-
+- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
+- start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
 - if count_of_import_types == 0
   - import_type_column_structure_classes << " col-md-6 col-xl-1"
 - elsif count_of_import_types > 4
@@ -13,31 +14,7 @@
 
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-fluid.container-flush.bg-white
-    .jumbotron.jumbotron-fluid.jumbotron-clouds
-      .container-fluid
-        .row
-          .col-xs-12.p-x-2
-            %h1.text-xs-center= t("jumbotron.headline", scope: language_scope).html_safe
-            %p.text-xs-center= t("jumbotron.sub_headline", scope: language_scope)
-
-        #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
-          - ImportDefinition.import_types.each do |import_type|
-            - definition = ImportDefinition.get_definition(import_type, @imported_for, @imported_by)
-            - next unless definition.can_be_viewed_by(current_user)
-            %div{ class: import_type_column_structure_classes, id: import_type }
-              .card.flex-1.m-b-2
-                .card-block
-                  %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
-                  .card-text.m-b-1
-                    = simple_format(definition.headline)
-                  = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
-                    = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
-
-        .row
-          .col-md-10.offset-md-1.col-xs-12
-            .text-xs-center.m-t-1
-              %a.btn.btn-primary#get_started{ data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-                = fa_icon "chevron-right", text: t("links.start", scope: language_scope), right: true
+    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
 
     = render(partial: 'shared/flash_messages') rescue nil
 

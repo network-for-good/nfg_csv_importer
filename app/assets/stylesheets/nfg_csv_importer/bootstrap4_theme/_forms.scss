@@ -1,6 +1,23 @@
 .form-group {
   margin-bottom: 48px;
   position: relative;
+
+
+    &.has-danger{
+      [data-toggle='error']{
+        position: absolute;
+        left: 0;
+        top: 50px;
+        background-color: $brand-danger;
+        font-size: 14px;
+        width: auto;
+        padding: 5px 9px;
+        display: inline-block;
+        z-index: $zindex-modal + 1011;
+        color:#fff;
+      }
+    }
+
 }
 
 .text-help {
@@ -22,3 +39,5 @@ label{
     font-weight: $font-weight-medium;
   }
 }
+
+
