@@ -3,7 +3,6 @@
     .col-xs-12.p-x-2
       %h1.text-xs-center= t("jumbotron.headline", scope: language_scope).html_safe
       %p.text-xs-center= t("jumbotron.sub_headline", scope: language_scope)
-      Hello World
   - if import_definitions.size > 1
     #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
       - import_definitions.each do |import_type, definition|
