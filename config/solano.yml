@@ -19,7 +19,7 @@ notify:
   room: build_notifications
   team: networkforgood
   message: |
-    Build for %repo%/%branch% finished in %duration%s
+    -> %repo%/%branch% finished in %duration%s
     Committer: %committer%
     Failures: %failed-count%
     Passed: %passed-count%
