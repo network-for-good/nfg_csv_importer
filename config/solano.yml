@@ -13,3 +13,15 @@ skip_package:
 hooks:
   pre_setup: gem install bundler -v 1.13.6 && bundle install --path=$HOME/bundle --no-deployment
   worker_setup: cd spec/test_app && bundle exec rake db:create db:schema:load
+notify:
+  - channel: slack
+    trigger-on: status-changed
+    room: build_notifications
+    team: networkforgood
+    message: |
+      %repo%/%branch% finished in %duration%s
+      Committer: %committer%
+      Failures: %failed-count%
+      Passed: %passed-count%
+      Commit: %commit%
+      Build: %build-url%
