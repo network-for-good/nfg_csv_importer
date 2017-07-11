@@ -12,7 +12,6 @@ describe "Running through the full import process", js: true do
     end
 
     it "should be able to import users" do
-      raise 'test error'
       visit new_import_path
       # should have download template link
       expect(page).to have_link(I18n.t("links.file", scope: [:imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
