@@ -11,7 +11,7 @@ en:
     create:
       notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
       error: "This file is either queued, processing, or has finished importing and can't be reimported."
-      exception_while_saving_row: "An unknown error occurred. Please carefully check the data in this row."
+      exception_while_saving_row: "An unknown error occurred. Please carefully check each field in this row to ensure that it contains valid data."
   imports:
     confirmations:
       delete: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
