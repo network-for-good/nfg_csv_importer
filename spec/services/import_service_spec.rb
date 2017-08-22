@@ -12,8 +12,16 @@ shared_examples_for "a row that raises an exception" do
   end
 
   it "adds an error" do
+    subject
     expect(subject.import).to match(I18n.t(:exception_while_saving_row, scope: [:process, :create]))
   end
+
+  it "only increments the errors counter once" do
+    NfgCsvImporter::Import.expects(:increment_counter).with(:number_of_records_with_errors, import.id).once
+    NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed, import.id).once
+    subject.import
+  end
+
 end
 
 describe NfgCsvImporter::ImportService do
@@ -33,6 +41,7 @@ describe NfgCsvImporter::ImportService do
   let!(:admin) {  FactoryGirl.create(:user)}
   let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
   let(:import) { FactoryGirl.build(:import,
+                                    id: 1,
                                     import_file: File.open("spec/fixtures#{file_name}"),
                                     fields_mapping: fields_mapping)}
   let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }

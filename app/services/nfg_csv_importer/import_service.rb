@@ -170,12 +170,14 @@ class NfgCsvImporter::ImportService
       end
     rescue => e
       handle_row_exception(model_obj, row, e)
+      return
     end
 
     begin
       saved_object = model_obj.save
     rescue => e
       handle_row_exception(model_obj, row, e)
+      return
     end
 
     # This condition is needed b/c in donor management, model_obj is typically
@@ -195,6 +197,7 @@ class NfgCsvImporter::ImportService
       end
     rescue => e
       handle_row_exception(importable, row, e)
+      return
     end
 
     NfgCsvImporter::ImportedRecord.create(
