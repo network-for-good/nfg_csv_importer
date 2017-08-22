@@ -118,6 +118,12 @@ class NfgCsvImporter::ImportService
     errors_list << row
   end
 
+  def handle_row_exception(model_obj, row, exception)
+    NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors, import_id)
+    model_obj.errors.add(:base, I18n.t(:exception_while_saving_row, scope: [:activerecord, :messages]))
+    handle_record_errors(model_obj, row)
+  end
+
   def load_and_persist_imported_objects
     self.errors_list = []
     (starting_row..spreadsheet.last_row).map do |i|
@@ -157,12 +163,20 @@ class NfgCsvImporter::ImportService
   def persist_valid_record(model_obj, index, row)
     NfgCsvImporter::Import.increment_counter(:records_processed, import_id)
 
-    unless model_obj.try(:valid?)
-      handle_record_errors(model_obj, row)
-      return
+    begin
+      unless model_obj.try(:valid?)
+        handle_record_errors(model_obj, row)
+        return
+      end
+    rescue => e
+      handle_row_exception(model_obj, row, e)
     end
 
-    saved_object = model_obj.save
+    begin
+      saved_object = model_obj.save
+    rescue => e
+      handle_row_exception(model_obj, row, e)
+    end
 
     # This condition is needed b/c in donor management, model_obj is typically
     # a data loader instance.
@@ -174,9 +188,13 @@ class NfgCsvImporter::ImportService
     end
 
     # Final check to ensure we have a valid/saved importable object.
-    unless validate_object(importable) && importable.try(:persisted?)
-      handle_record_errors(importable, row)
-      return
+    begin
+      unless validate_object(importable) && importable.try(:persisted?)
+        handle_record_errors(importable, row)
+        return
+      end
+    rescue => e
+      handle_row_exception(importable, row, e)
     end
 
     NfgCsvImporter::ImportedRecord.create(

@@ -1,5 +1,21 @@
 require 'rails_helper'
 require 'roo'
+
+shared_examples_for "a row that raises an exception" do
+  it "doesn't raise an exception" do
+    expect { subject.import }.not_to raise_error
+  end
+
+  it "doesn't persist the record" do
+    subject
+    expect { subject.import }.not_to change(class_to_be_imported, :count)
+  end
+
+  it "adds an error" do
+    expect(subject.import).to match(I18n.t(:exception_while_saving_row, scope: [:activerecord, :messages]))
+  end
+end
+
 describe NfgCsvImporter::ImportService do
 
   let(:entity) { create(:entity) }
@@ -14,7 +30,7 @@ describe NfgCsvImporter::ImportService do
   let(:row_data) {["pavan@gmail.com","A Gilbert","William"]}
   let(:header_data) {["email" ,"first_name","last_name"]}
   let(:file_name) {"/subscribers.csv"}
-  let(:admin) {  FactoryGirl.create(:user)}
+  let!(:admin) {  FactoryGirl.create(:user)}
   let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
   let(:import) { FactoryGirl.build(:import,
                                     import_file: File.open("spec/fixtures#{file_name}"),
@@ -117,6 +133,27 @@ describe NfgCsvImporter::ImportService do
         end
       end
 
+      context "when a record raises an exception during the valid check" do
+        before { class_to_be_imported.any_instance.stubs(:valid?).raises(StandardError) }
+        it_behaves_like "a row that raises an exception"
+      end
+
+      context "when a record raises an exception while saving" do
+        before do
+          class_to_be_imported.any_instance.stubs(:valid?).returns(true)
+          class_to_be_imported.any_instance.stubs(:save).raises(StandardError)
+        end
+        it_behaves_like "a row that raises an exception"
+      end
+
+      context "when a record raises an exception when calling validate_object" do
+        before do
+          class_to_be_imported.any_instance.stubs(:valid?).returns(true)
+          class_to_be_imported.any_instance.stubs(:save).returns(false)
+          import_service.stubs(:validate_object).raises(StandardError)
+        end
+        it_behaves_like "a row that raises an exception"
+      end
     end
 
     context "when default values present" do
