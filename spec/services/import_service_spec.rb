@@ -12,7 +12,7 @@ shared_examples_for "a row that raises an exception" do
   end
 
   it "adds an error" do
-    expect(subject.import).to match(I18n.t(:exception_while_saving_row, scope: [:activerecord, :messages]))
+    expect(subject.import).to match(I18n.t(:exception_while_saving_row, scope: [:process, :create]))
   end
 end
 
