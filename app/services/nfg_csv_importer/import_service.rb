@@ -119,7 +119,6 @@ class NfgCsvImporter::ImportService
   end
 
   def handle_row_exception(model_obj, row, exception)
-    NfgCsvImporter::Import.increment_counter(:number_of_records_with_errors, import_id)
     model_obj.errors.add(:base, I18n.t(:exception_while_saving_row, scope: [:process, :create]))
     handle_record_errors(model_obj, row)
   end
