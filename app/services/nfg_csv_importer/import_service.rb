@@ -121,6 +121,7 @@ class NfgCsvImporter::ImportService
   def handle_row_exception(model_obj, row, exception)
     model_obj.errors.add(:base, I18n.t(:exception_while_saving_row, scope: [:process, :create]))
     handle_record_errors(model_obj, row)
+    Rails.logger.error "NfgCsvImporter handle_row_exception for #{row}: #{exception.backtrace.join("\n")}"
   end
 
   def load_and_persist_imported_objects
