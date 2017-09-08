@@ -1,4 +1,4 @@
-ruby_version: ruby-2.1.2
+ruby_version: ruby-2.2.5
 bundler_version: 1.13.6
 environment:
   RAILS_LOG_LEVEL: '2'
