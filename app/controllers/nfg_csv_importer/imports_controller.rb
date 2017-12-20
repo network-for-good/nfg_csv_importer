@@ -28,6 +28,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def update
     import_params["fields_mapping"].each do |header_name, mapped_field_name|
+      header_name = Base64.decode64(header_name)
       next unless @import.fields_mapping.has_key?(header_name) # don't do an assignment if something strange was submitted
       @import.fields_mapping[header_name] = mapped_field_name
       @mapped_column = @import.mapped_fields(header_name)

@@ -1,6 +1,7 @@
 - mapped_column = nil if local_assigns[:mapped_column].nil?
 - import = nil if local_assigns[:import].nil?
-- field_name = "import[fields_mapping[#{ mapped_column.name }]]"
+- encoded_mapped_column_name = Base64.encode64(mapped_column.name)
+- field_name = "import[fields_mapping[#{encoded_mapped_column_name}]]"
 
 - case mapped_column.status
 - when :unmapped
