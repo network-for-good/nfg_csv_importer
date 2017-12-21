@@ -9,3 +9,4 @@ spec/test_app/.sass-cache
 vendor/bundle
 Gemfile.lock
 spec/test_app/public/uploads
+.solano*
