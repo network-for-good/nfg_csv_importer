@@ -1,5 +1,7 @@
 - mapped_column = nil if local_assigns[:mapped_column].nil?
 - import = nil if local_assigns[:import].nil?
+-# We base64 encode the column header here b/c brackets (and other non-alphanumeric chars)
+-# can cause problems with mapping. See DM-4219 for more details.
 - field_name = "import[fields_mapping[#{Base64.encode64(mapped_column.name)}]]"
 
 - case mapped_column.status
