@@ -65,7 +65,7 @@ describe "Running through the full import process", js: true do
 
       # map the unmapped column to duplicate column
       within("div[data-column-name='other']") do
-        select "First Name", from: "import_fields_mapping_other"
+        select "First Name", from: "import_fields_mapping_b3RoZXI__"
       end
       within("#importer_header_stats") do
         expect(page).to have_content("0 IGNORED COLUMNS")
@@ -100,7 +100,7 @@ describe "Running through the full import process", js: true do
 
       # map the unmapped column to a valid field
       within("div[data-column-name='first_name']") do
-        select "First Name", from: "import_fields_mapping_first_name"
+        select "First Name", from: "import_fields_mapping_Zmlyc3RfbmFtZQ___"
       end
       within("#importer_header_stats") do
         expect(page).to have_content("1 IGNORED COLUMNS")
