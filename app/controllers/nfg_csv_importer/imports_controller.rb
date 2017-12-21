@@ -28,6 +28,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def update
     import_params["fields_mapping"].each do |header_name, mapped_field_name|
+      # The column headers are base64 encoded in _importer_column_header.html.haml
+      # to prevent brackets and other special chars from causing issues with mapping.
+      # See DM-4219 for more details.
+      header_name = Base64.decode64(header_name)
       next unless @import.fields_mapping.has_key?(header_name) # don't do an assignment if something strange was submitted
       @import.fields_mapping[header_name] = mapped_field_name
       @mapped_column = @import.mapped_fields(header_name)
