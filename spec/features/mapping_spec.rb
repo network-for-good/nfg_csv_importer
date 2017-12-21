@@ -9,6 +9,7 @@ describe "mapping column headers", js: true do
   before do
     import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(import).call)
     visit nfg_csv_importer.edit_import_path(import)
+    sleep 1
   end
 
   context 'when the column headers contain brackets' do
