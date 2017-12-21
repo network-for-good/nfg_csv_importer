@@ -1,0 +1,4 @@
+[email],[first_name],[last_name],[ignore_me]
+pavan@gmail.com,A Gilbert,,test
+bert@smert.com,Bert,Smert,test
+invalid.email,Invalid,Subscriber,test
