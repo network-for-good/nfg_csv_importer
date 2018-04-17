@@ -24,7 +24,7 @@ describe "Running through the full import process", js: true do
 
       within("#importer_gem_modal_first_visit") do
         expect(page).to have_content("Great News")
-        expect(page).to have_content("4 Columns To Be Imported")
+        expect(page).to have_content("4 Columns to be Imported")
         expect(page).to have_content("3 Automatically Mapped Columns")
       end
 
