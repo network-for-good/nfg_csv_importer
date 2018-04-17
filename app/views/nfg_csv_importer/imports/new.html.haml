@@ -22,13 +22,13 @@
         .col-md-10.offset-md-1.col-xs-12
           .row.text-xs-center
             .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload & configure your spreadsheet on this page" }
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1", content: "Upload your spreadsheet" }
 
             .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", content_class: "small", heading: "Step 2", content: "Map your column headers so we can import your data" }
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", content_class: "small", heading: "Step 2", content: "Map your spreadsheet's column headers to fields in your donor management system" }
 
             .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3", content: "Review your decisions and then approve the import" }
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3", content: "Review your column to field mapping then approve the import" }
 
           .row.text-xs-center
             .col-xs-12
@@ -120,7 +120,7 @@
         .col-xs-12
           %h2.h1.display-1
             %strong= t("headings.upload", scope: language_scope)
-          %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>csv, xls</strong> or <strong>xlsx</strong>").html_safe
+          %p= t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>.csv, .xls</strong> or <strong>.xlsx</strong>").html_safe
       .row.p-b-3
         .col-md-8.offset-md-2.col-xs-12
           .form-group
