@@ -28,10 +28,7 @@
       .row.text-xs-center
         .col-xs-12
           %h2.text-blue.m-b-0
-            Your
-            %strong
-              = @import.import_type.pluralize.humanize.downcase
-            import is
+            Your import is
             %strong
               = t("status.#{ @import.status }", default: @import.status)
           %p.font-size-16
