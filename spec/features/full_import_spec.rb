@@ -122,7 +122,7 @@ describe "Running through the full import process", js: true do
 
       expect(User.find_by(email: "tim@farlow.com")).to be
 
-      expect(page).to have_content("Your users import is complete")
+      expect(page).to have_content("Your import is complete")
 
       expect(page).to have_content("New records created\n3")
       expect(page).to have_content("Processed rows\n6")
