@@ -164,7 +164,7 @@ class NfgCsvImporter::ImportService
     NfgCsvImporter::Import.increment_counter(:records_processed, import_id)
 
     begin
-      if model_obj.try { |mo| mo.errors.any? }
+      if model_obj.try { |mo| mo.errors.any? } or !model_obj.try(&:valid?)
         handle_record_errors(model_obj, row)
         return
       end
