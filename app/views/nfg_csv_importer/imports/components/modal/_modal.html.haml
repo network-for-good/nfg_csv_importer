@@ -23,14 +23,12 @@
             .modal-body.m-b-1
               .row
                 .col-xs-12
-                  %p.lead
-                    We just saved you some time by by evaluating your columns and
-                    %strong applying automatic matches:
+                  %p.lead= t('imports.confirmations.column_mapping').html_safe
               .row.m-t-2
                 .col-xl-10.offset-xs-1.col-xs-12
                   .row
                     .col-md-6.col-xs-12
-                      = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns To Be Imported" }
+                      = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns to be Imported" }
 
                     .col-md-6.col-xs-12
                       = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count] } do
