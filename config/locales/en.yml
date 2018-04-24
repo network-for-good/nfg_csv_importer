@@ -9,13 +9,14 @@ en:
       success_without_records: 'The import has been successfully removed.'
   process:
     create:
-      notice: 'Your file has been placed on the queue to begin processing. This page displays the current status of the import process. You may refresh this page to see how your import is progressing. You will be notified via email when the import is complete. Any errors that occur during import will be captured in an import error file which you can download from this page, or from a link in the email'
+      notice: 'We’ve started importing your file. This page will display the status of your import. You can refresh this page to see how the import is progressing or, simply wait for an email to be sent to your inbox confirming that the import is complete! If there are any errors in the import that need your attention, you can download the import error spreadsheet from this page or from the link in the email. And don’t worry, if you happen to have errors in your file, we’ll help guide you through fixing any errors you might encounter.'
       error: "This file is either queued, processing, or has finished importing and can't be reimported."
       exception_while_saving_row: "An unknown error occurred. Please carefully check each field in this row to ensure that it contains valid data."
   imports:
     confirmations:
       delete: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
       delete_without_records: 'Are you sure you want to remove this import?'
+      column_mapping: "We just saved you some time by evaluating your column headers and <strong>matched</strong> some columns for you:"
     index:
       jumbotron:
         headline: "Ready to start a <b>new</b> import?"
@@ -47,7 +48,7 @@ en:
     new:
       jumbotron:
         headline: "Let's import <strong>%{import_type}!</strong>"
-        sub_headline: "We'll walk through this together &mdash; so let's get started and begin importing your data!"
+        sub_headline: "We'll walk through this together!"
       headings:
         prepare: "Setting up for <strong>success</strong>"
         required_headers: "Required Column Headers"
@@ -57,7 +58,7 @@ en:
         prepare: "There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our"
         requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
         no_description: "<span style='opacity:.4;'>No additional details</span>"
-        file_types: "Acceptable file types are: %{acceptable_file_types}"
+        file_types: "Be sure your spreadsheet is saved as %{acceptable_file_types} before uploading"
       links:
         ready_upload: "Ready? Upload Your File"
         scroll_down: "Scroll down to learn more"
@@ -72,7 +73,7 @@ en:
             prompt:
               import_template_id: "Do not apply a mapping from a previous import"
         labels:
-          import_template_id: "<em>Optionally</em> apply a column mapping from a previous import"
+          import_template_id: "Optional: apply a column mapping from a previous import"
         help_text:
           import_template_id_show_hide: "Additional Info"
           import_template_id: "If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import."
@@ -84,4 +85,4 @@ en:
       status:
         complete: "imported"
         deleting: "queued for deletion"
-        uploaded: "in review"
+        uploaded: "processing"

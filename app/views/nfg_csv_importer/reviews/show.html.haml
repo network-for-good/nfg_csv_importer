@@ -1,3 +1,5 @@
+- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
+
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-new-import.container-flush.blue
     .row.text-xs-center
@@ -7,17 +9,18 @@
           %strong
             all set
           to import!
-        %p Please review your selections below before importing your data.
+        %p Please review your mapped fields before importing your data.
 
-    .row.p-b-2
-      .col-md-10.offset-md-1.col-xs-12
-        .media
-          .media-left
-            = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
-          .media-body
-            %p.lead.text-primary Import Type
-            %p.small= @import.import_type.humanize.titleize.pluralize
-            %hr
+    - if import_definitions.size > 1
+      .row.p-b-2
+        .col-md-10.offset-md-1.col-xs-12
+          .media
+            .media-left
+              = fa_stacked_icon "check inverse", base: "circle", class: "text-primary small"
+            .media-body
+              %p.lead.text-primary Import Type
+              %p.small= @import.import_type.humanize.titleize.pluralize
+              %hr
 
     .row.p-b-2
       .col-md-10.offset-md-1.col-xs-12
@@ -60,9 +63,11 @@
 
                   .row
                     .col-xs-5
-                      %small.display-block.text-muted.text-uppercase Uploaded header
-                    .col-xs-5.offset-xs-2
-                      %small.display-block.text-muted.text-uppercase Mapped
+                      %small.display-block.text-muted.text-uppercase Spreadsheet column header
+                    .col-xs-2
+                      %small.display-block.text-muted.text-uppercase Mapped to
+                    .col-xs-5
+                      %small.display-block.text-muted.text-uppercase Field in system
 
                   - @import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
                     .row.row-mapped-columns
