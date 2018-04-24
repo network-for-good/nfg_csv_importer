@@ -7,12 +7,6 @@
           %strong
             Well done!
           You’re all set, we’ve got it from here
-        .row
-          .col-xs-4.offset-xs-4.text-xs-left
-            %ul.fa-ul
-              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've uploaded your file"))
-              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've mapped your column headers"))
-              = content_tag(:li, fa_icon("check-circle li inverse", text: "You've approved the official import to begin"))
 
       - else
         %h1.display-1
@@ -34,10 +28,7 @@
       .row.text-xs-center
         .col-xs-12
           %h2.text-blue.m-b-0
-            Your
-            %strong
-              = @import.import_type.pluralize.humanize.downcase
-            import is
+            Your import is
             %strong
               = t("status.#{ @import.status }", default: @import.status)
           %p.font-size-16
@@ -93,15 +84,6 @@
           %p.small.text-xs-center.red
             = link_to @import.error_file.url do
               = fa_icon "paperclip", text: "Error file"
-
-    - unless @import.import_file.file.nil?
-      .row.p-b-1
-        .col-xs-12
-          %p.text-xs-center
-            %em
-              Download your original spreadsheet:
-              = link_to @import.import_file.url do
-                = fa_icon "paperclip", text: @import.import_file_name
 
     - if @import.can_be_deleted?(current_user)
       .row.p-b-1

@@ -24,18 +24,18 @@ describe "Running through the full import process", js: true do
 
       within("#importer_gem_modal_first_visit") do
         expect(page).to have_content("Great News")
-        expect(page).to have_content("4 Columns To Be Imported")
-        expect(page).to have_content("3 Automatically Mapped Columns")
+        expect(page).to have_content("4\nColumns to be Imported")
+        expect(page).to have_content("3\nAutomatically Mapped Columns")
       end
 
       find("button.close").click
       new_import = NfgCsvImporter::Import.last
       expect(current_path).to eq(nfg_csv_importer.edit_import_path(new_import))
       within("#importer_header_stats") do
-        expect(page).to have_content("6 ROWS")
-        expect(page).to have_content("4 COLUMNS")
-        expect(page).to have_content("0 IGNORED COLUMNS")
-        expect(page).to have_content("1 UNMAPPED COLUMNS")
+        expect(page).to have_content("6\nROWS")
+        expect(page).to have_content("4\nCOLUMNS")
+        expect(page).to have_content("0\nIGNORED COLUMNS")
+        expect(page).to have_content("1\nUNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
       end
 
@@ -45,8 +45,8 @@ describe "Running through the full import process", js: true do
       end
 
       within("#importer_header_stats") do
-        expect(page).to have_content("1 IGNORED COLUMNS")
-        expect(page).to have_content("0 UNMAPPED COLUMNS")
+        expect(page).to have_content("1\nIGNORED COLUMNS")
+        expect(page).to have_content("0\nUNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
       within("div[data-column-name='other']") do
@@ -58,8 +58,8 @@ describe "Running through the full import process", js: true do
         find("label").click
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("0 IGNORED COLUMNS")
-        expect(page).to have_content("1 UNMAPPED COLUMNS")
+        expect(page).to have_content("0\nIGNORED COLUMNS")
+        expect(page).to have_content("1\nUNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
       end
 
@@ -68,14 +68,14 @@ describe "Running through the full import process", js: true do
         select "First Name", from: "import_fields_mapping_b3RoZXI__"
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("0 IGNORED COLUMNS")
-        expect(page).to have_content("0 UNMAPPED COLUMNS")
+        expect(page).to have_content("0\nIGNORED COLUMNS")
+        expect(page).to have_content("0\nUNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
       end
       within(".container-error") do
         expect(page).to have_content("multiple columns with the same mapped header")
-        expect(page).to have_content("Your Original Header: first_name")
-        expect(page).to have_content("Your Original Header: other")
+        expect(page).to have_content("Your Original Header:\nfirst_name")
+        expect(page).to have_content("Your Original Header:\nother")
       end
 
       # unmap the other column and allow for editing
@@ -93,8 +93,8 @@ describe "Running through the full import process", js: true do
         click_link "Edit Column"
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("1 IGNORED COLUMNS")
-        expect(page).to have_content("1 UNMAPPED COLUMNS")
+        expect(page).to have_content("1\nIGNORED COLUMNS")
+        expect(page).to have_content("1\nUNMAPPED COLUMNS")
         expect(page).to have_content("Not ready to import")
       end
 
@@ -103,8 +103,8 @@ describe "Running through the full import process", js: true do
         select "First Name", from: "import_fields_mapping_Zmlyc3RfbmFtZQ___"
       end
       within("#importer_header_stats") do
-        expect(page).to have_content("1 IGNORED COLUMNS")
-        expect(page).to have_content("0 UNMAPPED COLUMNS")
+        expect(page).to have_content("1\nIGNORED COLUMNS")
+        expect(page).to have_content("0\nUNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
 
@@ -122,11 +122,11 @@ describe "Running through the full import process", js: true do
 
       expect(User.find_by(email: "tim@farlow.com")).to be
 
-      expect(page).to have_content("Your users import is complete")
+      expect(page).to have_content("Your import is complete")
 
-      expect(page).to have_content("New records created 3")
-      expect(page).to have_content("Processed rows 6")
-      expect(page).to have_content("Errors within your data 3")
+      expect(page).to have_content("New records created\n3")
+      expect(page).to have_content("Processed rows\n6")
+      expect(page).to have_content("Errors within your data\n3")
       expect(page).to have_link("Error file")
     end
   end
