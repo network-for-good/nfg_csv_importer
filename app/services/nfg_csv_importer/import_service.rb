@@ -206,9 +206,9 @@ class NfgCsvImporter::ImportService
       imported_for_id: imported_for.id,
       importable: importable,
       transaction_id: transaction_id,
-      action: get_action(model_obj),
+      action: get_action(importable),
       row_data: row
-    )
+    ) if importable.previous_changes.any?
   end
 
   def open_spreadsheet
