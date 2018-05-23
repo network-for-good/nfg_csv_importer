@@ -173,6 +173,8 @@ class NfgCsvImporter::ImportService
       return
     end
 
+    was_new_record = model_obj.new_record?
+
     begin
       saved_object = model_obj.save
     rescue => e
@@ -206,7 +208,7 @@ class NfgCsvImporter::ImportService
       imported_for_id: imported_for.id,
       importable: importable,
       transaction_id: transaction_id,
-      action: get_action(importable),
+      action: (was_new_record ? 'create' : 'update'),
       row_data: row
     )
   end
@@ -227,14 +229,6 @@ class NfgCsvImporter::ImportService
 
   def spreadsheet
     @spreadsheet ||= open_spreadsheet
-  end
-
-  def get_action(record)
-    if record.new_record? || record.previous_changes["id"].present?
-      "create"
-    else
-      "update"
-    end
   end
 
   def all_headers_are_string_type?
