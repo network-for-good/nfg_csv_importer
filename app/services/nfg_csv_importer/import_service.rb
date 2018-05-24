@@ -206,7 +206,7 @@ class NfgCsvImporter::ImportService
       imported_for_id: imported_for.id,
       importable: importable,
       transaction_id: transaction_id,
-      action: get_action(model_obj),
+      action: get_action(importable),
       row_data: row
     )
   end
@@ -230,7 +230,7 @@ class NfgCsvImporter::ImportService
   end
 
   def get_action(record)
-    if record.new_record? || record.previous_changes["id"].present?
+    if record.previous_changes[:id] || record.created_at >= 1.minute.ago
       "create"
     else
       "update"
