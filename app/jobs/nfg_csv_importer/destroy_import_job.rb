@@ -7,7 +7,7 @@ module NfgCsvImporter
       import = NfgCsvImporter::Import.find(args.last)
       @stats = {}
       batch.each do |imported_record_id|
-        imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) #rescue next
+        imported_record = NfgCsvImporter::ImportedRecord.find(imported_record_id) rescue next
         next unless imported_record.created?
         imported_record.destroy_importable!
         imported_record.destroy_stats.each do |key, value|
