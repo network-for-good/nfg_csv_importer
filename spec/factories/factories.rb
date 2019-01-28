@@ -15,12 +15,6 @@ FactoryGirl.define do
     status nil
   end
 
-  factory :entity do
-  end
-
-  factory :project do
-  end
-
   factory :user do
     first_name "Joe"
     last_name "Schmoe"
