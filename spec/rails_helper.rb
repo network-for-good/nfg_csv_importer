@@ -1,7 +1,7 @@
 require File.expand_path("../test_app/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'rspec/rails/mocha'
-#require 'factory_girl_rails'
+require 'factory_girl_rails'
 Rails.backtrace_cleaner.remove_silencers!
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 
@@ -18,7 +18,6 @@ RSpec.configure do |config|
   config.order = "random"
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
-  config.include FactoryGirl::Syntax::Methods
   config.include Rails.application.routes.url_helpers
   config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
