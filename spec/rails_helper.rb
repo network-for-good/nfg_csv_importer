@@ -2,6 +2,7 @@ require File.expand_path("../test_app/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'rspec/rails/mocha'
 require 'factory_girl_rails'
+require 'shoulda/matchers'
 Rails.backtrace_cleaner.remove_silencers!
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 
