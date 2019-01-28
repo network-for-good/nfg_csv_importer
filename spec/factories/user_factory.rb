@@ -3,6 +3,6 @@ FactoryGirl.define do
     first_name "Will"
     last_name "Smith"
     email "will@smith.com"
-    entity { FactoryGirl.create(:entity) }
+    entity { Entity.first || FactoryGirl.create(:entity) }
   end
 end
