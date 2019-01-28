@@ -14,11 +14,4 @@ FactoryGirl.define do
     import_type 'users'
     status nil
   end
-
-  factory :user do
-    first_name "Joe"
-    last_name "Schmoe"
-    email "user@example.com"
-    entity { Entity.first || create(:entity) }
-  end
 end
