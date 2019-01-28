@@ -34,11 +34,11 @@ class NfgCsvImporter.FieldsMapper
   setEventListeners: () ->
 
     # scroll control
-    @rightScrollButton.click ->
+    @rightScrollButton.on 'click', (event) ->
       event.preventDefault()
       $(FieldsMapper.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '+=650px', "easeInOut" }, 600
 
-    @leftScrollButton.click ->
+    @leftScrollButton.on 'click', (event) ->
       event.preventDefault()
       $(FieldsMapper.IMPORT_CONTAINER_CLASS).animate { scrollLeft: '-=650px', "easeInOut" }, 600
 
