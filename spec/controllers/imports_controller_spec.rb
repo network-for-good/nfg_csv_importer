@@ -28,7 +28,7 @@ describe NfgCsvImporter::ImportsController do
   let(:import_type) { 'users' }
   let(:file_name) {"spec/fixtures/subscribers.csv"}
   let(:import) { assigns(:import) }
-  let(:params) { { import_type: import_type, use_route: :nfg_csv_importer } }
+  let(:params) { { params: { import_type: import_type, use_route: :nfg_csv_importer } } }
   let(:file) do
     extend ActionDispatch::TestProcess
     fixture_file_upload(file_name, 'text/csv')
@@ -104,7 +104,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#destroy" do
     let!(:import) { create(:import, imported_for: entity, status: 'complete') }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
 
     before do
@@ -175,7 +175,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#update" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
     subject { patch :update, params}
 
@@ -185,7 +185,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#edit" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
     subject { get :edit, params}
 
