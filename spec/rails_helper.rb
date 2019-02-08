@@ -6,6 +6,7 @@ require 'shoulda/matchers'
 require 'database_cleaner'
 require 'rails-controller-testing'
 Rails.backtrace_cleaner.remove_silencers!
+Rails::Controller::Testing.install
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 
 #
