@@ -118,6 +118,7 @@ describe "Running through the full import process", js: true do
         sleep 1
       end.to change(User, :count).by(3)
 
+      page.driver.browser.navigate.refresh
       expect(current_path).to eq(nfg_csv_importer.import_path(new_import))
 
       expect(User.find_by(email: "tim@farlow.com")).to be
