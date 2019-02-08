@@ -4,6 +4,7 @@ require 'rspec/rails/mocha'
 require 'factory_girl_rails'
 require 'shoulda/matchers'
 require 'database_cleaner'
+require 'rails-controller-testing'
 Rails.backtrace_cleaner.remove_silencers!
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 
