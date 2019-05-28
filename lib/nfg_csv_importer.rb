@@ -7,6 +7,7 @@ require "coffee-script"
 require "sass-rails"
 require "font-awesome-rails"
 require "browser"
+require "nfg_ui"
 
 module NfgCsvImporter
   module ApplicationHelper
