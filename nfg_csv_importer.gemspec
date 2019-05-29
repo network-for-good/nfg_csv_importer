@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 5.0"
   s.add_dependency "browser", "~> 1.1" # browser/device detection
-  s.add_dependency "nfg_ui", "0.9.8.15"
+  s.add_dependency "nfg_ui", "0.9.8.17"
 
   s.add_development_dependency "sqlite3", '~> 1.3.0'
   s.add_development_dependency "rails-controller-testing"
