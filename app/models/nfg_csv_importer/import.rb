@@ -16,8 +16,10 @@ module NfgCsvImporter
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
-    validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
-    validate :import_validation, on: [:create]
+    validates_presence_of :import_type, :imported_by_id, :imported_for_id
+    validates_presence_of :import_file, unless:  Proc.new{|f| f.status.nil? }
+    validate :import_validation, on: [:update], if: Proc.new{|f| f.uploaded? && f.pre_processing_type.present? }
+    validate :import_validation, on: [:create], if: Proc.new{ |f| f.pre_processing_type.blank? }
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
