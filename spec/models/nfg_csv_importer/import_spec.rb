@@ -1,5 +1,70 @@
 require 'rails_helper'
 
+shared_examples_for "validate import file" do
+  before(:each) do
+    csv_data = mock
+    csv_data.stubs(:row).with(1).returns(header_data)
+    NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
+  end
+
+  subject { import.valid? }
+
+  it { expect(subject).to be }
+
+  context "validate when there is no file" do
+    let(:file) { nil }
+
+    it { expect(subject).not_to be }
+
+    it "should add errors to base" do
+      subject
+      expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
+    end
+  end
+
+  context "with invalid file extensions" do
+    let(:file) { '/icon.jpg'}
+
+    it { expect(subject).not_to be }
+
+    it "should add errors to base" do
+      subject
+      expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
+    end
+  end
+
+  context "when the file contains an empty header" do
+    let(:header_data) { ["first_name", "email", "", "last_name"] }
+    it { should_not be }
+    it " should add an error to base" do
+      subject
+      expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
+    end
+  end
+
+  context 'when the file contains duplicate headers' do
+    let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
+
+    it { expect(subject).not_to be }
+
+    it "should add errors to base" do
+      subject
+      expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
+    end
+  end
+
+  context "when there's an error reading the file" do
+    before do
+      import.stubs(:duplicated_headers).raises(StandardError)
+    end
+
+    it "should add errors to base" do
+      subject
+      expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
+    end
+  end
+end
+
 describe NfgCsvImporter::Import do
   it { should validate_presence_of(:imported_by_id) }
   it { should validate_presence_of(:imported_for_id) }
@@ -25,17 +90,12 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_viewed_by).to(:service)}
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
+  it { is_expected.to validate_presence_of(:import_file) }
 
   describe '#pre_processing_files' do
     subject { import.pre_processing_files }
 
     it { is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
-  end
-
-  context "when file is nil" do
-    let(:file) { nil }
-
-    it { should validate_presence_of(:import_file) }
   end
 
   let(:entity) { create(:entity) }
@@ -50,74 +110,22 @@ describe NfgCsvImporter::Import do
   let(:file_name) { "/subscribers.csv" }
   let(:admin) {  create(:user) }
   let(:error_file) { nil }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file) }
+  let(:status) { :uploaded }
+  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file, status: status) }
 
   it { expect(import.save).to be }
 
-  describe "#valid?" do
+  describe "when pre_processing_type not present on create" do
 
-    before(:each) do
-      csv_data = mock
-      csv_data.stubs(:row).with(1).returns(header_data)
-      NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
-    end
+    it_behaves_like 'validate import file'
+  end
 
-    subject { import.valid? }
+  describe "when pre_processing_type present on update" do
+    let!(:import) { FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin, error_file: error_file, status: status, pre_processing_type: 'paypal') }
 
-    it { expect(subject).to be }
+    before { import.import_file = file }
 
-    context "validate when there is no file" do
-      let(:file) { nil }
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-      end
-    end
-
-    context "with invalid file extensions" do
-      let(:file) { '/icon.jpg'}
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-      end
-    end
-
-    context "when the file contains an empty header" do
-      let(:header_data) { ["first_name", "email", "", "last_name"] }
-      it { should_not be }
-      it " should add an error to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
-      end
-    end
-
-    context 'when the file contains duplicate headers' do
-      let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
-      end
-    end
-
-    context "when there's an error reading the file" do
-      before do
-        import.stubs(:duplicated_headers).raises(StandardError)
-      end
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
-      end
-    end
+    it_behaves_like 'validate import file'
   end
 
   describe "#service" do
