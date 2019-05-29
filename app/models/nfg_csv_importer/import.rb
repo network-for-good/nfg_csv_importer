@@ -17,10 +17,8 @@ module NfgCsvImporter
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
     validates_presence_of :import_type, :imported_by_id, :imported_for_id
-    validates_presence_of :import_file, unless:  Proc.new{|f| f.status.nil? }
-    validate :import_validation, on: [:update], if: Proc.new{|f| f.uploaded? && f.pre_processing_type.present? }
-    validate :import_validation, on: [:create], if: Proc.new{ |f| f.pre_processing_type.blank? }
-
+    validates_presence_of :import_file, if: :should_validate_file?
+    validate :import_validation, if: :should_validate_file?
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
@@ -200,6 +198,10 @@ module NfgCsvImporter
       # fields can be duplicated if they are listed in the definition
       # as fields_that_allow_multiple_mappings
       fields_that_allow_multiple_mappings.include?(mapped_field)
+    end
+
+    def should_validate_file?
+      (new_record? && pre_processing_type.blank?) || (persisted? && uploaded? && pre_processing_type.present?)
     end
   end
 
