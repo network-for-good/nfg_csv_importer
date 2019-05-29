@@ -26,6 +26,12 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
+  describe '#pre_processing_files' do
+    subject { import.pre_processing_files }
+
+    it { is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
+  end
+
   context "when file is nil" do
     let(:file) { nil }
 
