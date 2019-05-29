@@ -12,8 +12,22 @@
   - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
 
 
-.importer-gem{ data: { view_wrapper: "importer-gem" } }
+.importer-gem{ data: { view_wrapper: 'importer-gem' } }
+  = ui.nfg :jumbotron, describe: 'importer-jumbotron', class: 'jumbotron-clouds' do
+    = ui.nfg :typeface, :white, title: t('jumbotron.headline', scope: language_scope).html_safe
+    = ui.nfg :typeface, :white, heading: t('jumbotron.sub_headline', scope: language_scope)
+
+  -# Import Preprocessor Source Type
+  - pre_processes_types = ['Mailchimp', 'PayPal', 'Constant Contact', 'Your Own']
+  - pre_processes_types.each do |pre_processes_type|
+    = link_to pre_processes_type, pre_processes_get_started_path(pre_process_type: pre_processes_type.downcase.dasherize), remote: true
+    %br
+
+  %hr
+
+  -# Legacy
   .container-fluid.container-flush.bg-white
+    -# To be moved to modal process for custom imports
     = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
 
     = render(partial: 'shared/flash_messages') rescue nil
