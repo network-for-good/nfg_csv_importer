@@ -6,6 +6,6 @@ NfgCsvImporter::Engine.routes.draw do
   end
 
   resource :pre_processes do
-    get :get_started, as: 'get_started'
+    post :get_started, as: 'get_started'
   end
 end

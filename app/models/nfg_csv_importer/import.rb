@@ -10,7 +10,7 @@ module NfgCsvImporter
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
-    has_many_attached :pre_processing_files
+    # has_many_attached :pre_processing_files
 
     has_many :imported_records, dependent: :destroy
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
@@ -26,6 +26,11 @@ module NfgCsvImporter
       :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
       :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
       :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
+
+    def pre_processing_type
+      # DMS can't figure out what to do with this.
+      # it should be removed ASAP
+    end
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE

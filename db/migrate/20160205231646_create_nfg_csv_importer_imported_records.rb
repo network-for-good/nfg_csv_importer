@@ -1,4 +1,4 @@
-class CreateNfgCsvImporterImportedRecords < ActiveRecord::Migration
+class CreateNfgCsvImporterImportedRecords < ActiveRecord::Migration[4.2]
   def change
     create_table "nfg_csv_importer_imported_records" do |t|
       t.integer  "imported_for_id"
