@@ -1,33 +1,54 @@
-- pre_process_type = local_assigns[:pre_process_type]
+- pre_processing_type = local_assigns[:pre_processing_type]
+- import_presenter = local_assigns[:import_presenter]
 
 = ui.nfg :modal, id: 'get_started_modal' do
   = ui.nfg :typeface, :caption, :muted do
     = ui.nfg :icon, 'clock-o'
     5-10 min to import
 
-  -# Step 1
-  -#= image_tag 'nfg_csv_importer/illustrations/guided-tour.png'
-  = ui.nfg :typeface, heading: "To get started, we'd like to quickly walk you through importing your data from #{pre_process_type}."
-  = ui.nfg :typeface, body: "You'll get step-by-step instructions (screenshots and video) for exporting your data and uploading it right here for import."
 
-  -# Step 2
-  -#= image_tag 'nfg_csv_importer/illustrations/guided-tour.png'
-  = ui.nfg :typeface, heading: "Before we import your data, we’ll show you a preview and summary."
-  = ui.nfg :typeface, body: "You’ll have a chance to see what one of your imported contacts would look like in donor management. This gives you a chance to get one last look at how your data will transpose before you officially begin the import."
 
-  -# Step 3
-  -#= image_tag 'nfg_csv_importer/illustrations/guided-tour.png'
-  = ui.nfg :typeface, heading: "We’ll send you emails to let you know the status of your data import."
-  = ui.nfg :typeface, body: "First, we’ll confirm that your import has been uploaded. After that, we’ll send you an email when your import is on the queue and then again once your data is loaded into Donor Management."
 
-  -# Dots
-  = ui.nfg :icon, 'circle', :primary
-  = ui.nfg :icon, 'circle', :muted
-  = ui.nfg :icon, 'circle', :muted
+  %div{ data: { toggle: 'tour-slider' }}
+    -# Step 1
+    .row
+      .col-md-7.mx-auto.col-8
+        = image_tag 'nfg_csv_importer/illustrations/guided-tour.png', class: 'img-fluid'
 
-  -# Controls
-  = ui.nfg :button, icon: 'caret-right', body: 'Next'
+    .row
+      .col
+        = import_presenter.get_started_modal_steps(step: 1, heading_options: { name: pre_processing_type.humanize })
+
+    -# Step 2
+    .row
+      .col-md-7.mx-auto.col-8
+        = image_tag 'nfg_csv_importer/illustrations/guided-tour.png', class: 'img-fluid'
+
+    .row
+      .col
+        = import_presenter.get_started_modal_steps(step: 2, heading_options: { name: pre_processing_type.humanize })
+
+    -# Step 3
+    .row
+      .col-md-7.mx-auto.col-8
+        = image_tag 'nfg_csv_importer/illustrations/guided-tour.png', class: 'img-fluid'
+
+    .row
+      .col
+        = import_presenter.get_started_modal_steps(step: 3, heading_options: { name: pre_processing_type.humanize })
+
+    -# Indicators
+    .row{ data: { tour_slider: 'indicators' } }
+      .col
+        = ui.nfg :icon, 'circle', :primary
+        = ui.nfg :icon, 'circle', :muted
+        = ui.nfg :icon, 'circle', :muted
+
+    -# Controls
+    .row
+      .col
+        = ui.nfg :button, icon: 'caret-right', body: 'Next'
 
   = ui.nfg :typeface, :muted, :caption do
-    If you’re already good to go,
+    If you're already good to go,
     = link_to 'skip the tutorial and upload your files.', '#REPLACEME!', class: 'text-primary'

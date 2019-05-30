@@ -1,4 +1,3 @@
-- language_scope = [:imports, :index]
 - count_of_import_types = ImportDefinition.import_types.size
 - import_type_column_structure_classes = "display-flex"
 - import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
@@ -14,21 +13,26 @@
 
 .importer-gem{ data: { view_wrapper: 'importer-gem' } }
   = ui.nfg :jumbotron, describe: 'importer-jumbotron', class: 'jumbotron-clouds' do
-    = ui.nfg :typeface, :white, title: t('jumbotron.headline', scope: language_scope).html_safe
-    = ui.nfg :typeface, :white, heading: t('jumbotron.sub_headline', scope: language_scope)
+    = ui.nfg :typeface, :white, title: t('.jumbotron.headline').html_safe
+    = ui.nfg :typeface, :white, heading: t('.jumbotron.sub_headline')
 
-  -# Import Preprocessor Source Type
-  - local_pre_processes_types = ['Mailchimp', 'PayPal', 'Constant Contact', 'Your Own']
-  - local_pre_processes_types.each do |local_pre_processes_type|
-    = link_to local_pre_processes_type, nfg_csv_importer.get_started_pre_processes_path(pre_process_type: local_pre_processes_type.downcase.dasherize), remote: true
-    %br
+  = simple_form_for @import, url: nfg_csv_importer.get_started_pre_processes_path, remote: true do |f|
+    .row
+      - @import_presenter.pre_processing_types.each do |pre_processing_type|
+        = render partial: 'nfg_csv_importer/pre_processes/pre_processing_choices_radio_buttons', locals: { f: f, pre_processing_type: pre_processing_type }
 
+    = ui.nfg :button, :submit, body: t('.buttons.begin'), icon: 'caret-right'
   %hr
+
+
+
+  -# #############
+
 
   -# Legacy
   .container-fluid.container-flush.bg-white
     -# To be moved to modal process for custom imports
-    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
+    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: [:nfg_csv_importer, :imports, :index], import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
 
     = render(partial: 'shared/flash_messages') rescue nil
 
@@ -40,22 +44,22 @@
         .col-xs-12
           .row
             .col-xs-12
-              %h2= t("headings.past_imports", scope: language_scope)
+              %h2= t(".headings.past_imports")
           .row
             .col-xs-12
               .row.row-listing-header.m-b-1
                 - imports_listing_row_column_structure_class = "col-md-2"
 
                 %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.imported_by_name", scope: language_scope)
+                  %small= t(".headings.imported_by_name")
                 %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.number_of_records", scope: language_scope)
+                  %small= t(".headings.number_of_records")
                 %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.number_of_records_with_errors", scope: language_scope)
+                  %small= t(".headings.number_of_records_with_errors")
                 %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.updated_at", scope: language_scope)
+                  %small= t(".headings.updated_at")
                 %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.status", scope: language_scope)
+                  %small= t(".headings.status")
                 %div{ class: imports_listing_row_column_structure_class }
               = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
               .row.p-y-1

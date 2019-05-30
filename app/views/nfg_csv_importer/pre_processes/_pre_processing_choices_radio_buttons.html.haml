@@ -1,0 +1,12 @@
+- pre_processing_type = local_assigns[:pre_processing_type]
+- f = local_assigns[:f]
+
+.col-md-4.col-6{ data: { describe: "#{pre_processing_type}_pre_processing_type" } }
+  .custom-control.custom-radio.custom-control-block
+    = f.radio_button 'pre_processing_type', pre_processing_type, class: "custom-control-input"
+
+    %label.custom-control-label.text-center.w-100{ for: "import_pre_processing_type_#{pre_processing_type}" }
+
+      = image_tag "nfg_csv_importer/pre_processing_types/#{pre_processing_type}.png", class: 'img-fluid'
+
+      = ui.nfg :typeface, body: t("simple_form.labels.import.pre_processing_type.#{pre_processing_type}"), class: 'mt-2 mb-0 text-break'
