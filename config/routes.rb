@@ -5,7 +5,7 @@ NfgCsvImporter::Engine.routes.draw do
     get :template, on: :collection
   end
 
-
-  get 'pre_processes/get_started', to: 'pre_processes#get_started', as: 'pre_processes_get_started'
-
+  resource :pre_processes do
+    get :get_started, as: 'get_started'
+  end
 end
