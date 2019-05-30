@@ -1,2 +1,2 @@
-$('body').append("<%= j render partial: 'nfg_csv_importer/pre_processes/get_started_modal' %>");
+$('body').append("<%= j render 'nfg_csv_importer/pre_processes/get_started_modal', pre_process_type: @pre_process_type %>");
 $('#get_started_modal').modal('show');
