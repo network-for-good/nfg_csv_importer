@@ -18,9 +18,9 @@
     = ui.nfg :typeface, :white, heading: t('jumbotron.sub_headline', scope: language_scope)
 
   -# Import Preprocessor Source Type
-  - pre_processes_types = ['Mailchimp', 'PayPal', 'Constant Contact', 'Your Own']
-  - pre_processes_types.each do |pre_processes_type|
-    = link_to pre_processes_type, pre_processes_get_started_path(pre_process_type: pre_processes_type.downcase.dasherize), remote: true
+  - local_pre_processes_types = ['Mailchimp', 'PayPal', 'Constant Contact', 'Your Own']
+  - local_pre_processes_types.each do |local_pre_processes_type|
+    = link_to local_pre_processes_type, nfg_csv_importer.get_started_pre_processes_path(pre_process_type: local_pre_processes_type.downcase.dasherize), remote: true
     %br
 
   %hr
