@@ -79,6 +79,10 @@ en:
     pre_processes:
       get_started_modal:
         pre_processing_type:
+          buttons:
+            skip:
+              third_party: 'skip the tutorial and upload your files.'
+              other: 'skip the tutorial and select your import type'
           step1:
             heading: "To get started, we'd like to quickly walk you through importing your data from %{pre_processing_type}."
             body: "You'll get step-by-step instructions (screenshots and video) for exporting your data and uploading it right here for import."

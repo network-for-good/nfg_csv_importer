@@ -20,18 +20,18 @@ module NfgCsvImporter
       pre_processing_type_is_other?
     end
 
-    def skip_modal_link_text
-      pre_processing_type_is_other? ? 'skip the tutorial and select your import type' : 'skip the tutorial and upload your files.'
-    end
-
     def link_to_skip_modal
       if pre_processing_type_is_other?
         path = h.nfg_csv_importer.import_type_pre_processes_path(pre_processing_type: params_for_pre_processing_type)
+
+        skip_modal_link_scope = :other
       else
         path = h.nfg_csv_importer.new_pre_processes_path(pre_processing_type: params_for_pre_processing_type)
+
+        skip_modal_link_scope = :third_party
       end
 
-      h.link_to skip_modal_link_text, path, remote: pre_processing_type_is_other?
+      h.link_to I18n.t("nfg_csv_importer.pre_processes.get_started_modal.pre_processing_type.buttons.skip.#{skip_modal_link_scope}"), path, remote: pre_processing_type_is_other?
     end
 
     def pre_processing_type_is_other?
@@ -43,19 +43,18 @@ module NfgCsvImporter
     end
 
     def knowledge_base_link_path
-      case params_for_pre_processing_type
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME then '#constant_contact_kb_link'
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_MAILCHIMP_NAME then '#mailchimp_kb_link'
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_PAYPAL_NAME then '#paypal_kb_link'
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_OTHER_NAME then '#other_kb_link'
-      end
+      I18n.t("nfg_csv_importer.urls.knowledge_base.walk_throughs.pre_processing_types.#{params_for_pre_processing_type}")
     end
 
+    # This method (#import_type_value_for_pre_process_form) should not live here. This is here to help out and contain all of the custom logic that's empowering the UX design.
+    # This should be managed outside of the presenter on the Import or somewhere else more appropriate
     def import_type_value_for_pre_process_form
       case params_for_pre_processing_type
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME then :user
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_MAILCHIMP_NAME then :user
-      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_PAYPAL_NAME then :donation
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME then 'users'
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_MAILCHIMP_NAME then 'users'
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_PAYPAL_NAME then 'donations'
+      else
+        import_type.presence
       end
     end
 
