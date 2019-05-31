@@ -1,0 +1,7 @@
+if($('#generate_preview_modal').length){
+  $('#generate_preview_modal').remove();
+}
+
+$('body').append("<%= j render 'nfg_csv_importer/pre_processes/generate_preview_modal', import_presenter: @import_presenter %>");
+
+$('#generate_preview_modal').modal('show');

@@ -51,6 +51,14 @@ module NfgCsvImporter
       end
     end
 
+    def import_type_value_for_pre_process_form
+      case params_for_pre_processing_type
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME then :user
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_MAILCHIMP_NAME then :user
+      when NfgCsvImporter::Import::PRE_PROCESSING_TYPE_PAYPAL_NAME then :donation
+      end
+    end
+
     private
 
     def params_for_pre_processing_type
