@@ -17,7 +17,7 @@
 
     .row
       .col
-        = import_presenter.get_started_modal_steps(step: 1, heading_options: { name: pre_processing_type.humanize })
+        = import_presenter.get_started_modal_steps(step: 1, heading_options: { pre_processing_type: pre_processing_type.humanize })
 
     -# Step 2
     .row
@@ -26,7 +26,7 @@
 
     .row
       .col
-        = import_presenter.get_started_modal_steps(step: 2, heading_options: { name: pre_processing_type.humanize })
+        = import_presenter.get_started_modal_steps(step: 2)
 
     -# Step 3
     .row
@@ -35,7 +35,7 @@
 
     .row
       .col
-        = import_presenter.get_started_modal_steps(step: 3, heading_options: { name: pre_processing_type.humanize })
+        = import_presenter.get_started_modal_steps(step: 3)
 
     -# Indicators
     .row{ data: { tour_slider: 'indicators' } }

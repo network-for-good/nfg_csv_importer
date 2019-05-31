@@ -76,7 +76,9 @@ en:
           complete: "imported"
           deleting: "queued for deletion"
           uploaded: "processing"
-      pre_processes:
+    pre_processes:
+
+
         get_started_modal:
           pre_processing_type:
             step1:
