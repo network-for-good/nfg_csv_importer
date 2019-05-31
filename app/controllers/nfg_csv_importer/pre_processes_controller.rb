@@ -1,5 +1,5 @@
 class NfgCsvImporter::PreProcessesController < NfgCsvImporter::ApplicationController
-
+  before_action :set_import_type
   before_action :set_pre_processing_type
   before_action :set_import
   before_action :set_import_presenter
@@ -17,7 +17,15 @@ class NfgCsvImporter::PreProcessesController < NfgCsvImporter::ApplicationContro
   end
 
   def new
+    # Fake import_type -- not sure if this @previous_imports is needed.
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
+  end
+
+  # Make it feel like a preview is being created so it hacks it
+  # and renders the generate preview modal for UX
+  # workflow
+  def create
+    respond_to { |format| format.js }
   end
 
   private
@@ -32,5 +40,14 @@ class NfgCsvImporter::PreProcessesController < NfgCsvImporter::ApplicationContro
 
   def set_import
     @import = NfgCsvImporter::Import.new
+  end
+
+  def set_import_type
+    @import_type = params[:import].present? ? params[:import][:import_type] : :user
+
+  end
+
+  def permitted_params
+    params.require(:import).permit(:pre_processing_type, :import_file, :import_type)
   end
 end

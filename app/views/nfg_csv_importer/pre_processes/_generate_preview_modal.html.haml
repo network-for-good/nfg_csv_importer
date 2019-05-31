@@ -1,0 +1,17 @@
+- import_presenter = local_assigns[:import_presenter]
+
+= ui.nfg :modal, id: 'generate_preview_modal' do
+  #generate_preview_modal_body
+    = ui.nfg :icon, :loader, class: 'fa-2x'
+    = ui.nfg :typeface, heading: 'Great job! We’re setting up your preview now.'
+    = ui.nfg :typeface, body: "Just a reminder, we haven’t imported anything. In a moment, we’ll show you a snapshot of what your data looks like so that you can give it a thumbs up before import begins."
+
+    -# this link will need to be removed
+    = ui.nfg :button, body: 'Magic Link! Go to the Preview Page From Here', href: preview_import_review_path
+
+    -# This link will load up the import confirmation modal
+    = ui.nfg :typeface, :muted, :caption do
+      Seen this before?
+      = link_to "Feel free to skip the preview.", '#some_path'
+    %p
+    = link_to 'Exit and don’t import these files.', nfg_csv_importer.root_path, class: 'text-danger'
