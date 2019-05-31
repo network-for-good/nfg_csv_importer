@@ -1,0 +1,32 @@
+.importer-gem{ data: { view_wrapper: 'importer-gem' } }
+  -# Jumbotron
+  = ui.nfg :jumbotron, describe: 'importer-jumbotron', class: 'jumbotron-clouds' do
+    = ui.nfg :typeface, :white, title: "Let's upload your files"
+    = ui.nfg :typeface, :white, heading: "Some witty heading"
+
+  -# Steps
+  .row
+    .col-md-8.col-12.mx-auto
+      = ui.nfg :steps do
+        = ui.nfg :step, :active, step: 1, body: 'Upload', href: '#back'
+        = ui.nfg :step, step: 2, body: 'Preview'
+        = ui.nfg :step, icon: 'check', body: 'Import!'
+  .row
+    .col-md-8.col-12.mx-auto
+      -# Body
+      = ui.nfg :typeface, body: "When you downloaded your exported CSVs from PayPal, they come in a 'package' and look like this: some_filename.csv. Add it below."
+
+      -# Fake form, not sure where or how pre_processing_occurs on Import
+      = simple_form_for @import do |f|
+        .row
+          .col-9
+            = f.input :import_file, as: :file
+          .col-3
+            -# Does not yet work
+            = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'
+
+        = ui.nfg :button, :submit, body: 'Upload & Preview'
+
+      = ui.nfg :typeface, :caption, class: 'my-4 text-center' do
+        Need to run through those instructions again? No problem,
+        = link_to 'you can review here.', @import_presenter.knowledge_base_link_path

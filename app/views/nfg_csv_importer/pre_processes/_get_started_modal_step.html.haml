@@ -1,0 +1,12 @@
+- step = local_assigns[:step]
+- heading_options = {} if local_assigns[:heading_options].nil?
+- body_options = {} if local_assigns[:body_options].nil?
+- import_presenter = @import_presenter if local_assigns[:import_presenter].nil?
+
+.row
+  .col-md-7.mx-auto.col-8
+    = import_presenter.get_started_modal_image(step: step)
+
+.row
+  .col
+    = import_presenter.get_started_modal_step(step: step, heading_options: heading_options, body_options: body_options)
