@@ -4,6 +4,18 @@ module NfgCsvImporter
 
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
+    PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME = 'constant_contact'
+    PRE_PROCESSING_TYPE_MAILCHIMP_NAME = 'mailchimp'
+    PRE_PROCESSING_TYPE_PAYPAL_NAME = 'paypal'
+    PRE_PROCESSING_TYPE_OTHER_NAME = 'other'
+
+    PRE_PROCESING_TYPES = [
+      PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME,
+      PRE_PROCESSING_TYPE_MAILCHIMP_NAME,
+      PRE_PROCESSING_TYPE_PAYPAL_NAME,
+      PRE_PROCESSING_TYPE_OTHER_NAME
+    ]
+
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
 
