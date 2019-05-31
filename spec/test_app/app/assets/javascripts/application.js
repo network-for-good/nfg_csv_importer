@@ -14,6 +14,5 @@
 //= require jquery_ujs
 //= require tether.min
 //= require bootstrap4/bootstrap.min
-//= require nfg_ui/application
 //= require nfg_csv_importer/application
 //= require_tree .
