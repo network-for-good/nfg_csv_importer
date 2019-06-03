@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, format: /\A.+@.+\Z/
   validates :first_name, presence: true
 
+  include NfgOnboarder::OnboardableOwner
+
   def name
     "#{first_name} #{last_name}"
   end
