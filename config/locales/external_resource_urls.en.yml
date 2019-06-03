@@ -1,0 +1,10 @@
+en:
+  nfg_csv_importer:
+    urls:
+      knowledge_base:
+        walk_throughs:
+          pre_processing_types:
+            constant_contact: '#constant_contact_kb_link'
+            mailchimp: '#mailchimp_kb_link'
+            paypal: '#paypal_kb_link'
+            other: '#other_kb_link'
