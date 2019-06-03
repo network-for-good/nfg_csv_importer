@@ -16,4 +16,8 @@ NfgCsvImporter::Engine.routes.draw do
     # for hacking around imports#create for preview purposes
     post :create, as: 'create'
   end
+
+  namespace :onboarding do
+    resources :import_data, controller: :import_data
+  end
 end
