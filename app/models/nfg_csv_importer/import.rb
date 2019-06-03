@@ -2,6 +2,8 @@ module NfgCsvImporter
   class Import < ActiveRecord::Base
     attr_accessor :import_template_id # captures the id of a previous import from which fields mappings should be generated
 
+    NfgOnboarder::OnboardableOwner
+
     STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME = 'constant_contact'
