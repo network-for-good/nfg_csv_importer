@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe "Running through the full import process", js: true do
   let!(:entity) { Entity.create(subdomain: "test") }
-  let(:upload_button_name) { I18n.t("imports.new.form.buttons.upload") }
+  let(:upload_button_name) { I18n.t("nfg_csv_importer.imports.new.form.buttons.upload") }
 
   describe "from the new import page" do
     let(:new_import_path) { nfg_csv_importer.new_import_path(import_type: 'users') }
@@ -14,7 +14,7 @@ describe "Running through the full import process", js: true do
     it "should be able to import users" do
       visit new_import_path
       # should have download template link
-      expect(page).to have_link(I18n.t("links.file", scope: [:imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
+      expect(page).to have_link(I18n.t("links.file", scope: [:nfg_csv_importer, :imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
       # upload and continue button should be disabled prior to adding file
       expect(page).to have_button(upload_button_name, disabled: true)
       attach_file("import_import_file", File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))
@@ -28,7 +28,10 @@ describe "Running through the full import process", js: true do
         expect(page).to have_content("3\nAutomatically Mapped Columns")
       end
 
+      expect(page.find('.modal-open')).to be
       find("button.close").click
+      sleep 1
+
       new_import = NfgCsvImporter::Import.last
       expect(current_path).to eq(nfg_csv_importer.edit_import_path(new_import))
       within("#importer_header_stats") do
@@ -41,12 +44,12 @@ describe "Running through the full import process", js: true do
 
       # click to ignore the unmapped column
       within("div[data-column-name='other'] .card-header-interactions") do
-        find("label").click
+        page.find("label").click
       end
 
       within("#importer_header_stats") do
-        expect(page).to have_content("1\nIGNORED COLUMNS")
-        expect(page).to have_content("0\nUNMAPPED COLUMNS")
+        expect(page).to have_content("1 IGNORED COLUMNS")
+        expect(page).to have_content("0 UNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
       within("div[data-column-name='other']") do
@@ -151,7 +154,7 @@ describe "Running through the full import process", js: true do
 
       it "should display all the imports sorted in recent order" do
         expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(8) # 2 for each import
-        within("#import_#{ @import.id }_name h5") do
+        within("#import_#{ @import.id }_name") do
          expect(page).to have_content(user_1.name)
         end
 
@@ -160,10 +163,10 @@ describe "Running through the full import process", js: true do
         end
 
         expect(page).to have_content("donations.xlsx")
-
+        # sleep 123122
         # clicking status will take the user to the show page
         within("#import_#{ @import.id }") do
-          click_link @import.status.titleize
+          click_link "Complete"
         end
         expect(current_path).to eq(nfg_csv_importer.import_path(@import))
       end
@@ -184,7 +187,7 @@ end
 
 def submit_import_subscribers_file
   with_resque { submit_import_file_form }
-  expect(page).to have_content(I18n.t(:notice, scope: [:import, :create]))
+  expect(page).to have_content(I18n.t(:notice, scope: [:nfg_csv_importer, :import, :create]))
   expect(current_path).to eq(nfg_csv_importer.import_path(NfgCsvImporter::Import.last))
 end
 
