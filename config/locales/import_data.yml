@@ -1,0 +1,102 @@
+en:
+  nfg_csv_importer:
+    onboarding:
+      import_data:
+        finish:
+          header:
+            message: 'Replace me at config/locales/import_data: finish'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        preview_confirmation:
+          header:
+            message: 'Replace me at config/locales/import_data: preview_confirmation'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        field_mapping:
+          header:
+            message: 'Replace me at config/locales/import_data: field_mapping'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        upload_post_processing:
+          header:
+            message: 'Replace me at config/locales/import_data: upload_post_processing'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        import_type:
+          header:
+            message: 'Replace me at config/locales/import_data: import_type'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        upload_preprocessing:
+          header:
+            message: 'Replace me at config/locales/import_data: upload_preprocessing'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        overview:
+          header:
+            message: 'Replace me at config/locales/import_data: overview'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        get_started:
+          header:
+            message: 'Replace me at config/locales/import_data: get_started'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        step_navigations:
+
