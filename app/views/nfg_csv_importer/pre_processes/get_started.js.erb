@@ -1,7 +1,0 @@
-if($('#get_started_modal').length){
-  $('#get_started_modal').remove();
-}
-
-$('body').append("<%= j render 'nfg_csv_importer/pre_processes/get_started_modal', pre_processing_type: @pre_processing_type, import_presenter: @import_presenter %>");
-
-$('#get_started_modal').modal('show');
