@@ -1,9 +1,15 @@
 class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboarding::BaseController
 
+  layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
+
   # steps list
   steps :get_started, :overview, :upload_preprocessing, :import_type, :upload_post_processing, :field_mapping, :preview_confirmation, :finish
 
   expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
+
+  # WORKAROUNDS
+  expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
+  expose(:pre_processing_type) { params[:pre_processing_type] || params[:import][:pre_processing_type] }
 
   private
 
