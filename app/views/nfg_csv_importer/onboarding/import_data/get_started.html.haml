@@ -1,3 +1,40 @@
 = render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  .form-group
-    / = render partial: 'onboarding/fields/onboarding_text_field', locals: { f: f, field: :field_name }
+
+  %div{ data: { toggle: 'tour-slider' }}
+    -# Step 1
+    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 1, heading_options: { pre_processing_type: pre_processing_type.humanize }, import_presenter: import_presenter }
+
+    -# Step 2
+    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 2, import_presenter: import_presenter }
+
+    -# Step 3
+    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 3, import_presenter: import_presenter }
+
+    -# Controls
+    .row{ data: { tour_slider: 'next-slide-buttons' } }
+      .col
+        = ui.nfg :button, icon: 'caret-right', body: 'Next - Does Nothing Now', href: 'javascript:;'
+
+    -# Thirdparty import last-slide controls
+    .row{ data: { tour_slider: 'last-slide-buttons' } }
+      .col
+        %p.text-center
+          = ui.nfg :button, :secondary, icon: 'caret-right', body: 'Use a Walkthrough - Shows on Last Step Only', href: import_presenter.knowledge_base_link_path
+
+    -# Indicators
+    .row{ data: { tour_slider: 'indicators' } }
+      .col
+        = ui.nfg :icon, 'circle', :primary
+        = ui.nfg :icon, 'circle', :muted
+        = ui.nfg :icon, 'circle', :muted
+
+    -# Action buttons for the carousel
+
+    -# When 'other', the button should be to "Pick your import type", not upload
+    - if import_presenter.show_pick_import_type_button?
+      -# Note: this will be hidden until revealed in javascript by clicking the final step's "next" button when the pre processing type is "other"
+      = ui.nfg :button, icon: 'caret-right', body: "'Pick Import Type' - Last Step Only", href: '#upload_post_processed_file'
+
+    - else
+      -# When a third party, go to pre_processing upload form.
+      = ui.nfg :button, :large, icon: 'cloud-upload', body: "I'm ready to upload my files - Last Step Only", href: '#upload_pre_processed_file'

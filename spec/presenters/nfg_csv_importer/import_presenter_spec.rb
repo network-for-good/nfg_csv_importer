@@ -57,24 +57,6 @@ describe NfgCsvImporter::ImportPresenter do
     end
   end
 
-  describe '#link_to_skip_modal' do
-    subject { import_presenter.link_to_skip_modal }
-
-    context 'when the import pre_processing_type is not a custom third-party' do
-      let(:pre_processing_type) { NfgCsvImporter::Import::PRE_PROCESSING_TYPE_OTHER_NAME }
-      let(:path) { h.nfg_csv_importer.import_type_pre_processes_path(pre_processing_type: pre_processing_type) }
-
-      it { is_expected.to eq h.link_to(I18n.t("nfg_csv_importer.pre_processes.get_started_modal.pre_processing_type.buttons.skip.other"), path, remote: true) }
-    end
-
-    context 'when the import pre_processing_type is a custom third-party' do
-      let(:pre_processing_type) { NfgCsvImporter::Import::PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME }
-      let(:path) { h.nfg_csv_importer.new_pre_processes_path(pre_processing_type: pre_processing_type) }
-
-      it { is_expected.to eq h.link_to(I18n.t("nfg_csv_importer.pre_processes.get_started_modal.pre_processing_type.buttons.skip.third_party"), path, remote: false) }
-    end
-  end
-
   describe '#pre_processing_type_is_other?' do
     subject { import_presenter.pre_processing_type_is_other? }
 

@@ -7,7 +7,4 @@ class NfgCsvImporter::ReviewsController < NfgCsvImporter::ApplicationController
 
   def show
   end
-
-  def preview
-  end
 end

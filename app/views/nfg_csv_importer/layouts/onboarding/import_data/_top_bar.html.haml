@@ -1,0 +1,20 @@
+.navbar.navbar-light.email-navbar
+  .row.flex-items-xs-middle
+    .col-xs-5.col-lg-3
+      %h5.p-l-half= ui.nfg :icon, 'cloud-upload', text: "Import Data"
+    .col-xs-6.text-xs-center.hidden-md-down
+      %ol.breadcrumb.breadcrumb-steps
+        - controller.wizard_steps.each_with_index do |step, index|
+          %li.breadcrumb-item{:role => "presentation", class: get_onboarding_nav_status(step)}
+            = link_to wizard_path(step) do
+              = step.to_s
+              / = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
+    .col-xs-7.col-lg-3
+      %ul.nav.navbar-nav.pull-right
+        %li.nav-item
+          - unless first_step
+            = link_to 'Save & Exit', "#", id: "save_and_exit", class: "nav-link text-muted"
+            / = link_to t(".save_and_exit_button"), "#", id: "save_and_exit", class: "nav-link text-muted"
+          - else
+            = link_to 'Exit', nfg_csv_importer.imports_path, class: "nav-link text-muted"
+            / = link_to t(".exit_button"), mailings_path, class: "nav-link text-muted"

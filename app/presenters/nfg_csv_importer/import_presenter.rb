@@ -20,20 +20,6 @@ module NfgCsvImporter
       pre_processing_type_is_other?
     end
 
-    def link_to_skip_modal
-      if pre_processing_type_is_other?
-        path = h.nfg_csv_importer.import_type_pre_processes_path(pre_processing_type: params_for_pre_processing_type)
-
-        skip_modal_link_scope = :other
-      else
-        path = h.nfg_csv_importer.new_pre_processes_path(pre_processing_type: params_for_pre_processing_type)
-
-        skip_modal_link_scope = :third_party
-      end
-
-      h.link_to I18n.t("nfg_csv_importer.pre_processes.get_started_modal.pre_processing_type.buttons.skip.#{skip_modal_link_scope}"), path, remote: pre_processing_type_is_other?
-    end
-
     def pre_processing_type_is_other?
       params_for_pre_processing_type == NfgCsvImporter::Import::PRE_PROCESSING_TYPE_OTHER_NAME
     end

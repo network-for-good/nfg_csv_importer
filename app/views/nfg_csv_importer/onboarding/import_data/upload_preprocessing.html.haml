@@ -1,3 +1,28 @@
 = render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+
+  -# Debugging if pre_processing type is coming over.
+  - pre_processing_type ||= 'not set'
+  = pre_processing_type
+  -# Body
+  = ui.nfg :typeface, body: "When you downloaded your exported CSVs from PayPal, they come in a 'package' and look like this: some_filename.csv. Add it below."
+
+  -# Fake form, not sure where or how pre_processing_occurs on Import
+  = f.input :pre_processing_type, as: :hidden, input_html: { value: @pre_processing_type }
+  = f.input :import_type, as: :hidden, input_html: { value: @import_presenter.import_type_value_for_pre_process_form }
+  .row
+    .col-9
+      = f.input :import_file, as: :file
+    .col-3
+      -# Add file does not yet work
+      = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'
+
+  = ui.nfg :button, :submit, body: 'Upload & Preview'
+  -# Should be removed
+  %p
+    = ui.nfg :button, body: 'Magic Link to get to Preview Page!', href: nfg_csv_importer.preview_path
+
+  = ui.nfg :typeface, :caption, class: 'my-4 text-center' do
+    Need to run through those instructions again? No problem,
+    = link_to 'you can review here.', @import_presenter.knowledge_base_link_path
   .form-group
     / = render partial: 'onboarding/fields/onboarding_text_field', locals: { f: f, field: :field_name }
