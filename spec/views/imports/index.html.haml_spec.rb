@@ -54,20 +54,4 @@ describe "imports/index.html.haml" do
       end
     end
   end
-
-  context "when only one import definition can be viewed" do
-    before do
-      ImportDefinition.stubs(:import_types).returns([:users])
-      NfgCsvImporter::ImportDefinitionDetails.any_instance.expects(:can_be_viewed_by).with(current_user).returns(true).once
-    end
-
-    it "should not display import_type_row" do
-      expect(subject).not_to have_selector("#import_type_row")
-    end
-
-    it "start button should have link to first accessible import definition" do
-      expect(subject).to have_link(I18n.t("links.start", scope: [:imports, :index]), href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: 'users'))
-    end
-  end
-
 end
