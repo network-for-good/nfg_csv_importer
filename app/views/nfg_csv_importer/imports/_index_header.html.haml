@@ -4,6 +4,9 @@
 -# USED IN A MODAL. THIS IS HERE FOR SPEC REPAIR PURPOSES
 
 .jumbotron.jumbotron-fluid.jumbotron-clouds
+  -# Magic link
+  = ui.nfg :button, :lg, body: 'Onboarder Import Magic Link', href: nfg_csv_importer.onboarding_import_data_path(pre_processing_type: 'mailchimp')
+
   = render 'nfg_csv_importer/imports/import_definitions', language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: { href: nfg_csv_importer.new_import_path(import_type: import_definitions.keys.first) }
 
 .container-fluid
@@ -11,6 +14,9 @@
     .col-xs-12.p-x-2
       %h1.text-xs-center What kind of data are you importing?
       %p.text-xs-center If you're unsure, importing users is likely the best route to go. It'll cover donations and contacts
+
+
+
 
   - if import_definitions.size > 1
     #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
