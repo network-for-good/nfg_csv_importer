@@ -43,7 +43,7 @@ module NfgCsvImporter
       end
 
       link_to path, class: import_status_class, data: { describe: 'import-status-link' } do
-        fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
+        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize
       end
     end
 
