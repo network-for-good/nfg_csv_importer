@@ -46,6 +46,19 @@ module NfgCsvImporter
           # post processed file.
           true
         end
+
+        def logo_path
+          # supply the path to the image that you want to display with
+          # this file origination type. The image should be stored in the
+          # assets/images folder. If it is in a subfolder of the images
+          # folder, include the folder, i.e "file_originators/constant_contact_logo.gif"
+          ""
+        end
+
+        def name
+          # the name of the file origination type, i.e ConstantContact, PayPal, etc
+          "Your excel files"
+        end
       end
     end
   end
