@@ -1,6 +1,6 @@
 = flash[:error]
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
-  .container-fluid.container-flush
+  .container-fluid.container-flush{ id: dom_id(@import), data: { describe: 'import-show-page' } }
     .jumbotron.jumbotron-fluid.jumbotron-clouds
       - if params["redirected_from_review"]
         %h1.display-1
@@ -15,7 +15,7 @@
             = @import.import_type.pluralize.humanize.downcase
           are
           %strong
-            = t("status.#{@import.status}", default: @import.status, scope: [:imports, :show])
+            = t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])
         .p-t-1
           This data was imported by
           %strong
