@@ -7,9 +7,9 @@ module NfgCsvImporter
 
     def import_delete_confirmation(import)
       if import.uploaded?
-        t('imports.confirmations.delete_without_records')
+        t('nfg_csv_importer.imports.confirmations.delete_without_records')
       else
-        t('imports.confirmations.delete', number_of_records: import.imported_records.size)
+        t('nfg_csv_importer.imports.confirmations.delete', number_of_records: import.imported_records.size)
       end
     end
 
@@ -42,7 +42,7 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      link_to path, class: import_status_class do
+      link_to path, class: import_status_class, data: { describe: 'import-status-link' } do
         fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
       end
     end
