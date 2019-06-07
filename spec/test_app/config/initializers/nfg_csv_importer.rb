@@ -5,4 +5,5 @@ NfgCsvImporter.configure do |config|
   config.from_address = Rails.configuration.default_from_address
   config.reply_to_address = Rails.configuration.default_from_address
   config.imported_for_subdomain = :subdomain
+  config.additional_file_origination_types = [:constant_contact, :paypal, :mail_chimp]
 end
