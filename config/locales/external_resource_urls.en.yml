@@ -3,7 +3,7 @@ en:
     urls:
       knowledge_base:
         walk_throughs:
-          pre_processing_types:
+          file_origination_types:
             constant_contact: '#constant_contact_kb_link'
             mailchimp: '#mailchimp_kb_link'
             paypal: '#paypal_kb_link'

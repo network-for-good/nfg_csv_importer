@@ -15,7 +15,7 @@ en:
     labels:
 
       import:
-        pre_processing_type:
+        file_origination_type:
           constant_contact: 'Every single contact can be brought over to donor management.'
           mailchimp: 'One button click to bring over everyone on your mailing list.'
           other: 'Simple, straight forward with you in the driver’s seat.'

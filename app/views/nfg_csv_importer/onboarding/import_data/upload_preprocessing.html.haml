@@ -1,13 +1,13 @@
 = render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   -# Debugging if pre_processing type is coming over.
-  - pre_processing_type ||= 'not set'
-  = pre_processing_type
+  - file_origination_type ||= 'not set'
+  = file_origination_type
   -# Body
   = ui.nfg :typeface, body: "When you downloaded your exported CSVs from PayPal, they come in a 'package' and look like this: some_filename.csv. Add it below."
 
   -# Fake form, not sure where or how pre_processing_occurs on Import
-  = f.input :pre_processing_type, as: :hidden, input_html: { value: @pre_processing_type }
+  = f.input :file_origination_type, as: :hidden, input_html: { value: @file_origination_type }
   = f.input :import_type, as: :hidden, input_html: { value: @import_presenter.import_type_value_for_pre_process_form }
   .row
     .col-9

@@ -1,3 +1,4 @@
 = render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  .form-group
-    / = render partial: 'onboarding/fields/onboarding_text_field', locals: { f: f, field: :field_name }
+  .row
+    - NfgCsvImporter.configuration.additional_file_origination_types.each do |file_origination_type|
+      = render partial: 'nfg_csv_importer/onboarding/import_data/file_origination_type_selection/file_origination_type_radio_button', locals: { f: f, file_origination_type: file_origination_type }
