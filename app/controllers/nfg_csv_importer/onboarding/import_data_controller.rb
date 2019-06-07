@@ -9,7 +9,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
   # WORKAROUNDS
   expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
-  expose(:pre_processing_type) { params[:pre_processing_type] || params[:import].try([],:pre_processing_type) }
+  expose(:file_origination_type) { onboarding_session.step_data['import_data'].present? ? onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type'] : 'file_origination_type unknown'}
 
   private
 
@@ -101,6 +101,8 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
   def get_form_target
     case step
+        when :file_origination_type_selection
+          OpenStruct.new(name: '') # replace with your object that the step will update
         when :get_started
           OpenStruct.new(name: '') # replace with your object that the step will update
         when :overview
@@ -150,7 +152,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
     {
       entity: nil,# supply the parent object to the onboarding session
       owner: nil,
-      current_step: "get_started",  #typically the first step
+      current_step: "file_origination_type_selection",  #typically the first step
       related_objects: {} ,# a hash containing the whatever object will be saved first, i.e. { project: get_project },
       name: onboarder_name
     }
