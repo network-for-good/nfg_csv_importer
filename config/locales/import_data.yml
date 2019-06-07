@@ -2,6 +2,18 @@ en:
   nfg_csv_importer:
     onboarding:
       import_data:
+        file_origination_type_selection:
+          header:
+            message: 'Replace me at config/locales/import_data: file_origination_type_selection'
+            form: 'Replace me too'
+            page:
+          button:
+            submit: Next
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
         finish:
           header:
             message: 'Replace me at config/locales/import_data: finish'
