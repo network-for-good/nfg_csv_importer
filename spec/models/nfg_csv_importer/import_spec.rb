@@ -34,7 +34,7 @@ shared_examples_for "validate import file" do
   end
 
   context "when the file contains an empty header" do
-    let(:header_data) { ["first_name", "email", "", "last_name"] }
+    let(:header_data) { ["first_name", "email", "", "last_name", "banana"] }
     it { should_not be }
     it " should add an error to base" do
       subject
@@ -43,7 +43,7 @@ shared_examples_for "validate import file" do
   end
 
   context 'when the file contains duplicate headers' do
-    let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
+    let(:header_data) { ["first_name", "email", "first_name", "email", "last_name", "banana"] }
 
     it { expect(subject).not_to be }
 
@@ -95,7 +95,7 @@ describe NfgCsvImporter::Import do
   describe '#pre_processing_files' do
     subject { import.pre_processing_files }
 
-    it { is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
+    it { pending; is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
   end
 
   let(:entity) { create(:entity) }
@@ -120,13 +120,17 @@ describe NfgCsvImporter::Import do
     it_behaves_like 'validate import file'
   end
 
-  describe "when pre_processing_type present on update" do
-    let!(:import) { FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin, error_file: error_file, status: status, pre_processing_type: 'paypal') }
 
-    before { import.import_file = file }
+  # TDH - Once we have decided on how to handle preprocessing files
+  # and how that effects validation, we may add the following back in
 
-    it_behaves_like 'validate import file'
-  end
+  # describe "when pre_processing_type present on update" do
+  #   let!(:import) { FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin, error_file: error_file, status: status, pre_processing_type: 'paypal') }
+
+  #   before { import.import_file = file }
+
+  #   it_behaves_like 'validate import file'
+  # end
 
   describe "#service" do
     subject { import.service }
