@@ -90,7 +90,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     end
 
-
     redirect_to imports_path
   end
 
