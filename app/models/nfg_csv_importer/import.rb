@@ -32,7 +32,7 @@ module NfgCsvImporter
 
     validates_presence_of :import_type, :imported_by_id, :imported_for_id
     validates_presence_of :import_file, if: :should_validate_file?
-    validate :import_validation, if: :should_validate_file?
+    validate :import_validation, on: [:create]
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
@@ -40,11 +40,6 @@ module NfgCsvImporter
       :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
       :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
       :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
-
-    def pre_processing_type
-      # DMS can't figure out what to do with this.
-      # it should be removed ASAP
-    end
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -220,6 +215,12 @@ module NfgCsvImporter
     end
 
     def should_validate_file?
+      return true
+      # as part of the pre processing work we will need to allow for
+      # an import to be created, but then ensure that the user
+      # supplies an uploaded file when needed. Likely, this will be
+      # done through the onboarding form associated with that step
+
       (new_record? && pre_processing_type.blank?) || (persisted? && uploaded? && pre_processing_type.present?)
     end
   end
