@@ -3,7 +3,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
   # steps list
-  steps :get_started, :overview, :upload_preprocessing, :import_type, :upload_post_processing, :field_mapping, :preview_confirmation, :finish
+  steps :file_origination_type_selection, :get_started, :overview, :upload_preprocessing, :import_type, :upload_post_processing, :field_mapping, :preview_confirmation, :finish
 
   expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
 
@@ -14,6 +14,10 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   private
 
   # on before save steps
+  def file_origination_type_selection_on_before_save
+    # you can add logic here to perform, such as appending data to the params, before the form is to be saved
+  end
+
   def finish_on_before_save
     # you can add logic here to perform, such as appending data to the params, before the form is to be saved
   end
@@ -48,6 +52,10 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
 
   # on valid steps
+  def file_origination_type_selection_on_valid_step
+    # you can add logic here to perform actions once a step has completed successfully
+  end
+
   def finish_on_valid_step
     # you can add logic here to perform actions once a step has completed successfully
   end
