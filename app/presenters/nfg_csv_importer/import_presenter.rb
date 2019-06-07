@@ -47,7 +47,7 @@ module NfgCsvImporter
     private
 
     def params_for_pre_processing_type
-      h.params[:pre_processing_type] || h.params[:import][:pre_processing_type]
+      h.params[:pre_processing_type] || h.params[:import].try([], :pre_processing_type)
     end
   end
 end

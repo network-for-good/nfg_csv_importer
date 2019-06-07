@@ -9,7 +9,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
   # WORKAROUNDS
   expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
-  expose(:pre_processing_type) { params[:pre_processing_type] || params[:import][:pre_processing_type] }
+  expose(:pre_processing_type) { params[:pre_processing_type] || params[:import].try([],:pre_processing_type) }
 
   private
 
@@ -139,7 +139,11 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
     # the following is a hack for the test app. So we can progress through the pages. It will need to be revised
     # when used in DM. Not sure of the best way to do that.
-    session[:onboarding_session_id] ? ::Onboarding::Session.find(session[:onboarding_session_id]) : ::Onboarding::Session.create(onboarding_session_parameters).tap { |os| session[:onboarding_session_id] = os.id }
+    (session[:onboarding_session_id] ? ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) || new_onboarding_session : new_onboarding_session).tap { |os| session[:onboarding_session_id] = os.id }
+  end
+
+  def new_onboarding_session
+    ::Onboarding::Session.create(onboarding_session_parameters)
   end
 
   def onboarding_session_parameters
