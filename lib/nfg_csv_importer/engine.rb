@@ -19,5 +19,10 @@ module NfgCsvImporter
     initializer 'nfg_csv_importer.assets.precompile' do |app|
       app.config.assets.precompile << "#{Engine.root.join('app', 'assets', 'config')}/nfg_csv_importer_manifest.js"
     end
+
+    config.to_prepare do
+      # TODO TDH Add code here to load the models from the list of file origination types
+      # configured in the host app.
+    end
   end
 end
