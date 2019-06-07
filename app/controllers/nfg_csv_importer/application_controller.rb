@@ -1,6 +1,7 @@
 module NfgCsvImporter
   class ApplicationController < NfgCsvImporter.configuration.base_controller_class.constantize
     helper NfgCsvImporter::ImportsHelper
+    helper NfgUi::ApplicationHelper
 
   private
 
