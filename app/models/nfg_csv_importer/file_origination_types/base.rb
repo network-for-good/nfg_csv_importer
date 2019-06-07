@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module NfgCsvImporter
-  module FileOriginationType
+  module FileOriginationTypes
     # The FileOriginationType::Base class is the template on which other
     # FileOriginationType classes are based and should inherit from.
     class Base
