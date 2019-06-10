@@ -7,7 +7,7 @@
     = stylesheet_link_tag "application"
     = javascript_include_tag "application", "data-turbolinks-track" => "reload"
     = csrf_meta_tags
-  %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:pre_processing_type)}" }
+  %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:file_origination_type)}" }
     = render "nfg_csv_importer/layouts/onboarding/import_data/top_bar"
     .full-width.p-y-double.overflow-hidden
       = yield

@@ -1,0 +1,25 @@
+- file_origination_type = local_assigns[:file_origination_type]
+- f = local_assigns[:f]
+
+/ .col-md-4.col-6{ data: { describe: "#{file_origination_type}_file_origination_type" } }
+/   .custom-control.custom-radio.custom-control-block
+/     = f.radio_button 'file_origination_type', file_origination_type, class: "custom-control-input"
+
+/     %label.custom-control-label.text-center.w-100{ for: "nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_#{file_origination_type}" }
+
+/       = image_tag "nfg_csv_importer/file_origination_types/#{file_origination_type}.png", class: 'img-fluid'
+
+/       = ui.nfg :typeface, body: t("simple_form.labels.import.file_origination_type.#{file_origination_type}"), class: 'mt-2 mb-0 text-break'
+
+- file_origination_type = local_assigns[:file_origination_type]
+- f = local_assigns[:f]
+
+.col-md-4.col-6{ data: { describe: "#{file_origination_type.type_sym}_file_origination_type" } }
+  .custom-control.custom-radio.custom-control-block
+    = f.radio_button 'file_origination_type', file_origination_type.type_sym, class: "custom-control-input"
+
+    %label.custom-control-label.text-center.w-100{ for: "import_file_origination_type_#{file_origination_type.type_sym}" }
+
+      = image_tag file_origination_type.logo_path, class: 'img-fluid'
+
+      = ui.nfg :typeface, body: file_origination_type.description, class: 'mt-2 mb-0 text-break'

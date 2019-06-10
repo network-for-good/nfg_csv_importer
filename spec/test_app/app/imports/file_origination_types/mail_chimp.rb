@@ -3,7 +3,7 @@ module FileOriginationTypes
 
     class << self
       def logo_path
-        "nfg_csv_importer/pre_processing_types/mailchimp.png"
+        "nfg_csv_importer/file_origination_types/mailchimp.png"
       end
 
       def description
