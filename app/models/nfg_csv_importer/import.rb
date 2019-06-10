@@ -221,7 +221,7 @@ module NfgCsvImporter
       # supplies an uploaded file when needed. Likely, this will be
       # done through the onboarding form associated with that step
 
-      (new_record? && pre_processing_type.blank?) || (persisted? && uploaded? && pre_processing_type.present?)
+      (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
     end
   end
 
