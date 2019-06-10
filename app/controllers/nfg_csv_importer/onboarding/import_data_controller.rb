@@ -10,7 +10,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   # WORKAROUNDS
   expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
   expose(:pre_processing_type) { params[:pre_processing_type] || params[:import].try([],:pre_processing_type) }
-
+  expose(:file_origination_types) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).types }
   private
 
   # on before save steps

@@ -1,3 +1,4 @@
 = render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  .form-group
-    / = render partial: 'onboarding/fields/onboarding_text_field', locals: { f: f, field: :field_name }
+
+  - file_origination_types.each do |file_origination_type|
+    = render partial: 'nfg_csv_importer/imports/pre_processing/pre_processing_choices_radio_buttons', locals: { f: f, pre_processing_type: file_origination_type }
