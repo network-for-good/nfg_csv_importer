@@ -1,5 +1,5 @@
 module FileOriginationTypes
-  class MailChimp < FileOriginationTypes::Base
+  class Mailchimp < FileOriginationTypes::Base
 
     class << self
       def logo_path
