@@ -10,7 +10,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   # WORKAROUNDS
   expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
   expose(:file_origination_type) { onboarding_session.step_data['import_data'].present? ? onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type'] : 'file_origination_type unknown'}
-
+  expose(:file_origination_types) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).types }
   private
 
   # on before save steps
