@@ -59,6 +59,11 @@ module NfgCsvImporter
           # the name of the file origination type, i.e ConstantContact, PayPal, etc
           "Your excel files"
         end
+
+        def description
+          # displays in the file origination type panel
+          ""
+        end
       end
     end
   end

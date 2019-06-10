@@ -23,7 +23,7 @@
 
     additional_file_origination_types is a list of files types that originate from a service that has a consistent output, and for which a pre-processor can be built that converts it to one of the import formats defined in the including application.
 
-    For each entry here, there should be a class defined in the app/imports/file_origination_types folder that inherits from the Imports::FileOriginationTypes::Base class, which in turn inherits from the NfgCsvImporter::FileOriginationTypes::Base class. View the Imports::FileOriginationTypes::Base for instructions on how to setup your child file origination type classes
+    For each entry here, there should be a class defined in the app/imports/file_origination_types folder that inherits from the FileOriginationTypes::Base class, which in turn inherits from the NfgCsvImporter::FileOriginationTypes::Base class. View the Imports::FileOriginationTypes::Base for instructions on how to setup your child file origination type classes
 
     If the additional_file_origination_types is assigned no value, or is assigned an empty array, the user will not be given any file types to
     select and will proceed to select the type of import they want to
