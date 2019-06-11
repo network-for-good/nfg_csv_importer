@@ -129,3 +129,10 @@
 @import "features/onboarding/arrows";
 @import "features/onboarding/jumbotron";
 @import "features/onboarding/buttons";
+
+
+@media (min-width: 992px) {
+  .email-navbar {
+    position: static;
+  }
+}
