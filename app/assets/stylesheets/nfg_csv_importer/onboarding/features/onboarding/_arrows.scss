@@ -1,0 +1,18 @@
+// Arrows used for directional instruction within onboarder
+.arrow-up, .arrow-down {
+  position: absolute;
+  display: none;
+  @include media-breakpoint-up(sm) { display: block; }
+}
+.arrow-up {
+  top: -30px;
+  right: -30px;
+  width: 19px;
+  height: 50px;
+}
+.arrow-down {
+  top: 15px;
+  right: -25px;
+  width: 19px;
+  height: 50px;
+}

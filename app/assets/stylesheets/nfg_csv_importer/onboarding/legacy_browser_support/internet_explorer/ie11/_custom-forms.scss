@@ -1,0 +1,13 @@
+// Fixes broken images on email blasts form & admins form
+.c-input-image{
+  display:block;
+  height: inherit;
+}
+.c-toggle {
+  .c-indicator {
+    &::before {
+      background-size: 45% !important;
+      background-position-x: left;
+    }
+  }
+}

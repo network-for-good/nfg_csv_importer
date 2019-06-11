@@ -1,0 +1,64 @@
+// Shell div to position the modal with bottom padding
+.modal-dialog {
+  max-width: 90%;
+  @include rem(margin-top, $spacer-half);
+  margin-right: auto;
+  @include rem(margin-bottom, $spacer-half);
+  margin-left: auto;
+}
+
+
+// Actual modal
+.modal-content {
+  border: none;
+  @include box-shadow(0 0 50px $modal-content-box-shadow-color);
+  @include border-radius($border-radius);
+}
+
+// Modal header
+// Top section of the modal w/ title and dismiss
+.modal-header {
+  background-color: $modal-header-bg;
+  @include border-top-radius($border-radius);
+}
+// Close icon
+.modal-header .close {
+  margin-top: 0;
+  color: $modal-title-close-color !important;
+  #{$icon} { color: $modal-title-close-color !important; }
+}
+
+// Modal body
+// Where all modal content resides (sibling of .modal-header and .modal-footer)
+.modal-body { @include rem(padding, $modal-inner-padding); }
+
+// Footer (for actions)
+.modal-footer {
+  background-color: $modal-footer-bg;
+  @include border-bottom-radius($border-radius);
+  @include rem(padding, $modal-footer-padding);
+}
+
+// Scale up the modal
+@include media-breakpoint-up(sm) {
+  // Automatically set modal's width for larger viewports
+  .modal-dialog {
+    @include rem(margin-top, $spacer-base);
+    margin-right: auto;
+    @include rem(margin-bottom, $spacer-base);
+    margin-left: auto;
+  }
+}
+
+
+// Interstitial modal (currently for importer)
+.modal-interstitial {
+  .modal-content {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .modal-body { padding: 0; }
+  &.blue {
+    ~ .modal-backdrop { background-color: $brand-info; }
+  }
+}

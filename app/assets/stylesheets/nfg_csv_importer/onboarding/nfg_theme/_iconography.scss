@@ -1,0 +1,5 @@
+// Setting base font-awesome width
+#{$icon}-fw {
+  width: 1em;
+  @include rem(min-width, 14px);
+}

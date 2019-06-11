@@ -1,0 +1,14 @@
+// Fixes issue with padding on select fields
+select {
+  padding-left: 10px;
+  padding-right: 15px;
+}
+select:focus::-ms-value {
+  background: none;
+  color: #4d4d4d;
+}
+input[type='file'] {
+  padding: 0;
+  border: none;
+}
+

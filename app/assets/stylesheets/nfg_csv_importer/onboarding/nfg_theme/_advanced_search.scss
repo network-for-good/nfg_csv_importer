@@ -1,0 +1,5 @@
+// Used on advanced filters for donations/contacts/saved filters
+#users_advanced_search {
+  .grouping { border: $border-width dashed $border-color-primary; }
+  .value input { z-index: 999; } // prevents datepicker from going behind modal
+}

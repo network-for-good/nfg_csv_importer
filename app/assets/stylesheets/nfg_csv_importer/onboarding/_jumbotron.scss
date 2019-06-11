@@ -1,0 +1,17 @@
+.jumbotron {
+  @include rem(padding, $jumbotron-padding / 2);
+  margin-bottom: 0;
+  @include border-radius(0);
+  @include media-breakpoint-up(sm) { @include rem(padding, $jumbotron-padding); }
+}
+
+// Cloud jumbotron
+.jumbotron-clouds-white, .jumbotron-clouds-gray {
+  padding-bottom: 10%;
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+}
+
+.jumbotron-clouds-gray { background-image: image-url("onboarding/clouds-gray-lg.png"); }
+.jumbotron-clouds-white { background-image: image-url("onboarding/clouds-white-lg.png"); }

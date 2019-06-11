@@ -1,0 +1,3 @@
+// Fixes dropdown menus to maintan same animation, but not be clickable when invisible
+.dropdown-menu { visibility: hidden; }
+.open > .dropdown-menu{ visibility: visible; }

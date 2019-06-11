@@ -1,0 +1,23 @@
+@if $enable-flex {
+  .media {
+    @include flexbox();
+    margin-bottom: 0;
+    + .media { margin-top: $spacer-base; }
+  }
+  .media-body { @include flex(1); }
+  .media-middle { @include align-self(center); }
+  .media-bottom { @include align-self(flex-end); }
+}
+
+//
+// Alignment
+//
+
+.media-right { @include rem(padding-left, $spacer-half); }
+.media-left { @include rem(padding-right, $spacer-half); }
+
+//
+// Headings
+//
+
+.media-heading { margin-bottom: 0; }

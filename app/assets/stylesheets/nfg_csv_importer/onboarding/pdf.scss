@@ -1,0 +1,53 @@
+@import "variables";
+@import "nfg_theme/mixins/*";
+@import "mixins";
+@import "nfg_theme/type";
+@import "bootstrap-4_0_0-alpha_2/reboot";
+@import "reboot";
+@import "bootstrap-4_0_0-alpha_2/type";
+@import "type";
+
+body {
+  margin: 0 !important;
+  font-family: "Arial", Helvetica, sans-serif;
+  background: transparent;
+  font-size: $font-size-root;
+  line-height: 1.4;
+}
+*, *::before, *::after {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: $font-weight-bold;
+}
+h1, .h1 { @include rem(font-size, $font-size-h1-lg); }
+h2, .h2 {
+  @include rem(font-size, $font-size-h2-lg);
+  line-height: 1.14;
+}
+h3, .h3 {
+  @include rem(font-size, $font-size-h3-lg);
+  line-height: 1;
+}
+a, a:visited {
+  color: inherit;
+  text-decoration: underline;
+}
+a[href]:after { content: " (" attr(href) ")"; }
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  // Don't show links for images, or javascript/internal links
+abbr[title]::after { content: " (" attr(title) ")"; }
+pre, blockquote {
+  border: $border-width solid $blockquote-border-color;
+  page-break-inside: avoid;
+}
+thead { display: table-header-group; } // h5bp.com/t
+tr, img { page-break-inside: avoid; }
+img { max-width: 100% !important; }
+p, h2, h3 {
+  orphans: 3;
+  widows: 3;
+}
+h2, h3 { page-break-after: avoid; }
+ul, ol, img { page-break-inside: avoid; }

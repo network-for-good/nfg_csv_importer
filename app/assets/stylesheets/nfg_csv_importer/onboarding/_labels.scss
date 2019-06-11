@@ -1,0 +1,29 @@
+// Base class
+//
+// Requires one of the contextual, color modifier classes for `color` and
+// `background-color`.
+
+.label {
+  @include rem(padding, 3px $spacer-quarter);
+  min-width: 14px;
+  @include rem(font-size, $font-size-xs);
+  #{$icon} { color: $white; }
+}
+
+// Quick fix for labels in buttons
+.btn .label {
+  &.label-sm {
+    @include rem(padding, 1px $spacer-quarter);
+    @include rem(font-size, 10px);
+    line-height: 12px;
+  }
+}
+
+
+// Colors
+//
+// Contextual variations (linked labels get darker on :hover).
+.label-outline-default { // default is also text-muted
+  @include rem(padding, 2px $spacer-quarter);
+  @include label-outline-variant($label-default-bg);
+}

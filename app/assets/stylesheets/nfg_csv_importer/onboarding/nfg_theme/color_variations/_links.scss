@@ -1,0 +1,12 @@
+@each $color in $primary-colors-list {
+  .#{nth($color, 1)} a,
+  a.#{nth($color, 1)} {
+    color: nth($color, 2);
+    @include transition(color .2s ease-in-out, background-color .2s ease-in-out);
+    @include hover-focus { color: lighten(nth($color, 2), 10%); }
+    &.no-link-color {
+      color: inherit !important;
+      @include hover-focus { color: lighten(nth($color, 2), 10%) !important; }
+    }
+  }
+}

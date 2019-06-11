@@ -1,0 +1,38 @@
+//
+// Base styles
+//
+
+.card {
+  @include rem(margin-bottom, $card-spacer-y);
+  @include transition(border .15s linear, box-shadow .15s linear);
+  @include hover-focus { @include box-shadow(0 0 5px transparentize($black, 0.6)); }
+}
+
+.card-block { @include rem(padding, $card-spacer-y $card-spacer-x); }
+
+//
+// Optional textual caps
+//
+
+.card-header { @include rem(padding, $card-spacer-y / 2  $card-spacer-x / 2); }
+.card-footer { @include rem(padding, $card-spacer-y / 2  $card-spacer-x / 2); }
+
+
+// Extra styles for cards
+.card-wrapper.selected .card, .card.selected {
+  border-color: $brand-info;
+  @include box-shadow(0 0 5px transparentize($black, 0.6));
+}
+.card-alert {
+  position: absolute;
+  @include rem(top, -$spacer-quarter);
+  @include rem(left, -$spacer-quarter);
+  @include rem(padding, 2px);
+  @include rem(width, 28px);
+  @include rem(height, 28px);
+  line-height: 1;
+  text-align: center;
+  background: $white;
+  @include border-radius(50%);
+  z-index: 1;
+}

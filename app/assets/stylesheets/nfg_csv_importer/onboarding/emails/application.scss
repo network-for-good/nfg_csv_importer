@@ -1,0 +1,65 @@
+@import "font-awesome";
+@import "../variables";
+@import "../nfg_theme/mixins/*";
+@import "../mixins";
+@import "../nfg_theme/color_variations/*";
+@import "../nfg_theme/type";
+@import "bootstrap-4_0_0-alpha_2/animation";
+@import "bootstrap-4_0_0-alpha_2/reboot";
+@import "../reboot";
+@import "bootstrap-4_0_0-alpha_2/buttons";
+@import "../buttons";
+@import "bootstrap-4_0_0-alpha_2/dropdown";
+@import "../dropdown";
+@import "bootstrap-4_0_0-alpha_2/button-group";
+@import "../button-group";
+@import "bootstrap-4_0_0-alpha_2/alert";
+@import "../alert";
+@import "bootstrap-4_0_0-alpha_2/media";
+@import "../media";
+@import "bootstrap-4_0_0-alpha_2/close";
+@import "../close";
+@import "bootstrap-4_0_0-alpha_2/utilities-spacing";
+@import "../utilities-spacing";
+@import "bootstrap-4_0_0-alpha_2/utilities-responsive";
+@import "../features/document_editing/*";
+@import "bootstrap-4_0_0-alpha_2/labels";
+@import "../labels";
+@import "../vendor/intercom";
+@import "../vendor/turbolinks";
+@import "../vendor/bee";
+@import "../vendor/select2";
+
+
+// For confirmation modal
+@import "bootstrap-4_0_0-alpha_2/modal";
+@import "../modal";
+@import "bootstrap-4_0_0-alpha_2/utilities";
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/grid"; // patched
+@import "../grid";
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/utilities/flex"; // new flex alignment
+
+// For sidebar
+@import "bootstrap-4_0_0-alpha_2/navbar";
+@import "../navbar";
+@import "../utilities";
+@import "bootstrap-4_0_0-alpha_2/custom-forms";
+@import "../custom-forms";
+@import "bootstrap-4_0_0-alpha_2/input-group";
+@import "../input-group";
+@import "bootstrap-4_0_0-alpha_2/tooltip";
+@import "../tooltip";
+
+// Legacy browser support
+@import "../legacy_browser_support/flexbox_tweener/application";
+@import "../legacy_browser_support/internet_explorer/application"; // ONLY fixes where modernizr can't detect browser support
+@import "../legacy_browser_support/preserve3d/application";
+
+.modal {
+  @import "bootstrap-4_0_0-alpha_2/type";
+  @import "../type";
+}
+
+// For test modal
+@import "bootstrap-4_0_0-alpha_2/forms";
+@import "../forms";

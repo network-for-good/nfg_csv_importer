@@ -1,0 +1,94 @@
+//
+// Base styles
+//
+
+.btn {
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+  outline: none !important;
+  @include hover-focus { @include box-shadow(none); }
+
+  &:active,
+  &.active { @include box-shadow(none); }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @include transition(all .2s ease-in-out);
+    cursor: $cursor-disabled;
+    pointer-events: none;
+    opacity: .4;
+    @include box-shadow(none);
+  }
+
+  #{$icon} {
+    color: inherit;
+    @include transition(all .2s ease-in-out);
+    &.margin-right { @include rem(margin-right, $spacer-quarter); }
+    &.margin-left { @include rem(margin-left, $spacer-quarter); }
+  }
+}
+
+//
+// Alternate buttons
+//
+
+.btn-primary {
+  @include button-variant($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+}
+.btn-secondary {
+  @include button-variant($btn-secondary-color, $btn-secondary-bg, $btn-secondary-border);
+  @include hover {
+    background-color: $bg-color-primary !important;
+    color: $font-color-primary !important;
+    border-color: $border-color-primary !important;
+  }
+  &.active {
+    background-color: $bg-color-primary !important;
+    color: $font-color-primary !important;
+    border-color: $border-color-primary !important;
+  }
+}
+
+//
+// Link buttons
+//
+
+// Make a button look and behave like a link
+.btn-link {
+  font-weight: $btn-font-weight;
+  #{$icon} { color: inherit; }
+  @include hover-focus {
+    background-color: $bg-color-primary;
+    #{$icon} { color: inherit; }
+  }
+}
+
+
+//
+// Button Sizes
+//
+.btn-sm {
+  @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
+}
+.btn-lg {
+  @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $btn-line-height-lg, $btn-border-radius-lg);
+}
+.btn-xl {
+  @include button-size($btn-padding-y-xl, $btn-padding-x-xl, $btn-font-size-xl, $btn-line-height-xl, $btn-border-radius-xl);
+}
+
+// //
+// // Block button
+// //
+
+.btn-block {
+  display: block !important;
+  width: 100%;
+}
+
+// White buttons
+.btn-white-bg {
+  @include button-variant($btn-secondary-color, $white, $white);
+  @include hover-focus { opacity: .8; }
+}
+.btn-white-outline { @include button-variant($btn-primary-color, transparent, $white); }

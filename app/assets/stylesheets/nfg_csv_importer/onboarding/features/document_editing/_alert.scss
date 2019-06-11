@@ -1,0 +1,6 @@
+.alert {
+  &[data-position-absolute='true'] {
+    width: 600px;
+    max-width: calc(100% - $spacer-base);
+  }
+}

@@ -1,0 +1,8 @@
+// Individual list items
+//
+// Use on `li`s or `div`s within the `.list-group` parent.
+
+.list-group-item {
+  @include rem(padding, 0 0 $spacer-base $spacer-base-half);
+  margin-bottom: 0;
+}

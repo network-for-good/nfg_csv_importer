@@ -1,0 +1,142 @@
+//
+// Tabs
+//
+
+.nav-tabs {
+  @include flexbox();
+  @include flex-wrap(nowrap);
+  border-bottom: $border-width solid $nav-tabs-border-color;
+  @include clearfix();
+
+  .nav-item {
+    float: none;
+    // Make the list-items overlay the bottom border
+    margin-bottom: -1px;
+    @include align-self(flex-end);
+    font-weight: $font-weight-medium;
+    @include rem(font-size, $font-size-sm);
+    line-height: 1;
+    text-align: center;
+    + .nav-item { margin-left: 0; }
+  }
+
+  .nav-link {
+    display: block;
+    @include rem(padding, $nav-link-padding ($nav-link-padding * 2));
+    height: 100%;
+    color: $font-color-secondary !important;
+    border: none;
+    border-bottom: $nav-tabs-link-border-width solid transparent;
+    @include border-radius(0);
+    @include transition(all .2s ease-in-out);
+    @include hover-focus {
+      color: $nav-tabs-active-link-hover-color !important;
+      border-color: $nav-tabs-active-link-hover-border-color;
+    }
+
+    &.disabled{
+      color: $nav-disabled-link-color !important;
+      @include hover-focus{ color: $nav-disabled-link-color !important; }
+    }
+  }
+
+  .nav-link.active,
+  .nav-item.open .nav-link {
+    @include plain-hover-focus {
+      color: $nav-tabs-active-link-hover-color !important;
+      background-color: transparent;
+      border-color: $nav-tabs-active-link-hover-border-color;
+    }
+  }
+}
+
+.nav-stacked {
+  @include justify-content(space-between);
+  &.nav-pills {
+    .nav-item {
+      font-weight: $font-weight-medium;
+      @include rem(font-size, $font-size-sm);
+      line-height: 18px;
+      + .nav-item { margin-top: 0; }
+    }
+    .nav-link {
+      @include clearfix();
+      @include rem(padding, 15px $nav-link-padding);
+      color: $white !important;
+      vertical-align: middle;
+      background-color: transparent;
+      border-left: 4px solid transparent;
+      @include transition(background-color .2s ease-in-out, border .2s ease-in-out);
+      &:hover, &.active, &[aria-expanded="true"] {
+        color: $nav-pills-active-link-hover-color;
+        cursor: pointer;
+        background-color: $nav-pills-active-link-hover-bg;
+      }
+      #{$icon} {
+        color: $white !important;
+        line-height: 18px;
+      }
+    }
+  }
+  &.nav-sub-menu {
+    .nav-link {
+      @include rem(padding-top, $nav-link-padding);
+      @include rem(padding-bottom, $nav-link-padding);
+      @include rem(font-size, $font-size-xs);
+      @include rem(padding-left, $spacer-base);
+      background-color: darken(#006D9D, 13%);
+      &:hover, &:focus, &.active {
+        background-color: darken(#006D9D, 17%);
+      }
+    }
+  }
+}
+
+//
+// Site Nav
+//
+.site-nav {
+  position: fixed;
+  top: 0;
+  @include justify-content(flex-start);
+  @include align-items(stretch);
+  @include align-content(flext-start);
+  @include rem(width, 200px);
+  height: 100%;
+  background-color: #006D9D;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  @include transition(all .2s ease-in-out);
+  @include media-breakpoint-down(md) {
+    @include rem(left, -200px);
+    opacity: 0;
+    z-index: 10;
+    overflow-x: hidden;
+  }
+  @include media-breakpoint-up(lg) {
+    left: 0;
+    z-index: 30;
+  }
+
+  // Slide styles
+  &.nav-slide {
+    @include media-breakpoint-down(md) {
+      left: 0;
+      opacity: 1;
+      z-index: 30;
+      overflow-x: visible;
+      overflow-y: auto;
+    }
+  }
+
+  .btn-quick-add {
+    @include flex-grow(0);
+    @include border-radius(0);
+  }
+  .nav-pills.nav-stacked { @include flex-grow(1); }
+
+  // Margin-top auto needed to push the profile link to the bottom of the container
+  .site-nav-section + .site-nav-section { margin-top: auto; }
+
+  .media .media-left { width: 36px; }
+}

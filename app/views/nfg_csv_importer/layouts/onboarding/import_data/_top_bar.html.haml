@@ -3,12 +3,14 @@
     .col-xs-5.col-lg-3
       %h5.p-l-half= ui.nfg :icon, 'cloud-upload', text: "Import Data"
     .col-xs-6.text-xs-center.hidden-md-down
-      %ol.breadcrumb.breadcrumb-steps
-        - controller.wizard_steps.each_with_index do |step, index|
-          %li.breadcrumb-item{:role => "presentation", class: get_onboarding_nav_status(step)}
-            = link_to wizard_path(step) do
-              = step.to_s
-              / = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
+
+      - unless onboarding_session.current_step == 'file_origination_type_selection'
+        %ol.breadcrumb.breadcrumb-steps
+          - controller.wizard_steps.each do |step|
+            %li.breadcrumb-item{:role => "presentation", class: get_onboarding_nav_status(step)}
+              = link_to wizard_path(step) do
+                = step.to_s
+                / = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
     .col-xs-7.col-lg-3
       %ul.nav.navbar-nav.pull-right
         %li.nav-item

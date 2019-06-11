@@ -1,0 +1,41 @@
+-# ####################
+-# LOCALS
+-# ####################
+- bootstrap_component = "alert"
+
+- component_id = local_assigns[:component_id]
+- component_class = local_assigns[:component_class]
+
+- position_absolute = false unless local_assigns[:position_absolute]
+- auto_dismiss = false unless local_assigns[:auto_dismiss]
+- data = local_assigns[:data]
+
+- component_classes = [bootstrap_component, "alert-dismissible", "fade", "in", component_class].join(' ')
+
+-# Example usage
+  -# Standard alert, dismissible by default
+  = render 'shared/flash_messages'
+
+  -# "Auto dismiss" and "position absolute" both enabled
+  = render partial: 'shared/flash_messages', locals: { auto_dismiss: true, position_absolute: true }
+
+
+
+-# ####################
+-# FLASH ALERT
+-# ####################
+
+-# TODO: Consider utilizing an accordion approach that, when fading out auto_dismiss alerts
+-#       the alert's disappearance creates a smooth transition when alerts are *not*
+-#       absolutely positioned so as to avoid the page "jumping around"
+
+- flash.each do |key, value|
+  - next if value.blank?
+  %div{ class: [component_classes, "#{bootstrap_component}-#{flash_class(key)}"].join(" "), role: "alert", id: component_id, data: { auto_dismiss: "#{auto_dismiss}", position_absolute: "#{position_absolute}" } }
+    %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
+      %span{"aria-hidden" => "true"}=fa_icon "times"
+    .media
+      .media-left
+        = flash_icon(key, "font-size-xl")
+      .media-body
+        %p= value.html_safe
