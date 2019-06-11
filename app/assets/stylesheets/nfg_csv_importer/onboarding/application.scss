@@ -1,0 +1,131 @@
+// App Vendors
+@import url(//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700);
+@import 'font-awesome';
+
+// Variables and mixins
+@import "variables";
+@import "nfg_theme/mixins/*";
+@import "mixins";
+
+
+// NFG Theme specific
+@import "nfg_theme/animation";
+@import "nfg_theme/color_variations/*";
+@import "nfg_theme/icomoon";
+@import "nfg_theme/activity_feed";
+@import "nfg_theme/advanced_search";
+@import "nfg_theme/avatar";
+@import "nfg_theme/iconography";
+@import "nfg_theme/slats";
+@import "nfg_theme/tasks";
+@import "nfg_theme/type";
+@import "nfg_theme/corner_ribbon";
+@import "nfg_theme/links";
+@import "nfg_theme/loader";
+@import "nfg_theme/radio_tabs";
+@import "nfg_theme/thumbnail_previewer";
+@import "nfg_theme/block_content";
+@import "nfg_theme/engagement_banners"; // Holiday themed version
+@import "nfg_theme/iframe"; // Holiday themed version
+
+
+// Bootstrap Reset and dependencies
+@import "bootstrap-4_0_0-alpha_2/normalize";
+@import "normalize";
+@import "bootstrap-4_0_0-alpha_2/print";
+
+
+// Core Bootstrap CSS
+@import "bootstrap-4_0_0-alpha_2/reboot";
+@import "reboot";
+@import "bootstrap-4_0_0-alpha_2/type";
+@import "type";
+@import "bootstrap-4_0_0-alpha_2/images";
+@import "images";
+// @import "bootstrap-4_0_0-alpha_2/code";
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/grid"; // patched
+@import "grid";
+// @import "bootstrap-4_0_0-alpha_2/tables";
+@import "bootstrap-4_0_0-alpha_2/forms";
+@import "forms";
+@import "bootstrap-4_0_0-alpha_2/buttons";
+@import "buttons";
+
+
+// Bootstrap Components
+@import "bootstrap-4_0_0-alpha_2/animation";
+@import "bootstrap-4_0_0-alpha_2/dropdown";
+@import "dropdown";
+@import "bootstrap-4_0_0-alpha_2/button-group";
+@import "button-group";
+@import "bootstrap-4_0_0-alpha_2/input-group";
+@import "input-group";
+@import "bootstrap-4_0_0-alpha_2/custom-forms";
+@import "custom-forms";
+@import "bootstrap-4_0_0-alpha_2/nav";
+@import "nav";
+@import "bootstrap-4_0_0-alpha_2/navbar";
+@import "navbar";
+@import "bootstrap-4_0_0-alpha_2/card";
+@import "card";
+@import "bootstrap-4_0_0-alpha_2/breadcrumb";
+@import "breadcrumb";
+@import "bootstrap-4_0_0-alpha_2/pagination";
+@import "pagination";
+// @import "bootstrap-4_0_0-alpha_2/pager";
+@import "bootstrap-4_0_0-alpha_2/labels";
+@import "labels";
+@import "bootstrap-4_0_0-alpha_2/jumbotron";
+@import "jumbotron";
+@import "bootstrap-4_0_0-alpha_2/alert";
+@import "alert";
+@import "bootstrap-4_0_0-alpha_2/progress";
+@import "progress";
+@import "bootstrap-4_0_0-alpha_2/media";
+@import "media";
+@import "bootstrap-4_0_0-alpha_2/list-group";
+@import "list-group";
+@import "bootstrap-4_0_0-alpha_2/responsive-embed";
+@import "bootstrap-4_0_0-alpha_2/close";
+@import "close";
+
+
+// Bootstrap Components w/ JavaScript
+@import "bootstrap-4_0_0-alpha_2/modal";
+@import "modal";
+@import "bootstrap-4_0_0-alpha_2/tooltip";
+@import "tooltip";
+// @import "bootstrap-4_0_0-alpha_2/popover";
+// @import "bootstrap-4_0_0-alpha_2/carousel";
+
+
+// Bootstrap Utility classes
+@import "bootstrap-4_0_0-alpha_2/utilities";
+@import "utilities";
+@import "bootstrap-4_0_0-alpha_2/utilities-background";
+@import "utilities-background";
+@import "bootstrap-4_0_0-alpha_2/utilities-spacing";
+@import "utilities-spacing";
+@import "bootstrap-4_0_0-alpha_2/utilities-responsive";
+@import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/utilities/flex"; // new flex alignment from alpha5; column / row based alignment has been replaced with universal utility classes
+
+
+// Vendor styles
+@import "vendor/*";
+
+
+// Legacy browser support
+@import "legacy_browser_support/flexbox_tweener/application";
+@import "legacy_browser_support/internet_explorer/application"; // ONLY fixes where modernizr can't detect browser support
+@import "legacy_browser_support/preserve3d/application";
+
+
+// Empty States
+@import "features/empty_states/font";
+@import "features/empty_states/redacted_text_theme";
+
+
+// Self Importer
+@import "features/onboarding/arrows";
+@import "features/onboarding/jumbotron";
+@import "features/onboarding/buttons";

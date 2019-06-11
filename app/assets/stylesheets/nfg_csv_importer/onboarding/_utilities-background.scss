@@ -1,0 +1,16 @@
+// Colors
+.bg-color-primary { background-color: $bg-color-primary !important; }
+.bg-color-secondary { background-color: $bg-color-secondary !important; }
+.bg-color-tertiary { background-color: $bg-color-tertiary !important; }
+.bg-color-white { background-color: $white !important; }
+.bg-transparent { background: transparent !important; } // for removing image backgrounds
+
+// Clouds
+.bg-clouds {
+  padding-bottom: 20%;
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  &.blue { background-image: image-url("onboarding/clouds-blue.png"); }
+  &.green { background-image: image-url("onboarding/clouds-green.png"); }
+}

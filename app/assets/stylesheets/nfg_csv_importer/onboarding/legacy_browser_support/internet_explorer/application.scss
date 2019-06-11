@@ -1,0 +1,16 @@
+// IE10 & 11
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+   @import "media";
+   @import "reboot";
+   @import "forms";
+   @import "utilities";
+}
+
+// IE11 Only
+// detected by bowser (vendor/javascrips/...), html class applied by:
+// app/assets/javascripts/legacy_browser_support/bowser.coffee
+// See note in bowser.coffee why we target ie11 only with JS.
+html.no-maxwidth{
+  @import "ie11/media";
+  @import "ie11/custom-forms";
+}

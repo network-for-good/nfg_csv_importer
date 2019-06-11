@@ -1,0 +1,62 @@
+[data-toggle='radio-tab-content'] {
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.radio-tabs-horizontal {
+  .c-input-image {
+    @include flex(none);
+    @include flex-direction(unset);
+    display: block !important;
+    @include clearfix();
+    background-color: transparent;
+    @include rem(padding, $spacer);
+    &:hover{
+      h6 { color: $brand-primary !important; }
+      .c-indicator { border: $border-width solid $white; }
+    }
+    img {
+      display: table-cell;
+      width: 30%;
+      height: auto;
+      float: left;
+      border: none;
+      position: relative;
+      z-index: 10;
+      @include flex(none);
+    }
+    h6, p {
+      display: table-cell;
+      width: 70%;
+      float: right;
+      @include rem(padding-left, $spacer);
+      text-align: left;
+      position: relative;
+      z-index: 10;
+      @include transition(color 0.15s ease-in-out);
+    }
+    h6 {
+      margin-top: 0 !important;
+      font-size: $font-size-h3;
+    }
+    p {
+      line-height: $line-height-lg !important;
+      &.small { font-size: $font-size-sm; }
+    }
+    .c-indicator {
+      right: 0;
+      bottom: 0;
+      border: $border-width solid $white;
+      &:before, &:after{ content: none; }
+    }
+
+    // Active
+    > input:checked {
+      ~ .c-indicator {
+        border: $border-width solid $brand-primary;
+        + h6 { color: $brand-primary !important; }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+@each $color in $primary-colors-list {
+  #{$icon}-stack.#{nth($color, 1)} {
+    &:first-child { color: nth($color, 2) !important; }
+  }
+  #{$icon}.#{nth($color, 1)} { color: nth($color, 2) !important; }
+}

@@ -1,0 +1,32 @@
+// This document is powered by modernizr's detection of flexbox support
+// Read more here: http://zomigi.com/blog/using-modernizr-with-flexbox/
+
+
+// Flexbox Tweener (only) Supported:
+html.flexboxtweener:not(.flexbox){
+  // Theme variables imported to power mixins, etc below
+  @import "../../variables";
+
+  // Flexbox tweener adjustments for BS4 components
+  @import "custom_forms";
+  @import "input-group";
+  @import "media";
+
+  // Flexbox tweener adjustments for theme components
+  @import "nfg_theme/avatar";
+  @import "nfg_theme/slats";
+
+  // Required bs4 source mixin to support grid re-deployment
+  @import "bootstrap-4_0_0-alpha_2/mixins/breakpoints"; // source, untouched
+
+  // Note: These mixins are duplicated from the bs4.0.0-alpha5 source patches...
+  // **and then have been modified** to use flexbox tweener syntax
+  @import "mixins/grid-framework";
+  @import "mixins/grid";
+
+  @import "utilities/flex"; // tween-ifies the flex alignment utilities
+
+  // Re-deploy the grid:
+  @import "bootstrap4_source_patches/bootstrap-4_0_0-alpha_5/grid"; // BS4 alpha5 patched source, untouched
+}
+

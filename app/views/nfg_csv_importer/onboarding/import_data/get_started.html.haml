@@ -1,7 +1,7 @@
 -# TODO: this more elegantly...
 / - file_origination_type = onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type']
 
-= render layout: 'onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   %div{ data: { toggle: 'tour-slider' }}
     = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 1, heading_options: { file_origination_type: file_origination_type.try(:humanize) }, import_presenter: import_presenter }

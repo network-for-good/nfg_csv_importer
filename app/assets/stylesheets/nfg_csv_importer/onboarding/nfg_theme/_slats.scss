@@ -1,0 +1,50 @@
+// Slats are used on listing pages
+
+// Sort
+.sort {
+  #{$icon} { color: $font-color-tertiary !important; }
+  cursor: move;
+}
+
+// Slat header
+.slat-header { @include rem(padding-bottom, $spacer-y / 2); }
+
+// List layout
+.slat-list .slat {
+  @include rem(padding-top, $spacer-y);
+  @include rem(padding-bottom, $spacer-y);
+  background-color: $white;
+  border-top: $border-width solid $border-color-primary;
+
+  // Various slat states
+  &.pending {
+    background-color: transparentize($state-warning-bg, .8);
+    &:first-child {
+      @include media-breakpoint-down(md) { @include rem(padding-top, $spacer-y * 1.5); }
+    }
+  }
+  &.ui-sortable-placeholder {
+    visibility: visible !important;
+    background: $bg-color-primary;
+    border: $border-width dashed $border-color-primary;
+    + .slat { border-top: none; }
+    + &.ui-sortable-helper {
+      border-top-style: dashed;
+      + &.slat { border-top: none; }
+    }
+  }
+  &.ui-sortable-helper {
+    border-top: none;
+    opacity: .5;
+    border-top: none;
+    + &.ui-sortable-placeholder { border-top: $border-width dashed $border-color-primary; }
+  }
+}
+
+// Contextual
+.slat-primary { border-left: 3px solid $brand-primary; }
+.slat-danger { border-left: 3px solid $brand-danger; }
+.slat-warning { border-left: 3px solid $brand-warning; }
+.slat-success { border-left: 3px solid $brand-success; }
+.slat-info { border-left: 3px solid $brand-info; }
+.slat-muted { border-left: 3px solid $text-muted; }

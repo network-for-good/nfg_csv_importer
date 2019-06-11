@@ -1,0 +1,78 @@
+// Button variants
+//
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
+
+@mixin button-variant($color, $background, $border) {
+  $active-background: lighten($background, 10%);
+  $active-border: lighten($border, 10%);
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  @include hover {
+    color: $color;
+    background-color: $active-background;
+        border-color: $active-border;
+  }
+
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    color: $color;
+    background-color: $active-background;
+        border-color: $active-border;
+    // Remove the gradient for the pressed/active state
+    background-image: none;
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    opacity: .4;
+  }
+}
+
+@mixin button-outline-variant($color) {
+  color: $color;
+  background-image: none;
+  background-color: transparent;
+  border-color: $color;
+
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    .fa{ color: $white !important; }
+    color: $white;
+    background-color: $color;
+        border-color: $color;
+  }
+  @include hover {
+    .fa{ color: $white !important; }
+    color: $white;
+    background-color: $color;
+        border-color: $color;
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    &:focus,
+    &.focus {
+      border-color: lighten($color, 20%);
+    }
+    @include hover {
+      border-color: lighten($color, 20%);
+    }
+  }
+}
+
+// Button sizes
+@mixin button-size($padding-y, $padding-x, $font-size, $line-height, $border-radius) {
+  @include rem(padding, $padding-y $padding-x);
+  @include rem(font-size, $font-size);
+  line-height: $line-height;
+  @include border-radius($border-radius);
+}

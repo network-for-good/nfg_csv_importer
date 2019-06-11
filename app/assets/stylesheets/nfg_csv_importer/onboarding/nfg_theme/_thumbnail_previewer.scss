@@ -1,0 +1,33 @@
+// Used on email wizard Review step to show a thumbnail of the rendered email blast
+$email_thumbnail_scale: 0.4;
+$email_thumbnail_width: 660px;
+$mailing_thumbnail_scale: 0.34;
+$mailing_thumbnail_width: 860px;
+
+.preview-thumbnail-container {
+  @include center-block();
+  max-width: 100%;
+  overflow: hidden;
+  &.email-thumbnail-container { width: calc(#{$email_thumbnail_width} * #{$email_thumbnail_scale}); }
+  &.mailing-thumbnail-container { width: calc(#{$mailing_thumbnail_width} * #{$mailing_thumbnail_scale}); }
+}
+.preview-thumbnail {
+  -webkit-transform-origin: 0 0;
+     -moz-transform-origin: 0 0;
+       -o-transform-origin: 0 0;
+  &.email-thumbnail {
+    -webkit-transform: scale($email_thumbnail_scale);
+       -moz-transform: scale($email_thumbnail_scale);
+         -o-transform: scale($email_thumbnail_scale);
+             -ms-zoom: $email_thumbnail_scale;
+    iframe { width: $email_thumbnail_width; }
+  }
+  &.mailing-thumbnail {
+    -webkit-transform: scale($mailing_thumbnail_scale);
+       -moz-transform: scale($mailing_thumbnail_scale);
+         -o-transform: scale($mailing_thumbnail_scale);
+             -ms-zoom: $mailing_thumbnail_scale;
+    iframe { width: $mailing_thumbnail_width; }
+  }
+  iframe { pointer-events: none; }
+}

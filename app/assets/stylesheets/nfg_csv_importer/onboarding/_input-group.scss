@@ -1,0 +1,23 @@
+//
+// Text input groups
+//
+
+.input-group-addon {
+  @include rem(padding, 9px $input-padding-x);
+  @include rem(font-size, $font-size-sm);
+  font-weight: $font-weight-medium;
+  line-height: $input-line-height;
+  @include border-radius(0);
+
+  // Sizing
+  &.form-control-sm {
+    @include rem(font-size, $input-font-size-sm);
+    @include border-radius(0);
+  }
+  &.form-control-lg {
+    @include rem(font-size, $input-font-size-lg);
+    @include border-radius(0);
+  }
+
+  #{$icon} { color: $input-color; }
+}

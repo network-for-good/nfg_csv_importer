@@ -1,0 +1,54 @@
+.breadcrumb {
+  margin-bottom: 0;
+  line-height: 1;
+  @include clearfix;
+  > li {
+    float: none;
+    display: inline-block;
+    + li::before {
+      @include rem(padding-right, $spacer-quarter);
+      @include rem(padding-left, $spacer-quarter);
+      color: $breadcrumb-divider-color;
+      content: "#{$breadcrumb-divider}";
+    }
+  }
+  > .active { color: $breadcrumb-active-color; }
+}
+
+// Step breadcrumbs used on email blast workflow
+.breadcrumb-steps {
+  li {
+    position: relative;
+    display: inline-block;
+    @include rem(padding-right, $spacer-quarter);
+    @include rem(padding-left, $spacer-quarter);
+    @include rem(font-size, $font-size-xs);
+    font-weight: $font-weight-medium;
+    color: $font-color-secondary;
+    &.disabled {
+      a {
+        color: $font-color-secondary !important;
+        cursor: $cursor-disabled;
+        pointer-events: none;
+      }
+    }
+    &.active a { color: $brand-primary; }
+    &.text-success a {
+      color: $font-color-primary !important;
+      @include hover-focus { color: $brand-primary; }
+    }
+    + li::before {
+      position: absolute;
+      top: 18px;
+      left: -3px;
+      padding: 0;
+      font-family: $icon-font-family;
+      content: "\f105";
+    }
+    > a {
+      position: relative;
+      display: block;
+      @include rem(padding, 18px $spacer-half);
+    }
+  }
+}

@@ -1,0 +1,14 @@
+// Base class
+.modal [data-toggle='tooltip']{
+  position:relative;
+  z-index: $zindex-tooltip;
+}
+
+.tooltip {
+  font-weight: $font-weight-medium;
+  @include rem(font-size, $font-size-sm);
+  line-height: 1.3;
+}
+
+// Wrapper for the tooltip content
+.tooltip-inner { @include rem(padding, $spacer-quarter $spacer-half); }

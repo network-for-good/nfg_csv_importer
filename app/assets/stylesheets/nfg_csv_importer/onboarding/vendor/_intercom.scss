@@ -1,0 +1,12 @@
+//*****************************//
+// INTERCOM -- custom styles for https://www.intercom.io/ integration
+//*****************************//
+
+body {
+  #intercom-container {
+    @include media-breakpoint-down(xs) { display: none !important; }
+    .intercom-launcher-frame {
+      @include media-breakpoint-down(md) { bottom: 60px !important; }
+    }
+  }
+}

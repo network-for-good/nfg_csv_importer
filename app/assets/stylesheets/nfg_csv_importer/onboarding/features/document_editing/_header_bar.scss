@@ -1,0 +1,62 @@
+// Top Editing Bar
+  .header-edit-bar {
+    top: 0;
+    left: 0;
+    width: 100%;
+    @include rem(padding, $spacer-half);
+    font-family: $font-family-base;
+    background-color: $white;
+    border-bottom: $border-width solid $border-color-primary;
+    z-index: 110;
+    @include clearfix();
+    box-sizing: border-box;
+    @include media-breakpoint-down(sm) { position: absolute; }
+    @include media-breakpoint-up(md) { position: fixed; }
+    * {
+      vertical-align: baseline;
+      box-sizing: inherit;
+      &:before, &:after {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    p { margin: 0; }
+    a { text-decoration: none; }
+    .page-title {
+      margin: 0;
+      @include rem(padding-top, $spacer-quarter);
+      @include rem(padding-bottom, $spacer-quarter);
+      font-weight: $headings-font-weight;
+      @include rem(font-size, $font-size-h3);
+      line-height: 1;
+      color: $font-color-primary;
+      small {
+        display: inline-block;
+        font-weight: $font-weight-normal;
+        font-size: 80%;
+        color: $text-muted;
+      }
+    }
+  }
+  .header-edit-bar-info {
+    position: relative;
+    @include media-breakpoint-up(md) {
+      float: left;
+      width: 32%;
+    }
+    @include media-breakpoint-up(lg) { width: 45%; }
+    @include media-breakpoint-up(xl) { width: 55%; }
+  }
+  .header-edit-bar-actions {
+    position: relative;
+    @include clearfix();
+    @include media-breakpoint-down(sm) { @include rem(margin-top, $spacer-quarter); }
+    @include media-breakpoint-up(md) {
+      float: right;
+      width: 68%;
+      text-align: right;
+    }
+    @include media-breakpoint-up(lg) { width: 55%; }
+    @include media-breakpoint-up(xl) { width: 45%; }
+    [class^='btn'] { vertical-align: top; } // reverses v-align baseline applied to all elements inside header-edit-bar
+  }
