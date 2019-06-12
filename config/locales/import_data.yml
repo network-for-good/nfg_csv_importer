@@ -111,4 +111,5 @@ en:
           guidance:
             modal:
         step_navigations:
+          file_origination_type_selection: "Select File Type"
 
