@@ -3,7 +3,7 @@ module FileOriginationTypes
 
     class << self
       def logo_path
-        "nfg_csv_importer/file_origination_types/constant_contact.png"
+        "nfg_csv_importer/file_origination_types/self_import_csv_xls.png"
       end
 
       def description
