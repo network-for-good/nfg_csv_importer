@@ -4,7 +4,7 @@ en:
       import_data:
         file_origination_type_selection:
           header:
-            message: 'Replace me at config/locales/import_data: file_origination_type_selection'
+            message: 'Where is the data you are importing coming from?'
             form: 'Replace me too'
             page:
           button:
