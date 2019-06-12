@@ -13,6 +13,8 @@ module NfgCsvImporter
     class TypeNotDefinedError < StandardError; end
 
     class Manager
+      DEFAULT_FILE_ORIGINATION_TYPE_SYM = :self_import_csv_xls
+
       attr_accessor :host_config
       def initialize(config)
         @host_config = config
@@ -20,8 +22,7 @@ module NfgCsvImporter
       end
 
       def types
-        return [] if (additional_file_origination_types || []).empty?
-        host_config.additional_file_origination_types.map do |file_type|
+        all_file_origination_types.map do |file_type|
           NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(file_type, file_origination_constant(file_type))
         end
       end
@@ -29,7 +30,7 @@ module NfgCsvImporter
       private
 
       def require_origination_files
-        return if additional_file_origination_types.nil?
+        require_dependency File.expand_path(File.join(File.dirname(__FILE__), DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s))
         additional_file_origination_types.each do |file_type|
           begin
             file_origination_constant(file_type)
@@ -43,8 +44,12 @@ module NfgCsvImporter
         end
       end
 
+      def all_file_origination_types
+        additional_file_origination_types << DEFAULT_FILE_ORIGINATION_TYPE_SYM
+      end
+
       def additional_file_origination_types
-        host_config.additional_file_origination_types
+        (host_config.additional_file_origination_types || [])
       end
 
       def file_origination_constant(file_type)
