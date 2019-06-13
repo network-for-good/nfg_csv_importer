@@ -18,6 +18,10 @@ module NfgCsvImporter
           # returns a list of import types that the user can select from
           # If there is only one item in the list it will skip the step
           # allowing the user to select
+
+          # TODO: This needs to be thought through better because the host
+          # application controls the list of import types that are available
+          # and may do so basd on the user
           []
         end
 
@@ -25,7 +29,7 @@ module NfgCsvImporter
           # This should return a Proc that receives an instance of an import
           # and performs an action on that import. This is where any
           # preprocessing occurs, including file manipulation and messaging.
-          -> () {}
+          -> (import) {}
         end
 
         def field_mapping
