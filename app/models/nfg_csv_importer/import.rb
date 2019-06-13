@@ -24,7 +24,7 @@ module NfgCsvImporter
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
-    # has_many_attached :pre_processing_files
+    has_many_attached :pre_processing_files
 
     has_many :imported_records, dependent: :destroy
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
