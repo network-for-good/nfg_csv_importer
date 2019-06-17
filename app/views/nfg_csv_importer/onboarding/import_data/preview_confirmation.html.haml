@@ -1,3 +1,36 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  .form-group
-    / = render partial: 'onboarding/fields/onboarding_text_field', locals: { f: f, field: :field_name }
+- preview_confirmation_presenter = NfgCsvImporter::PreviewConfirmationPresenter.new
+- i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
+
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.name), header_form: t('.header.form') } do |f|
+
+  .row
+    -# Always a contact record, regardless of import type.
+    -# For now, contact type is hard-coded as "user"
+    -# Perhaps contact type should be a configuration setting?
+    -# ex: config.contact_type_record_class_names = %w[user organization]
+    .col
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', preview_object_class_name: 'user', preview_confirmation_presenter: preview_confirmation_presenter
+
+    .col
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', preview_object_class_name: preview_confirmation_presenter.user_or_donation_card, preview_confirmation_presenter: preview_confirmation_presenter
+
+  .row
+    .col.text-center
+      -# This button should be equivalent to clicking "Next" on the onboarder.
+      -# Like with clicking "next", it should kick off the modal to confirm approval to import.
+      = ui.nfg :button, :submit, body: t('button.approve', scope: i18n_scope)
+
+  %hr
+  .row
+    .col
+      .text-center
+        = ui.nfg :typeface, heading: t('header.summary', scope: i18n_scope)
+
+        = ui.nfg :typeface, body: t('body.summary', scope: i18n_scope)
+  .row
+    .col
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', summarized_objects_name: 'user', preview_confirmation_presenter: preview_confirmation_presenter, i18n_scope: i18n_scope
+
+
+    .col
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', summarized_objects_name: 'donation', preview_confirmation_presenter: preview_confirmation_presenter, i18n_scope: i18n_scope

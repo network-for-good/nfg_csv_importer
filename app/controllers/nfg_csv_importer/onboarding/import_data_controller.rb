@@ -9,9 +9,28 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
   # WORKAROUNDS
   expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
-  expose(:file_origination_type) { onboarding_session.step_data['import_data'].present? ? onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type'] : 'file_origination_type unknown'}
+
   expose(:file_origination_types) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).types }
+
+  expose(:file_origination_type) { selected_file_origination_type }
+
   private
+
+  # TODO:
+  # Currently a workaround to supply the file origination type string to collect the file origination type object on demand.
+  #
+  # Not sure if there's a more reliable or succinct way to to collect this info or
+  # if it should consistently be pulled out of the onboarding_session data.
+  def selected_file_origination_type
+    # Helps avoid breaking the view on the initial steps when the step data hasn't yet begun populating
+    return unless onboarding_session.step_data['import_data'].present?
+
+    # Reach in and grab the file origination type string
+    file_origination_type_name = onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type']
+
+    # Select the official file origination type object based on the :type_sym
+    file_origination_types.select { |t| t.type_sym == file_origination_type_name.to_sym }.first
+  end
 
   # on before save steps
   def file_origination_type_selection_on_before_save

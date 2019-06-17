@@ -1,5 +1,7 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
 
+  include NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples
+
   def self.import_types
     %w{users donation}
   end
@@ -34,6 +36,12 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
         },
       description: %Q{Allows you to import subscribers.},
       can_be_deleted_by: -> (user) { user.last_name != "Jones" },
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_humanized_data_set,
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_summary_data_set,
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_preview_sentence_summary_data_set
     }
   end
 
@@ -46,7 +54,13 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       alias_attributes: [],
       column_descriptions: {},
       can_be_viewed_by: -> (user) { user.last_name != "Smith" },
-      description: %Q{Allows you to import donations}
+      description: %Q{Allows you to import donations},
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_humanized_data_set,
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_summary_data_set,
+
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_preview_sentence_summary_data_set
     }
   end
 end
