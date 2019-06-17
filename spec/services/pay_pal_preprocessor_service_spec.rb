@@ -14,6 +14,17 @@ describe PayPalPreprocessorService do
       subject
       import.reload
       expect(CSV.open(import.import_file.path).readlines).to eq  CSV.open('spec/fixtures/paypal_processed_file.csv').readlines
+    end
+
+    it "should store field mappings" do
+      subject
+      import.reload
+      expect(import.fields_mapping).to eq service.send(:mapped_headers)
+    end
+
+    it "should set status to uploaded" do
+      subject
+      import.reload
       expect(import.status).to eq 'uploaded'
     end
   end

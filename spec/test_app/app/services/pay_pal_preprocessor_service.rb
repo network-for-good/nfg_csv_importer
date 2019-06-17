@@ -12,10 +12,12 @@ class PayPalPreprocessorService
     files.each do |file_path|
       file = File.open(file_path)
       document = get_document(file)
-      data = convert_row_to_hash_with_ignored_columns_removed(document)
-      temp_file = save_data_to_csv(data)
+      processed_data = convert_row_to_hash_with_ignored_columns_removed(document)
+      cleaned_data = clean_data(processed_data)
+      temp_file = save_data_to_csv(cleaned_data)
       import.import_file = temp_file
       import.status = :uploaded
+      import.fields_mapping = mapped_headers
       import.save!
       temp_file.close
     end
@@ -57,7 +59,8 @@ class PayPalPreprocessorService
     data = []
     doc.each_with_index(mapped_headers) do |row, index|
       next if index < 1
-      donated_at = row[:date] # need to convert time and zone values
+      date_string = "#{row[:date]} #{get_time_string(row[:time])} #{row[:zone]}"
+      donated_at = Time.parse(date_string).utc
       data << row.except(:date, :time, :zone).merge(donated_at: donated_at)
     end
     data
@@ -79,7 +82,7 @@ class PayPalPreprocessorService
       time: 'Time',
       zone: 'TimeZone',
       name: 'Name',
-      gross: 'Gross',
+      amount: 'Gross',
       email: 'From Email Address',
       transaction_id: 'Transaction ID',
       address: 'Address Line 1',
@@ -92,4 +95,26 @@ class PayPalPreprocessorService
       description: 'Note'
     }
   end
+
+  def clean_data(data)
+    data = remove_negative_amount_records(data)
+    clean_donor_name_payment_method(data)
+  end
+
+  def remove_negative_amount_records(data)
+    data.reject { |item| item[:amount].to_i < 0 }
+  end
+
+  def clean_donor_name_payment_method(data)
+    data.collect do |item|
+      item[:name] = item[:email] if item[:name].blank?
+      item[:payment_method] = item[:amount].to_i == 0 ? 'in_kind' : 'Paypal'
+      item
+    end
+  end
+
+  def get_time_string(number)
+    Time.at(number).utc.strftime("%H:%M:%S")
+  end
+
 end
