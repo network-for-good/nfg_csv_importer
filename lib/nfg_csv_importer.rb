@@ -10,6 +10,9 @@ require "browser"
 require "nfg_ui"
 require "nfg_csv_importer/configuration"
 
+# This is workaround code that's been isolated for easy removal and replacement during automagical import build.
+require "nfg_csv_importer/working_code"
+
 module NfgCsvImporter
   module ApplicationHelper
     def method_missing(method, *args, &block)

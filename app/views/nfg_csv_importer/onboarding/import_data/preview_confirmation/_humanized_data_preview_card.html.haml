@@ -1,0 +1,36 @@
+-# ex: 'user' or 'donation'
+- preview_object_class_name = local_assigns[:preview_object_class_name]
+
+- preview_confirmation_presenter = local_assigns[:preview_confirmation_presenter]
+
+= ui.nfg :card do
+  -# The headline of the card (e.g.: User's name or the donation amount)
+  = ui.nfg :media do
+    = ui.nfg :media_object, class: 'mr-2' do
+      -# For users, returns a user icon; dollar icon for donation.
+      -# pass in the preview_object_class_name variable to get a hit
+      = ui.nfg :icon, preview_confirmation_presenter.humanized_data_preview_icon(preview_object_class_name)
+
+    = ui.nfg :media_body do
+      = ui.nfg :typeface, heading: preview_confirmation_presenter.humanized_data_card_heading(preview_object_class_name)
+
+  -# User Summary & additional details (e.g.: full address)
+  -# Loop through the sections of humanized data and flesh out the card body
+  - preview_confirmation_presenter.humanized_data_card_body_content(preview_object_class_name).each do |section_name, preview_object_attribute_names|
+
+    -# Section names include:
+    -# heading, summary, full_address
+    -# Icons are defined in the preview_confirmation_presenter
+    = ui.nfg :media do
+      = ui.nfg :media_object, class: 'mr-2' do
+        -# no icon is rendered if the section name isn't connected to an icon
+        = ui.nfg :icon, preview_confirmation_presenter.humanized_data_preview_icon(section_name)
+
+      = ui.nfg :media_body do
+
+        -# Now the attributes for that section (e.g.: full address) are broken down into individual typeface components (address, address2, city, etc)
+        - preview_object_attribute_names.each do |preview_object_attribute|
+          -# ex: This could be the user's address1
+          - preview_object_attribute_value = preview_confirmation_presenter.get_preview_object_attribute(preview_object_class_name, attribute_name: preview_object_attribute)
+
+          = ui.nfg :typeface, body: preview_object_attribute_value, render_if: preview_object_attribute_value.present?
