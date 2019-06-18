@@ -4,25 +4,28 @@ describe PayPalPreprocessorService do
   include ActionDispatch::TestProcess
 
   let(:import) { FactoryGirl.create(:import,
-                                  pre_processing_files: fixture_file_upload(File.open("spec/fixtures/PayPal_donations.xlsx")))}
+                                    pre_processing_files: fixture_file_upload(File.open('spec/fixtures/PayPal_donations.xlsx')))}
   let(:service) { PayPalPreprocessorService.new(import) }
 
   describe '#process' do
     subject { service.process }
 
-    it "should pre process and attach import_file" do
+    it 'should pre process and attach import_file' do
       subject
       import.reload
-      expect(CSV.open(import.import_file.path).readlines).to eq  CSV.open('spec/fixtures/paypal_processed_file.csv').readlines
+      import_file_data = CSV.open(import.import_file.path).readlines
+      processed_file_data = CSV.open('spec/fixtures/paypal_processed_file.csv').readlines
+      expect(import_file_data).to eq processed_file_data
     end
 
-    it "should store field mappings" do
+    it 'should store field mappings' do
       subject
       import.reload
-      expect(import.fields_mapping).to eq service.send(:mapped_headers)
+      headers = service.send(:mapped_headers).merge(service.send(:extra_headers))
+      expect(import.fields_mapping).to eq headers
     end
 
-    it "should set status to uploaded" do
+    it 'should set status to uploaded' do
       subject
       import.reload
       expect(import.status).to eq 'uploaded'

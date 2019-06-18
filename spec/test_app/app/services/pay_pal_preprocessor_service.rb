@@ -12,12 +12,11 @@ class PayPalPreprocessorService
     files.each do |file_path|
       file = File.open(file_path)
       document = get_document(file)
-      processed_data = convert_row_to_hash_with_ignored_columns_removed(document)
-      cleaned_data = clean_data(processed_data)
-      temp_file = save_data_to_csv(cleaned_data)
+      data = convert_row_to_hash_with_ignored_columns_removed(document)
+      temp_file = save_data_to_csv(data)
       import.import_file = temp_file
       import.status = :uploaded
-      import.fields_mapping = mapped_headers
+      import.fields_mapping = mapped_headers.merge(extra_headers)
       import.save!
       temp_file.close
     end
@@ -61,7 +60,11 @@ class PayPalPreprocessorService
       next if index < 1
       date_string = "#{row[:date]} #{get_time_string(row[:time])} #{row[:zone]}"
       donated_at = Time.parse(date_string).utc
-      data << row.except(:date, :time, :zone).merge(donated_at: donated_at)
+      row[:name] = row[:email] if row[:name].blank?
+      payment_method = row[:amount].to_i == 0 ? 'in_kind' : 'Paypal'
+      unless row[:amount].to_i < 0
+        data << row.except(:date, :time, :zone).merge(donated_at: donated_at, payment_method: payment_method)
+      end
     end
     data
   end
@@ -96,25 +99,13 @@ class PayPalPreprocessorService
     }
   end
 
-  def clean_data(data)
-    data = remove_negative_amount_records(data)
-    clean_donor_name_payment_method(data)
-  end
-
-  def remove_negative_amount_records(data)
-    data.reject { |item| item[:amount].to_i < 0 }
-  end
-
-  def clean_donor_name_payment_method(data)
-    data.collect do |item|
-      item[:name] = item[:email] if item[:name].blank?
-      item[:payment_method] = item[:amount].to_i == 0 ? 'in_kind' : 'Paypal'
-      item
-    end
+  def extra_headers
+    {
+      payment_method: 'payment_method'
+    }
   end
 
   def get_time_string(number)
-    Time.at(number).utc.strftime("%H:%M:%S")
+    Time.at(number).utc.strftime('%H:%M:%S')
   end
-
 end
