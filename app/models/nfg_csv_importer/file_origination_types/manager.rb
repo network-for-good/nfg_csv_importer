@@ -9,7 +9,14 @@ module NfgCsvImporter
     # and returning a list of objects that can be used to manage the UI
     # and logic surrounding the origination types
     #
-    # It accepts an nfg_csv_importer configuration object
+    # Different file origination types can be added by updating a
+    # configuration setting during initialization of the gem:
+    #
+    # `config.additional_file_orignation_types = [:constant_contact, :paypal]`
+    #
+    # The NfgImporter::Configuration class gets passed into the Manager
+    # class on initialization
+    #
     class TypeNotDefinedError < StandardError; end
 
     class Manager
@@ -22,9 +29,11 @@ module NfgCsvImporter
       end
 
       def types
-        all_file_origination_types.map do |file_type|
+        return @types if @types
+        @types = additional_file_origination_types.map do |file_type|
           NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(file_type, file_origination_constant(file_type))
         end
+        @types << NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(DEFAULT_FILE_ORIGINATION_TYPE_SYM, "NfgCsvImporter::FileOriginationTypes::#{DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s.camelcase}".constantize)
       end
 
       private
