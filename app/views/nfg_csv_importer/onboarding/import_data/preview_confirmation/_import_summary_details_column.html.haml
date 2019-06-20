@@ -1,5 +1,5 @@
 - i18n_scope = local_assigns[:i18n_scope]
-- preview_confirmation_presenter = local_assigns[:preview_confirmation_presenter]
+- onboarder_presenter = local_assigns[:onboarder_presenter]
 - summarized_objects_name = local_assigns[:summarized_objects_name]
 
 -# This should be based on the import type, and probably run through the presenter so we're not hard coding stats.
@@ -8,14 +8,14 @@
 -# the total, then the loop of charts
 = ui.nfg :media do
   = ui.nfg :media_object, class: 'mr-2' do
-    = ui.nfg :icon, "#{preview_confirmation_presenter.summary_title_icon(summarized_objects_name)} 3x"
+    = ui.nfg :icon, "#{onboarder_presenter.summary_title_icon(summarized_objects_name)} 3x"
 
   = ui.nfg :media_body do
-    = ui.nfg :typeface, title: preview_confirmation_presenter.summary_total_title(summarized_objects_name), class: 'display-4'
-    %h2= preview_confirmation_presenter.summary_total_value(summarized_objects_name, summarized_object: preview_confirmation_presenter.the_fake_import)
+    = ui.nfg :typeface, title: onboarder_presenter.summary_total_title(summarized_objects_name), class: 'display-4'
+    %h2= onboarder_presenter.summary_total_value(summarized_objects_name, summarized_object: onboarder_presenter.the_fake_import)
 
 -# Now the summary / charts
-- preview_confirmation_presenter.summary_rows(summarized_objects_name).each_with_index do |summary_row, i|
+- onboarder_presenter.summary_rows(summarized_objects_name).each_with_index do |summary_row, i|
 
   = ui.nfg :media do
     = ui.nfg :media_object, class: 'mr-2' do
@@ -29,7 +29,7 @@
 
 
       %h2
-        = preview_confirmation_presenter.summary_row_value(summarized_objects_name, summarized_object: preview_confirmation_presenter.the_fake_import.summary, index: i)
+        = onboarder_presenter.summary_row_value(summarized_objects_name, summarized_object: onboarder_presenter.the_fake_import.summary, index: i)
 
         -# will need percentages here
         = ui.nfg :typeface, :muted, caption: '(100%)'
