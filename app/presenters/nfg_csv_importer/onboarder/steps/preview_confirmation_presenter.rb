@@ -22,14 +22,9 @@ module NfgCsvImporter
         # by pinging the import preview's user for their name.
         #
         # example preview_object_class_name: 'user' 'donation'
-        def humanized_data_card_heading(preview_object_class_name)
-          # Get the name of the attribute which is stored
-          # in the import definition's humanized_data_set hash.
-          heading_attribute_name = import.humanized_data_set[preview_object_class_name]['heading'].first
-
-          # Get the value of the preview object's attribute
-          # adds .to_s to ensure that `capture` doesn't flake out (and thus not render component :body) when the body isn't a string
-          get_preview_object_attribute(preview_object_class_name, attribute_name: heading_attribute_name).to_s
+        def humanized_data_card_heading(humanize)
+          return h.number_to_currency(rand(2000..10000), precision: 0) if humanize == 'donation'
+          return 'Erika Ber' if humanize == 'user'
         end
 
         def humanized_data_card_body_content(preview_object_class_name)

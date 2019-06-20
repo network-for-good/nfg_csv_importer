@@ -9,10 +9,10 @@
     -# Perhaps contact type should be a configuration setting?
     -# ex: config.contact_type_record_class_names = %w[user organization]
     .col
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', preview_object_class_name: 'user', onboarder_presenter: onboarder_presenter
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanized: 'user', onboarder_presenter: onboarder_presenter
 
     .col
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', preview_object_class_name: onboarder_presenter.user_or_donation_card, onboarder_presenter: onboarder_presenter
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanized: 'donation', onboarder_presenter: onboarder_presenter
 
   .row
     .col.text-center
