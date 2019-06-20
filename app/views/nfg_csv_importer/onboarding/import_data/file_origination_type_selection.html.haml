@@ -1,4 +1,4 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '') } do |f|
   .row
     - file_origination_types.each do |file_origination_type|
       = render partial: 'nfg_csv_importer/onboarding/import_data/file_origination_type_selection/file_origination_type_radio_button', locals: { f: f, file_origination_type: file_origination_type }

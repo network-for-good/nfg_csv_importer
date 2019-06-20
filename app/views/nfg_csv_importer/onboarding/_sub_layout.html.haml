@@ -6,9 +6,13 @@
 - back_button_text = t('back', scope: locale_namespace + [step, :button], default: 'Prev') if local_assigns[:back_button_text].nil?
 - submit_button_text = t('submit', scope: locale_namespace + [step, :button], default: 'Next') if local_assigns[:submit_button_text].nil?
 - framed = true if local_assigns[:framed].nil? # controls whether the page is displayed with a border
+- hide_navigation_bar = false if local_assigns[:hide_navigation_bar].nil?
 
 = simple_form_for form, url: wizard_path, html: { id: 'onboarding_main_form', multipart: true, autocomplete: 'off' }, method: :put do |f|
-  = render partial: "nfg_csv_importer/layouts/onboarding/import_data/top_bar", locals: { f: f, back_button_text: back_button_text, submit_button_text: submit_button_text, next_step_confirmation: next_step_confirmation }
+  = render partial: "nfg_csv_importer/layouts/onboarding/import_data/title_bar", locals: { f: f, back_button_text: back_button_text, submit_button_text: submit_button_text, next_step_confirmation: next_step_confirmation }
+
+  - unless hide_navigation_bar
+    = render 'onboarding/import_data/navigation_bar'
 
   - if framed
     .container.py-4
@@ -20,4 +24,4 @@
             = ui.nfg :typeface, :muted, caption: header_page, render_if: header_page.present?
             = yield f
   - else
-    = yield
+    = yield f

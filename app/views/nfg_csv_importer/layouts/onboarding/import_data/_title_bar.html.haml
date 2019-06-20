@@ -1,0 +1,15 @@
+- f = local_assigns[:f]
+- next_step_confirmation = local_assigns[:next_step_confirmation]
+- back_button_text = local_assigns[:back_button_text]
+- submit_button_text = local_assigns[:submit_button_text]
+
+.p-2.bg-dark
+  .row.align-items-center.justify-content-between
+    .col.py-1
+      = ui.nfg :typeface, :muted, caption: onboarder_presenter.onboarder_title, class: 'mb-0'
+
+    .col-auto.py-2
+      - if first_step
+        = link_to t("nfg_csv_importer.onboarding.title_bar.buttons.exit"), nfg_csv_importer.imports_path, class: 'text-muted'
+      - else
+        = link_to t("nfg_csv_importer.onboarding.title_bar.buttons.save_and_exit"), "#", id: "save_and_exit", class: "nav-link text-muted"
