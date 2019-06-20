@@ -1,6 +1,0 @@
-// Resolves issues with responsive images and maxwidth failures seen in IE11
-// particularly with user avatars
-.media-object{
-  max-width: none;
-  width: 100%;
-}

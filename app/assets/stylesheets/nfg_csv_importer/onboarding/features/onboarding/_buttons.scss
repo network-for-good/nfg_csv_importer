@@ -1,7 +1,0 @@
-@each $color in $primary-colors-list  {
-  .jumbotron-clouds {
-    .bg-clouds.#{nth($color, 1)} { // Only target the bg-cloud boxes (btn-primary is white when within jumbotron-clouds from the gem)
-      .btn-primary { @include button-variant($white, nth($color, 2), nth($color, 2)); }
-    }
-  }
-}

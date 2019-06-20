@@ -7,12 +7,16 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
 
   expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
 
-  # WORKAROUNDS
-  expose(:import_presenter) { NfgCsvImporter::ImportPresenter.new(NfgCsvImporter::Import.new, view_context) }
-
   expose(:file_origination_types) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).types }
 
   expose(:file_origination_type) { selected_file_origination_type }
+
+  # The onboarder presenter, when built, automatically
+  # generates the step's presenter.
+  #
+  # Each step has a presenter setup that, at minimum,
+  # inherits the OnboarderPresenter.
+  expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
   private
 

@@ -39,9 +39,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
 
       **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_humanized_data_set,
 
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_summary_data_set,
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_preview_sentence_summary_data_set
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_summary_data_set
     }
   end
 
@@ -58,9 +56,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
 
       **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_humanized_data_set,
 
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_summary_data_set,
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_preview_sentence_summary_data_set
+      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_summary_data_set
     }
   end
 end
