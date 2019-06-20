@@ -59,7 +59,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def index
     @import = NfgCsvImporter::Import.new
-    @import_presenter = NfgCsvImporter::ImportPresenter.new(@import, view_context)
     # if no pagination engine is available, just so the records
     @imports = @imported_for.imports.order_by_recent
     if defined?(WillPaginate)
