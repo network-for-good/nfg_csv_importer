@@ -1,0 +1,20 @@
+- navigation_bar_presenter = NfgCsvImporter::Onboarder::NavigationBarPresenter.new(onboarding_session, self)
+
+- next_step_confirmation = local_assigns[:next_step_confirmation]
+- back_button_text = local_assigns[:back_button_text]
+- submit_button_text = local_assigns[:submit_button_text]
+
+.p-3.bg-white.border-bottom
+  .row.align-items-center.justify-content-between
+    .col-12.col-lg-8.py-1.mx-auto.order-lg-2
+      = ui.nfg :steps, render_unless: navigation_bar_presenter.hide_steps? do
+        - controller.wizard_steps.each_with_index do |step, i|
+          - i += 1
+          - next unless navigation_bar_presenter.show_step?(step)
+          = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: wizard_path(step), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
+            = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
+
+    .col-6.col-lg-auto.py-1.order-lg-1
+      = ui.nfg :button, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'arrow-left', render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step))
+    .col-6.col-lg-auto.py-1.text-right.order-lg-3
+      = ui.nfg :button, :disable_with, :submit, body: submit_button_text.html_safe, icon: 'arrow-right', confirm: next_step_confirmation

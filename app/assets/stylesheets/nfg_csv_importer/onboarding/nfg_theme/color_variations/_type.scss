@@ -1,3 +1,0 @@
-@each $color in $primary-colors-list  {
-  .text-#{nth($color, 1)} { color: nth($color, 2); }
-}

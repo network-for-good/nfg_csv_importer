@@ -2,34 +2,26 @@
 - guidance = '' if local_assigns[:guidance].nil?
 - header_page = '' if local_assigns[:header_page].nil?
 - enable_next_button = true if local_assigns[:enable_next_button].nil?
-- additional_form_classes = "" unless local_assigns[:additional_form_classes]
-- form_orientation = "form" if local_assigns[:form_orientation].nil?
-- submit_button_text = t("submit", scope: locale_namespace + [step, :button], default: 'Next') if local_assigns[:submit_button_text].nil?
+- next_step_confirmation = nil if local_assigns[:next_step_confirmation].nil? # pass in a confirmation prompt on submit
+- back_button_text = t('back', scope: locale_namespace + [step, :button], default: 'Prev') if local_assigns[:back_button_text].nil?
+- submit_button_text = t('submit', scope: locale_namespace + [step, :button], default: 'Next') if local_assigns[:submit_button_text].nil?
 - framed = true if local_assigns[:framed].nil? # controls whether the page is displayed with a border
+- hide_navigation_bar = false if local_assigns[:hide_navigation_bar].nil?
 
-= simple_form_for form, url: wizard_path, html: { class: "#{ form_orientation } #{ additional_form_classes }", id: 'onboarding_main_form', multipart: true, autocomplete: 'off' }, method: :put do |f|
-  #title_block.row.p-y-base.p-r-half-down-xs.p-l-half-down-xs
-    .col-xs-12.col-sm-10.col-md-8.col-lg-7.col-xl-6.m-x-auto
-      .row.flex-items-xs-middle
-        .col-xs-4
-          - unless first_step or controller.single_use_steps.include?(controller.previous_step)
-            = link_to previous_wizard_path, class: 'btn btn-secondary full-width-down-xs',  id: 'onboarder_back_button' do
-              = fa_icon "caret-left", class: "m-r-quarter", text: "Back"
-        .col-xs-4.text-xs-center
-          %h5= t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
-        .col-xs-4.text-xs-right
-          - if enable_next_button && !last_step
-            %button.btn.btn-primary.full-width-down-xs#next_step_top{data: { :disable_with => "Saving #{fa_icon 'spinner spin fw'}" } }
-              = fa_icon "caret-right", class: "m-l-quarter", text: submit_button_text.html_safe, right: true
+= simple_form_for form, url: wizard_path, html: { id: 'onboarding_main_form', multipart: true, autocomplete: 'off' }, method: :put do |f|
+  = render partial: "nfg_csv_importer/layouts/onboarding/import_data/title_bar"
+
+  - unless hide_navigation_bar
+    = render partial: 'nfg_csv_importer/layouts/onboarding/import_data/navigation_bar', locals: { back_button_text: back_button_text, submit_button_text: submit_button_text, next_step_confirmation: next_step_confirmation }
 
   - if framed
-    .row
-      .col-xs-12.col-sm-10.col-md-8.col-lg-7.col-xl-6.m-x-auto.z-index-10
-        .container-division
+    .container.py-4
+      .row
+        .col.col-lg-8.mx-auto
           = render partial: 'nfg_csv_importer/onboarding/flash_messages', locals: { flash: flash }
-          %h3= header_message
-          - if header_page.present?
-            %p.m-t-base.text-muted= header_page
-          = yield f
+
+          = ui.nfg :tile, heading: header_message do
+            = ui.nfg :typeface, :muted, caption: header_page, render_if: header_page.present?
+            = yield f
   - else
-    = yield
+    = yield f

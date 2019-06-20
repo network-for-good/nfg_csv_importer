@@ -1,4 +1,3 @@
--# note that header_page is hard coded to paypal at the moment.
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row

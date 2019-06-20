@@ -1,6 +1,11 @@
 en:
   nfg_csv_importer:
     onboarding:
+      title_bar:
+        caption: "Import Your %{name} Data"
+        buttons:
+          save_and_exit: 'Save & Exit'
+          exit: 'Exit'
       import_data:
         file_origination_type_selection:
           header:
@@ -8,6 +13,7 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -20,6 +26,7 @@ en:
             form: ''
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -33,6 +40,7 @@ en:
             page: "We've taken a random row from your %{file_origination_type} spreadsheet and created a snapshot of what your data will look like in Donor Management."
             summary: 'Overall Preview Summary'
           button:
+            back: 'Prev'
             submit: Next
             approve: 'Approve & Import'
           label:
@@ -56,6 +64,7 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -68,6 +77,7 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -80,6 +90,7 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -92,6 +103,7 @@ en:
             form: ''
             page: "When you downloaded your exported CSVs from %{file_origination_type}, %{description_of_files}. Add them below."
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -104,6 +116,7 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
           label:
           placeholder:
@@ -116,12 +129,24 @@ en:
             form: 'Replace me too'
             page:
           button:
+            back: 'Prev'
             submit: Next
+            skip: 'Skip to upload'
           label:
           placeholder:
           hint:
           guidance:
             modal:
+          body:
+            step1:
+              heading: "To get started, we'd like to quickly walk you through importing your data from %{file_origination_type}."
+              body: "You'll get step-by-step instructions (screenshots and video) for exporting your data and uploading it right here for import."
+            step2:
+              heading: "Before we import your data, we’ll show you a preview and summary."
+              body: "You'll have a chance to see what one of your imported contacts would look like in donor management. This gives you a chance to get one last look at how your data will transpose before you officially begin the import."
+            step3:
+              heading: "We'll send you emails to let you know the status of your data import."
+              body: "First, we'll confirm that your import has been uploaded. After that, we'll send you an email when your import is on the queue and then again once your data is loaded into Donor Management."
         step_navigations:
           file_origination_type_selection: "Select File Type"
 
