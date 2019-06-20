@@ -1,11 +1,11 @@
 module NfgCsvImporter
-  # This needs to inherit from ApplicationPresenter when Imports are real.
+  # This needs to inherit from GemPresenter when Imports are real.
   #
   # I anticipate we'll write an ImportResultsPresenter
   # and the preview will inherit or overwrite the output methods for the actual output page. They are the same layout with different info coming in.
   class PreviewConfirmationPresenter
 
-    # Remove attr_accessor once PreviewConfirmationPresenter inherits from ApplicationPresenter (and thus, is leveraging a real import)
+    # Remove attr_accessor once PreviewConfirmationPresenter inherits from GemPresenter (and thus, is leveraging a real import)
     attr_accessor :import, :h
 
     def initialize

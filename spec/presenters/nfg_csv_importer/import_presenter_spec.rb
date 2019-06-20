@@ -19,12 +19,12 @@ describe NfgCsvImporter::ImportPresenter do
     it { is_expected.to eq NfgCsvImporter::Import::PRE_PROCESING_TYPES }
   end
 
-  describe '#get_started_modal_step(step:, heading_options: {}, body_options: {})' do
+  describe '#get_started_information_step(step:, heading_options: {}, body_options: {})' do
     let(:step) { 1 }
     let(:file_origination_type) { import_presenter.file_origination_types.sample.first }
     let(:heading_options) { { file_origination_type: file_origination_type } }
 
-    subject { import_presenter.get_started_modal_step(step: step, heading_options: heading_options, body_options: {}) }
+    subject { import_presenter.get_started_information_step(step: step, heading_options: heading_options, body_options: {}) }
 
     it 'outputs the correct I18n entry with the options present' do
       expect(subject).to include h.ui.nfg(:typeface,
@@ -35,10 +35,10 @@ describe NfgCsvImporter::ImportPresenter do
     end
   end
 
-  describe '#get_started_modal_image(step:)' do
+  describe '#get_started_information_step_image(step:)' do
     let(:tested_step) { 1 }
     let(:step) { tested_step }
-    subject { import_presenter.get_started_modal_image(step: step) }
+    subject { import_presenter.get_started_information_step_image(step: step) }
 
     it { is_expected.to eq h.image_tag "nfg_csv_importer/illustrations/get-started-step#{tested_step}.png" }
   end
@@ -85,8 +85,8 @@ describe NfgCsvImporter::ImportPresenter do
     end
   end
 
-  describe '#knowledge_base_link_path' do
-    subject { import_presenter.knowledge_base_link_path }
+  describe '#external_resource_url' do
+    subject { import_presenter.external_resource_url }
     it { is_expected.to eq I18n.t("nfg_csv_importer.urls.knowledge_base.walk_throughs.file_origination_types.#{file_origination_type}") }
   end
 

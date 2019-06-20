@@ -1,21 +1,52 @@
-.navbar.navbar-light.email-navbar
-  .row.flex-items-xs-middle
-    .col-xs-5.col-lg-3
-      %h5.p-l-half= ui.nfg :icon, 'cloud-upload', text: "Import Data"
-    .col-xs-6.text-xs-center.hidden-md-down
+- f = local_assigns[:f]
+- next_step_confirmation = local_assigns[:next_step_confirmation]
+- back_button_text = local_assigns[:back_button_text]
+- submit_button_text = local_assigns[:submit_button_text]
 
-      - unless onboarding_session.current_step == 'file_origination_type_selection'
-        %ol.breadcrumb.breadcrumb-steps
-          - controller.wizard_steps.each do |step|
-            %li.breadcrumb-item{:role => "presentation", class: get_onboarding_nav_status(step)}
-              = link_to wizard_path(step) do
-                = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
-    .col-xs-7.col-lg-3
-      %ul.nav.navbar-nav.pull-right
-        %li.nav-item
-          - unless first_step
-            = link_to 'Save & Exit', "#", id: "save_and_exit", class: "nav-link text-muted"
-            / = link_to t(".save_and_exit_button"), "#", id: "save_and_exit", class: "nav-link text-muted"
-          - else
-            = link_to 'Exit', nfg_csv_importer.imports_path, class: "nav-link text-muted"
-            / = link_to t(".exit_button"), mailings_path, class: "nav-link text-muted"
+- navigation_bar_presenter = NfgCsvImporter::Onboarder::NavigationBarPresenter.new(onboarding_session, self)
+
+.p-2.bg-dark
+  .row.align-items-center.justify-content-between
+    .col.py-1
+      = ui.nfg :typeface, :muted, caption:navigation_bar_presenter.onboarder_title, class: 'mb-0'
+
+    .col-auto.py-2
+      = link_to 'Save & Exit', '#', class: 'text-muted'
+.p-3.bg-white.border-bottom
+  .row.align-items-center.justify-content-between
+    .col-12.col-lg-8.py-1.mx-auto.order-lg-2
+      = ui.nfg :steps, render_unless: navigation_bar_presenter.hide_steps? do
+        - controller.wizard_steps.each_with_index do |step, i|
+          - i += 1
+          = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: wizard_path(step), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
+            = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
+
+
+    .col-6.col-lg-auto.py-1.order-lg-1
+      = ui.nfg :button, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'arrow-left', render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step))
+    .col-6.col-lg-auto.py-1.text-right.order-lg-3
+      = ui.nfg :button, :disable_with, :submit, body: submit_button_text.html_safe, icon: 'arrow-right', confirm: next_step_confirmation
+
+-# Legacy
+
+-#.navbar.navbar-light.email-navbar
+  / .row.flex-items-xs-middle
+  /   .col-xs-5.col-lg-3
+  /     %h5.p-l-half= ui.nfg :icon, 'cloud-upload', text: "Import Data"
+  /   .col-xs-6.text-xs-center.hidden-md-down
+
+  /     - unless onboarding_session.current_step == 'file_origination_type_selection'
+  /       %ol.breadcrumb.breadcrumb-steps
+  /         - controller.wizard_steps.each do |step|
+  /           %li.breadcrumb-item{:role => "presentation", class: get_onboarding_nav_status(step)}
+  /             = link_to wizard_path(step) do
+  /               = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
+  /   .col-xs-7.col-lg-3
+  /     %ul.nav.navbar-nav.pull-right
+  /       %li.nav-item
+  /         - unless first_step
+  /           = link_to 'Save & Exit', "#", id: "save_and_exit", class: "nav-link text-muted"
+  /           / = link_to t(".save_and_exit_button"), "#", id: "save_and_exit", class: "nav-link text-muted"
+  /         - else
+  /           = link_to 'Exit', nfg_csv_importer.imports_path, class: "nav-link text-muted"
+  /           / = link_to t(".exit_button"), mailings_path, class: "nav-link text-muted"

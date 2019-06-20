@@ -5,7 +5,7 @@
   .custom-control.custom-radio.custom-control-block
     = f.radio_button 'file_origination_type', file_origination_type.type_sym, class: "custom-control-input"
 
-    %label.custom-control-label.text-center.w-100{ for: "import_file_origination_type_#{file_origination_type.type_sym}" }
+    %label.custom-control-label.text-center.w-100{ for: "nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_#{file_origination_type.type_sym}" }
 
       = image_tag file_origination_type.logo_path, class: 'img-fluid'
 

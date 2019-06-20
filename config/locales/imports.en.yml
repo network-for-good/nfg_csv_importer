@@ -76,19 +76,3 @@ en:
           complete: "imported"
           deleting: "queued for deletion"
           uploaded: "processing"
-    pre_processes:
-      get_started_modal:
-        file_origination_type:
-          buttons:
-            skip:
-              third_party: 'skip the tutorial and upload your files.'
-              other: 'skip the tutorial and select your import type'
-          step1:
-            heading: "To get started, we'd like to quickly walk you through importing your data from %{file_origination_type}."
-            body: "You'll get step-by-step instructions (screenshots and video) for exporting your data and uploading it right here for import."
-          step2:
-            heading: "Before we import your data, we’ll show you a preview and summary."
-            body: "You'll have a chance to see what one of your imported contacts would look like in donor management. This gives you a chance to get one last look at how your data will transpose before you officially begin the import."
-          step3:
-            heading: "We'll send you emails to let you know the status of your data import."
-            body: "First, we'll confirm that your import has been uploaded. After that, we'll send you an email when your import is on the queue and then again once your data is loaded into Donor Management."
