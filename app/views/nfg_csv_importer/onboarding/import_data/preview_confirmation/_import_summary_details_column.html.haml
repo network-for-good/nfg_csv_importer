@@ -20,9 +20,9 @@
   = ui.nfg :media do
     = ui.nfg :media_object, class: 'mr-2' do
       %span.chartwell.pies
-        %span.text-primary 75
-        %span.text-muted 25
-        %span.text-white D
+        %span.text-primary= onboarder_presenter.summarized_detail_percentage
+        %span.text-muted= onboarder_presenter.summarized_detail_remaining
+        %span.text-white= onboarder_presenter.chart_size
     = ui.nfg :media_body do
       -# humanize and titleize the key in the event it wasn't setup that way in the import definition
       -# This is a "faked" :key component
@@ -30,9 +30,8 @@
         = ui.nfg :icon, 'circle', :primary, class: 'mr-1'
         = summary_row.first.humanize.titleize
 
-
       %h2
         = onboarder_presenter.summary_row_value(summarized_objects_name, summarized_object: onboarder_presenter.the_fake_import.summary, index: i)
 
         -# will need percentages here
-        = ui.nfg :typeface, :muted, caption: '(100%)'
+        = ui.nfg :typeface, :muted, caption: "(#{onboarder_presenter.summarized_detail_percentage}%)"

@@ -99,12 +99,10 @@ module NfgCsvImporter
 
         # Only difference from #summary_total_value is that this targets the 'charts' hash
         def summary_row_value(objects_name, summarized_object:, index:)
-
           # Get the method string stored in the sumary data set's 'total' hash
           method_string = import.summary_data_set[objects_name]['charts'].values[index]
 
           chain_method(string: method_string, object: summarized_object)
-
         end
 
         def summary_title_icon(objects_name)
@@ -112,16 +110,16 @@ module NfgCsvImporter
           'dollar' if objects_name = 'donation'
         end
 
-        def pie_chart_values(values)
-          # should add up to 100.
-          # letter "D" is a styling tool that communicates
-          # to the Javascript how visually thick to make the pie chart
-          # temporary / work around values
-          values ||= [75, 25, 'D']
+        def summarized_detail_percentage
+          75
+        end
 
-          content_tag(:span, value[0], class: 'text-primary') +
-          content_tag(:span, value[1], class: 'text-muted') +
-          content_tag(:span, value[2], class: 'text-white')
+        def summarized_detail_remaining
+          100 - summarized_detail_percentage
+        end
+
+        def chart_size
+          'D'
         end
 
         private
