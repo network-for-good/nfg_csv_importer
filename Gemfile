@@ -14,6 +14,11 @@ gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git
 
 gem 'reform-rails', '~> 0.1.7'
 
+group :development do
+  gem 'better_errors' # displays errors in the browser better
+  gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
+end
+
 # so we can play with the amount of time allowed before opening the browser
 # gem 'konacha', github: "network-for-good/konacha", branch: 'master'
 
