@@ -45,7 +45,7 @@ module NfgCsvImporter
       end
 
       def all_file_origination_types
-        additional_file_origination_types << DEFAULT_FILE_ORIGINATION_TYPE_SYM
+        additional_file_origination_types + [DEFAULT_FILE_ORIGINATION_TYPE_SYM]
       end
 
       def additional_file_origination_types
