@@ -49,6 +49,11 @@ module NfgCsvImporter
       end
 
       def additional_file_origination_types
+        # these are configured in the host app. By default, there
+        # are no additional_file_origination_types. When there are no
+        # additional_file_origination_types configured, the file origination
+        # selection step is skipped and the user is taken directly to the upload
+        # page
         (host_config.additional_file_origination_types || [])
       end
 
