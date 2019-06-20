@@ -17,6 +17,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   # Each step has a presenter setup that, at minimum,
   # inherits the OnboarderPresenter.
   expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
+  # expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
   private
 

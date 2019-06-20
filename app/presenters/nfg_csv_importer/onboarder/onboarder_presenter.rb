@@ -11,11 +11,9 @@ module NfgCsvImporter
       # Example usage on a view:
       # NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, self)
       def self.build(model, view =  NfgCsvImporter::Onboarding::ImportDataController.new.view_context, options = {})
-        # raise onboarding_session.inspect
-        "NfgCsvImporter::Onboarder::Steps::#{model.current_step.camelize}Presenter".constantize.new(model, view, options)
-      rescue
-        "No presenter was found for the current step when calling NfgCsvImporter::Onboarder::OnboarderPresenter.build(...): #{model.current_step}.\n\nPlease create the following presenter: NfgCsvImporter::Onboarder::Steps::#{model.current_step.camelize}Presenter\n\n It should also inherit NfgCsvImporter::Onboarder::OnboarderPresenter"
+        active_step = view.params[:id]
 
+        "NfgCsvImporter::Onboarder::Steps::#{active_step.camelize}Presenter".constantize.new(model, view, options)
       end
 
       def onboarder_title
@@ -58,6 +56,10 @@ module NfgCsvImporter
       # returns an array of symbols: [:step1, :step2, :step3]
       def all_steps
         @all_steps ||= h.controller.wizard_steps
+      end
+
+      def active_step
+        h.params[:id]
       end
     end
   end

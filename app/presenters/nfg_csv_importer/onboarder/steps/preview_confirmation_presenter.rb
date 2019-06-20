@@ -112,6 +112,18 @@ module NfgCsvImporter
           'dollar' if objects_name = 'donation'
         end
 
+        def pie_chart_values(values)
+          # should add up to 100.
+          # letter "D" is a styling tool that communicates
+          # to the Javascript how visually thick to make the pie chart
+          # temporary / work around values
+          values ||= [75, 25, 'D']
+
+          content_tag(:span, value[0], class: 'text-primary') +
+          content_tag(:span, value[1], class: 'text-muted') +
+          content_tag(:span, value[2], class: 'text-white')
+        end
+
         private
 
         def chain_method(string:, object:)

@@ -1,7 +1,7 @@
 / - onboarder_presenter = NfgCsvImporter::PreviewConfirmationPresenter.new
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.name), header_form: t('.header.form') } do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form') } do |f|
 
   .row
     -# Always a contact record, regardless of import type.
