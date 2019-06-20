@@ -1,5 +1,5 @@
 module FileOriginationTypes
-  class SelfImportCsvXls < NfgCsvImporter::FileOriginationTypes::Base
+  class SelfImportCsvXls < ::NfgCsvImporter::FileOriginationTypes::Base
 
     class << self
       def logo_path
