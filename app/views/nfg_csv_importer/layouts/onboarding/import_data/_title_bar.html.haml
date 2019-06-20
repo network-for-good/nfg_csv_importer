@@ -3,8 +3,9 @@
     .col.py-1
       = ui.nfg :typeface, :muted, caption: onboarder_presenter.onboarder_title, class: 'mb-0'
 
-    .col-auto.py-2
+    .col-auto
       - if first_step
-        = link_to t("nfg_csv_importer.onboarding.title_bar.buttons.exit"), nfg_csv_importer.imports_path, class: 'text-muted'
+        = ui.nfg :button, :link, href: nfg_csv_importer.imports_path, body: t('nfg_csv_importer.onboarding.title_bar.buttons.exit'), class: 'text-muted'
+
       - else
-        = link_to t("nfg_csv_importer.onboarding.title_bar.buttons.save_and_exit"), "#", id: "save_and_exit", class: "nav-link text-muted"
+        = ui.nfg :button, :link, href: '#', id: 'save_and_exit', body: t('nfg_csv_importer.onboarding.title_bar.buttons.save_and_exit'), class: 'text-muted'
