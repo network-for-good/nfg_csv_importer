@@ -20,6 +20,10 @@ module NfgCsvImporter
       def hide_steps?
         on_first_step?
       end
+
+      def show_step?(step)
+        true
+      end
     end
   end
 end
