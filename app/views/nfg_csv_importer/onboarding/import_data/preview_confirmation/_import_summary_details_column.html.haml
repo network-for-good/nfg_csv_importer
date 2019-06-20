@@ -19,7 +19,10 @@
 
   = ui.nfg :media do
     = ui.nfg :media_object, class: 'mr-2' do
-      [chart]
+      %span.chartwell.pies
+        %span.text-primary 75
+        %span.text-muted 25
+        %span.text-white D
     = ui.nfg :media_body do
       -# humanize and titleize the key in the event it wasn't setup that way in the import definition
       -# This is a "faked" :key component

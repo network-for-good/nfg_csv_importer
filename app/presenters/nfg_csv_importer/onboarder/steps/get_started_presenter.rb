@@ -16,7 +16,7 @@ module NfgCsvImporter
         end
 
         def show_time_estimate?
-          file_origination_type.name != 'SelfImportCsvXls'.underscore
+          file_origination_type.type_sym != NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM
         end
 
         def external_resource_url
