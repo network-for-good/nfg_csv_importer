@@ -2,6 +2,6 @@ class  NfgCsvImporter::Onboarding::ImportData::FileOriginationTypeSelectionForm 
   ## Add properties for your form below:
   property :file_origination_type
 
-  validates :name, presence: true
+  validates :file_origination_type, presence: true
 
 end
