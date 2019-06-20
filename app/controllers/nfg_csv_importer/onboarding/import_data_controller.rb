@@ -34,7 +34,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
     file_origination_type_name = onboarding_session.step_data['import_data'][:file_origination_type_selection]['file_origination_type']
 
     # Select the official file origination type object based on the :type_sym
-    file_origination_types.select { |t| t.type_sym == file_origination_type_name.to_sym }.first
+    file_origination_types.select { |t| t.type_sym == file_origination_type_name.try(:to_sym) }.first
   end
 
   # on before save steps
