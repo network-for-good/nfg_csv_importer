@@ -1,4 +1,0 @@
-@each $color in $primary-colors-list {
-  .#{nth($color, 1)} .label-primary,
-  .label-#{nth($color, 1)} { background-color: nth($color, 2); }
-}

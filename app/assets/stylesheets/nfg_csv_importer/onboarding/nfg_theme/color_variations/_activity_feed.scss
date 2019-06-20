@@ -1,8 +1,0 @@
-@each $color in $primary-colors-list {
-  .activity-feed-item,
-  .activity-feed-item-lg {
-    &.#{nth($color, 1)} {
-      .activity-icon { background-color: #{nth($color, 2)}; }
-    }
-  }
-}

@@ -7,4 +7,4 @@ en:
             constant_contact: '#constant_contact_kb_link'
             mailchimp: '#mailchimp_kb_link'
             paypal: '#paypal_kb_link'
-            other: '#other_kb_link'
+            self_import_csv_xls: '#other_kb_link'

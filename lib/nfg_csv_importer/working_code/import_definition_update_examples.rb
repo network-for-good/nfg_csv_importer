@@ -1,6 +1,17 @@
 module NfgCsvImporter
   module WorkingCode
 
+# give me a sample row (with conditions)
+# how to handle it...
+# ex: where at least first name & last name; address field & donation amount & donation date = good row.
+
+# what sample data row filter do we want to apply.
+# importer gem "filters" the row and finds first where XYZ is true.
+# importer gem then passes row back to the import definition
+  # interpretation... and "renders preview" of import type
+  # import type it knows what partials it wants to render if desired...
+
+
     # Used for adding in some settings for the import definitions, in play on the test_app:
     # spec/test_app/app/imports/import_definition.rb
     module ImportDefinitionUpdateExamples
@@ -27,15 +38,7 @@ module NfgCsvImporter
         }
       end
 
-
-      # "Let’s meet %{user_name}. They made a %{donation_amount} donation to your %{donation_campaign_name} on %{donation_date}."
-      def self.donation_preview_sentence_summary_data_set
-        { preview_sentence_summary_data_set: {
-            'user' => %w[name],
-            'donation' => %w[amount campaign.name donated_at]
-          }
-        }
-      end
+      # data to display: defined in import type.
 
       def self.donation_summary_data_set
         { summary_data_set: {
