@@ -3,6 +3,7 @@
 
 # NFG_CSV_IMPORTER Coffee
 #= require_self
+#= require nfg_csv_importer/document_ready
 #= require nfg_csv_importer/fields_mapper
 #= require nfg_csv_importer/modal
 #= require nfg_csv_importer/tooltips
@@ -15,12 +16,7 @@
 #= require_directory ../../../../vendor/assets/javascripts/legacy_browser_support
 #= require_directory ./legacy_browser_support
 
-window.NfgCsvImporter = {}
-
-if $("head [data-turbolinks-track='reload']").length > 0
-  window.NfgCsvImporter.readyOrTurboLinksLoad = "turbolinks:load"
-else
-  window.NfgCsvImporter.readyOrTurboLinksLoad = "ready"
+# window.NfgCsvImporter = {}
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   $("a.text-glow").click ->
