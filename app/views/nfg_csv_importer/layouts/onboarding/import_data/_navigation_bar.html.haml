@@ -1,5 +1,9 @@
 - navigation_bar_presenter = NfgCsvImporter::Onboarder::NavigationBarPresenter.new(onboarding_session, self)
 
+- next_step_confirmation = local_assigns[:next_step_confirmation]
+- back_button_text = local_assigns[:back_button_text]
+- submit_button_text = local_assigns[:submit_button_text]
+
 .p-3.bg-white.border-bottom
   .row.align-items-center.justify-content-between
     .col-12.col-lg-8.py-1.mx-auto.order-lg-2
