@@ -112,9 +112,9 @@ en:
             modal:
         overview:
           header:
-            message: 'Replace me at config/locales/import_data: overview'
+            message: 'Setting up your spreadsheet for success'
             form: 'Replace me too'
-            page:
+            page: ''
           button:
             back: 'Prev'
             submit: Next
@@ -123,6 +123,14 @@ en:
           hint:
           guidance:
             modal:
+          body:
+            intro: 'There are a few things you can do to help simplify this process and ensure that your data is properly imported.'
+          headings:
+            requirements: "Spreadsheet requirements for importing %{import_type}"
+            required_column_headers: "Required column headers"
+            optional_column_headers: "Optional column headers"
+          links:
+            expand_column_headers: 'Expand optional columns'
         get_started:
           header:
             message: 'Replace me at config/locales/import_data: get_started'
