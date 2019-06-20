@@ -19,11 +19,16 @@
       .row
         .col.col-lg-8.mx-auto
           = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle', render_if: f.object.errors.any?
+
+          = ui.nfg :tile, heading: header_message do
+            = ui.nfg :typeface, :muted, caption: header_page, render_if: header_page.present?
+            = yield f
+
   - else
     - if f.object.errors.any?
       .container.pt-4
         .row
           .col.col-lg-10.mx-auto
             = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle'
-            / = render partial: 'nfg_csv_importer/onboarding/flash_messages', locals: { flash: flash }
+
     = yield f
