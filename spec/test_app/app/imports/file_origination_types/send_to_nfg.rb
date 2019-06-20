@@ -9,7 +9,7 @@ module FileOriginationTypes
       end
 
       def logo_path
-        "http://placehold.it/280x200"
+        "nfg_csv_importer/file_origination_types/send_us_files.png"
       end
 
       def description
