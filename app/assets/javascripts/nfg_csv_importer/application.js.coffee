@@ -16,8 +16,6 @@
 #= require_directory ../../../../vendor/assets/javascripts/legacy_browser_support
 #= require_directory ./legacy_browser_support
 
-# window.NfgCsvImporter = {}
-
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   $("a.text-glow").click ->
     fields_mapper = new NfgCsvImporter.FieldsMapper
