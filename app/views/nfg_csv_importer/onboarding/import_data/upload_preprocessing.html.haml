@@ -5,10 +5,4 @@
       = f.input :import_file, as: :file
     .col-3
       -# Add file does not yet work; not sure how we're handling this (using rails 5.2 activestorage technique or something else)
-      = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'
-
-  = ui.nfg :button, :submit, body: 'Upload & Preview'
-
-  = ui.nfg :typeface, :caption, class: 'my-4 text-center' do
-    Need to run through those instructions again? No problem,
-    = link_to 'you can review here.', '#'
+      -# = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'

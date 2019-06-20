@@ -125,8 +125,8 @@ en:
             modal:
         get_started:
           header:
-            message: 'Replace me at config/locales/import_data: get_started'
-            form: 'Replace me too'
+            message: ''
+            form: ''
             page:
           button:
             back: 'Prev'

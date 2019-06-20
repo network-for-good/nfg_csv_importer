@@ -8,25 +8,3 @@
 
     -# Step 3
     = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 3, onboarder_presenter: onboarder_presenter }
-
-    -# Controls
-    .row{ data: { tour_slider: 'next-slide-buttons' } }
-      .col
-        = ui.nfg :button, icon: 'caret-right', body: 'Next - Does Nothing Now', href: 'javascript:;'
-
-    -# Thirdparty import last-slide controls
-    .row{ data: { tour_slider: 'last-slide-buttons' } }
-      .col
-        %p.text-center
-          = ui.nfg :button, :secondary, icon: 'caret-right', body: 'Use a Walkthrough - Shows on Last Step Only', href: onboarder_presenter.external_resource_url
-
-    -# Indicators
-    .row{ data: { tour_slider: 'indicators' } }
-      .col
-        = ui.nfg :icon, 'circle', :primary
-        = ui.nfg :icon, 'circle', :muted
-        = ui.nfg :icon, 'circle', :muted
-
-    -# Action buttons for the carousel
-
-    = ui.nfg :button, :large, icon: 'cloud-upload', body: "I'm ready to upload my files - Last Step Only", href: '#upload_pre_processed_file'
