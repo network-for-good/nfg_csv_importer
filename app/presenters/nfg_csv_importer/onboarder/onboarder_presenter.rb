@@ -55,7 +55,7 @@ module NfgCsvImporter
 
       # returns an array of symbols: [:step1, :step2, :step3]
       def all_steps
-        @all_steps ||= h.controller.wizard_steps
+        @all_steps ||= h.controller.steps_based_on_file_origination_type
       end
 
       def active_step

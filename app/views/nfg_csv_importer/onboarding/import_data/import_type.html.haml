@@ -1,5 +1,7 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
+  = file_origination_type.skip_steps
+
   See commented HTML - This step is only visible by sysadmins currently (and additional logic around amount of import types).
   -# Only visible by sysadmins
   -# Unsure how to get this page to "really" work - import_definitions on the index doesn't come over so easily here.

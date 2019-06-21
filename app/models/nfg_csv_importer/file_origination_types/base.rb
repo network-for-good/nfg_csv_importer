@@ -68,6 +68,13 @@ module NfgCsvImporter
           # displays in the file origination type panel
           ""
         end
+
+        def skip_steps
+          # returns the list of steps that should be skipped
+          # depending on the file_origination_type
+          # This should be overridden by the child class
+          %i[]
+        end
       end
     end
   end

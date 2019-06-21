@@ -15,6 +15,10 @@ module FileOriginationTypes
       def description
         'Instantly import all of your donors and donations.'
       end
+
+      def skip_steps
+        %i[import_type upload_post_processing field_mapping]
+      end
     end
   end
 end
