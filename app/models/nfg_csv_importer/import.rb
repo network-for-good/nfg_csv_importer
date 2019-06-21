@@ -4,7 +4,7 @@ module NfgCsvImporter
 
     NfgOnboarder::OnboardableOwner
 
-    STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
+    STATUSES = [:pending, :uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
 
     PRE_PROCESSING_TYPE_CONSTANT_CONTACT_NAME = 'constant_contact'
     PRE_PROCESSING_TYPE_MAILCHIMP_NAME = 'mailchimp'
@@ -21,7 +21,7 @@ module NfgCsvImporter
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
 
-    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined, :pending]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
     has_many_attached :pre_processing_files
@@ -30,9 +30,9 @@ module NfgCsvImporter
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
-    validates_presence_of :import_type, :imported_by_id, :imported_for_id
-    validates_presence_of :import_file, if: :should_validate_file?
-    validate :import_validation, on: [:create]
+    validates_presence_of :import_type, :imported_by_id, :imported_for_id,  if: :run_validations?
+    validates_presence_of :import_file, if: :run_validations?
+    validate :import_validation, on: [:create], if: :run_validations?
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
     delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
@@ -214,14 +214,14 @@ module NfgCsvImporter
       fields_that_allow_multiple_mappings.include?(mapped_field)
     end
 
-    def should_validate_file?
-      return true
-      # as part of the pre processing work we will need to allow for
-      # an import to be created, but then ensure that the user
-      # supplies an uploaded file when needed. Likely, this will be
-      # done through the onboarding form associated with that step
+    def run_validations?
+      return true unless status == 'pending'
+      # # as part of the pre processing work we will need to allow for
+      # # an import to be created, but then ensure that the user
+      # # supplies an uploaded file when needed. Likely, this will be
+      # # done through the onboarding form associated with that step
 
-      (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
+      # (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
     end
   end
 
