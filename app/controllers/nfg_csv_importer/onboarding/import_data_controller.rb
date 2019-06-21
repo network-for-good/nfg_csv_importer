@@ -1,4 +1,6 @@
 class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboarding::BaseController
+  # before_action :load_imported_for
+  # before_action :load_imported_by
 
   layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
@@ -126,7 +128,7 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
   def get_form_target
     case step
         when :file_origination_type_selection
-          OpenStruct.new(name: '') # replace with your object that the step will update
+          OpenStruct.new(file_origination_type: '') # replace with your object that the step will update
         when :get_started
           OpenStruct.new(name: '') # replace with your object that the step will update
         when :overview
@@ -180,5 +182,10 @@ class NfgCsvImporter::Onboarding::ImportDataController < NfgCsvImporter::Onboard
       related_objects: {} ,# a hash containing the whatever object will be saved first, i.e. { project: get_project },
       name: onboarder_name
     }
+  end
+
+  def fields_to_be_cleansed_from_form_params
+    # these are fields that we don't want to store in onboarder session
+    %w{ import_file }
   end
 end
