@@ -2,13 +2,13 @@
 - humanized = local_assigns[:humanized]
 - onboarder_presenter = local_assigns[:onboarder_presenter]
 
-= ui.nfg :card do
+= ui.nfg :card, class: 'mt-2' do
   -# The headline of the card (e.g.: User's name or the donation amount)
-  = ui.nfg :media do
-    = ui.nfg :media_object, class: 'mr-2' do
+  = ui.nfg :media, class: 'align-items-center' do
+    = ui.nfg :media_object do
       -# For users, returns a user icon; dollar icon for donation.
       -# pass in the humanized variable to get a hit
-      = ui.nfg :icon, onboarder_presenter.humanized_data_preview_icon(humanized)
+      = ui.nfg :typeface, heading: ui.nfg(:icon, onboarder_presenter.humanized_data_preview_icon(humanized), :primary), class: 'mr-2 mb-0'
 
     = ui.nfg :media_body do
       = ui.nfg :typeface, heading: onboarder_presenter.humanized_data_card_heading(humanized)
@@ -20,10 +20,10 @@
     -# Section names include:
     -# heading, summary, full_address
     -# Icons are defined in the onboarder_presenter
-    = ui.nfg :media do
-      = ui.nfg :media_object, class: 'mr-2' do
+    = ui.nfg :media, class: 'mt-3' do
+      = ui.nfg :media_object do
         -# no icon is rendered if the section name isn't connected to an icon
-        = ui.nfg :icon, onboarder_presenter.humanized_data_preview_icon(section_name)
+        = ui.nfg :typeface, body: ui.nfg(:icon, onboarder_presenter.humanized_data_preview_icon(section_name), :muted), class: 'mr-2 mb-0'
 
       = ui.nfg :media_body do
 
@@ -32,4 +32,4 @@
           -# ex: This could be the user's address1
           - preview_object_attribute_value = onboarder_presenter.get_preview_object_attribute(humanized, attribute_name: preview_object_attribute)
 
-          = ui.nfg :typeface, body: preview_object_attribute_value, render_if: preview_object_attribute_value.present?
+          = ui.nfg :typeface, body: preview_object_attribute_value, class: 'mb-0', render_if: preview_object_attribute_value.present?
