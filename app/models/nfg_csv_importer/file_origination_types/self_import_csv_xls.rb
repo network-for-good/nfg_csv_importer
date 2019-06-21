@@ -27,6 +27,10 @@ module NfgCsvImporter
           # post processed file.
           false
         end
+
+        def skip_steps
+          %i[get_started overview upload_preprocessing]
+        end
       end
     end
   end

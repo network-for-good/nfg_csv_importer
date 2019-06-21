@@ -4,18 +4,25 @@ module NfgCsvImporter
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
       before_action :load_imported_for
       before_action :load_imported_by
+      before_action :set_steps
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
+      # we do this so we can access the list of steps from outside the onboarder
+      def self.step_list
+        %i[file_origination_type_selection get_started overview upload_preprocessing import_type upload_post_processing field_mapping preview_confirmation finish]
+      end
+
       # steps list
-      steps :file_origination_type_selection, :get_started, :overview, :upload_preprocessing, :import_type, :upload_post_processing, :field_mapping, :preview_confirmation, :finish
+      steps *step_list
 
       expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
 
       expose(:file_type_manager) {NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
-      expose(:file_origination_types) { manager.types }
+      expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
-      expose(:file_origination_type) { manager.type_for(file_origination_type_name) }
+      expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
+      expose(:steps_based_on_file_origination_type ) { self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step} }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
@@ -180,6 +187,14 @@ module NfgCsvImporter
       def fields_to_be_cleansed_from_form_params
         # these are fields that we don't want to store in onboarder session
         %w{ import_file pre_processing_files }
+      end
+
+      def set_steps
+        self.steps = if file_origination_type.nil?
+                      [:file_origination_type_selection]
+                    else
+                      steps_based_on_file_origination_type
+                    end
       end
     end
   end
