@@ -66,9 +66,24 @@ shared_examples_for "validate import file" do
 end
 
 describe NfgCsvImporter::Import do
+
+  let(:entity) { create(:entity) }
+  let(:import_type) { "users" }
+  let(:file_type) { 'csv' }
+
+  let(:file) do
+    File.open("spec/fixtures#{file_name}")
+  end
+
+  let(:header_data) { ["email" ,"first_name","last_name"] }
+  let(:file_name) { "/subscribers.csv" }
+  let(:admin) {  create(:user) }
+  let(:error_file) { nil }
+  let(:status) { :uploaded }
+  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file, status: status) }
+
   it { should validate_presence_of(:imported_by_id) }
   it { should validate_presence_of(:imported_for_id) }
-  it { should validate_presence_of(:import_type)}
   it { should belong_to(:imported_for) }
   it { should belong_to(:imported_by) }
   it { should delegate_method(:description).to(:service)}
@@ -90,28 +105,31 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_viewed_by).to(:service)}
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
-  it { is_expected.to validate_presence_of(:import_file) }
+
+  context "when the import has a status different from pending" do
+    let(:status) { :uploaded }
+
+    it { is_expected.to validate_presence_of(:import_type) }
+    it { is_expected.to validate_presence_of(:import_file) }
+  end
+
+  context "when the import file has a status of pending" do
+    let(:status) { 'pending' }
+    subject { import }
+
+    it { is_expected.not_to validate_presence_of(:import_type)}
+    it { is_expected.not_to validate_presence_of(:import_file) }
+  end
+
+  it 'does something' do
+    p import
+  end
 
   describe '#pre_processing_files' do
     subject { import.pre_processing_files }
 
-    it { pending; is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
+    it { is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
   end
-
-  let(:entity) { create(:entity) }
-  let(:import_type) { "users" }
-  let(:file_type) { 'csv' }
-
-  let(:file) do
-    File.open("spec/fixtures#{file_name}")
-  end
-
-  let(:header_data) { ["email" ,"first_name","last_name"] }
-  let(:file_name) { "/subscribers.csv" }
-  let(:admin) {  create(:user) }
-  let(:error_file) { nil }
-  let(:status) { :uploaded }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file, status: status) }
 
   it { expect(import.save).to be }
 
