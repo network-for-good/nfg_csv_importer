@@ -2,10 +2,19 @@ require "rails_helper"
 
 RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
   let(:manager) { described_class.new(config) }
+  let(:file_type_class) { NfgCsvImporter::FileOriginationTypes::FileOriginationType }
   let(:config) { OpenStruct.new(additional_file_origination_types: file_types) }
 
   let(:default_file_type_sym) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
 
+  describe '.type_for' do
+    subject { described_class.type_for(file_type_name) }
+    let(:file_type_name) { "test_type" }
+
+    it 'should instantiate itself, passing in the configuration, and then calling type_for with the supplied argument' do
+
+    end
+  end
   describe '#types' do
     subject { manager.types }
 
@@ -41,7 +50,7 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
 
         it 'return an array of FileOriginationType objects' do
           expect(subject).to be_a(Array)
-          expect(subject.first).to be_a(NfgCsvImporter::FileOriginationTypes::FileOriginationType)
+          expect(subject.first).to be_a(file_type_class)
         end
 
         it 'the first should represent the first additional file origination type' do
@@ -51,6 +60,37 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
         it 'the last element should be the SelfImportCsvXls' do
           expect(subject.last.type_sym).to eq(default_file_type_sym)
         end
+      end
+    end
+  end
+
+  describe '#type_for' do
+    subject { manager.type_for(file_type_name) }
+    let(:file_types) { [:constant_contact] }
+
+    context "when the supplied name matches one of the types" do
+      let(:file_type_name) { "constant_contact" }
+
+      it 'returns a type whose name matches' do
+        expect(subject).to be_a(file_type_class)
+        expect(subject.type_sym).to eq(file_type_name.to_sym)
+      end
+    end
+
+    context "when the supplied name does not match one of the types" do
+      let(:file_type_name) { 'not_a_type' }
+
+      it 'should return nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when the name matches the default type" do
+      let(:file_type_name) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
+
+      it 'should return the file type for the default type' do
+        expect(subject).to be_a(file_type_class)
+        expect(subject.type_sym).to eq(file_type_name.to_sym)
       end
     end
   end
