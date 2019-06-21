@@ -36,6 +36,10 @@ module NfgCsvImporter
         @types << NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(DEFAULT_FILE_ORIGINATION_TYPE_SYM, "NfgCsvImporter::FileOriginationTypes::#{DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s.camelcase}".constantize)
       end
 
+      def type_for(type_name)
+        types.select { |t| t.type_sym == type_name.try(:to_sym) }.first
+      end
+
       private
 
       def require_origination_files
