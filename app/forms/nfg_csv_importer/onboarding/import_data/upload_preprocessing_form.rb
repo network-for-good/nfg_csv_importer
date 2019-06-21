@@ -1,4 +1,5 @@
 class  NfgCsvImporter::Onboarding::ImportData::UploadPreprocessingForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
-  ## Add properties for your form below:
-  # property :my_property
+  property :pre_processing_files
+
+  validates :pre_processing_files, presence: true
 end

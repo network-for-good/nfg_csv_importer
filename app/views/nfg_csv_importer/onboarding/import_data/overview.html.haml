@@ -4,6 +4,9 @@
 
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_form: t('.header.form'), header_page: nil, guidance: t('.guidance.modal', default: '')} do |f|
 
+
+  -# = "current_step: #{current_step}"
+
   -# Introduction
   = ui.nfg :tile_section do
     = ui.nfg :typeface, :body do

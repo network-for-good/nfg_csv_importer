@@ -2,7 +2,8 @@
 
   .row
     .col-9
-      = f.input :import_file, as: :file
+      = f.input :pre_processing_files do
+        = f.file_field :pre_processing_files
     .col-3
       -# Add file does not yet work; not sure how we're handling this (using rails 5.2 activestorage technique or something else)
       -# = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'
