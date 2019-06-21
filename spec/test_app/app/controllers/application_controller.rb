@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= entity.users.first || User.create(first_name: "Jim", last_name: "Smith", email: "jim@smith.com")
+    @current_user ||= entity.users.first || User.create(first_name: "Jim", last_name: "Smith", email: "jim@smith.com", entity_id: entity.id)
   end
   helper_method :current_user
 end
