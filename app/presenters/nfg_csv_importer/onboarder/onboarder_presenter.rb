@@ -59,6 +59,9 @@ module NfgCsvImporter
       end
 
       def active_step
+        # this is the step that is currently being displayed.
+        # This may be different from the onboarding_session.current_step, which is the last
+        # step submitted.
         h.params[:id]
       end
     end

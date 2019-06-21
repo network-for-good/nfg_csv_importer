@@ -8,9 +8,9 @@ module NfgCsvImporter
       # Example usage:
       # = ui.nfg :step, onboarder_presenter.step_status(step, all_steps: controller.wizard_steps), step: i, href: wizard_path(step)
       def step_status(step)
-        return :active if step.to_sym == current_step.to_sym
+        return :active if step.to_sym == active_step.to_sym
         return :visited if try(:completed_steps, h.controller_name).try(:include?, step)
-        return :disabled if all_steps.index(step.to_sym) > all_steps.index(current_step.to_sym)
+        return :disabled if all_steps.index(step.to_sym) > all_steps.index(active_step.to_sym)
       end
 
       def step_icon(step)
