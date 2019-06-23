@@ -2,7 +2,6 @@
 #= require readmore.min
 
 # NFG_CSV_IMPORTER Coffee
-#= require_self
 #= require nfg_csv_importer/document_ready
 #= require nfg_csv_importer/fields_mapper
 #= require nfg_csv_importer/modal
@@ -15,6 +14,7 @@
 # Legacy browser support
 #= require_directory ../../../../vendor/assets/javascripts/legacy_browser_support
 #= require_directory ./legacy_browser_support
+#= require_self
 
 $(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
   $("a.text-glow").click ->
