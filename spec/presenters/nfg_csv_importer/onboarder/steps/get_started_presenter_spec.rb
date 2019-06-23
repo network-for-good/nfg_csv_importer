@@ -6,7 +6,7 @@ describe NfgCsvImporter::Onboarder::Steps::GetStartedPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
   let(:get_started_presenter) { described_class.new(onboarding_session, h) }
   let(:onboarding_session) { NfgOnboarder::Session.new(name: 'import_data', current_step: current_step, step_data: step_data) }
-  let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(tested_type_sym, FileOriginationTypes::SelfImportCsvXls) }
+  let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(tested_type_sym, NfgCsvImporter::FileOriginationTypes::SelfImportCsvXls) }
   let(:tested_type_sym) { :self_import_csv_xls }
 
   let(:current_step) { 'get_started' }
