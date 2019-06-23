@@ -6,7 +6,7 @@ module NfgCsvImporter
 
         def get_started_information_step(step:)
           h.ui.nfg(:typeface,
-                    heading: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step#{step}.heading", file_origination_type: file_origination_type_name)) +
+                    heading: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step#{step}.heading", file_origination_type: file_origination_type_name.humanize.titleize)) +
           h.ui.nfg(:typeface,
                    body: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step#{step}.body"))
         end
