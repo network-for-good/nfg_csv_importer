@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_185632) do
     t.string "import_file_name"
     t.datetime "processing_started_at"
     t.datetime "processing_finished_at"
+    t.string "pre_processing_type"
     t.string "file_origination_type"
   end
 
