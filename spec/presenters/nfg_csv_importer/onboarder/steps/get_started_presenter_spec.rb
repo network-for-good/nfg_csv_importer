@@ -23,7 +23,7 @@ describe NfgCsvImporter::Onboarder::Steps::GetStartedPresenter do
 
     it 'outputs the correct I18n entry with the options present' do
       expect(subject).to include h.ui.nfg(:typeface,
-              heading: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step1.heading", file_origination_type: type_sym.to_s)).gsub("'", '&#39;')
+              heading: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step1.heading", file_origination_type: type_sym.to_s.humanize.titleize)).gsub("'", '&#39;')
 
       expect(subject).to include h.ui.nfg(:typeface,
              body: I18n.t("nfg_csv_importer.onboarding.import_data.get_started.body.step1.body")).gsub("'", '&#39;')
