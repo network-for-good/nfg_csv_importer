@@ -47,6 +47,14 @@ class NfgCsvImporter.DragdropUpload
           @directUploadFile(file, url, name)
     })
 
+    # When removing files, it does not appear to remove
+    # the started and drag-hover classes.
+    myDropzone.on 'reset', =>
+      @resetUI $(myDropzone.element)
+
+  resetUI: (dropzoneEl) ->
+    dropzoneEl.removeClass 'dz-started dz-drag-hover'
+
   directUploadFile: (file, url, name) =>
     upload = new ActiveStorage.DirectUpload(file, url, this);
 
