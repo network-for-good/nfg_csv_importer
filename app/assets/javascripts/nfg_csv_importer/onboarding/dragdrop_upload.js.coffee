@@ -14,26 +14,30 @@ class NfgCsvImporter.DragdropUpload
       url: url,
       autoQueue: false,
       previewTemplate: "
-        <div class='row'>
-          <div class='col'>
-            <div class='row'>
-              <div class='col-2'>
-                <img data-dz-thumbnail class='img img-fluid' />
-              </div>
-              <div class='col-4'>
-                <span data-dz-size></span>
-              </div>
-              <div class='col-6'>
-                <span data-dz-name></span>
-              </div>
-            </div>
-            <div class='row'>
-              <div class='col-12 mt-2'>
-                <div class='progress'>
-                  <div class='progress-bar bg-dark' style='width:0%;'></div>
+        <div class='dz-preview row align-items-center'>
+          <div class='col-2'>
+            <img data-dz-thumbnail class='img img-fluid' />
+          </div>
+          <div class='col-10'>
+            <p class='mb-0'>
+              <span data-dz-name></span>
+              <small class='text-muted mr-2'>
+                (<span data-dz-size></span>)
+              </small>
+              <span data-dz-remove class='text-danger'>remove file</span>
+            </p>
+            <div class='media align-items-center mt-1'>
+              <div class='media-body'>
+                <div class='progress progress-sm'>
+                  <div data-dz-uploadprogress class='progress-bar' style='width:0%;'></div>
                 </div>
               </div>
+              <div class='ml-2'>
+                <div class='dz-success-mark'><i class='fa fa-fw fa-check text-success'></i></div>
+                <div class='dz-error-mark'><i class='fa fa-fw fa-times text-danger'></i></div>
+              </div>
             </div>
+            <p data-dz-errormessage class='mb-0 text-danger font-weight-bold'></p>
           </div>
         </div>",
       drop: (event) =>

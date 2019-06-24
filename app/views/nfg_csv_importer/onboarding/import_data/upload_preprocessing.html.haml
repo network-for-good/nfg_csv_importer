@@ -1,12 +1,15 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
-    .col-9#pre_processing_files_upload
+    .col-12#pre_processing_files_upload
       = f.input :pre_processing_files do
         = f.file_field :pre_processing_files, multiple: true, direct_upload: true, data: { 'direct-upload-url' => rails_direct_uploads_url}
         .dropzone-target
-          Drop files here
+          .dz-default.py-4.text-center
+            = ui.nfg :icon, 'cloud-upload 3x', :primary
+            = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
+            = ui.nfg :typeface, body: 'If you prefer to search your computer, click here to browse.', class: 'mb-0'
 
-    .col-3
+    .col-12
       -# Add file does not yet work; not sure how we're handling this (using rails 5.2 activestorage technique or something else)
       -# = ui.nfg :button, :secondary, body: 'Add File', icon: 'plus'
