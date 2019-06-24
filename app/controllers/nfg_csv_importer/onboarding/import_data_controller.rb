@@ -2,9 +2,9 @@ module NfgCsvImporter
   module Onboarding
     class ImportDataController < NfgCsvImporter::Onboarding::BaseController
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
+      prepend_before_action :set_steps
       before_action :load_imported_for
       before_action :load_imported_by
-      before_action :set_steps
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
@@ -22,7 +22,6 @@ module NfgCsvImporter
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
-      expose(:steps_based_on_file_origination_type) { file_origination_type.nil? ? [] : self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step} }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
@@ -147,6 +146,7 @@ module NfgCsvImporter
       end
 
       def finish_wizard_path
+        imports_path
          # where to take the user when the have finished this step
          # TODO add a path to where the user should go once they complete the onboarder
       end
@@ -191,9 +191,9 @@ module NfgCsvImporter
 
       def set_steps
         self.steps = if file_origination_type.nil?
-                      [:file_origination_type_selection]
+                      [:file_origination_type_selection, :get_started]
                     else
-                      steps_based_on_file_origination_type
+                      self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end
       end
     end
