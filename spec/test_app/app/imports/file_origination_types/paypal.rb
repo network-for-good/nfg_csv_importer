@@ -17,7 +17,7 @@ module FileOriginationTypes
       end
 
       def skip_steps
-        %i[import_type upload_post_processing field_mapping]
+        %i[overview import_type upload_post_processing field_mapping]
       end
     end
   end
