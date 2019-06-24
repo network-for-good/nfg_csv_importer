@@ -34,7 +34,7 @@ class NfgCsvImporter.DragdropUpload
         hiddenField.name = name
         $('form')[0].appendChild(hiddenField)
 
-$(document).on NfgCsvImporter.readyOrTurboLinksLoad, ->
+$ ->
   el = $("#pre_processing_files_upload")
   return unless el.length > 0
   inst = new NfgCsvImporter.DragdropUpload el[0]
