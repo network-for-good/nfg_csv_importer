@@ -19,10 +19,6 @@ module NfgCsvImporter
         step == last_step ? 'check' : nil
       end
 
-      def hide_steps?
-        on_first_step?
-      end
-
       def show_step?(step)
         true
       end

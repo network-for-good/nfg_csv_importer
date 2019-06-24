@@ -33,7 +33,7 @@ module NfgCsvImporter
         end
 
         def skip_steps
-          %i[get_started upload_preprocessing]
+          %i[upload_preprocessing]
         end
       end
     end

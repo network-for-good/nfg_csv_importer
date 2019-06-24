@@ -22,7 +22,7 @@ module NfgCsvImporter
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
-      expose(:steps_based_on_file_origination_type ) { self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step} }
+      expose(:steps_based_on_file_origination_type) { file_origination_type.nil? ? [] : self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step} }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.

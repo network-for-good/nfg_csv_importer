@@ -13,6 +13,10 @@ module FileOriginationTypes
       def description
         'Every single contact can be brought over to donor management.'
       end
+
+      def skip_steps
+        %i[overview import_type upload_post_processing field_mapping]
+      end
     end
   end
 end
