@@ -20,6 +20,11 @@ module NfgCsvImporter
         I18n.t("nfg_csv_importer.onboarding.import_data.title_bar.caption", name: (file_origination_type_name.try(:titleize) || ''))
       end
 
+      def color_theme(humanize)
+        return :primary if humanize == 'user'
+        return :success if humanize == 'donation'
+      end
+
       # Pull this from the onboarding sessions' :step_data to
       # get the authoritative answer.
       def file_origination_type_name

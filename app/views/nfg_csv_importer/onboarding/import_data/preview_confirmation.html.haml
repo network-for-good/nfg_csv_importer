@@ -9,8 +9,8 @@
     -# Perhaps contact type should be a configuration setting?
     -# ex: config.contact_type_record_class_names = %w[user organization]
     .card-deck
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanized: 'user', onboarder_presenter: onboarder_presenter
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanized: 'donation', onboarder_presenter: onboarder_presenter
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanize: 'user', onboarder_presenter: onboarder_presenter
+      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanize: 'donation', onboarder_presenter: onboarder_presenter
 
     .row.mt-4
       .col.text-center
@@ -24,6 +24,6 @@
     = ui.nfg :typeface, :muted, body: t('body.summary', scope: i18n_scope), class: 'mb-0'
     .row
       .col-12.col-md.mt-4
-        = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', summarized_objects_name: 'user', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
+        = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', humanize: 'user', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
       .col-12.col-md.mt-4
-        = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', summarized_objects_name: 'donation', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
+        = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', humanize: 'donation', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
