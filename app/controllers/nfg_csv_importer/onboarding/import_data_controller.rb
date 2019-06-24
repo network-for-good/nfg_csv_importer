@@ -2,9 +2,9 @@ module NfgCsvImporter
   module Onboarding
     class ImportDataController < NfgCsvImporter::Onboarding::BaseController
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
+      prepend_before_action :set_steps
       before_action :load_imported_for
       before_action :load_imported_by
-      before_action :set_steps
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
@@ -147,6 +147,7 @@ module NfgCsvImporter
       end
 
       def finish_wizard_path
+        imports_path
          # where to take the user when the have finished this step
          # TODO add a path to where the user should go once they complete the onboarder
       end
@@ -193,7 +194,7 @@ module NfgCsvImporter
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection]
                     else
-                      steps_based_on_file_origination_type
+                      steps_based_on_file_origination_type + self.class::PROTECTED_STEPS
                     end
       end
     end
