@@ -5,7 +5,7 @@ module FileOriginationTypes
 
     class << self
       def name
-        'Send To Network for Good for Processing'
+        'Send us your files'
       end
 
       def logo_path
