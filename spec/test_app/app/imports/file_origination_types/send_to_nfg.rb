@@ -15,6 +15,10 @@ module FileOriginationTypes
       def description
         'Not sure if you got the chops to do your own import? Let NFG handle the import for you.'
       end
+
+      def skip_steps
+        %w[overview import_type upload_post_processing field_mapping preview_confirmation]
+      end
     end
   end
 end
