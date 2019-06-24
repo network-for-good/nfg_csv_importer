@@ -1,6 +1,5 @@
 module NfgCsvImporter
   class ImportDefinitionDetails < OpenStruct
-    include NfgCsvImporter::WorkingCode::ImportDefinitionDetailsUpdates
 
     def required_columns
       self["required_columns"] || []
