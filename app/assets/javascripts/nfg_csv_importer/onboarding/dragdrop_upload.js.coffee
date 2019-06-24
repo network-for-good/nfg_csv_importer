@@ -13,7 +13,29 @@ class NfgCsvImporter.DragdropUpload
     myDropzone = new Dropzone(root.querySelector('.dropzone-target'), {
       url: url,
       autoQueue: false,
-      previewTemplate: '<div class="list-group-item w-100"><div class="row"><div class="col-2"><img data-dz-thumbnail class="img img-fluid" /></div><div class="col-4"><span data-dz-size /></div><div class="col-6"><span data-dz-name></span></div></div><div class="row"><div class="col-12 mt-2"><div class="progress"><div class="progress-bar bg-dark" style="width:0%;" ></div></div></div></div></div>',
+      previewTemplate: "
+        <div class='row'>
+          <div class='col'>
+            <div class='row'>
+              <div class='col-2'>
+                <img data-dz-thumbnail class='img img-fluid' />
+              </div>
+              <div class='col-4'>
+                <span data-dz-size></span>
+              </div>
+              <div class='col-6'>
+                <span data-dz-name></span>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col-12 mt-2'>
+                <div class='progress'>
+                  <div class='progress-bar bg-dark' style='width:0%;'></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>",
       drop: (event) =>
         event.preventDefault()
         files = event.dataTransfer.files
