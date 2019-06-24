@@ -7,7 +7,7 @@
 .p-3.bg-white.border-bottom
   .row.align-items-center.justify-content-between
     .col-12.col-lg-8.py-1.mx-auto.order-lg-2
-      = ui.nfg :steps, render_if: (controller.wizard_steps.length > 1) do
+      = ui.nfg :steps, render_if: navigation_bar_presenter.show_nav? do
         - controller.wizard_steps.each_with_index do |step, i|
           - i += 1
           - next unless navigation_bar_presenter.show_step?(step)
