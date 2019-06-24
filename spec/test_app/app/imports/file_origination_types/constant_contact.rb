@@ -2,6 +2,10 @@ module FileOriginationTypes
   class ConstantContact < FileOriginationTypes::Base
 
     class << self
+      def name
+        'Constant Contact'
+      end
+
       def logo_path
         "nfg_csv_importer/file_origination_types/constant_contact.png"
       end

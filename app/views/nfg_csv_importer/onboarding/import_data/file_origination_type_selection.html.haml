@@ -5,4 +5,4 @@
         %h2.text-center.mb-3 Where is the data you are importing coming from?
         .row
           - file_origination_types.each do |file_origination_type|
-            = render partial: 'nfg_csv_importer/onboarding/import_data/file_origination_type_selection/file_origination_type_radio_button', locals: { f: f, file_origination_type: file_origination_type }
+            = render partial: 'nfg_csv_importer/onboarding/import_data/file_origination_type_selection/file_origination_type_radio_button', locals: { f: f, file_origination_type: file_origination_type, show_name: false, onboarder_presenter: onboarder_presenter }
