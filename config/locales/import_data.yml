@@ -1,17 +1,23 @@
 en:
   nfg_csv_importer:
     onboarding:
-      title_bar:
-        caption: "Import Your %{name} Data"
-        buttons:
-          save_and_exit: 'Save & Exit'
-          exit: 'Exit'
+      defaults:
+        button: &default_buttons
+          back: 'Prev'
+          submit: 'Next'
       import_data:
+        title_bar:
+          caption: "Import Your %{name} Data"
+          buttons:
+            save_and_exit: 'Save & Exit'
+            exit: 'Exit'
         file_origination_type_selection:
           header:
             message: 'Where is the data you are importing coming from?'
             form: 'Replace me too'
             page:
+          button:
+            <<: *default_buttons
           button:
             back: 'Prev'
             submit: Next
@@ -26,8 +32,7 @@ en:
             form: ''
             page:
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -40,8 +45,7 @@ en:
             page: "We've taken a random row from your %{file_origination_type} spreadsheet and created a snapshot of what your data will look like in Donor Management."
             summary: 'Overall Preview Summary'
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
             approve: 'Approve & Import'
           label:
           placeholder:
@@ -64,8 +68,7 @@ en:
             form: 'Replace me too'
             page:
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -77,8 +80,7 @@ en:
             form: 'Replace me too'
             page:
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -90,8 +92,7 @@ en:
             form: 'Replace me too'
             page:
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -103,8 +104,7 @@ en:
             form: ''
             page: "When you downloaded your exported CSVs from %{file_origination_type}, %{description_of_files}. Add them below."
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -116,8 +116,7 @@ en:
             form: 'Replace me too'
             page: ''
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
           label:
           placeholder:
           hint:
@@ -137,8 +136,7 @@ en:
             form: ''
             page:
           button:
-            back: 'Prev'
-            submit: Next
+            <<: *default_buttons
             skip: 'Skip to upload'
           label:
           placeholder:

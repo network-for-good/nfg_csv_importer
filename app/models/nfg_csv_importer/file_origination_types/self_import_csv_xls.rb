@@ -3,6 +3,10 @@ module NfgCsvImporter
     class SelfImportCsvXls < ::NfgCsvImporter::FileOriginationTypes::Base
 
       class << self
+        def name
+          'Your own spreadsheet'
+        end
+
         def logo_path
           "nfg_csv_importer/file_origination_types/self_import_csv_xls.png"
         end

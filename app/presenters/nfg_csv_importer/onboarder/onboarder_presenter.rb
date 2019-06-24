@@ -17,7 +17,7 @@ module NfgCsvImporter
       end
 
       def onboarder_title
-        I18n.t("nfg_csv_importer.onboarding.title_bar.caption", name: (file_origination_type_name.try(:titleize) || ''))
+        I18n.t("nfg_csv_importer.onboarding.import_data.title_bar.caption", name: (file_origination_type_name.try(:titleize) || ''))
       end
 
       # Pull this from the onboarding sessions' :step_data to

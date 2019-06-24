@@ -6,7 +6,7 @@ module NfgCsvImporter
       # Returns an nfg_ui friendly status for the :step component's status trait
       #
       # Example usage:
-      # = ui.nfg :step, onboarder_presenter.step_status(step, all_steps: controller.wizard_steps), step: i, href: wizard_path(step)
+      # = ui.nfg :step, onboarder_presenter.step_status(the_step), step: 1, href: wizard_path(the_step)
       def step_status(step)
         return :active if step.to_sym == active_step.to_sym
         return :visited if try(:completed_steps, h.controller_name).try(:include?, step)
