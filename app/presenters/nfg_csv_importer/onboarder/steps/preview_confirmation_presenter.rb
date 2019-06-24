@@ -6,131 +6,60 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class PreviewConfirmationPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
-
-        # @import is a workaround for now and will be removed.
-        attr_reader :import
-
-        def import
-          @import ||= NfgCsvImporter::WorkingCode::FakePaypalImport.fake_paypal_import
+        def humanized_card_header_icon(humanize)
+          return 'user' if humanize == 'user'
+          return 'dollar' if humanize == 'donation'
         end
 
-        def the_fake_import
-          import
+        def humanized_card_heading(humanize)
+          return 'Erika Johnson' if humanize == 'user'
+          return '$25.00' if humanize == 'donation'
         end
 
-        # get the preview record's value for the humanized data set
-        # by pinging the import preview's user for their name.
-        #
-        # example preview_object_class_name: 'user' 'donation'
-        def humanized_data_card_heading(humanize)
-          return h.number_to_currency(rand(2000..10000), precision: 0) if humanize == 'donation'
-          return 'Erika Ber' if humanize == 'user'
+        def humanized_card_heading_caption(humanize)
+          return ['443-324-0094', 'email@example.com'] if humanize == 'user'
+          return ['Save the Whales', 'April 18, 2019'] if humanize == 'donation'
         end
 
-        def humanized_data_card_body_content(preview_object_class_name)
-          import.humanized_data_set[preview_object_class_name].except('heading')
+        # Anticipating an array of arrays that we loop through.
+        # The keyword might then be used to sync up an icon for this data (e.g.: user address = 'house')
+        def humanized_card_body(humanize)
+          return [{ address: ['2320 Main St.', 'Apt. 302', 'Reno, NV 22322', 'USA'] }] if humanize == 'user'
+          return [{ transaction_id: ['K-7F5W9MF3L4SB']},{ note: ["On behalf of Jones Day and in lieu of attending 75th Anniversary Gala 2019"]}] if humanize == 'donation'
         end
 
-        # This gets the attribute, chained or not, from the preview object as long as that info is connected to import.preview
-        def get_preview_object_attribute(preview_object_class_name, attribute_name:)
-
-          # Accounts for summary data like:
-          # donation: { summary: %w[campaign.name.goal amount donated_at] }
-          preview_object = import_preview.send(preview_object_class_name)
-
-          # Chain the method onto the previous result (or automatically stop when the array has enumerated)
-          chain_method(string: attribute_name, object: preview_object)
-        end
-
-        # Provide an icon for any specific keyword
-        # from the preview data set.
-        #
-        # This is used when seeking an icon to pair with values (such as the user address summary / 'full_address')
-        def humanized_data_preview_icon(keyword)
-          case keyword
-          when 'name', 'user' then 'user'
-          when 'full_address' then 'home'
-          when 'id' then 'search'
-          when 'note' then 'file-text-o'
-          when 'donation' then 'dollar'
+        def humanized_card_body_icon(keyword)
+          case keyword.to_s
+          when 'address' then 'home'
+          when 'transaction_id' then 'search'
+          when 'note' then 'file-o'
           else
-            # return a white circle so the icon spacing is present
             'circle inverse'
           end
         end
 
-        # For use when determining if a preview card should be a second user or a donation.
-        # On the preview_confirmation step, this is checked on the second card.
-        def user_or_donation_card
-          import.humanized_data_set.keys.include?('donation') ? 'donation' : 'user'
+        def chart_thickness
+          'C' # corresponds to the appearance of FF Chartwell pie charts.
         end
 
-
-        def summary_total_title(objects_name)
-          import.summary_data_set[objects_name]['total'].keys.first
+        def macro_summary_heading_icon(humanize)
+          return 'user' if humanize == 'user'
+          return 'dollar' if humanize == 'donation'
         end
 
-        # In the import.summary_data_set,
-        # dig into the preview object's :charts hash,
-        # then, grab the index's key (since this is called in a loop)
-        # def summary_title(preview_object_class_name, index:)
-        #   import.summary_data_set[preview_object_class_name]['charts'][index].key
-        # end
-
-        def summary_rows(preview_object_class_name)
-          import.summary_data_set[preview_object_class_name]['charts']
+        def macro_summary_heading(humanize)
+          return "Total Est. Contacts" if humanize == 'user'
+          return "Total Est. Donations" if humanize == 'donation'
         end
 
-        # ex: summarized_object: import.summary for accessing donatoins, etc.
-        # ex: summarized_object: `import` for accessing the import's overall info.
-        def summary_total_value(objects_name, summarized_object:)
-
-          # Get the method string stored in the sumary data set's 'total' hash
-          method_string = import.summary_data_set[objects_name]['total'].values.first
-
-          # Run the method chain against the summarized object
-          chain_method(string: method_string, object: summarized_object)
+        def macro_summary_heading_value(humanize)
+          return '1,750' if humanize == 'user'
+          return '$32,503' if humanize == 'donation'
         end
 
-        # Only difference from #summary_total_value is that this targets the 'charts' hash
-        def summary_row_value(objects_name, summarized_object:, index:)
-          # Get the method string stored in the sumary data set's 'total' hash
-          method_string = import.summary_data_set[objects_name]['charts'].values[index]
-
-          chain_method(string: method_string, object: summarized_object)
-        end
-
-        def summary_title_icon(objects_name)
-          'user' if objects_name == 'user'
-          'dollar' if objects_name = 'donation'
-        end
-
-        def summarized_detail_percentage
-          75
-        end
-
-        def summarized_detail_remaining
-          100 - summarized_detail_percentage
-        end
-
-        def chart_size
-          'D'
-        end
-
-        private
-
-        def chain_method(string:, object:)
-          string.split('.').inject(object, :try)
-        end
-
-        def import_summary_total_method(preview_object_class_name)
-
-          import.summary_data_set[preview_object_class_name]['total'][0]
-        end
-
-        # Isolates where preview is found.
-        def import_preview
-          import.preview
+        def macro_summary_charts(humanize)
+          return [{ title: "Arbitrary Example", total: 1750, percentage: 70  }, { title: "Another Example", total: 900, percentage: 30 }] if humanize == 'user'
+          return [{ title: "An Example", total: 32500, percentage: 90  }, { title: "Very Real Example", total: 1260, percentage: 80 }] if humanize == 'donation'
         end
       end
     end
