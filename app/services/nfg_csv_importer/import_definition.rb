@@ -2,6 +2,7 @@ class NfgCsvImporter::ImportDefinition
   attr_accessor :imported_for, :imported_by
 
   def self.get_definition(import_type, imported_for, imported_by)
+    return unless import_type
     definition = self.new
     definition.imported_for = imported_for
     definition.imported_by = imported_by
