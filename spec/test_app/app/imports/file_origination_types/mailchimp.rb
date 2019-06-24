@@ -13,6 +13,10 @@ module FileOriginationTypes
       def description
         'One button click to bring over everyone on your mailing list.'
       end
+
+      def skip_steps
+        %i[overview import_type upload_post_processing field_mapping]
+      end
     end
   end
 end
