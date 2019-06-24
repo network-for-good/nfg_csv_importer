@@ -1,6 +1,4 @@
-// Styles for legacy. The onboarder layout uses hardcoded stylesheet link:
-//
-// = stylesheet_link_tag "nfg_csv_importer/onboarding/application"
+@import "nfg_csv_importer/font_awesome/application";
 
 body:not(.nfg_csv_importer-onboarding-import_data){
   @import 'nfg_csv_importer/application'
