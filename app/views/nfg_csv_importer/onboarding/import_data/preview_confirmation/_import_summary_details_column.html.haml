@@ -1,37 +1,36 @@
 - i18n_scope = local_assigns[:i18n_scope]
 - onboarder_presenter = local_assigns[:onboarder_presenter]
-- summarized_objects_name = local_assigns[:summarized_objects_name]
+- humanize = local_assigns[:humanize]
 
 -# This should be based on the import type, and probably run through the presenter so we're not hard coding stats.
-= ui.nfg :typeface, title: t("stats.#{summarized_objects_name}.heading", scope: i18n_scope)
+= ui.nfg :typeface, title: t("stats.#{humanize}.heading", scope: i18n_scope)
 
 -# the total, then the loop of charts
 = ui.nfg :media, class: 'mt-3' do
   = ui.nfg :media_object do
-    -# = ui.nfg :icon, "#{onboarder_presenter.summary_title_icon(summarized_objects_name)} 2x stacked", :primary, base: 'circle', class: 'mr-2'
-    = fa_stacked_icon "#{onboarder_presenter.summary_title_icon(summarized_objects_name)} inverse", base: 'circle', class: 'mr-2 text-primary fa-2x'
+    = fa_stacked_icon "#{onboarder_presenter.macro_summary_heading_icon(humanize)} inverse", base: 'circle', class: "mr-2 text-#{onboarder_presenter.color_theme(humanize)} fa-2x"
 
   = ui.nfg :media_body do
-    = ui.nfg :typeface, title: onboarder_presenter.summary_total_title(summarized_objects_name), class: 'display-4'
-    %h2= onboarder_presenter.summary_total_value(summarized_objects_name, summarized_object: onboarder_presenter.the_fake_import)
+    = ui.nfg :typeface, title: onboarder_presenter.macro_summary_heading(humanize), class: 'display-4'
+    %h2= onboarder_presenter.macro_summary_heading_value(humanize)
 
--# Now the summary / charts
-- onboarder_presenter.summary_rows(summarized_objects_name).each_with_index do |summary_row, i|
+- onboarder_presenter.macro_summary_charts(humanize).each do |chart|
+  - title = chart[:title]
+  - total = chart[:total]
+  - percentage = chart[:percentage]
 
   = ui.nfg :media, class: 'mt-3' do
     = ui.nfg :media_object do
       .mr-2
-        %span.chartwell.pies
-          %span.text-primary= onboarder_presenter.summarized_detail_percentage
-          %span.text-muted= onboarder_presenter.summarized_detail_remaining
-          %span.text-white= onboarder_presenter.chart_size
+        -# TODO: Chartwell should be given responsive font-sizes.
+        %span.chartwell.pies{ style: 'font-size: 60px; line-height: 1;' }
+          %span{ class: "text-#{onboarder_presenter.color_theme(humanize)}" }= percentage
+          %span.text-light= 100 - (percentage.to_i)
+          %span.text-white= onboarder_presenter.chart_thickness
+
     = ui.nfg :media_body do
-      -# humanize and titleize the key in the event it wasn't setup that way in the import definition
-      -# This is a "faked" :key component
-      = ui.nfg :typeface, title: ui.nfg(:icon, 'circle', :primary, text: summary_row.first.humanize.titleize), class: 'display-4'
-
+      = ui.nfg :typeface, title: ui.nfg(:icon, 'circle', onboarder_presenter.color_theme(humanize), text: title), class: 'display-4'
       %h2
-        = onboarder_presenter.summary_row_value(summarized_objects_name, summarized_object: onboarder_presenter.the_fake_import.summary, index: i)
-
-        -# will need percentages here
-        %small.font-size-base.text-muted= "(#{onboarder_presenter.summarized_detail_percentage}%)"
+        = total
+        %small.font-size-base.text-muted
+          ="(#{number_to_percentage(percentage, precision: 0)})"
