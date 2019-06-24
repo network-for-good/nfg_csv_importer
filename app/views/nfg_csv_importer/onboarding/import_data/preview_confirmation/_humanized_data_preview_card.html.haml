@@ -1,35 +1,28 @@
 -# ex: 'user' or 'donation'
-- humanized = local_assigns[:humanized]
+- humanize = local_assigns[:humanize]
 - onboarder_presenter = local_assigns[:onboarder_presenter]
 
 = ui.nfg :card, class: 'mt-2' do
   -# The headline of the card (e.g.: User's name or the donation amount)
-  = ui.nfg :media, class: 'align-items-center' do
+  = ui.nfg :media do
     = ui.nfg :media_object do
-      -# For users, returns a user icon; dollar icon for donation.
-      -# pass in the humanized variable to get a hit
-      = ui.nfg :typeface, heading: ui.nfg(:icon, onboarder_presenter.humanized_data_preview_icon(humanized), :primary), class: 'mr-2 mb-0'
+      -# For sizing purposes, use a typeface component with an icon instead of a conventional icon component.
+      = ui.nfg :typeface, :heading, onboarder_presenter.color_theme(humanize), icon: onboarder_presenter.humanized_card_header_icon(humanize)
 
+    -# The caption / summary (e.g.: donation details or contact information)
     = ui.nfg :media_body do
-      = ui.nfg :typeface, heading: onboarder_presenter.humanized_data_card_heading(humanized)
+      = ui.nfg :typeface, heading: onboarder_presenter.humanized_card_heading(humanize)
 
-  -# User Summary & additional details (e.g.: full address)
-  -# Loop through the sections of humanized data and flesh out the card body
-  - onboarder_presenter.humanized_data_card_body_content(humanized).each do |section_name, preview_object_attribute_names|
+      - onboarder_presenter.humanized_card_heading_caption(humanize).each do |caption|
+        = ui.nfg :typeface, body: caption, class: 'mb-0'
 
-    -# Section names include:
-    -# heading, summary, full_address
-    -# Icons are defined in the onboarder_presenter
-    = ui.nfg :media, class: 'mt-3' do
-      = ui.nfg :media_object do
-        -# no icon is rendered if the section name isn't connected to an icon
-        = ui.nfg :typeface, body: ui.nfg(:icon, onboarder_presenter.humanized_data_preview_icon(section_name), :muted), class: 'mr-2 mb-0'
+  -# The rest of the information, e.g.: full address, or donation note, etc.
+  - onboarder_presenter.humanized_card_body(humanize).each do |content_sections|
+    - content_sections.each do |content_section, array_of_information|
+      = ui.nfg :media, class: 'mt-3' do
+        = ui.nfg :media_object do
+          = ui.nfg :icon, onboarder_presenter.humanized_card_body_icon(content_section)
 
-      = ui.nfg :media_body do
-
-        -# Now the attributes for that section (e.g.: full address) are broken down into individual typeface components (address, address2, city, etc)
-        - preview_object_attribute_names.each do |preview_object_attribute|
-          -# ex: This could be the user's address1
-          - preview_object_attribute_value = onboarder_presenter.get_preview_object_attribute(humanized, attribute_name: preview_object_attribute)
-
-          = ui.nfg :typeface, body: preview_object_attribute_value, class: 'mb-0', render_if: preview_object_attribute_value.present?
+        = ui.nfg :media_body do
+          - array_of_information.each do |content_block|
+            = ui.nfg :typeface, body: content_block, class: 'mb-0'

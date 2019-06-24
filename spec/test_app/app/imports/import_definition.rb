@@ -1,7 +1,5 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
 
-  include NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples
-
   def self.import_types
     %w{users donation users_for_testing_overview}
   end
@@ -35,11 +33,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
           'college_degree' => "Notes are displayed on the contact's profile"
         },
       description: %Q{Allows you to import subscribers.},
-      can_be_deleted_by: -> (user) { user.last_name != "Jones" },
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_humanized_data_set,
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_summary_data_set
+      can_be_deleted_by: -> (user) { user.last_name != "Jones" }
     }
   end
 
@@ -73,11 +67,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
           'college_degree' => "Where they went to college"
         },
       description: %Q{Allows you to import subscribers.},
-      can_be_deleted_by: -> (user) { user.last_name != "Jones" },
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_humanized_data_set,
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.user_summary_data_set
+      can_be_deleted_by: -> (user) { user.last_name != "Jones" }
     }
   end
 
@@ -90,11 +80,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       alias_attributes: [],
       column_descriptions: {},
       can_be_viewed_by: -> (user) { user.last_name != "Smith" },
-      description: %Q{Allows you to import donations},
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_humanized_data_set,
-
-      **NfgCsvImporter::WorkingCode::ImportDefinitionUpdateExamples.donation_summary_data_set
+      description: %Q{Allows you to import donations}
     }
   end
 end
