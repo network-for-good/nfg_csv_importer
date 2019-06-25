@@ -13,6 +13,7 @@ class NfgCsvImporter.DragdropUpload
     myDropzone = new Dropzone(root.querySelector('.dropzone-target'), {
       url: url,
       autoQueue: false,
+      addRemoveLinks: true,
       previewTemplate: "
         <div class='dz-preview row align-items-center'>
           <div class='col-2'>
@@ -39,18 +40,18 @@ class NfgCsvImporter.DragdropUpload
             </div>
             <p data-dz-errormessage class='mb-0 text-danger font-weight-bold'></p>
           </div>
-        </div>",
-      drop: (event) =>
-        event.preventDefault()
-        files = event.dataTransfer.files
-        Array.from(files).forEach (file) =>
-          @directUploadFile(file, url, name)
+        </div>"
     })
 
     # When removing files, it does not appear to remove
     # the started and drag-hover classes.
     myDropzone.on 'reset', =>
       @resetUI $(myDropzone.element)
+    myDropzone.on 'addedfile', (file)=>
+      @directUploadFile(file, url, name)
+    myDropzone.on 'removedfile', (file)=>
+      signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
+      $("input[value='#{signed_id}']").remove()
 
   resetUI: (dropzoneEl) ->
     dropzoneEl.removeClass 'dz-started dz-drag-hover'
@@ -67,6 +68,7 @@ class NfgCsvImporter.DragdropUpload
         hiddenField.setAttribute("value", blob.signed_id)
         hiddenField.name = name
         $('form')[0].appendChild(hiddenField)
+        file.previewElement.querySelector('a.dz-remove').dataset.signed_id = blob.signed_id
 
 $ ->
   el = $("#pre_processing_files_upload")
