@@ -1,10 +1,16 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: ''), framed: false} do |f|
 
-  %div{ data: { toggle: 'tour-slider' }}
-    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 1, onboarder_presenter: onboarder_presenter }
+  .container.py-4{ data: { toggle: 'tour-slider' } }
+    .card-deck
 
-    -# Step 2
-    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 2, onboarder_presenter: onboarder_presenter }
+      -# Step 1
+      = ui.nfg :card, class: 'mb-3 text-center' do
+        = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 1, onboarder_presenter: onboarder_presenter }
 
-    -# Step 3
-    = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 3, onboarder_presenter: onboarder_presenter }
+      -# Step 2
+      = ui.nfg :card, class: 'mb-3 text-center' do
+        = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 2, onboarder_presenter: onboarder_presenter }
+
+      -# Step 3
+      = ui.nfg :card, class: 'mb-3 text-center' do
+        = render partial: 'nfg_csv_importer/onboarding/import_data/get_started/step', locals: { step: 3, onboarder_presenter: onboarder_presenter }
