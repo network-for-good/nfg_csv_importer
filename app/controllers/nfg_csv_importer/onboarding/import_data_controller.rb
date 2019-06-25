@@ -102,6 +102,7 @@ module NfgCsvImporter
       end
 
       def upload_preprocessing_on_valid_step
+        session[:onboarding_import_data_import_id] = form.model.id
         # you can add logic here to perform actions once a step has completed successfully
       end
 
