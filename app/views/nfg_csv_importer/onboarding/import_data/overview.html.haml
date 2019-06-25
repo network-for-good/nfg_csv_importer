@@ -2,34 +2,44 @@
 - import_type = 'users_for_testing_overview'
 - import = NfgCsvImporter::Import.new(import_type: import_type)
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_form: t('.header.form'), header_page: nil, guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_form: t('.header.form'), header_page: nil, guidance: t('.guidance.modal', default: ''), framed: false} do |f|
 
-
-  -# = "current_step: #{current_step}"
-
-  -# Introduction
-  = ui.nfg :tile_section do
-    = ui.nfg :typeface, :body do
-      = t('body.intro', scope: [locale_namespace, :overview])
-      Also, consider starting from our
-      = link_to t("nfg_csv_importer.imports.new.links.file"), nfg_csv_importer.template_imports_path(import_type: import_type)
-
-  -# Requirements for spreadsheet
-  = ui.nfg :tile_section, heading: t('headings.requirements', scope: [locale_namespace, :overview], import_type: import_type) do
+  .container.py-4
     .row
-      - import.column_validation_rules.each do |column_rule|
-        .col-md-6.col-12
-          = ui.nfg :alert, :light, icon: 'info', body: column_rule.message.html_safe, dismissible: false
+      .col-12.col-lg-4.mt-3
+        = ui.nfg :tile do
 
-  -# Column header documentation
-  -# Required column headers, dictated by the import definition
-  = ui.nfg :tile_section, heading: t('headings.required_column_headers', scope: [locale_namespace, :overview]), render_if: import.required_columns.any? do
-    .expandable{ data: { max_height: 150 } }
-      - import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
-        = render partial: 'nfg_csv_importer/onboarding/import_data/overview/column_header', locals: { import: import, onboarder_presenter: onboarder_presenter, field: field }
+          = ui.nfg :tile_section, class: 'text-center' do
+            = image_tag "nfg_csv_importer/illustrations/setup-success.png", style: 'height: auto; max-height: 240px;'
+            = ui.nfg :typeface, heading: 'Setting up your spreadsheet for success', class: 'mt-3 mb-2'
+            = ui.nfg :typeface, :muted, body: t('body.intro', scope: [locale_namespace, :overview]), class: 'mb-0'
+            = ui.nfg :button, href: nfg_csv_importer.template_imports_path(import_type: import_type), body: t("nfg_csv_importer.imports.new.links.file"), icon: 'download', class: 'mt-3'
 
-  -# Optional column headers
-  = ui.nfg :tile_section, heading: t('headings.optional_column_headers', scope: [locale_namespace, :overview]), render_if: import.optional_columns.any? do
-    .expandable{ data: { max_height: 150 } }
-      - import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
-        = render partial: 'nfg_csv_importer/onboarding/import_data/overview/column_header', locals: { import: import, onboarder_presenter: onboarder_presenter, field: field }
+      .col-12.col-lg-8.mt-3
+
+        -# = "current_step: #{current_step}"
+
+        = ui.nfg :tile do
+
+          -# Requirements for spreadsheet
+          = ui.nfg :tile_section, heading: t('headings.requirements', scope: [locale_namespace, :overview], import_type: import_type) do
+            = ui.nfg :alert, :warning, class: 'mt-3 mb-0', dismissible: false do
+              %ul.list-unstyled.mb-0
+                - import.column_validation_rules.each do |column_rule|
+                  %li.mb-2= column_rule.message.html_safe
+
+          -# Column header documentation
+          -# Required column headers, dictated by the import definition
+          = ui.nfg :tile_section, heading: ui.nfg(:icon, 'asterisk', :danger, text: t('headings.required_column_headers', scope: [locale_namespace, :overview])), render_if: import.required_columns.any? do
+            .expandable.mt-3{ data: { max_height: 120 } }
+              %ul.list-group
+                - import.required_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+                  = render partial: 'nfg_csv_importer/onboarding/import_data/overview/column_header', locals: { import: import, onboarder_presenter: onboarder_presenter, field: field }
+
+          -# Optional column headers
+          = ui.nfg :tile_section, heading: t('headings.optional_column_headers', scope: [locale_namespace, :overview]), render_if: import.optional_columns.any? do
+            .expandable.mt-3{ data: { max_height: 120 } }
+              %ul.list-group
+                - import.optional_columns.sort{ |alpha_a, alpha_z| alpha_a <=> alpha_z }.each do |field|
+                  = render partial: 'nfg_csv_importer/onboarding/import_data/overview/column_header', locals: { import: import, onboarder_presenter: onboarder_presenter, field: field }
+
