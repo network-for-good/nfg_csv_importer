@@ -10,7 +10,5 @@
   src:url(font-path('nfg_csv_importer/ff_chartwell/ChartwellPiesWebPro.woff')) format('woff');
 }
 
-body[class*='nfg_csv_importer-onboarding'] {
-  @import 'nfg_ui/network_for_good/admin/application';
-  @import 'nfg_csv_importer/onboarding/dropzone';
-}
+@import 'nfg_ui/network_for_good/admin/application';
+@import 'nfg_csv_importer/onboarding/dropzone';
