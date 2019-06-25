@@ -1,5 +1,9 @@
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
-  def send_import_result(import)
+  BEGIN_STATUS = 'begun'
+  QUEUED_STATUS = 'queued'
+  COMPLETED_STATUS = 'completed'
+
+  def send_import_result(import, status = COMPLETED_STATUS)
     @import = import.reload
     @recipient = import.imported_by
     @imported_for = imported_for(@import)
@@ -7,11 +11,13 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
 
     mail(
       to: @recipient.email,
-      subject: "Your #{@import.import_type} import has completed!",
+      subject: "Your #{@import.import_type} import has #{status}!",
       from: NfgCsvImporter.configuration.from_address,
       reply_to: NfgCsvImporter.configuration.reply_to_address
     )
   end
+
+  alias send_import_status send_import_result
 
   def send_destroy_result(import)
     @import = import
