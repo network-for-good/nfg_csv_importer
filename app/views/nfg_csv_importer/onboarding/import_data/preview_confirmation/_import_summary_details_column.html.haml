@@ -23,7 +23,7 @@
     = ui.nfg :media_object do
       .mr-2
         -# TODO: Chartwell should be given responsive font-sizes.
-        %span.chartwell.pies{ style: 'font-size: 60px; line-height: 1;' }
+        %span.chartwell.pies{ style: 'font-size: 76px; line-height: 0;' }
           %span{ class: "text-#{onboarder_presenter.color_theme(humanize)}" }= percentage
           %span.text-light= 100 - (percentage.to_i)
           %span.text-white= onboarder_presenter.chart_thickness
