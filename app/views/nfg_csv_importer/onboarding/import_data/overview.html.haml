@@ -1,6 +1,6 @@
 -# workarounds
-- import_type = 'users_for_testing_overview'
-- import = NfgCsvImporter::Import.new(import_type: import_type)
+- import_type = ImportDefinition.import_types.first
+- import = NfgCsvImporter::Import.new(import_type: import_type, imported_for: @imported_for)
 
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_form: t('.header.form'), header_page: nil, guidance: t('.guidance.modal', default: ''), framed: false} do |f|
 

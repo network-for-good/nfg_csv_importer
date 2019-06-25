@@ -9,7 +9,7 @@ describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
   let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(tested_type_sym, NfgCsvImporter::FileOriginationTypes::SelfImportCsvXls) }
   let(:tested_type_sym) { :self_import_csv_xls }
 
-  let(:current_step) { 'get_started' }
+  let(:current_step) { 'upload_preprocessing' }
 
   let(:type_sym) { file_origination_type.type_sym }
 
