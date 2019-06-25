@@ -70,6 +70,13 @@ class NfgCsvImporter.DragdropUpload
         $('form')[0].appendChild(hiddenField)
         file.previewElement.querySelector('a.dz-remove').dataset.signed_id = blob.signed_id
 
+  directUploadWillStoreFileWithXHR: (request) =>
+    request.upload.addEventListener("progress", (event) => @directUploadDidProgress(event))
+
+  directUploadDidProgress: (event) =>
+    root = this.el
+    $(root).find('.progress:last .progress-bar').css("width", "#{event.loaded * 100 / event.total}%")
+
 $ ->
   el = $("#pre_processing_files_upload")
   return unless el.length > 0
