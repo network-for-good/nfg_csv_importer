@@ -11,7 +11,7 @@ module NfgCsvImporter
 
       # we do this so we can access the list of steps from outside the onboarder
       def self.step_list
-        %i[file_origination_type_selection get_started overview upload_preprocessing import_type upload_post_processing field_mapping preview_confirmation finish]
+        %i[file_origination_type_selection overview upload_preprocessing import_type upload_post_processing field_mapping preview_confirmation finish]
       end
 
       # steps list
@@ -70,11 +70,6 @@ module NfgCsvImporter
         # you can add logic here to perform, such as appending data to the params, before the form is to be saved
       end
 
-      def get_started_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-
       # on valid steps
       def file_origination_type_selection_on_valid_step
         # you can add logic here to perform actions once a step has completed successfully
@@ -112,10 +107,6 @@ module NfgCsvImporter
         # you can add logic here to perform actions once a step has completed successfully
       end
 
-      def get_started_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
-      end
-
       def get_onboarding_admin
         defined?(current_admin) ? current_admin : OpenStruct.new(id: 999, first_name: 'Any', last_name: 'User', email: 'any@user.com', primary_key: 'id')
       end
@@ -123,7 +114,6 @@ module NfgCsvImporter
       def can_view_step_without_onboarding_session
         return true if params[:id] == 'wicked_finish' # the onboarding session is typically completed prior to this step
         # if there are steps that can be accessed without a onboarding session (typically the first step of the onboarder), list them here
-        # return true if step == :get_started
         false
       end
 
@@ -131,8 +121,6 @@ module NfgCsvImporter
         case step
             when :file_origination_type_selection
               OpenStruct.new(file_origination_type: '') # replace with your object that the step will update
-            when :get_started
-              OpenStruct.new(name: '') # replace with your object that the step will update
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
@@ -209,7 +197,7 @@ module NfgCsvImporter
       def set_steps
 
         self.steps = if file_origination_type.nil?
-                      [:file_origination_type_selection, :get_started]
+                      [:file_origination_type_selection]
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end

@@ -1,5 +1,0 @@
-<% import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by) %>
-
-
-$('#get_started_modal_body').html("<%= j render partial: 'nfg_csv_importer/imports/import_definitions', locals: { language_scope: [:nfg_csv_importer, :imports, :index], import_definitions: import_definitions, import_type_column_structure_classes: 'col-md-6', start_button_options: { href: nfg_csv_importer.new_import_path(import_type: import_definitions.keys.first) } } %>");
-
