@@ -1,10 +1,6 @@
 - step = local_assigns[:step]
 - onboarder_presenter = local_assigns[:onboarder_presenter]
 
-.row
-  .col-md-7.mx-auto.col-8
-    = onboarder_presenter.get_started_information_step_image(step: step)
+= onboarder_presenter.get_started_information_step_image(step: step)
 
-.row
-  .col
-    = onboarder_presenter.get_started_information_step(step: step)
+= onboarder_presenter.get_started_information_step(step: step)
