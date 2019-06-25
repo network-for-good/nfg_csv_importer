@@ -197,7 +197,7 @@ module NfgCsvImporter
       def set_steps
 
         self.steps = if file_origination_type.nil?
-                      [:file_origination_type_selection]
+                      [:file_origination_type_selection, :finish]
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end
