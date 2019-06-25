@@ -6,6 +6,7 @@
       %h1
         = link_to @import.import_file.url, data: { filename: @import.import_file_name } do
           = fa_icon "paperclip inverse", text: @import.import_file_name
-      = link_to imports_path, class: "import-header-link" do
-        = fa_icon "chevron-left inverse", text: "Back to Imports"
+      - unless params[:iframe].present?
+        = link_to imports_path, class: "import-header-link" do
+          = fa_icon "chevron-left inverse", text: "Back to Imports"
 

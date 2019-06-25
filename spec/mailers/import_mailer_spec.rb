@@ -47,6 +47,12 @@ describe NfgCsvImporter::ImportMailer, type: :feature do
         expect(subject.body).not_to match("Link to error file")
       end
     end
+
+    context 'when the import status is queued' do
+      subject { NfgCsvImporter::ImportMailer.send_import_result(import, NfgCsvImporter::ImportMailer::QUEUED_STATUS).deliver }
+
+      it { expect(subject.subject).to eq("Your #{import.import_type} import has #{NfgCsvImporter::ImportMailer::QUEUED_STATUS}!") }
+    end
   end
 end
 
