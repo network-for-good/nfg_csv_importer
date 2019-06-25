@@ -10,3 +10,5 @@ vendor/bundle
 spec/test_app/public/uploads
 spec/test_app/storage/*
 .solano*
+.idea/
+.idea/*
