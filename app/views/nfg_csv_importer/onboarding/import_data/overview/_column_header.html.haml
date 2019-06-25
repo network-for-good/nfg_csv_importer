@@ -4,12 +4,11 @@
 
 - description = import.column_descriptions[field]
 
-.row
-  .col.text-right
-    = ui.nfg :media do
-      = ui.nfg :media_body do
-        = ui.nfg :typeface, heading: onboarder_presenter.import_column_display_name(import.import_type, field)
-      = ui.nfg :media_object do
-        = ui.nfg :icon, 'long-arrow-right'
-  .col
-    = description.present? ? description : t("nfg_csv_importer.imports.new.content.no_description").html_safe
+.list-group-item
+  .row
+    .col.text-break
+      = ui.nfg :typeface, title: onboarder_presenter.import_column_display_name(import.import_type, field)
+    .col-auto
+      = ui.nfg :icon, 'long-arrow-right'
+    .col
+      = description.present? ? description : t("nfg_csv_importer.imports.new.content.no_description").html_safe
