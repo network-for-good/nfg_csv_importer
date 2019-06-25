@@ -2,6 +2,7 @@ module NfgCsvImporter
   module Onboarding
     class ImportDataController < NfgCsvImporter::Onboarding::BaseController
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
+      include NfgCsvImporter::ImportsHelper
       prepend_before_action :set_steps
       before_action :load_imported_for
       before_action :load_imported_by
@@ -22,6 +23,9 @@ module NfgCsvImporter
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
+      expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
+
+      expose(:import) { get_import }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
@@ -93,7 +97,8 @@ module NfgCsvImporter
       end
 
       def import_type_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
+        # Set a session variable so we can lookup the import in the future
+        session[:onboarding_import_data_import_id] = form.model.id
       end
 
       def upload_preprocessing_on_valid_step
@@ -128,12 +133,11 @@ module NfgCsvImporter
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
-              # OpenStruct.new(name: '') # replace with your object that the step will update
               new_import
             when :import_type
-              OpenStruct.new(name: '') # replace with your object that the step will update
+              new_import
             when :upload_post_processing
-              OpenStruct.new(name: '') # replace with your object that the step will update
+              import
             when :field_mapping
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :preview_confirmation
@@ -166,6 +170,16 @@ module NfgCsvImporter
         (session[:onboarding_session_id] ? ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) || new_onboarding_session : new_onboarding_session).tap { |os| session[:onboarding_session_id] = os.id }
       end
 
+      def get_import
+        session[:onboarding_import_data_import_id] = params[:import_id] if params[:mport_id].present?
+        begin
+          @imported_for.imports.find(session[:onboarding_import_data_import_id])
+        rescue
+          session.delete(:onboarding_import_data_import_id)
+          return nil
+        end
+      end
+
       def new_onboarding_session
         ::Onboarding::Session.create(onboarding_session_parameters)
       end
@@ -190,6 +204,7 @@ module NfgCsvImporter
       end
 
       def set_steps
+
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection, :get_started]
                     else
