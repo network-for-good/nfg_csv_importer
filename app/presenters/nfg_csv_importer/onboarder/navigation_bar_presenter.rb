@@ -29,7 +29,8 @@ module NfgCsvImporter
         # the user to the wicked_finish step after completing that first step
         # we assume that if there is only 2 steps, we don't want to show
         # the navigation.
-        h.controller.wizard_steps.length > 2
+
+        active_step.to_sym != all_steps.first && h.controller.wizard_steps.length > 2
       end
     end
   end
