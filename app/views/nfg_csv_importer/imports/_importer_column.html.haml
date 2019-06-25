@@ -21,6 +21,6 @@
     .card-block.card-block-importer-index
       = index_alphabetize[index]
     .list-group.list-group-flush
-      - (0..(@first_x_rows.length - 1)).each do |i|
+      - (0..(import.first_x_rows.length - 1)).each do |i|
         .list-group-item
-          =@first_x_rows[i][mapped_column.name]
+          = import.first_x_rows[i][mapped_column.name]
