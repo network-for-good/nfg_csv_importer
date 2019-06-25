@@ -1,3 +1,6 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
-  -# This page will replace the form on the bottom of the existing import experience. It'll include the previously imported templates menu.
+  .row
+    .col-9
+      = f.input :import_file do
+        = f.file_field :import_file
