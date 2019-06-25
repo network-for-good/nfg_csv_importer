@@ -7,7 +7,7 @@
   = ui.nfg :media do
     = ui.nfg :media_object do
       -# For sizing purposes, use a typeface component with an icon instead of a conventional icon component.
-      = ui.nfg :typeface, :heading, onboarder_presenter.color_theme(humanize), icon: onboarder_presenter.humanized_card_header_icon(humanize)
+      = ui.nfg :typeface, :heading, onboarder_presenter.color_theme(humanize), icon: onboarder_presenter.humanized_card_header_icon(humanize), class: 'mr-2'
 
     -# The caption / summary (e.g.: donation details or contact information)
     = ui.nfg :media_body do
@@ -21,7 +21,7 @@
     - content_sections.each do |content_section, array_of_information|
       = ui.nfg :media, class: 'mt-3' do
         = ui.nfg :media_object do
-          = ui.nfg :icon, onboarder_presenter.humanized_card_body_icon(content_section)
+          = ui.nfg :icon, onboarder_presenter.humanized_card_body_icon(content_section), class: 'mr-2 line-height'
 
         = ui.nfg :media_body do
           - array_of_information.each do |content_block|
