@@ -94,6 +94,8 @@ module NfgCsvImporter
 
       def upload_post_processing_on_valid_step
         # you can add logic here to perform actions once a step has completed successfully
+        import.uploaded!
+        import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(import).call)
       end
 
       def import_type_on_valid_step
