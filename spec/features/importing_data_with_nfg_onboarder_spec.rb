@@ -5,7 +5,7 @@ describe "Using the nfg_onboarder engine to import data", js: true do
   let(:admin) {  create(:user) }
 
   describe 'picking a file origination type' do
-    let(:file_origination_type) { 'paypal' }
+    let(:file_origination_type) { 'mailchimp' }
     it 'accurately tracks the selected file origination type once the file origination type has been selected and submitted' do
 
       by 'visiting the index page' do
@@ -29,7 +29,11 @@ describe "Using the nfg_onboarder engine to import data", js: true do
       end
 
       and_it 'takes the user to the next step' do
-        expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing.#{file_origination_type}"
+        expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.get_started.#{file_origination_type}"
+      end
+
+      and_it 'indicates the user is reading information about the correct file origination type' do
+        expect(page).to have_selector "[data-toggle='tour-slider']", text: file_origination_type.humanize
       end
     end
   end
