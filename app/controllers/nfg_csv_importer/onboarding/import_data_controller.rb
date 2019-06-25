@@ -40,6 +40,7 @@ module NfgCsvImporter
       # on before save steps
       def file_origination_type_selection_on_before_save
         # you can add logic here to perform, such as appending data to the params, before the form is to be saved
+        set_second_step
       end
 
       def finish_on_before_save
@@ -195,12 +196,21 @@ module NfgCsvImporter
       end
 
       def set_steps
-
         self.steps = if file_origination_type.nil?
-                      [:file_origination_type_selection, :finish]
-                    else
-                      self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
-                    end
+                       set_second_step
+                       [:file_origination_type_selection, @second_step]
+                     else
+                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
+                     end
+      end
+
+      def set_second_step
+        if params['nfg_csv_importer_onboarding_import_data_file_origination_type_selection'].present?
+
+          @second_step = params['nfg_csv_importer_onboarding_import_data_file_origination_type_selection']['file_origination_type'].to_sym == :self_import_csv_xls ? :overview : :upload_preprocessing
+        else
+          @second_step = :finish
+        end
       end
     end
   end
