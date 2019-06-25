@@ -52,7 +52,7 @@ en:
         links:
           ready_upload: "Ready? Upload Your File"
           scroll_down: "Scroll down to learn more"
-          file: "Template (CSV)"
+          file: "Download Template (CSV)"
           expand_column_headers: "Expand the full list of column headers"
         tooltips:
           coming_soon: "Coming Soon!"
