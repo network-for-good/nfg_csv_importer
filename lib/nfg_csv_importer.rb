@@ -10,7 +10,6 @@ require "browser"
 require "nfg_ui"
 require "nfg_csv_importer/configuration"
 require "premailer/rails"
-require "letter_opener"
 
 module NfgCsvImporter
 
