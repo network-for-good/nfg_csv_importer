@@ -16,13 +16,19 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
   def send_import_result_completed
     @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
 
-    NfgCsvImporter::ImportMailer.send_import_result(import(error_file: true), @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import, @status)
   end
 
   def send_import_result_completed_with_errors
     @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
 
-    NfgCsvImporter::ImportMailer.send_import_result(import(error_file: true), @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import(errors: true), @status)
+  end
+
+  def send_destroy_result
+    @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
+
+    NfgCsvImporter::ImportMailer.send_destroy_result(import)
   end
 
   private
@@ -35,21 +41,27 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
     @entity ||= FactoryGirl.create(:entity)
   end
 
-  def import(error_file: false)
+  def import(errors: false, file_origination_type: 'paypal')
+    error_file = errors ? File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.xls") : nil
+    number_of_records_with_errors = error_file ? 1 : nil
+    import_file = File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/paypal_processed_file.csv")
+    records_processed = @status == NfgCsvImporter::ImportMailer::COMPLETED_STATUS ? 39 : nil
+    processing_started_at = @status == NfgCsvImporter::ImportMailer::QUEUED_STATUS ? nil : Time.now
+
     @import ||= NfgCsvImporter::Import.create!(
       import_type: 'donation',
-      import_file: File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/paypal_processed_file.csv"),
-      error_file: (error_file ? File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.xls") : nil),
+      import_file: import_file,
+      error_file: error_file,
       number_of_records: 39,
-      number_of_records_with_errors: (error_file ? 1 : nil),
+      number_of_records_with_errors: number_of_records_with_errors,
       imported_for: entity,
       imported_by: recipient,
       status: @status,
-      records_processed: (@status == NfgCsvImporter::ImportMailer::COMPLETED_STATUS ? 39 : nil),
+      records_processed: records_processed,
       created_at: Time.now - 10.minutes,
       import_file_name: 'paypal_processed_file.csv',
-      processing_started_at: (@status == NfgCsvImporter::ImportMailer::QUEUED_STATUS ? nil : Time.now),
-      file_origination_type: 'paypal'
+      processing_started_at: processing_started_at,
+      file_origination_type: file_origination_type
     )
   end
 end
