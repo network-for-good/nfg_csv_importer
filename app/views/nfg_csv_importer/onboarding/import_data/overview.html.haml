@@ -1,14 +1,9 @@
--# workarounds
-- import_type = ImportDefinition.import_types.first
-- import = NfgCsvImporter::Import.new(import_type: import_type, imported_for: @imported_for)
-
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_form: t('.header.form'), header_page: nil, guidance: t('.guidance.modal', default: ''), framed: false} do |f|
 
   .container.py-4
     .row
       .col-12.col-lg-4.mt-3
         = ui.nfg :tile do
-
           = ui.nfg :tile_section, class: 'text-center' do
             = image_tag "nfg_csv_importer/illustrations/setup-success.png", style: 'height: auto; max-height: 240px;'
             = ui.nfg :typeface, heading: 'Setting up your spreadsheet for success', class: 'mt-3 mb-2'
@@ -16,9 +11,6 @@
             = ui.nfg :button, href: nfg_csv_importer.template_imports_path(import_type: import_type), body: t("nfg_csv_importer.imports.new.links.file"), icon: 'download', class: 'mt-3'
 
       .col-12.col-lg-8.mt-3
-
-        -# = "current_step: #{current_step}"
-
         = ui.nfg :tile do
 
           -# Requirements for spreadsheet
