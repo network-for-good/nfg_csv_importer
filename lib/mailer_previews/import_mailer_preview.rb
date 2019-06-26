@@ -35,8 +35,8 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
     @import ||= NfgCsvImporter::Import.create!(
       id: 1,
       import_type: 'donation',
-      import_file: File.open('spec/fixtures/paypal_processed_file.csv'),
-      error_file: (error_file ? File.open('spec/fixtures/errors.xls') : nil),
+      import_file: File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/paypal_processed_file.csv"),
+      error_file: (error_file ? File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.xls") : nil),
       number_of_records: 39,
       number_of_records_with_errors: (error_file ? 1 : nil),
       imported_for_id: 1,

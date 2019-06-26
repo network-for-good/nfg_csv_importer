@@ -11,7 +11,7 @@ module NfgCsvImporter
 
       # we do this so we can access the list of steps from outside the onboarder
       def self.step_list
-        %i[file_origination_type_selection get_started overview upload_preprocessing import_type upload_post_processing field_mapping preview_confirmation finish]
+        %i[file_origination_type_selection upload_preprocessing import_type overview upload_post_processing field_mapping preview_confirmation finish]
       end
 
       # steps list
@@ -21,10 +21,10 @@ module NfgCsvImporter
 
       expose(:file_type_manager) {NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
-      expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
+      expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
       expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
-
+      expose(:import_type ) { get_import_type }
       expose(:import) { get_import }
 
       # The onboarder presenter, when built, automatically
@@ -70,10 +70,6 @@ module NfgCsvImporter
         # you can add logic here to perform, such as appending data to the params, before the form is to be saved
       end
 
-      def get_started_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
 
       # on valid steps
       def file_origination_type_selection_on_valid_step
@@ -112,10 +108,6 @@ module NfgCsvImporter
         # you can add logic here to perform actions once a step has completed successfully
       end
 
-      def get_started_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
-      end
-
       def get_onboarding_admin
         defined?(current_admin) ? current_admin : OpenStruct.new(id: 999, first_name: 'Any', last_name: 'User', email: 'any@user.com', primary_key: 'id')
       end
@@ -123,7 +115,7 @@ module NfgCsvImporter
       def can_view_step_without_onboarding_session
         return true if params[:id] == 'wicked_finish' # the onboarding session is typically completed prior to this step
         # if there are steps that can be accessed without a onboarding session (typically the first step of the onboarder), list them here
-        # return true if step == :get_started
+        # return true if step == :my_step
         false
       end
 
@@ -131,8 +123,6 @@ module NfgCsvImporter
         case step
             when :file_origination_type_selection
               OpenStruct.new(file_origination_type: '') # replace with your object that the step will update
-            when :get_started
-              OpenStruct.new(name: '') # replace with your object that the step will update
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
@@ -162,6 +152,15 @@ module NfgCsvImporter
         "import_data"
       end
 
+      def get_file_origination_type_name
+        # on the first step, we need to get at the type name before it gets saved to the onboarding
+        # session. This is so we can set the steps based on the file origination type directly after
+        # the type is selected by the user. That selection may change which type the user wants to
+        # to submit, so it may be different from what was previously stored in the session
+        params[:nfg_csv_importer_onboarding_import_data_file_origination_type_selection].try(:[],:file_origination_type) ||
+        onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type')
+      end
+
       def get_onboarding_session
         # Use the following as an example of how an onboarding session would be either retrieved or instantiated
         # We call new rather than create because we don't want the onboarding session
@@ -181,6 +180,11 @@ module NfgCsvImporter
           session.delete(:onboarding_import_data_import_id)
           return nil
         end
+      end
+
+      def get_import_type
+        params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
+        onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type')
       end
 
       def new_onboarding_session
@@ -207,9 +211,8 @@ module NfgCsvImporter
       end
 
       def set_steps
-
         self.steps = if file_origination_type.nil?
-                      [:file_origination_type_selection, :get_started]
+                      [:file_origination_type_selection]
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end

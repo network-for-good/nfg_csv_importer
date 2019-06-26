@@ -1,6 +1,7 @@
+require "nfg_csv_importer/mailer_utilities/email_inlineable"
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
-  require "nfg_csv_importer/mailer_utilities/email_inlineable"
-  include NfgCsvImporter::EmailInlineable
+
+  include NfgCsvImporter::MailerUtilities::EmailInlineable
 
   layout 'nfg_csv_importer/mailer'
 
@@ -36,7 +37,7 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
       to: @recipient.email,
       subject: "Your #{@import.import_type} import has been deleted.",
       from: NfgCsvImporter.configuration.from_address,
-      reply_to: NfgCsvImporter.configuration.reply_to_address
+      reply_to: NfgCsvImporter.configuration.reply_to_address,
       skip_premailer: true
     ) do |format|
       format.html { inlined_html }
