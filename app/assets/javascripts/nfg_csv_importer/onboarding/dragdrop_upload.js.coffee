@@ -1,5 +1,35 @@
 #= require activestorage
 #= require nfg_csv_importer/onboarding/dropzone
+###
+  Location for these uploaded files will be specified in config/storage.yml
+  Storage service will be specified in environment file i.e `config.active_storage.service = :local`
+###
+
+class NfgCsvImporter.Uploader
+  constructor: (file, url, name) ->
+    @file = file
+    @url  = url
+    @name = name
+    upload = new ActiveStorage.DirectUpload(file, url, this);
+
+    upload.create (error, blob) =>
+      if (error)
+        # Handle the error
+      else
+        hiddenField = document.createElement('input')
+        hiddenField.setAttribute("type", "hidden")
+        hiddenField.setAttribute("value", blob.signed_id)
+        hiddenField.name = name
+        $('form')[0].appendChild(hiddenField)
+        file.previewElement.querySelector('a.dz-remove').dataset.signed_id = blob.signed_id
+
+  directUploadWillStoreFileWithXHR: (request) =>
+    request.upload.addEventListener("progress", (event) => @directUploadDidProgress(event))
+
+  directUploadDidProgress: (event) =>
+    this.file.previewElement.querySelector('.progress .progress-bar').style.width = "#{event.loaded * 100 / event.total}%"
+
+
 
 class NfgCsvImporter.DragdropUpload
   constructor: (@el) ->
@@ -14,6 +44,7 @@ class NfgCsvImporter.DragdropUpload
       url: url,
       autoQueue: false,
       addRemoveLinks: true,
+      acceptedFiles: 'text/csv,application/vnd.ms-excel',
       previewTemplate: "
         <div class='dz-preview row align-items-center'>
           <div class='col-2'>
@@ -48,34 +79,13 @@ class NfgCsvImporter.DragdropUpload
     myDropzone.on 'reset', =>
       @resetUI $(myDropzone.element)
     myDropzone.on 'addedfile', (file)=>
-      @directUploadFile(file, url, name)
+      new NfgCsvImporter.Uploader(file, url, name)
     myDropzone.on 'removedfile', (file)=>
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
       $("input[value='#{signed_id}']").remove()
 
   resetUI: (dropzoneEl) ->
     dropzoneEl.removeClass 'dz-started dz-drag-hover'
-
-  directUploadFile: (file, url, name) =>
-    upload = new ActiveStorage.DirectUpload(file, url, this);
-
-    upload.create (error, blob) =>
-      if (error)
-        # Handle the error
-      else
-        hiddenField = document.createElement('input')
-        hiddenField.setAttribute("type", "hidden")
-        hiddenField.setAttribute("value", blob.signed_id)
-        hiddenField.name = name
-        $('form')[0].appendChild(hiddenField)
-        file.previewElement.querySelector('a.dz-remove').dataset.signed_id = blob.signed_id
-
-  directUploadWillStoreFileWithXHR: (request) =>
-    request.upload.addEventListener("progress", (event) => @directUploadDidProgress(event))
-
-  directUploadDidProgress: (event) =>
-    root = this.el
-    $(root).find('.progress:last .progress-bar').css("width", "#{event.loaded * 100 / event.total}%")
 
 $ ->
   el = $("#pre_processing_files_upload")
