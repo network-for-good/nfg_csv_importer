@@ -9,8 +9,11 @@ require "font-awesome-rails"
 require "browser"
 require "nfg_ui"
 require "nfg_csv_importer/configuration"
+require "premailer/rails"
+require "letter_opener"
 
 module NfgCsvImporter
+
   module ApplicationHelper
     def method_missing(method, *args, &block)
       if (method.to_s.end_with?('_path') || method.to_s.end_with?('_url')) && main_app.respond_to?(method)

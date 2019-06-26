@@ -1,4 +1,9 @@
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
+  require "nfg_csv_importer/mailer_utilities/email_inlineable"
+  include NfgCsvImporter::EmailInlineable
+
+  layout 'nfg_csv_importer/mailer'
+
   BEGIN_STATUS = 'begun'
   QUEUED_STATUS = 'queued'
   COMPLETED_STATUS = 'completed'
@@ -13,8 +18,11 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
       to: @recipient.email,
       subject: "Your #{@import.import_type} import has #{status}!",
       from: NfgCsvImporter.configuration.from_address,
-      reply_to: NfgCsvImporter.configuration.reply_to_address
-    )
+      reply_to: NfgCsvImporter.configuration.reply_to_address,
+      skip_premailer: true
+    ) do |format|
+      format.html { inlined_html }
+    end
   end
 
   alias send_import_status send_import_result
@@ -29,7 +37,10 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
       subject: "Your #{@import.import_type} import has been deleted.",
       from: NfgCsvImporter.configuration.from_address,
       reply_to: NfgCsvImporter.configuration.reply_to_address
-    )
+      skip_premailer: true
+    ) do |format|
+      format.html { inlined_html }
+    end
   end
 
   private
