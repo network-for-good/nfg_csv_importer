@@ -44,7 +44,7 @@ class NfgCsvImporter.DragdropUpload
       url: url,
       autoQueue: false,
       addRemoveLinks: true,
-      acceptedFiles: 'text/csv,application/vnd.ms-excel',
+      acceptedFiles: 'text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       previewTemplate: "
         <div class='dz-preview row align-items-center'>
           <div class='col-2'>
