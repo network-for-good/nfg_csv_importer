@@ -52,7 +52,7 @@ en:
         links:
           ready_upload: "Ready? Upload Your File"
           scroll_down: "Scroll down to learn more"
-          file: "Template (CSV)"
+          file: "Download Template (CSV)"
           expand_column_headers: "Expand the full list of column headers"
         tooltips:
           coming_soon: "Coming Soon!"
@@ -72,6 +72,10 @@ en:
             disable_with:
               upload: "Preparing column mapping..."
       show:
+        headings:
+          overview: "Data import status overview"
+        body:
+          introduction: "Now that we've imported your data, here are the actual, final details for what was imported."
         status:
           complete: "imported"
           deleting: "queued for deletion"
