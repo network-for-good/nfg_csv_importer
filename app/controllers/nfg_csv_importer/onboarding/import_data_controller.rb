@@ -21,7 +21,7 @@ module NfgCsvImporter
 
       expose(:file_type_manager) {NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
-      expose(:file_origination_type_name) { onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type') }
+      expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
       expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
 
@@ -160,6 +160,15 @@ module NfgCsvImporter
 
       def onboarder_name
         "import_data"
+      end
+
+      def get_file_origination_type_name
+        # on the first step, we need to get at the type name before it gets saved to the onboarding
+        # session. This is so we can set the steps based on the file origination type directly after
+        # the type is selected by the user. That selection may change which type the user wants to
+        # to submit, so it may be different from what was previously stored in the session
+        params[:nfg_csv_importer_onboarding_import_data_file_origination_type_selection].try(:[],:file_origination_type) ||
+        onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type')
       end
 
       def get_onboarding_session
