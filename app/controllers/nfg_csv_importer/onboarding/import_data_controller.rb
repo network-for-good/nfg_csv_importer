@@ -24,7 +24,7 @@ module NfgCsvImporter
       expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
       expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
-
+      expose(:import_type ) { get_import_type }
       expose(:import) { get_import }
 
       # The onboarder presenter, when built, automatically
@@ -190,6 +190,11 @@ module NfgCsvImporter
           session.delete(:onboarding_import_data_import_id)
           return nil
         end
+      end
+
+      def get_import_type
+        params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
+        onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type')
       end
 
       def new_onboarding_session
