@@ -1,0 +1,20 @@
+en:
+  mailers:
+    nfg_csv_importer:
+      send_import_result_mailer:
+        alert:
+          queued: "Your uploaded files are about to be imported by Donor Management!"
+          processing: "We've begun importing your data!"
+          complete: "Your data has been imported! Awesome!"
+        introduction:
+          queued: "We're sending you this email to confirm that we've received your uploaded files for import"
+          processing: "It's official! We've begun importing your data into Donor Management. This is a great day!"
+          complete: "Fantastic! Your data has been imported."
+        what_to_expect:
+          queued: "You'll receive an email from us updating you at each milestone Donor Management's automagical import process to keep you in the loop."
+          processing: "We'll let you know when we've finished importing your data. Shouldn't be too long now."
+          complete: "You can check out the overview and outcome of your data import by visiting the import status page for this data import."
+        milestones:
+          queued: "Your data has been succesfully uploaded for import"
+          processing: "The importing process has begun"
+          complete: "The importing process has completed!"

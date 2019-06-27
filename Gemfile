@@ -13,7 +13,7 @@ gemspec
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'rails_5'
 
 gem 'reform-rails', '~> 0.1.7'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui.git', branch: 'feature/DM-5291_rails_5_automagical_imports_for_DMS'
+gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'feature/DM-5291_rails_5_automagical_imports_for_DMS'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better
