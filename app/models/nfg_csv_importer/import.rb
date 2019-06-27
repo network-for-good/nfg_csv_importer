@@ -2,7 +2,9 @@ module NfgCsvImporter
   class Import < ActiveRecord::Base
     attr_accessor :import_template_id # captures the id of a previous import from which fields mappings should be generated
 
-    NfgOnboarder::OnboardableOwner
+    include NfgOnboarder::OnboardableOwner
+    include NfgCsvImporter::Concerns::ImportServiceable
+    include NfgCsvImporter::Concerns::ImportFileValidateable
 
     # These statuses set as constants
     # are used as status "hooks" for UX workflows
@@ -28,14 +30,17 @@ module NfgCsvImporter
 
     validates_presence_of :import_type, :imported_by_id, :imported_for_id,  if: :run_validations?
     validates_presence_of :import_file, if: :run_validations?
-    validate :import_validation, on: [:create], if: :run_validations?
-    scope :order_by_recent, lambda { order("updated_at DESC") }
 
-    delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
-      :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
-      :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
-      :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
+    # For backwards compatibility (prior to using the onboarder),
+    # we only run import validations on create and if we are
+    # running all of the other validations. Most of these validations
+    # are happening in the onboarders forms, but in case we need to
+    # create an import file outside of that, we can still validate
+    # the import file.
+    validate :import_validation, on: [:create], if: :run_validations?
+    validate :import_file_extension_validation, on: [:create], if: :run_validations?
+
+    scope :order_by_recent, lambda { order("updated_at DESC") }
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -81,20 +86,6 @@ module NfgCsvImporter
       imported_by.try(:name)
     end
 
-    def import_validation
-      begin
-        errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
-        errors.add :base, "At least one empty column header was detected. Please ensure that all column headers contain a value." if empty_column_headers.present?
-        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
-      rescue  => e
-        errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
-        Rails.logger.error e.message
-        Rails.logger.error e.backtrace.join("\n")
-        return false
-      end
-      true
-    end
-
     def mapped_fields(header_column = nil)
       return @mapped_fields if @mapped_fields && !header_column
       # passing in a header column will return the mapped field object for just that header column
@@ -133,26 +124,12 @@ module NfgCsvImporter
       true
     end
 
-    def service
-      return @service if @service
-      service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      @service = service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
-    end
-
     def set_upload_error_file(errors_csv)
       errors_csv = maybe_append_to_existing_errors(errors_csv)
       csv_file = FilelessIO.new(errors_csv)
       csv_file.original_filename = "import_error_file.csv"
       self.error_file = csv_file
       self.save!
-    end
-
-    def time_zone
-      if imported_for.respond_to?(:time_zone) && imported_for.time_zone
-        imported_for.time_zone
-      else
-        'Eastern Time (US & Canada)'
-      end
     end
 
     def unmapped_columns
@@ -169,22 +146,6 @@ module NfgCsvImporter
     end
 
     private
-
-    def service_name
-      "#{import_type.capitalize}".classify + "ImportService"
-    end
-
-    def empty_column_headers
-      header.select { |h| h.blank? }
-    end
-
-    def duplicated_headers
-      duplicates = header.select { |f|  header.count(f) > 1 }.uniq
-      duplicates.inject({}) do |hsh, dupe_field|
-        hsh[dupe_field] = header.each.with_index.inject([]) { |arr, (field, index)| arr << (index + 1).to_s26.upcase if field == dupe_field; arr }
-        hsh
-      end
-    end
 
     def minutes_remaining
       return -1 if number_of_records.nil? || number_of_records == 0

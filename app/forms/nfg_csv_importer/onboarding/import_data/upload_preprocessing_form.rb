@@ -1,5 +1,13 @@
-class  NfgCsvImporter::Onboarding::ImportData::UploadPreprocessingForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
-  property :pre_processing_files
+# frozen_string_literal: true
 
-  validates :pre_processing_files, presence: true
+module NfgCsvImporter
+  module Onboarding
+    module ImportData
+      class UploadPreprocessingForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
+        property :pre_processing_files
+
+        validates :pre_processing_files, presence: true
+      end
+    end
+  end
 end

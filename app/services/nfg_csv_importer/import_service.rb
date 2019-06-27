@@ -57,6 +57,14 @@ class NfgCsvImporter::ImportService
 
   ## End column validation methods
 
+  def attached_file
+    #since this could be used in an AR class that is using carrierwave
+    # or in a Reform form, we have different ways of getting to the
+    # attached file.
+    return file.file if file.respond_to?(:file) # file is carrierwave uploader
+    file # file is just a file, which is the case in the reform object
+  end
+
   def valid_file_extension?
     %w{.csv .xls .xlsx}.include? file_extension
   end
@@ -222,7 +230,17 @@ class NfgCsvImporter::ImportService
   end
 
   def file_extension
-    ".#{file.file.extension}"
+    # since the file can come either directly from an upload
+    # as it does when coming from the onboarding step
+    # or from carrier wave, as it does when it later gets
+    # processed, how we get to the extension may be different.
+    if attached_file.respond_to?(:extension)
+      # carrier wave
+      ".#{attached_file.try(:extension)}"
+    elsif attached_file.respond_to?(:original_filename)
+      # directly attached
+      ".#{attached_file.original_filename.split(".").last}"
+    end
   end
 
   def spreadsheet
