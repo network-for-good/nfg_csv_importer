@@ -45,7 +45,7 @@ shared_examples_for "validate import file" do
 
     it "should add errors to base" do
       subject
-      expect(import_file_validateable_host.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
+      expect(import_file_validateable_host.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name', 'first_name' on columns A & C; 'email', 'email' on columns B & D"])
     end
   end
 
