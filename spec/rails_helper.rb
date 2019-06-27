@@ -48,6 +48,21 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# Capybara Screenshot Dimensions
+Capybara::Screenshot.webkit_options = { width: 1440, height: 768 }
+
+Capybara.default_max_wait_time = 5
+
+# Keep only the screenshots generated from the last failing test suite
+Capybara::Screenshot.prune_strategy = :keep_last_run
+
+if ENV['CIRCLECI'] == 'true'
+  Capybara.save_path = "/tmp/test-results/"
+  Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
+    "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
+  end
+end
+
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
