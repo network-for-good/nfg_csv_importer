@@ -1,3 +1,5 @@
+- import_presenter = NfgCsvImporter::ImportPresenter.new(@import, self)
+
 = flash[:error]
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   .container-fluid.container-flush{ id: dom_id(@import), data: { describe: 'import-show-page' } }
