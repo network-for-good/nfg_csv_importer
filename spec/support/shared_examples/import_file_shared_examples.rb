@@ -30,11 +30,11 @@ shared_examples_for "validate import file" do
   end
 
   context "when the file contains an empty header" do
-    let(:header_data) { ["first_name", "email", "", "last_name", "banana"] }
+    let(:header_data) { ["first_name", "email", "", "last_name", "banana", ""] }
     it { should_not be }
     it " should add an error to base" do
       subject
-      expect(import_file_validateable_host.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
+      expect(import_file_validateable_host.errors.messages[:base]).to eq(["The following columns have an empty header: C & F. Please ensure that all column headers contain a value." ])
     end
   end
 
@@ -46,6 +46,17 @@ shared_examples_for "validate import file" do
     it "should add errors to base" do
       subject
       expect(import_file_validateable_host.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name', 'first_name' on columns A & C; 'email', 'email' on columns B & D"])
+    end
+  end
+
+  context 'when the file contains headers that could be considered duplicates' do
+    let(:header_data) { ["first_name", "email", "first name", "First Name", "last_name", "banana"] }
+
+    it { expect(subject).not_to be }
+
+    it "should add errors to base" do
+      subject
+      expect(import_file_validateable_host.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name', 'first name', 'First Name' on columns A & C & D"])
     end
   end
 
