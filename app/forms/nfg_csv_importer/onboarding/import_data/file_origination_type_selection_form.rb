@@ -1,7 +1,14 @@
-class  NfgCsvImporter::Onboarding::ImportData::FileOriginationTypeSelectionForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
-  ## Add properties for your form below:
-  property :file_origination_type
+# frozen_string_literal: true
 
-  validates :file_origination_type, presence: true
+module NfgCsvImporter
+  module Onboarding
+    module ImportData
+      class  FileOriginationTypeSelectionForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
+        ## Add properties for your form below:
+        property :file_origination_type
 
+        validates :file_origination_type, presence: true
+      end
+    end
+  end
 end

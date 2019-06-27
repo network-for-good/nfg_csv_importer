@@ -24,13 +24,7 @@ module NfgCsvImporter
       end
 
       def show_nav?
-        # since any file origination type will require at least 3 steps
-        # and if we only have one step, Wicked wants to automatically take
-        # the user to the wicked_finish step after completing that first step
-        # we assume that if there is only 2 steps, we don't want to show
-        # the navigation.
-
-        active_step.to_sym != all_steps.first && h.controller.wizard_steps.length > 2
+        active_step.to_sym != all_steps.first
       end
     end
   end

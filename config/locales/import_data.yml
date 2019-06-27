@@ -76,7 +76,7 @@ en:
             modal:
         upload_post_processing:
           header:
-            message: 'Replace me at config/locales/import_data: upload_post_processing'
+            message: Select your file to be uploaded
             form: 'Replace me too'
             page:
           button:
