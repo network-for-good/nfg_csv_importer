@@ -1,70 +1,4 @@
 require 'rails_helper'
-
-shared_examples_for "validate import file" do
-  before(:each) do
-    csv_data = mock
-    csv_data.stubs(:row).with(1).returns(header_data)
-    NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
-  end
-
-  subject { import.valid? }
-
-  it { expect(subject).to be }
-
-  context "validate when there is no file" do
-    let(:file) { nil }
-
-    it { expect(subject).not_to be }
-
-    it "should add errors to base" do
-      subject
-      expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-    end
-  end
-
-  context "with invalid file extensions" do
-    let(:file) { '/icon.jpg'}
-
-    it { expect(subject).not_to be }
-
-    it "should add errors to base" do
-      subject
-      expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-    end
-  end
-
-  context "when the file contains an empty header" do
-    let(:header_data) { ["first_name", "email", "", "last_name", "banana"] }
-    it { should_not be }
-    it " should add an error to base" do
-      subject
-      expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
-    end
-  end
-
-  context 'when the file contains duplicate headers' do
-    let(:header_data) { ["first_name", "email", "first_name", "email", "last_name", "banana"] }
-
-    it { expect(subject).not_to be }
-
-    it "should add errors to base" do
-      subject
-      expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
-    end
-  end
-
-  context "when there's an error reading the file" do
-    before do
-      import.stubs(:duplicated_headers).raises(StandardError)
-    end
-
-    it "should add errors to base" do
-      subject
-      expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
-    end
-  end
-end
-
 describe NfgCsvImporter::Import do
 
   let(:entity) { create(:entity) }
@@ -81,6 +15,10 @@ describe NfgCsvImporter::Import do
   let(:error_file) { nil }
   let(:status) { :uploaded }
   let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file, status: status) }
+
+  # we use this so both the import file, and the onboarder UploadPostProcessingForm can have
+  # the shared validations run against it.
+  let(:import_file_validateable_host) { import }
 
   it { should validate_presence_of(:imported_by_id) }
   it { should validate_presence_of(:imported_for_id) }
@@ -121,8 +59,10 @@ describe NfgCsvImporter::Import do
     it { is_expected.not_to validate_presence_of(:import_file) }
   end
 
-  it 'does something' do
-    p import
+  context "when the import file has a status other than pending" do
+    subject { import_file_validateable_host.valid? }
+
+    it_behaves_like 'validate import file'
   end
 
   describe '#pre_processing_files' do
@@ -132,23 +72,6 @@ describe NfgCsvImporter::Import do
   end
 
   it { expect(import.save).to be }
-
-  describe "when pre_processing_type not present on create" do
-
-    it_behaves_like 'validate import file'
-  end
-
-
-  # TDH - Once we have decided on how to handle preprocessing files
-  # and how that effects validation, we may add the following back in
-
-  # describe "when pre_processing_type present on update" do
-  #   let!(:import) { FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin, error_file: error_file, status: status, pre_processing_type: 'paypal') }
-
-  #   before { import.import_file = file }
-
-  #   it_behaves_like 'validate import file'
-  # end
 
   describe "#service" do
     subject { import.service }
