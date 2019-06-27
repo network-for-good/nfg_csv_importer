@@ -43,6 +43,8 @@ class NfgCsvImporter.DragdropUpload
     myDropzone = new Dropzone(root.querySelector('.dropzone-target'), {
       url: url,
       autoQueue: false,
+      dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
+      preventDuplicates: true,
       addRemoveLinks: true,
       acceptedFiles: 'text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       previewTemplate: "
@@ -56,7 +58,6 @@ class NfgCsvImporter.DragdropUpload
               <small class='text-muted mr-2'>
                 (<span data-dz-size></span>)
               </small>
-              <span data-dz-remove class='text-danger'>remove file</span>
             </p>
             <div class='media align-items-center mt-1'>
               <div class='media-body'>
