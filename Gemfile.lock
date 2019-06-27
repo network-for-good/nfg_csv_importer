@@ -11,8 +11,8 @@ GIT
       wicked
 
 GIT
-  remote: https://github.com/network-for-good/nfg_ui.git
-  revision: 1590cbe3fabf8a07e8f45025612ffae9fa78a94c
+  remote: https://github.com/network-for-good/nfg_ui
+  revision: 5c152d7a50b7b0d7fafa0952ca4c0a768f692327
   branch: feature/DM-5291_rails_5_automagical_imports_for_DMS
   specs:
     nfg_ui (0.9.11)

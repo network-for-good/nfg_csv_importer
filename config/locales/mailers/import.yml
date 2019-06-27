@@ -1,9 +1,0 @@
-en:
-  nfg_csv_importer:
-    mailers:
-      import:
-        send_import_result:
-          alert:
-            complete: "Complete!"
-            processing: "Processing!"
-            queued: "Queued!"
