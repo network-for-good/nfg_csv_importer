@@ -16,7 +16,7 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
 
     mail(
       to: @recipient.email,
-      subject: "Your #{@import.import_type} import has #{status}!",
+      subject: "Your #{@import.import_type} import is #{status}!",
       from: NfgCsvImporter.configuration.from_address,
       reply_to: NfgCsvImporter.configuration.reply_to_address,
       skip_premailer: true
