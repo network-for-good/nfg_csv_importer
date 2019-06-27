@@ -3,30 +3,35 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
 
   def send_import_result_begins
     @status = NfgCsvImporter::ImportMailer::BEGIN_STATUS
+    @recipient = recipient
 
     NfgCsvImporter::ImportMailer.send_import_result(import, @status)
   end
 
   def send_import_result_queued
     @status = NfgCsvImporter::ImportMailer::QUEUED_STATUS
+    @recipient = recipient
 
     NfgCsvImporter::ImportMailer.send_import_result(import, @status)
   end
 
   def send_import_result_completed
     @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
+    @recipient = recipient
 
     NfgCsvImporter::ImportMailer.send_import_result(import, @status)
   end
 
   def send_import_result_completed_with_errors
     @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
+    @recipient = recipient
 
     NfgCsvImporter::ImportMailer.send_import_result(import(errors: true), @status)
   end
 
   def send_destroy_result
     @status = NfgCsvImporter::ImportMailer::COMPLETED_STATUS
+    @recipient = recipient
 
     NfgCsvImporter::ImportMailer.send_destroy_result(import)
   end
@@ -34,11 +39,7 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
   private
 
   def recipient
-    @recipient ||= FactoryGirl.create(:user, entity: entity)
-  end
-
-  def entity
-    @entity ||= FactoryGirl.create(:entity)
+    @recipient ||= FactoryGirl.create(:user, entity: FactoryGirl.create(:entity))
   end
 
   def import(errors: false, file_origination_type: 'paypal')
@@ -54,8 +55,8 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
       error_file: error_file,
       number_of_records: 39,
       number_of_records_with_errors: number_of_records_with_errors,
-      imported_for: entity,
-      imported_by: recipient,
+      imported_for: @recipient.entity,
+      imported_by: @recipient,
       status: @status,
       records_processed: records_processed,
       created_at: Time.now - 10.minutes,

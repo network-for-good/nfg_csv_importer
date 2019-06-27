@@ -1,6 +1,7 @@
 - import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
 
-= render partial: 'nfg_ui/email/alert', locals: { theme_color: :success, body: import_mailer_presenter.status_result_alert_message }
+- content_for :flash do
+  = render partial: 'nfg_ui/email/alert', locals: { theme_color: :success, body: import_mailer_presenter.status_result_alert_message }
 %p
   Dear #{@recipient.name},
 %p
