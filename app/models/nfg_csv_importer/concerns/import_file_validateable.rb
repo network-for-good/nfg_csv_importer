@@ -51,7 +51,7 @@ module NfgCsvImporter
         # empty_column_headers contains an array of column indexes starting at 0. We need to increment
         # to match a users expectation that they start at 1
         columns_that_have_empty_headers = empty_column_headers.map { |c| c + 1 }.map(&:to_s26).map(&:upcase).join(" & ")
-        errors.add :base, "The following columns have an empty header: #{ columns_that_have_empty_headers }"
+        errors.add :base, "The following columns have an empty header: #{ columns_that_have_empty_headers }. Please ensure that all column headers contain a value."
       end
 
       def validate_duplicate_headers
