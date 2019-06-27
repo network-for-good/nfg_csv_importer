@@ -1,13 +1,12 @@
-require "nfg_csv_importer/mailer_utilities/email_inlineable"
 class NfgCsvImporter::ImportMailer < ActionMailer::Base
-
+  require "nfg_csv_importer/mailer_utilities/email_inlineable"
   include NfgCsvImporter::MailerUtilities::EmailInlineable
 
-  layout 'nfg_csv_importer/mailer'
+  layout 'nfg_csv_importer/layouts/mailer'
 
-  BEGIN_STATUS = 'begun'
-  QUEUED_STATUS = 'queued'
-  COMPLETED_STATUS = 'completed'
+  BEGIN_STATUS = :processing
+  QUEUED_STATUS = :queued
+  COMPLETED_STATUS = :complete
 
   def send_import_result(import, status = COMPLETED_STATUS)
     @import = import.reload
