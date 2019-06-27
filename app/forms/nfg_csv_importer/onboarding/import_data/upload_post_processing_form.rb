@@ -9,6 +9,7 @@ module NfgCsvImporter
         ## Add properties for your form below:
 
         property :import_file
+        property :import_template_id
 
         validates :import_file, presence: true
         validate :import_validation
