@@ -3,6 +3,7 @@ module NfgCsvImporter
     attr_accessor :import, :mapped_fields
 
     delegate :header, :all_valid_columns, :field_aliases, to: :import
+
     def initialize(import)
       @import = import
       @mapped_fields = empty_column_headers_mappings
