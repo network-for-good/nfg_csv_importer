@@ -1,0 +1,5 @@
+- milestone = local_assigns[:milestone]
+- import_mailer_presenter = local_assigns[:import_mailer_presenter]
+
+= render layout: 'nfg_ui/email/media', locals: { image: import_mailer_presenter.milestone_image(milestone: milestone) } do
+    = import_mailer_presenter.milestone_typeface(milestone: milestone)
