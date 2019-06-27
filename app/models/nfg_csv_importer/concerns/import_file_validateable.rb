@@ -14,7 +14,7 @@ module NfgCsvImporter
       end
 
       def duplicated_headers
-        NfgCsvImporter::DupeHeaderFinder.new(header).call
+        @duplicated_headers ||= NfgCsvImporter::DupeHeaderFinder.new(header).call
       end
 
       def import_validation
@@ -50,15 +50,14 @@ module NfgCsvImporter
         return if empty_column_headers.empty?
         # empty_column_headers contains an array of column indexes starting at 0. We need to increment
         # to match a users expectation that they start at 1
-        columns_that_have_empty_headers = empty_column_headers.map { |c| c + 1 }.join(", ")
+        columns_that_have_empty_headers = empty_column_headers.map { |c| c + 1 }.map(&:to_s26).map(&:upcase).join(" & ")
         errors.add :base, "The following columns have an empty header: #{ columns_that_have_empty_headers }"
       end
 
       def validate_duplicate_headers
         return if duplicated_headers.empty?
-        duplicate_column_list_str = duplicated_headers.inject("") { |str, hdr, dupes| str += "#{ dupes.map(&:first).joins(", ") } are duplicate headers found in columns #{ dupes.map(&:last).map { |c| c + 1 }.joins(", ") }"}
-        #{duplicated_headers.map { |dupe, columns| "'#{dupe}' on columns #{columns.join(' & ')}" }.join('; ')
-        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. #{ duplicate_column_list_str }"
+        duplicate_column_list_str = duplicated_headers.inject([]) { |arr, (hdr, dupes)| arr << "#{ dupes.map(&:first).map { |hdr| "'#{ hdr }'" }.join(", ") } on columns #{ dupes.map(&:last).map { |c| c + 1 }.map(&:to_s26).map(&:upcase).join(" & ") }"}.join("; ")
+        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicate_column_list_str }"
       end
     end
   end
