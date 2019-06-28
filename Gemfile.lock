@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 5c152d7a50b7b0d7fafa0952ca4c0a768f692327
+  revision: 4f3e6006f8055034ec973762369cccbf6a16cb34
   branch: feature/DM-5291_rails_5_automagical_imports_for_DMS
   specs:
     nfg_ui (0.9.11)

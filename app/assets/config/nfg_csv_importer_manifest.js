@@ -10,4 +10,4 @@
 //= link_directory ../fonts/nfg_csv_importer/ff_chartwell .woff
 
 //= link_tree ../images/nfg_csv_importer
-
+//= link_directory ../images/nfg_csv_importer/email .png
