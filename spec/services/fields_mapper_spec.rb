@@ -13,7 +13,7 @@ describe NfgCsvImporter::FieldsMapper do
   # a whole lot of different files.
   let(:test_file_create_and_return_path) { create_test_upload_file(file_name, columns, [data_for_table]) }
   let(:file) { File.open(test_file_create_and_return_path) }
-  let(:file_name) { "test_file_#{ Time.now.to_s}.csv" }
+  let(:file_name) { "test_file_#{ Time.now.to_s(:number) }.csv" }
   let(:columns) { [first_name_field,'name','donor first name','firstname','contact name','Street Address'] }
   let(:data_for_table) { ["Jan", "Jan smith", "Jan", "Jane", "Ms. Smith", "123 This Street"] }
   let(:first_name_field) { "first_name" } # use this so we can insert different versions of the first name column that would otherwise be marked as duplicates
