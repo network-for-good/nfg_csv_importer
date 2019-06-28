@@ -4,11 +4,7 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
 
   layout 'nfg_csv_importer/layouts/mailer'
 
-  BEGIN_STATUS = :processing
-  QUEUED_STATUS = :queued
-  COMPLETED_STATUS = :complete
-
-  def send_import_result(import, status = COMPLETED_STATUS)
+  def send_import_result(import, status = NfgCsvImporter::Import::COMPLETED_STATUS)
     @import = import.reload
     @recipient = import.imported_by
     @imported_for = imported_for(@import)
