@@ -5,6 +5,9 @@ require 'factory_girl_rails'
 require 'shoulda/matchers'
 require 'database_cleaner'
 require 'rails-controller-testing'
+require 'capybara-screenshot/rspec'
+require 'capybara/email/rspec'
+
 Rails.backtrace_cleaner.remove_silencers!
 Rails::Controller::Testing.install
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
