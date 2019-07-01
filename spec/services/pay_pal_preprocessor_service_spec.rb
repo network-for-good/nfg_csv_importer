@@ -25,10 +25,16 @@ describe PayPalPreprocessorService do
       expect(import.fields_mapping).to eq headers
     end
 
-    it 'should set status to uploaded' do
+    it 'should set status' do
       subject
       import.reload
       expect(import.status).to eq 'uploaded'
+    end
+
+    it 'should set import_type' do
+      subject
+      import.reload
+      expect(import.import_type).to eq 'individual_donation'
     end
   end
 end
