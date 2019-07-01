@@ -1,12 +1,11 @@
 - import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
 - locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
 
-- if import_mailer_presenter.show_visit_show_page_button? && !import_mailer_presenter.show_errors?
+- if import_mailer_presenter.show_successful_import_illustration?
   = image_tag image_path('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240'
 
-- else
+- if import_mailer_presenter.show_steps?
   %row
-    -# %h5= t 'headings.milestones', scope: locales_scope
     %columns{ small: 12, large: 4 }
       -# Milestone 1
       = render partial: 'nfg_csv_importer/import_mailer/send_import_result/milestone', locals: { milestone: NfgCsvImporter::Import::QUEUED_STATUS, import_mailer_presenter: import_mailer_presenter }

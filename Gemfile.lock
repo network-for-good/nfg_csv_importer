@@ -10,23 +10,6 @@ GIT
       reform
       wicked
 
-GIT
-  remote: https://github.com/network-for-good/nfg_ui
-  revision: e6d1761f2776bea349ca722b1257616e135fe48c
-  branch: feature/DM-5291_rails_5_automagical_imports_for_DMS
-  specs:
-    nfg_ui (0.9.11)
-      autoprefixer-rails (= 9.4.9)
-      bootstrap (= 4.3.1)
-      browser (~> 1.1)
-      coffee-script (~> 2.4)
-      font-awesome-rails (~> 4.7)
-      inky-rb (~> 1.3.7)
-      jquery-rails (~> 4.3)
-      rails (>= 4.2.0)
-      sass-rails (~> 5.0)
-      select2-rails (~> 4.0)
-
 PATH
   remote: .
   specs:
@@ -38,6 +21,7 @@ PATH
       haml
       jquery-rails
       nfg_onboarder (~> 0.0.3)
+      nfg_ui (~> 0.9)
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 5.0)
       reform-rails (~> 0.1.7)
@@ -212,6 +196,17 @@ GEM
     minitest (5.11.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
+    nfg_ui (0.9.11)
+      autoprefixer-rails (= 9.4.9)
+      bootstrap (= 4.3.1)
+      browser (~> 1.1)
+      coffee-script (~> 2.4)
+      font-awesome-rails (~> 4.7)
+      inky-rb (~> 1.3.7)
+      jquery-rails (~> 4.3)
+      rails (>= 4.2.0)
+      sass-rails (~> 5.0)
+      select2-rails (~> 4.0)
     nio4r (2.3.1)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
@@ -380,7 +375,6 @@ DEPENDENCIES
   factory_girl_rails
   nfg_csv_importer!
   nfg_onboarder!
-  nfg_ui!
   pry
   pry-byebug
   puma
