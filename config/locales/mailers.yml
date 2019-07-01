@@ -19,7 +19,7 @@ en:
 
         body:
           introduction:
-            queued: "We're sending you this email to confirm that we've received your uploaded files for import"
+            queued: "We're sending you this email to confirm that we've received your uploaded files for import."
             processing: "It's official! We've begun importing your data into Donor Management. This is a great day!"
             complete: "Fantastic! Your data has been imported."
           what_to_expect:
@@ -27,8 +27,8 @@ en:
             processing: "We'll let you know when we've finished importing your data. Shouldn't be too long now."
             complete: "You can check out the overview and outcome of your data import by visiting the import status page for this data import."
         milestones:
-          queued: "Your data has been succesfully uploaded for import"
-          processing: "The importing process has begun"
-          complete: "The importing process has completed!"
+          queued: "Uploaded"
+          processing: "Processing"
+          complete: "Complete!"
         buttons:
           visit_show_page: "Visit the import results page"
