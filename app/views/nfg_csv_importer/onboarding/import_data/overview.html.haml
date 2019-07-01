@@ -5,7 +5,7 @@
       .col-12.col-lg-4.mt-3
         = ui.nfg :tile do
           = ui.nfg :tile_section, class: 'text-center' do
-            = image_tag "nfg_csv_importer/illustrations/setup-success.png", style: 'height: auto; max-height: 240px;'
+            = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/setup-success.png', alt: 'Setup Success'
             = ui.nfg :typeface, heading: 'Setting up your spreadsheet for success', class: 'mt-3 mb-2'
             = ui.nfg :typeface, :muted, body: t('body.intro', scope: [locale_namespace, :overview]), class: 'mb-0'
             = ui.nfg :button, href: nfg_csv_importer.template_imports_path(import_type: import_type), body: t("nfg_csv_importer.imports.new.links.file"), icon: 'download', class: 'mt-3'
