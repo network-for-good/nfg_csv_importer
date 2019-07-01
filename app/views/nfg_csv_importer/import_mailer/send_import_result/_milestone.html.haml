@@ -4,6 +4,3 @@
 = image_tag image_path(import_mailer_presenter.milestone_image(milestone: milestone)), class: 'text-center', width: '36', height: '36'
 %spacer{ size: spacer(:quarter) }
 %p.m-b-0.text-center= import_mailer_presenter.milestone_typeface(milestone: milestone)
-
--# = render layout: 'nfg_ui/email/media', locals: { image: import_mailer_presenter.milestone_image(milestone: milestone) } do
--#   = import_mailer_presenter.milestone_typeface(milestone: milestone)

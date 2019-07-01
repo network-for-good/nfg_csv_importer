@@ -1,12 +1,6 @@
 - import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
 - locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
 
-- content_for :flash do
-  = render partial: 'nfg_ui/email/alert', locals: { theme_color: :success, body: import_mailer_presenter.status_result_alert_message }
-
--# = render partial: 'nfg_ui/email/header', locals: { heading: t('headings.hello', scope: locales_scope, first_name: @recipient.first_name) }
-
-
 - if import_mailer_presenter.show_visit_show_page_button? && !import_mailer_presenter.show_errors?
   = image_tag image_path('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240'
 
