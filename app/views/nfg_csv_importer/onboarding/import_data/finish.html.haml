@@ -1,2 +1,3 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  This will be the page you get to after you've approved import or sent your files to NFG. From here, you go to the import's show page.
+  = image_tag "nfg_csv_importer/illustrations/finish-success.png", style: 'height: auto; max-height: 240px;', alt: 'Succesfully finished'
+  = ui.nfg :typeface, body: "This will be the page you get to after you've approved import or sent your files to NFG. From here, you go to the import's show page.", class: 'mt-3'
