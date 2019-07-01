@@ -14,7 +14,7 @@
         = ui.nfg :tile do
 
           -# Requirements for spreadsheet
-          = ui.nfg :tile_section, heading: t('headings.requirements', scope: [locale_namespace, :overview], import_type: import_type) do
+          = ui.nfg :tile_section, heading: t('headings.requirements', scope: [locale_namespace, :overview], import_type: import_type.pluralize.humanize.downcase) do
             = ui.nfg :alert, :warning, class: 'mt-3 mb-0', dismissible: false do
               %ul.list-unstyled.mb-0
                 - import.column_validation_rules.each do |column_rule|

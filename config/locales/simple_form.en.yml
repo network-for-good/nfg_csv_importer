@@ -12,15 +12,6 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
 
-    labels:
-
-      import:
-        file_origination_type:
-          constant_contact: 'Every single contact can be brought over to donor management.'
-          mailchimp: 'One button click to bring over everyone on your mailing list.'
-          other: 'Simple, straight forward with you in the driver’s seat.'
-          paypal: 'Instantly import all of your donors and donations.'
-
     # Examples
     # labels:
     #   defaults:
