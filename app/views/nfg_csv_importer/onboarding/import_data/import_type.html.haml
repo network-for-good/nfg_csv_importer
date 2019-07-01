@@ -1,17 +1,11 @@
-
-- import_type_column_structure_classes = "display-flex"
-- language_scope = [:nfg_csv_importer, :imports, :index]
-
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
-    = f.select :import_type, import_definitions.keys, { include_blank: true }
-    -# - import_definitions.each do |import_type, definition|
-    -#   %div{ class: import_type_column_structure_classes, id: import_type }
-    -#     .card.flex-1.m-b-2
-    -#       .card-block
-    -#         %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
-    -#         .card-text.m-b-1
-    -#           = simple_format(definition.headline)
-    -#         = link_to nfg_csv_importer.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
-    -#           = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
+    - import_definitions.each do |import_type, definition|
+      - import_type = import_type.to_s
+      .col-md-4.col-6.mt-3{ data: { describe: "#{import_type}_import_type" } }
+        .custom-control.custom-radio.custom-control-block.d-flex.align-items-start.h-100
+          = f.radio_button 'import_type', import_type, class: "custom-control-input"
+          %label.custom-control-label.text-center.w-100.h-100.bg-white{ for: "nfg_csv_importer_onboarding_import_data_import_type_import_type_#{import_type}" }
+            = ui.nfg :typeface, title: import_type.pluralize.titleize
+            = ui.nfg :typeface, body: definition.headline, class: 'mt-1 mb-0 text-break'
