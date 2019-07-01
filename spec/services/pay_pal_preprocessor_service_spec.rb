@@ -21,8 +21,8 @@ describe PayPalPreprocessorService do
     it 'should store field mappings' do
       subject
       import.reload
-      headers = service.send(:mapped_headers).merge(service.send(:extra_headers))
-      expect(import.fields_mapping).to eq headers
+      headers =  %w{address address_2 amount city country description donated_at email home_phone name payment_method state transaction_id zip_code}
+      expect(import.fields_mapping).to eq Hash[headers.collect { |v| [v.to_s, v.to_s] }]
     end
 
     it 'should set status' do

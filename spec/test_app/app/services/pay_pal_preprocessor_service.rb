@@ -19,9 +19,10 @@ class PayPalPreprocessorService
     import.import_file = temp_file
     import.status = :uploaded
     import.import_type = 'individual_donation'
-    import.fields_mapping = mapped_headers.merge(extra_headers)
+    import.fields_mapping = fields_mappings
     import.save!
     temp_file.close
+    FileUtils.rm_rf temp_folder
   end
 
   protected
@@ -40,8 +41,7 @@ class PayPalPreprocessorService
   end
 
   def temp_folder
-    @temp_folder ||= File.join(Rails.root.join('tmp').to_s,
-                               'imports', import.id.to_s)
+    @temp_folder ||= File.join(Rails.root.join('tmp').to_s, 'imports', import.id.to_s)
   end
 
   def get_document(file)
@@ -104,6 +104,12 @@ class PayPalPreprocessorService
     {
       payment_method: 'payment_method'
     }
+  end
+
+  def fields_mappings
+    fields = mapped_headers.except(* %i{date time zone}).keys
+    fields += %i{payment_method donated_at}
+    Hash[fields.collect { |v| [v.to_s, v.to_s] }]
   end
 
   def get_time_string(number)

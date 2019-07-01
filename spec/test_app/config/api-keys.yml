@@ -1,0 +1,5 @@
+defaults:
+  aws_access_key_id: AKIAIWZ54BEWTCCUMYBQ
+  aws_secret_access_key: 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
+  aws_s3_bucket: nfg-dm-development
+development:
