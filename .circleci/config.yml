@@ -34,6 +34,7 @@ jobs:
           key: v3-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
+      - run: cp spec/test_app/config/api-keys.yml.example spec/test_app/config/api-keys.yml
       - run: cd spec/test_app && bundle exec rake db:create db:migrate db:schema:load
 
       # run tests!
