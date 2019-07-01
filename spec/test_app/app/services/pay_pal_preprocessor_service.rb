@@ -9,17 +9,19 @@ class PayPalPreprocessorService
 
   def process
     files = retrieve_pre_processing_files
+    temp_file = Tempfile.new(['PayPalDonations', '.csv'])
     files.each do |file_path|
       file = File.open(file_path)
       document = get_document(file)
       data = convert_row_to_hash_with_ignored_columns_removed(document)
-      temp_file = save_data_to_csv(data)
-      import.import_file = temp_file
-      import.status = :uploaded
-      import.fields_mapping = mapped_headers.merge(extra_headers)
-      import.save!
-      temp_file.close
+      temp_file = save_data_to_csv(data,temp_file)
     end
+    import.import_file = temp_file
+    import.status = :uploaded
+    import.import_type = 'individual_donation'
+    import.fields_mapping = mapped_headers.merge(extra_headers)
+    import.save!
+    temp_file.close
   end
 
   protected
@@ -69,8 +71,7 @@ class PayPalPreprocessorService
     data
   end
 
-  def save_data_to_csv(data)
-    temp_file = Tempfile.new(['PayPalDonations', '.csv'])
+  def save_data_to_csv(data, temp_file)
 
     CSV.open(temp_file, 'w', {:col_sep => ','}) do |csv|
       csv << data.first.keys
