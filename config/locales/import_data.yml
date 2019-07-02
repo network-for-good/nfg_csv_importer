@@ -57,10 +57,10 @@ en:
           stats:
             # These should probably be moved out of the import gem and into the test app configuration / yml file... or figured out automatically from the import type.
             donation:
-              heading: Contacts snapshot
+              heading: Donations snapshot
               total: 'Total Est. Donations'
             user:
-              heading: Donations snapshot
+              heading: Contacts snapshot
               total: 'Total Est. Contacts'
         field_mapping:
           header:

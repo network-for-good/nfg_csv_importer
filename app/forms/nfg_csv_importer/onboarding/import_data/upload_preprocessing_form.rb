@@ -6,7 +6,7 @@ module NfgCsvImporter
       class UploadPreprocessingForm < NfgCsvImporter::Onboarding::ImportData::BaseForm
         property :pre_processing_files
 
-        validates :pre_processing_files, presence: true
+        validates :pre_processing_files, presence: false
       end
     end
   end

@@ -17,6 +17,12 @@ module NfgCsvImporter
     STATUSES = [:pending, :uploaded, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
+    STATISTICS_TOTAL_SUM_KEY = 'total_amount'
+    STATISTICS_ZERO_AMOUNT_DONATIONS_KEY = "zero_amount_donations"
+    STATISTICS_NON_ZERO_AMOUNT_DONATIONS_KEY = "non_zero_amount_donations"
+    STATISTICS_TOTAL_CONTACTS_KEY = 'total_contacts'
+    STATISTICS_UNIQUE_ADDRESSES_KEY = 'num_addresses'
+    STATISTICS_UNIQUE_EMAILS_KEY = 'num_emails'
     serialize :fields_mapping
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined, :pending]
@@ -63,7 +69,17 @@ module NfgCsvImporter
         @stats[:column_count] += 1
         @stats["#{ mf.status }_column_count".to_sym] += 1
       end
+
+      @stats.merge!(preview_stats) if preview_stats.is_a?(Hash)
       @stats
+    end
+
+    def preview_stats
+      begin
+        JSON.parse(statistics) unless statistics.nil?
+      rescue StandardError => e
+        Rails.logger.error("Failed to parse statistics for import: #{e.message}")
+      end
     end
 
     def duplicated_field_mappings
