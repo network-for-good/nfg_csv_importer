@@ -1,4 +1,5 @@
 - import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
+
 - locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
 
 - if import_mailer_presenter.show_successful_import_illustration?
@@ -41,7 +42,7 @@
         %p= t 'alert.error', scope: locales_scope
         %p
           You can download the error file
-          = link_to 'by clicking here.', import_url(@import, @url_options)
+          = link_to 'by clicking here.', import_url(@import, @url_options), id: 'error_link'
 
     - if import_mailer_presenter.show_visit_show_page_button?
       %spacer{ size: spacer(:base) }
