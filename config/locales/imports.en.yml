@@ -48,7 +48,7 @@ en:
           prepare: "There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our"
           requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
           no_description: "<span style='opacity:.4;'>No additional details</span>"
-          file_types: "Be sure your spreadsheet is saved as %{acceptable_file_types} before uploading"
+          file_types: "Be sure your spreadsheet is saved as %{acceptable_file_types} before uploading."
         links:
           ready_upload: "Ready? Upload Your File"
           scroll_down: "Scroll down to learn more"
@@ -63,7 +63,7 @@ en:
               prompt:
                 import_template_id: "Do not apply a mapping from a previous import"
           labels:
-            import_template_id: "Optional: apply a column mapping from a previous import"
+            import_template_id: "Want to apply mapping from a previous import?"
           help_text:
             import_template_id_show_hide: "Additional Info"
             import_template_id: "If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import."
