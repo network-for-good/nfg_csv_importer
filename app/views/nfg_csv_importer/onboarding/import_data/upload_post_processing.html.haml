@@ -7,7 +7,7 @@
       = ui.nfg :tile_section do
         -# TODO: Error state on the simple_form file field doesn't show up yet. Solve later.
         = f.input :import_file, as: :file, label: nil
-      = ui.nfg :tile_section, render_unless: onboarder_presenter.show_import_template_menu?, heading: t("form.labels.import_template_id", scope: language_scope).html_safe do
+      = ui.nfg :tile_section, render_if: onboarder_presenter.show_import_template_menu?, heading: t("form.labels.import_template_id", scope: language_scope).html_safe do
 
         = ui.nfg :collapse, :collapsed, id: 'info', heading: 'More information about this', body: t("form.help_text.import_template_id", scope: language_scope)
 
