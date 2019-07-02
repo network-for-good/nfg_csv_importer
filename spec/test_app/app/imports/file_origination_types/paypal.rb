@@ -19,6 +19,10 @@ module FileOriginationTypes
       def skip_steps
         %i[overview import_type upload_post_processing field_mapping]
       end
+
+      def post_preprocessing_upload_hook
+        -> (import) { PayPalPreprocessorService.new(import).process }
+      end
     end
   end
 end

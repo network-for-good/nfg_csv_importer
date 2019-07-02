@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PayPalPreprocessorService do
   include ActionDispatch::TestProcess
 
-  let(:import) { FactoryGirl.create(:import,
+  let(:import) { FactoryGirl.create(:import, :pending,
                                     pre_processing_files: fixture_file_upload(File.open('spec/fixtures/PayPal_donations.xlsx')))}
   let(:service) { PayPalPreprocessorService.new(import) }
 
@@ -21,8 +21,8 @@ describe PayPalPreprocessorService do
     it 'should store field mappings' do
       subject
       import.reload
-      headers =  %w{address address_2 amount city country description donated_at email home_phone name payment_method state transaction_id zip_code}
-      expect(import.fields_mapping).to eq Hash[headers.collect { |v| [v.to_s, v.to_s] }]
+      headers = service.send(:mapped_headers_for_post_processing_file)
+      expect(import.fields_mapping).to eq headers
     end
 
     it 'should set status' do

@@ -19,7 +19,7 @@ class PayPalPreprocessorService
     import.import_file = temp_file
     import.status = :uploaded
     import.import_type = 'individual_donation'
-    import.fields_mapping = fields_mappings
+    import.fields_mapping = mapped_headers_for_post_processing_file
     import.save!
     temp_file.close
     FileUtils.rm_rf temp_folder
@@ -98,6 +98,10 @@ class PayPalPreprocessorService
       home_phone: 'Contact Phone Number',
       description: 'Note'
     }
+  end
+
+  def mapped_headers_for_post_processing_file
+    Hash[mapped_headers.merge(extra_headers).keys.map { |k| [k,k]}]
   end
 
   def extra_headers
