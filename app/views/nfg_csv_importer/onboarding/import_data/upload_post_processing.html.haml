@@ -1,11 +1,15 @@
 - language_scope = [:nfg_csv_importer, :imports, :new] # share language with the imports new page
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t("content.file_types", scope: language_scope, acceptable_file_types: "<strong>.csv, .xls</strong> or <strong>.xlsx</strong>").html_safe, header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
-    .col-9
-      = f.input :import_file do
-        = f.file_field :import_file
+    .col
+      = ui.nfg :tile_section do
+        -# TODO: Error state on the simple_form file field doesn't show up yet. Solve later.
+        = f.input :import_file, as: :file, label: nil
+      = ui.nfg :tile_section, render_unless: onboarder_presenter.show_import_template_menu?, heading: t("form.labels.import_template_id", scope: language_scope).html_safe do
 
-      = f.input :import_template_id do
-        = f.select :import_template_id, options_from_collection_for_select(previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "c-select"}
+        = ui.nfg :collapse, :collapsed, id: 'info', heading: 'More information about this', body: t("form.help_text.import_template_id", scope: language_scope)
+
+        = f.input :import_template_id, label: false, wrapper_html: { class: 'mb-0' } do
+          = f.select :import_template_id, options_from_collection_for_select(previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "custom-select mt-3 mb-0" }
