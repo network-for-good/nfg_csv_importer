@@ -1,7 +1,7 @@
 class ImportDefinition < NfgCsvImporter::ImportDefinition
 
   def self.import_types
-    %w{users donation users_for_testing_overview}
+    %w{users donation users_for_testing_overview individual_donation}
   end
 
   attr_accessor :imported_for
@@ -83,4 +83,20 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       description: %Q{Allows you to import donations}
     }
   end
+
+  def individual_donation
+    # this is just a skinny version of the real individual_donation import
+    # that is used in DM. We have it here so we can test the pay_pal_preprocessor_service
+    {
+      required_columns: %w{},
+      optional_columns: %w{},
+      default_values: {},
+      alias_attributes: [],
+      field_aliases: {},
+      column_validation_rules: [],
+      class_name: "IndividualDonationImport",
+      column_descriptions: {}
+      }
+  end
+
 end
