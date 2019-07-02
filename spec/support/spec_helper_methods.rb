@@ -14,3 +14,22 @@ end
 def get_test_upload_file_path(file_name = "pt_org_members_valid.txt")
   f = File.expand_path(Rails.root.join('/tmp/', file_name))
 end
+
+def drop_in_dropzone(file_path)
+  # Generate a fake input selector
+  page.execute_script <<-JS
+    fakeFileInput = window.$('<input/>').attr(
+      {id: 'fakeFileInput', type:'file'}
+    ).appendTo('body');
+  JS
+  # Attach the file to the fake input selector with Capybara
+  attach_file("fakeFileInput", file_path)
+
+  # Add the file to a fileList array
+  # Trigger the fake drop event
+  page.execute_script <<-JS
+    var fileList = [fakeFileInput.get(0).files[0]]
+    var e = jQuery.Event('drop', { dataTransfer : { files : fileList } });
+    $('.dropzone-target')[0].dropzone.listeners[0].events.drop(e);
+  JS
+end
