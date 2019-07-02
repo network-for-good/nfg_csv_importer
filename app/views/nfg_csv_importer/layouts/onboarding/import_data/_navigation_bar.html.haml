@@ -10,8 +10,7 @@
       = ui.nfg :steps, render_if: navigation_bar_presenter.show_nav? do
         - controller.wizard_steps.each_with_index do |step, i|
           - i += 1
-          - next unless navigation_bar_presenter.show_step?(step)
-          = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: wizard_path(step), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
+          = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: navigation_bar_presenter.step_href(step, wizard_path(step)), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
             = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
 
     .col-6.col-lg-auto.py-1.order-lg-1
