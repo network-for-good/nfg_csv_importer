@@ -2,56 +2,44 @@ require "rails_helper"
 
 shared_examples_for "an import notification with an errors file link" do
   it "shows the error link" do
-    expect(subject.body).to match("Link to error file")
+    expect(subject.body).to match("error_link")
     expect(subject.body).to match(%Q{test.example.com})
     expect(subject.body).to match("nfg_csv_importer/#{import.id}")
   end
 end
 
-describe NfgCsvImporter::ImportMailer, type: :feature do
-
-  let(:import) { FactoryGirl.create(:import, import_file: file,
-    number_of_records: 100, number_of_records_with_errors: number_of_records_with_errors,
-    imported_for: entity, imported_by: admin) }
-  let(:admin) {  FactoryGirl.create(:user) }
-  let(:entity) { create(:entity) }
-  let(:number_of_records_with_errors) { 0 }
-  let(:file) { File.open("spec/fixtures/subscribers.csv")}
-  let(:translation_scope) { [:import_mailer, :send_import_result] }
+describe NfgCsvImporter::ImportMailer, type: :mailer do
+  let(:import) { FactoryGirl.create(:import, *import_traits) }
 
   describe "#send_import_result" do
-    subject { NfgCsvImporter::ImportMailer.send_import_result(import).deliver }
+    before { @import = import } # for the view
+    let(:import_traits) { [:is_paypal, :is_complete] }
+    subject { NfgCsvImporter::ImportMailer.send_import_result(@import).deliver_now }
 
-    it { expect(subject.subject).to eq("Your #{import.import_type} import is complete!") }
+    it { expect(subject.subject).to eq("Your #{@import.import_type} import is complete!") }
 
     it { expect(Rails.configuration.default_from_address).to match(subject.from.first) }
 
-    it { expect(subject.to).to eq([admin.email])}
-
-    it { expect(subject.body).to match("you imported a #{import.import_type} file") }
+    it { expect(subject.to).to eq([import.imported_by.email])}
 
     describe "when the import have errors" do
+      let(:import_traits) { [:is_paypal, :is_complete_with_errors] }
       context "With multiple errors" do
-        let(:number_of_records_with_errors) { 20 }
-        it_behaves_like "an import notification with an errors file link"
-      end
-
-      context "with only one error" do
-        let(:number_of_records_with_errors) { 1 }
         it_behaves_like "an import notification with an errors file link"
       end
     end
 
     describe "when the import don't have any have errors" do
       it "should not have any error link" do
-        expect(subject.body).not_to match("Link to error file")
+        expect(subject.body).not_to match("error_link")
       end
     end
 
     context 'when the import status is queued' do
-      subject { NfgCsvImporter::ImportMailer.send_import_result(import, NfgCsvImporter::ImportMailer::QUEUED_STATUS).deliver }
+      let(:import) { FactoryGirl.create(:import, :is_queued) }
+      subject { NfgCsvImporter::ImportMailer.send_import_result(import, NfgCsvImporter::Import::QUEUED_STATUS).deliver_now }
 
-      it { expect(subject.subject).to eq("Your #{import.import_type} import has #{NfgCsvImporter::ImportMailer::QUEUED_STATUS}!") }
+      it { expect(subject.subject).to eq("Your #{import.import_type} import is #{NfgCsvImporter::Import::QUEUED_STATUS}!") }
     end
   end
 end
