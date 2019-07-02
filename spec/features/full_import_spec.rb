@@ -49,6 +49,7 @@ describe "Running through the full import process", js: true do
 
       # Confirm the css change is complete before checking
       # that the language is present.
+      sleep 1
       expect(page.find('#card_header_other .label-danger')).to be
 
       within("#importer_header_stats") do
