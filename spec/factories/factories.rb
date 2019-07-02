@@ -43,6 +43,12 @@ FactoryGirl.define do
       processing_started_at { 10.minutes.ago }
     end
 
+    trait :pending do
+      status { :pending }
+      import_type nil
+      import_file nil
+    end
+
 
   end
 end
