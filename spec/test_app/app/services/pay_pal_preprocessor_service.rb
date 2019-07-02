@@ -15,8 +15,9 @@ class PayPalPreprocessorService
       data = convert_row_to_hash_with_ignored_columns_removed(document)
       temp_file = save_data_to_csv(data)
       import.import_file = temp_file
+      import.import_type = 'user' # this needs to be changed when moved to donor management
       import.status = :uploaded
-      import.fields_mapping = mapped_headers.merge(extra_headers)
+      import.fields_mapping = mapped_headers_for_post_processing_file
       import.save!
       temp_file.close
     end
@@ -97,6 +98,10 @@ class PayPalPreprocessorService
       home_phone: 'Contact Phone Number',
       description: 'Note'
     }
+  end
+
+  def mapped_headers_for_post_processing_file
+    Hash[mapped_headers.merge(extra_headers).keys.map { |k| [k,k]}]
   end
 
   def extra_headers
