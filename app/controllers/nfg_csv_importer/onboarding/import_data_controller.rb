@@ -19,7 +19,7 @@ module NfgCsvImporter
 
       expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
 
-      expose(:file_type_manager) {NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
+      expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
@@ -105,7 +105,11 @@ module NfgCsvImporter
 
       def upload_preprocessing_on_valid_step
         session[:onboarding_import_data_import_id] = form.model.id
-        # you can add logic here to perform actions once a step has completed successfully
+        # each file origination type may have different processes
+        # they want run after the preprocessed files are uploaded.
+        # They should be defined in the file_origination type and
+        # must respond to #call (as any Proc/lambda would)
+        file_origination_type.post_preprocessing_upload_hook.call(import)
       end
 
       def overview_on_valid_step
@@ -126,13 +130,13 @@ module NfgCsvImporter
       def get_form_target
         case step
             when :file_origination_type_selection
-              OpenStruct.new(file_origination_type: '') # replace with your object that the step will update
+              OpenStruct.new(file_origination_type: file_origination_type_name) # replace with your object that the step will update
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
               new_import
             when :import_type
-              new_import
+              import || new_import
             when :upload_post_processing
               import
             when :field_mapping
