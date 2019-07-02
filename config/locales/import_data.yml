@@ -14,13 +14,10 @@ en:
         file_origination_type_selection:
           header:
             message: 'Where is the data you are importing coming from?'
-            form: 'Replace me too'
+            form: ''
             page:
           button:
             <<: *default_buttons
-          button:
-            back: 'Prev'
-            submit: Next
           label:
           placeholder:
           hint:
@@ -64,8 +61,8 @@ en:
               total: 'Total Est. Contacts'
         field_mapping:
           header:
-            message: 'Replace me at config/locales/import_data: field_mapping'
-            form: 'Replace me too'
+            message: ''
+            form: ''
             page:
           button:
             <<: *default_buttons
@@ -76,9 +73,8 @@ en:
             modal:
         upload_post_processing:
           header:
-            message: Select your file to be uploaded
-            form: 'Replace me too'
-            page:
+            message: Let's upload your spreadsheet
+            form: ''
           button:
             <<: *default_buttons
           label:
@@ -88,9 +84,9 @@ en:
             modal:
         import_type:
           header:
-            message: 'Replace me at config/locales/import_data: import_type'
-            form: 'Replace me too'
-            page:
+            message: 'What type of data are you importing?'
+            form: ''
+            page: "This choice will determine how your data is interpretted when it's being imported."
           button:
             <<: *default_buttons
           label:
@@ -113,7 +109,7 @@ en:
         overview:
           header:
             message: 'Setting up your spreadsheet for success'
-            form: 'Replace me too'
+            form: ''
             page: ''
           button:
             <<: *default_buttons
