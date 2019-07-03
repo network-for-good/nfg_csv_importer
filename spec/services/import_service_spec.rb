@@ -40,10 +40,12 @@ describe NfgCsvImporter::ImportService do
   let(:file_name) {"/subscribers.csv"}
   let!(:admin) {  FactoryGirl.create(:user)}
   let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
-  let(:import) { FactoryGirl.build(:import,
-                                    id: 1,
-                                    import_file: File.open("spec/fixtures#{file_name}"),
-                                    fields_mapping: fields_mapping)}
+  let(:import) do
+    FactoryGirl.build(:import,
+                      id: 1,
+                      import_file: File.open("spec/fixtures#{file_name}"),
+                      fields_mapping: fields_mapping)
+  end
   let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
   let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }
 
@@ -487,6 +489,114 @@ describe NfgCsvImporter::ImportService do
 
     it 'sets start_timestamp to current timestamp' do
       expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
+    end
+  end
+
+  describe "#rows_with_required_columns" do
+    let(:columns) { %w(first_name last_name) }
+    let(:file_name) {"/import.csv"}
+    let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name", "gross" => "amount" } }
+    let(:required_rows) { 1 }
+    let(:email) { 'awesome@example.com'}
+    let(:last_name) { 'man' }
+    let(:another_last_name) { 'woman' }
+    let(:first_row) { { "amount"=>"10", "donated_at"=>"2/2/19", "email"=>"pathakh@msn.com", "first_name"=>"super", "last_name"=>last_name, "payment_method"=>"credit_card" } }
+    let(:last_row) { { "amount"=>"20", "donated_at"=>"2/3/19", "payment_method"=>"credit_card", "first_name"=>"wonder", "last_name"=>another_last_name, "email"=>"asdfa@asdf.com" } }
+    let(:two_rows_response) { [first_row, last_row] }
+    let(:one_row_response) { [first_row] }
+
+    subject { import_service.rows_with_required_columns(required_rows: required_rows, required_preview_columns: columns) }
+
+    it { is_expected.to eq one_row_response }
+
+    context 'when the required rows is more than 1' do
+      let(:required_rows) { 2 }
+
+      it 'returns 2 matching rows with required columns' do
+        expect(subject).to eq two_rows_response
+      end
+    end
+
+    context 'when less than required rows are found than the required columns' do
+      let(:file_name) { "/partially_incomplete_import.csv" }
+      let(:required_rows) { 2 }
+
+      it 'only returns the matching rows' do
+        expect(subject).to eq one_row_response
+      end
+    end
+
+    context 'when no matching rows are found' do
+      let(:file_name) { "/incomplete_import.csv" }
+      let(:another_last_name) { nil }
+      let(:last_name) { nil }
+      let(:required_rows) { 2 }
+      let(:last_row) { {"amount"=>"20", "donated_at"=>"2/3/19", "payment_method"=>"credit_card", "first_name"=>"wonder", "last_name"=>last_name, "email"=>"asdfa@asdf.com"} }
+
+      it 'returns any rows it finds up till the required rows' do
+        expect(subject).to eq two_rows_response
+      end
+    end
+
+    context 'when spreadsheet is empty' do
+      let(:file_name) { "/just_headers_import.csv" }
+
+      it { is_expected.to eq [] }
+    end
+  end
+
+  describe "#populate_statistics" do
+    subject { import_service.populate_statistics }
+    let(:file_name) {"/complete_individual_donation_import.csv"}
+    let(:fields_mapping) do
+      {
+        "email" => "email", "first_name" => "first_name", "last_name" => "last_name", "gross" => "amount",
+        "address" => "address"
+      }
+    end
+
+    let(:stats_keys) do
+      {
+        "amount" => 'amount', "email" => 'email', "address" => 'address', "first_name" => 'first_name', "last_name" => 'last_name',
+        "email" => 'email', "phone" => 'home_phone', "address" => 'address', "address_2" => 'address_2', "city" => 'city', "state" => 'state',
+        "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign'
+      }
+    end
+
+    let(:statistics) { nil }
+
+    let!(:import) { FactoryGirl.create(:import, import_file: File.open("spec/fixtures#{file_name}"), fields_mapping: fields_mapping, statistics: statistics) }
+
+    let(:response) { { "total_amount":50,"zero_amount_donations":3,"non_zero_amount_donations":4,"num_addresses":4,"num_emails":4,"total_contacts":7 }.to_json }
+    before { NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:stats_keys).returns(stats_keys) }
+
+    it 'is expected to update import record' do
+      expect{ subject }.to change{ import.reload.statistics }.to(response).from(nil)
+    end
+
+    context 'when fields mapping do not exist' do
+      let(:fields_mapping) { nil }
+
+      it 'should not change statistics' do
+        expect{ subject }.to_not change { import.reload.statistics }
+      end
+    end
+
+    context 'when statistics are already present' do
+      let(:statistics) { { "total_amount": 5, "abc": "def" }.to_json }
+      let(:response) { { "total_amount": 50, "abc": "def", "zero_amount_donations":3,"non_zero_amount_donations":4,"num_addresses":4,"num_emails":4,"total_contacts":7 }.to_json }
+
+      it 'only updates the required keys' do
+        expect{ subject }.to change{ import.reload.statistics }.to(response).from(statistics)
+      end
+    end
+
+    context 'when stats keys does not exist' do
+      let(:stats_keys) { {} }
+
+      it 'does not change statistics' do
+        expect{ subject }.to_not change{ import.reload.statistics }
+      end
     end
   end
 end

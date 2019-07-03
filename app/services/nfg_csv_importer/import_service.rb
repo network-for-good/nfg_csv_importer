@@ -12,7 +12,7 @@ class NfgCsvImporter::ImportService
   delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
            :description, :field_aliases, :column_validation_rules,
            :fields_that_allow_multiple_mappings, :can_be_viewed_by,
-           :can_be_deleted_by?, :to => :import_definition
+           :can_be_deleted_by?, :preview_template, :to => :import_definition
 
   delegate :fields_mapping, to: :import_record
 
@@ -105,12 +105,95 @@ class NfgCsvImporter::ImportService
     end
   end
 
+  def rows_with_required_columns(required_rows: 2, required_preview_columns: )
+    rows = []
+    backup_rows = []
+    return [] if spreadsheet.last_row < 2
+
+    (2..spreadsheet.last_row).each do |i|
+      row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
+      values = row.with_indifferent_access&.values_at(*required_preview_columns)
+      values = [] if values.nil?
+      if values.any? { |value| value.nil? }
+        backup_rows << row if backup_rows.count < required_rows
+        next
+      end
+      rows << row unless values.empty?
+      break if rows.count == required_rows
+    end
+    return rows.empty? ? backup_rows : rows
+  end
+
+  def populate_statistics
+    begin
+      return if import_record.fields_mapping.nil? || import_record.fields_mapping.empty?
+      return if preview_template_service.stats_keys.empty?
+
+      rows = first_x_rows(spreadsheet.last_row)
+      # this is the import definition header column that should be used for summing such as amount
+      sum_amount_key, email_key, address_key = get_host_keys_used_for_import_attributes
+      # this is the field mapping for the import such as gross which we retrieve using field mappings
+      amount_key, mapped_email_key, mapped_address_key = get_keys_used_in_the_import(sum_amount_key,email_key,address_key)
+
+      total_amount, donations_with_zero_amount, donations_with_non_zero_amount = get_donation_amounts(rows, amount_key)
+      with_emails = rows.select {|e| e[mapped_email_key].present? }
+      with_unique_emails = with_emails.uniq {|e| e[mapped_email_key] }.count
+      rows_with_no_emails = rows.select {|e| e[mapped_email_key].nil? }.count
+      with_addresses = rows.select { |e| e[mapped_address_key].present? }
+      with_uniq_addresses = with_addresses.uniq {|e| e[mapped_address_key] }.count
+
+
+      stats = import_record.statistics.present? ? JSON.parse(import_record.statistics) : {}
+      stats[NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY] = total_amount
+      stats[NfgCsvImporter::Import::STATISTICS_ZERO_AMOUNT_DONATIONS_KEY] = donations_with_zero_amount
+      stats[NfgCsvImporter::Import::STATISTICS_NON_ZERO_AMOUNT_DONATIONS_KEY] = donations_with_non_zero_amount
+      stats[NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY] = total_amount
+      stats[NfgCsvImporter::Import::STATISTICS_UNIQUE_ADDRESSES_KEY] = with_uniq_addresses
+      stats[NfgCsvImporter::Import::STATISTICS_UNIQUE_EMAILS_KEY] = with_unique_emails
+      stats[NfgCsvImporter::Import::STATISTICS_TOTAL_CONTACTS_KEY] = rows_with_no_emails +  with_unique_emails
+
+      import_record.update(statistics: stats.to_json)
+    rescue StandardError => e
+      Rails.logger.error("Failed to populate statistics: #{e.message}")
+    end
+  end
+
   protected
 
   def additional_class_attributes(row, object)
   end
 
   private
+
+  def get_host_keys_used_for_import_attributes
+    [
+      preview_template_service.stats_keys.with_indifferent_access[:amount],
+      preview_template_service.stats_keys.with_indifferent_access[:email],
+      preview_template_service.stats_keys.with_indifferent_access[:address]
+    ]
+  end
+
+  def get_keys_used_in_the_import(sum_amount_key, email_key, address_key)
+    [
+      import_record.fields_mapping.key(sum_amount_key),
+      import_record.fields_mapping.key(email_key),
+      import_record.fields_mapping.key(address_key)
+    ]
+  end
+
+  def get_donation_amounts(rows, amount_key)
+    total_amount, donations_with_zero_amount, donations_with_non_zero_amount = 0,0,0
+
+    rows.each do |row|
+      total_amount += row[amount_key].to_i
+      if row[amount_key].to_i.zero?
+        donations_with_zero_amount += 1
+      else
+        donations_with_non_zero_amount += 1
+      end
+    end
+    [total_amount, donations_with_zero_amount, donations_with_non_zero_amount]
+  end
 
   def record_error_msg(model_obj)
     if model_obj.try(:errors)
@@ -349,5 +432,9 @@ class NfgCsvImporter::ImportService
 
   def import_id
     import_record.id
+  end
+
+  def preview_template_service
+    NfgCsvImporter::PreviewTemplateService.new(import: import_record)
   end
 end

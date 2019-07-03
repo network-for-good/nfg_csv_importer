@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_185632) do
+ActiveRecord::Schema.define(version: 2019_07_01_152551) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2019_06_03_185632) do
     t.datetime "processing_started_at"
     t.datetime "processing_finished_at"
     t.string "file_origination_type"
+    t.string "statistics"
   end
 
   create_table "onboarding_related_objects", force: :cascade do |t|

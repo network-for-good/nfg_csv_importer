@@ -16,7 +16,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def create
     @import.status = :uploaded
-
     if @import.save
       @import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(@import).call)
       @import.service.maybe_set_import_number_of_records

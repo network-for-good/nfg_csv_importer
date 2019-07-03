@@ -36,6 +36,9 @@ module NfgCsvImporter
       #
       # Each step has a presenter setup that, at minimum,
       # inherits the OnboarderPresenter.
+      expose(:templates_to_render) { preview_template_service.templates_to_render }
+      expose(:rows_to_render) { preview_template_service.rows_to_render }
+
       expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
       # expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
@@ -89,6 +92,7 @@ module NfgCsvImporter
       end
 
       def field_mapping_on_valid_step
+        import.populate_statistics
         # you can add logic here to perform actions once a step has completed successfully
       end
 
@@ -224,6 +228,10 @@ module NfgCsvImporter
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end
+      end
+
+      def preview_template_service
+        NfgCsvImporter::PreviewTemplateService.new(import: import)
       end
     end
   end
