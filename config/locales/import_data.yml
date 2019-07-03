@@ -82,6 +82,8 @@ en:
           hint:
           guidance:
             modal:
+          body:
+            import_template_id: "Have you imported this information before? If you have, you can select a previous imported file and apply the same mapping rules you did there. You can further adjust column headers on the next step."
         import_type:
           header:
             message: 'What type of data are you importing?'
