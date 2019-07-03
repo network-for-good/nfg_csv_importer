@@ -3,7 +3,7 @@
 - locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
 
 - if import_mailer_presenter.show_successful_import_illustration?
-  = image_tag image_path('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240'
+  = image_tag image_path('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240', id: 'finish_success_image'
 
 - if import_mailer_presenter.show_steps?
   %row
@@ -21,20 +21,21 @@
 
 %row
   %columns
-    %p= t "headings.hello", scope: locales_scope, first_name: @recipient.first_name
-    %p= t "body.introduction.#{@import.status}", scope: locales_scope
-    %p= t "body.what_to_expect.#{@import.status}", scope: locales_scope
+    %p#hello= t "headings.hello", scope: locales_scope, first_name: @recipient.first_name
+    %p#introduction= t "body.introduction.#{@import.status}", scope: locales_scope
+    %p#what_to_expect= t "body.what_to_expect.#{@import.status}", scope: locales_scope
 
     %spacer{ size: spacer(:double) }
 
-    %h5
-      There were
-      = @import.number_of_records
-      records added.
-      - if import_mailer_presenter.show_errors?
-        %span.text-alert
-          = pluralize(@import.number_of_records_with_errors.to_i, 'record')
-          had errors.
+    - if import_mailer_presenter.show_records_count?
+      %h5#number_of_records
+        There were
+        = @import.number_of_records
+        records added.
+        - if import_mailer_presenter.show_errors?
+          %span#error_records_count_of_total.text-alert
+            = pluralize(@import.number_of_records_with_errors.to_i, 'record')
+            had errors.
 
     - if import_mailer_presenter.show_errors?
       %spacer{ size: spacer(:base) }
