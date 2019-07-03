@@ -19,7 +19,7 @@ def drop_in_dropzone(file_path)
   # Generate a fake input selector if one does not already exist
   begin
     # look for the input field
-    page.find("input#fakeFileInput")
+    page.find("input#fakeFileInput", wait: 0.5)
   rescue Capybara::ElementNotFound
     # add the file since it could not be found
     page.execute_script <<-JS
