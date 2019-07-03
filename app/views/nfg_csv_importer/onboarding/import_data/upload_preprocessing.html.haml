@@ -2,13 +2,12 @@
 
   .row
     .col-12#pre_processing_files_upload
-      = f.input :pre_processing_files, label: false do
-        = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
-        .dropzone-target
-          .dz-default.py-4.text-center
-            = ui.nfg :icon, 'cloud-upload 3x', :primary
-            = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
-            = ui.nfg :typeface, body: 'If you prefer to search your computer, click here to browse.', class: 'mb-0'
+      = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
+      .dropzone-target
+        .dz-default.py-4.text-center
+          = ui.nfg :icon, 'cloud-upload 3x', :primary
+          = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
+          = ui.nfg :typeface, body: 'If you prefer to search your computer, click here to browse.', class: 'mb-0'
       - unless f.object.pre_processing_files.empty?
         - f.object.pre_processing_filess.each do |file|
           = f.hidden_field :pre_processing_files , value: file.signed_id
