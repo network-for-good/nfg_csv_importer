@@ -16,12 +16,19 @@ def get_test_upload_file_path(file_name = "pt_org_members_valid.txt")
 end
 
 def drop_in_dropzone(file_path)
-  # Generate a fake input selector
-  page.execute_script <<-JS
-    fakeFileInput = window.$('<input/>').attr(
-      {id: 'fakeFileInput', type:'file'}
-    ).appendTo('body');
-  JS
+  # Generate a fake input selector if one does not already exist
+  begin
+    # look for the input field
+    page.find("input#fakeFileInput")
+  rescue Capybara::ElementNotFound
+    # add the file since it could not be found
+    page.execute_script <<-JS
+      fakeFileInput = window.$('<input/>').attr(
+        {id: 'fakeFileInput', type:'file'}
+      ).appendTo('body');
+    JS
+  end
+
   # Attach the file to the fake input selector with Capybara
   attach_file("fakeFileInput", file_path)
 

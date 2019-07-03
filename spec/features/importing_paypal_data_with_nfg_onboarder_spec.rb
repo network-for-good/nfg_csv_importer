@@ -33,7 +33,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
 
     and_by 'attaching the a paypal file to the dropzone file field' do
       drop_in_dropzone(File.expand_path("spec/fixtures/paypal_sample_file.xlsx"))
-      page.find("div.progress-bar[style='width: 100%;'", wait: 10)
+      page.find("div.progress-bar[style='width: 100%;']", wait: 10)
       expect { click_button 'Next' }.to change(NfgCsvImporter::Import, :count).by(1)
       @import = NfgCsvImporter::Import.last
     end
