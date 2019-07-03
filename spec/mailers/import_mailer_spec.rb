@@ -3,7 +3,7 @@ require "rails_helper"
 shared_examples_for "an import notification with an errors file link" do
   it "shows the error link" do
     expect(subject.body).to match("error_link")
-    expect(subject.body).to match(%Q{test.example.com})
+    expect(subject.body).to match(%Q{test.lvh.me})
     expect(subject.body).to match("nfg_csv_importer/#{import.id}")
   end
 end
