@@ -56,6 +56,10 @@ module NfgCsvImporter
         milestones.index(milestone) > milestones.index(status.to_sym)
       end
 
+      def show_records_count?
+        status.to_sym == NfgCsvImporter::Import::COMPLETED_STATUS
+      end
+
       private
 
       def errors?

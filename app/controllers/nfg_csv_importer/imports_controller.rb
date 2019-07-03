@@ -55,7 +55,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     @mapped_column_count = params[:mapped_column_count].to_i
 
     @first_x_rows = @import.first_x_rows
-    render layout: (params[:iframe].presence ? 'full_width' : 'application')
+    render layout: (params[:iframe] ? 'full_width' : 'application')
   end
 
   def index
