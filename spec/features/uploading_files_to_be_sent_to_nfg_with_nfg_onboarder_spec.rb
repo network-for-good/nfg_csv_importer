@@ -33,8 +33,10 @@ describe "Using the nfg_onboarder engine to upload files for NFG staff to import
 
     and_by 'attaching a couple files to the dropzone file field' do
       drop_in_dropzone(File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))
+      sleep 2
       drop_in_dropzone(File.expand_path("spec/fixtures/subscribers.csv"))
-      page.all("div.progress-bar[style='width: 100%;']", count: 2) # the first progress bar
+      sleep 2
+      page.all("div.progress-bar[style='width: 100%;']", count: 2, wait: 10) # the first progress bar
       expect { click_button 'Next' }.to change(NfgCsvImporter::Import, :count).by(1)
     end
 
