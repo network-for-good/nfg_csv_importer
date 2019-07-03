@@ -31,6 +31,9 @@ module NfgCsvImporter
       expose(:imported_by ) { @imported_by }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
 
+      # used on the finish step
+      expose(:imported_records_count) { import.imported_records.count }
+
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
       #
@@ -85,7 +88,9 @@ module NfgCsvImporter
       end
 
       def preview_confirmation_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
+        return unless import.uploaded? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
+        import.queued!
+        NfgCsvImporter::ProcessImportJob.perform_later(import.id)
       end
 
       def field_mapping_on_valid_step
