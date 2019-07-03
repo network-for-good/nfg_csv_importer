@@ -62,7 +62,7 @@ class PayPalPreprocessorService
       next if index < 1
       date_string = "#{row[:date]} #{get_time_string(row[:time])} #{row[:zone]}"
       donated_at = Time.parse(date_string).utc
-      row[:name] = row[:email] if row[:name].blank?
+      row[:full_name] = row[:email] if row[:full_name].blank?
       payment_method = row[:amount].to_i == 0 ? 'in_kind' : 'Paypal'
       unless row[:amount].to_i < 0
         data << row.except(:date, :time, :zone).merge(donated_at: donated_at, payment_method: payment_method)
@@ -85,7 +85,7 @@ class PayPalPreprocessorService
       date: 'Date',
       time: 'Time',
       zone: 'TimeZone',
-      name: 'Name',
+      full_name: 'Name',
       amount: 'Gross',
       email: 'From Email Address',
       transaction_id: 'Transaction ID',
