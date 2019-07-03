@@ -31,9 +31,6 @@ module NfgCsvImporter
       expose(:imported_by ) { @imported_by }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
 
-      # used on the finish step
-      expose(:imported_records_count) { import.imported_records.count }
-
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
       #

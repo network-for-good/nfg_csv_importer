@@ -5,7 +5,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
   let(:admin) {  create(:user) }
   let(:file_origination_type) { 'paypal' }
 
-  it 'walks the user through selecting the file and eventually imports the donors/donations in the file' do
+  it 'walks the user through selecting the paypal file and eventually imports the donors/donations in the file' do
 
     by 'visiting the index page' do
       visit nfg_csv_importer.imports_path
