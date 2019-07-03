@@ -52,6 +52,7 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
     )
     options[:protocol] = 'https' if Rails.env.production?
     options[:port] = '3000' if Rails.env.development?
+    options[:host] = 'lvh.me' if Rails.env.test?
     options
   end
 end

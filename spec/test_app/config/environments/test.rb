@@ -39,7 +39,9 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   #config.action_mailer.default_url_options = { :host => 'lvh.me', :port => 3000 }
-  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+  default_url_options = { :host => 'localhost', :port => 3000, protocol: "http" }
+  config.action_mailer.default_url_options = default_url_options
+  Rails.application.routes.default_url_options = default_url_options
 end
 
 # Rails.application.routes.default_url_options[:host] = "lvh.me:3000"
