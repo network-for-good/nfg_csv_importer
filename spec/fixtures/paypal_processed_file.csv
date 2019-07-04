@@ -1,4 +1,4 @@
-name,amount,email,transaction_id,address,address_2,city,state,zip_code,country,home_phone,description,donated_at,payment_method
+full_name,amount,email,transaction_id,address,address_2,city,state,zip_code,country,home_phone,description,donated_at,payment_method
 Ian Mowbray,22,Ian_Mowbray@nfg.com,0C30442241724552M,,,,,,,,,2016-06-27 16:06:05 UTC,Paypal
 Ian Mowbray,22,Ian_Mowbray@nfg.com,26V995206C0755811,,,,,,,,,2016-06-27 16:00:27 UTC,Paypal
 Ian Mowbray,22,Ian_Mowbray@nfg.com,2AX50260WB072711D,,,,,,,,,2016-06-07 18:04:22 UTC,Paypal
