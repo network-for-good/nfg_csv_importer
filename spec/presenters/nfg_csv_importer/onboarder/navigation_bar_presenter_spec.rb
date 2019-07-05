@@ -1,5 +1,4 @@
 require "rails_helper"
-require 'nfg_csv_importer/file_origination_types/self_import_csv_xls'
 
 describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
