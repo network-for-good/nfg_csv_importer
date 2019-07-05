@@ -1,3 +1,7 @@
+- heading = '' if local_assigns[:heading].nil?
+
+= ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/finish-success.png', alt: 'Successfully finished'
+= ui.nfg :typeface, heading: heading.html_safe, class: 'mt-3 mb-2'
 = ui.nfg :typeface, body: "Your import has completed. There were a total of #{ pluralize(import.number_of_records, "record")}"
 - if (import.number_of_records_with_errors || 0) > 0
-  = ui.nfg :typeface, body: "There were a total of #{ pluralize(import.number_of_records_with_errors, "record")} with errors."
+  = ui.nfg :typeface, :danger, body: "There were a total of #{ pluralize(import.number_of_records_with_errors, "record")} with errors."
