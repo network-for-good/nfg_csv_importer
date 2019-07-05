@@ -62,6 +62,15 @@ class NfgCsvImporter.DragdropUpload
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
       $("input[value='#{signed_id}']").remove()
 
+    myDropzone.on 'error', (file) =>
+      successMark = $(file.previewElement).find('.dz-success-mark')
+
+      errorMark = $(file.previewElement).find('.dz-error-mark')
+
+      errorMark.removeClass 'd-none'
+      errorMark.show()
+      successMark.hide()
+
   resetUI: (dropzoneEl) ->
     dropzoneEl.removeClass 'dz-started dz-drag-hover'
 

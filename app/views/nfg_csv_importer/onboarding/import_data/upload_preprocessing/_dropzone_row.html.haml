@@ -12,7 +12,7 @@
       -# when spreadsheet, use 'file-text-o'
       = ui.nfg :icon, 'file-text-o 3x', :muted
     .col-10
-      %p.mb-0
+      = ui.nfg :typeface, :body, class: 'mb-0' do
         %span{"data-dz-name" => ""}
         %small.text-muted.mr-2
           (
@@ -20,40 +20,14 @@
           )
         %span{ data: { dz_remove_link_container: '' } }
 
-      .media.align-items-center.mt-1
-        .media-body
-          .progress.progress-sm
-            .progress-bar{"data-dz-uploadprogress" => "", :style => "width:0%;"}
-        .ml-2
-          .dz-success-mark
-            %i.fa.fa-fw.fa-check.text-success
-          .dz-error-mark
-            %i.fa.fa-fw.fa-times.text-danger
-      %p.mb-0.text-danger.font-weight-bold{"data-dz-errormessage" => ""}
-
-
-
-
--# Original code reference, to be removed:
-  / #tpl.invisible.d-none
-  /   .dz-preview.row.align-items-center
-  /     .col-2
-  /       %img.img.img-fluid{"data-dz-thumbnail" => ""}/
-  /     .col-10
-  /       %p.mb-0
-  /         %span{"data-dz-name" => ""}
-  /         %small.text-muted.mr-2
-  /           (
-  /           %span{"data-dz-size" => ""}>
-  /           )
-  /       .media.align-items-center.mt-1
-  /         .media-body
-  /           .progress.progress-sm
-  /             .progress-bar{"data-dz-uploadprogress" => "", :style => "width:0%;"}
-  /         .ml-2
-  /           .dz-success-mark
-  /             %i.fa.fa-fw.fa-check.text-success
-  /           .dz-error-mark
-  /             %i.fa.fa-fw.fa-times.text-danger
-  /       %p.mb-0.text-danger.font-weight-bold{"data-dz-errormessage" => ""}
-
+      = ui.nfg :media, class: 'mt-1 align-items-center' do
+        = ui.nfg :media_body do
+          = ui.nfg :progress, :sm do
+            = ui.nfg :progress_bar, progress: 0, data: { dz_uploadprogress: '' }
+        = ui.nfg :media_object do
+          .ml-2
+            .dz-success-mark
+              = ui.nfg :icon, 'check fw', :success
+            .dz-error-mark.d-none
+              = ui.nfg :icon, 'times fw', :danger
+      = ui.nfg :typeface, :danger, body: '', class: 'font-weight-bold', data: { dz_errormessage: '' }
