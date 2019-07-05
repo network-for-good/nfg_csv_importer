@@ -95,14 +95,22 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_header_icon(humanize) }
 
-    context 'when the argument is passed as user' do
-      it { is_expected.to eq humanize }
+    it 'should be defined' do
+      expect(preview_confirmation_presenter).to respond_to(:humanized_card_header_icon)
     end
 
-    context 'when the argument is passed as donation string' do
-      let(:humanize) { 'donation'}
-      let(:icon) { 'dollar' }
-      it { is_expected.to eq icon }
+    it 'should call user presenter' do
+      NfgCsvImporter::Onboarder::Steps::UserPresenter.any_instance.expects(:humanized_card_header_icon)
+      subject
+    end
+
+    context 'for a donation' do
+      let(:humanize) { 'donation' }
+
+      it 'should call donation presenter' do
+        NfgCsvImporter::Onboarder::Steps::DonationPresenter.any_instance.expects(:humanized_card_header_icon)
+        subject
+      end
     end
   end
 
@@ -116,20 +124,22 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_heading(humanize) }
 
-    context 'when the argument is user' do
-      let(:name) { "#{first_name} #{last_name}" }
-
-      it { is_expected.to eq name }
-
-      it_behaves_like 'when there is not sufficient data', ""
+    it 'should be defined' do
+      expect(preview_confirmation_presenter).to respond_to(:humanized_card_heading)
     end
 
-    context 'when the argument is donation' do
+    it 'should call user presenter' do
+      NfgCsvImporter::Onboarder::Steps::UserPresenter.any_instance.expects(:humanized_card_heading)
+      subject
+    end
+
+    context 'for a donation' do
       let(:humanize) { 'donation' }
 
-      it { is_expected.to eq amount }
-
-      it_behaves_like 'when there is not sufficient data', ""
+      it 'should call donation presenter' do
+        NfgCsvImporter::Onboarder::Steps::DonationPresenter.any_instance.expects(:humanized_card_heading)
+        subject
+      end
     end
   end
 
@@ -143,18 +153,22 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_heading_caption(humanize) }
 
-    context 'for a user' do
-      it_behaves_like 'when there is not sufficient data', ["",""]
+    it 'should be defined' do
+      expect(preview_confirmation_presenter).to respond_to(:humanized_card_heading_caption)
+    end
 
-      it { is_expected.to eq [phone, email] }
+    it 'should call user presenter' do
+      NfgCsvImporter::Onboarder::Steps::UserPresenter.any_instance.expects(:humanized_card_heading_caption)
+      subject
     end
 
     context 'for a donation' do
       let(:humanize) { 'donation' }
 
-      it_behaves_like 'when there is not sufficient data', ["",""]
-
-      it { is_expected.to eq [campaign, donated_at] }
+      it 'should call donation presenter' do
+        NfgCsvImporter::Onboarder::Steps::DonationPresenter.any_instance.expects(:humanized_card_heading_caption)
+        subject
+      end
     end
   end
 
@@ -169,19 +183,22 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_body(humanize) }
 
-    context 'for a user' do
-      let(:response) { [{ address: [address, address_2, "#{city}, #{state} #{zip_code}", 'USA'] }] }
-      it_behaves_like 'when there is not sufficient data', [{:address=>["", "", ",  ", "USA"]}]
+    it 'should be defined' do
+      expect(preview_confirmation_presenter).to respond_to(:humanized_card_body)
+    end
 
-      it { is_expected.to eq response }
+    it 'should call user presenter' do
+      NfgCsvImporter::Onboarder::Steps::UserPresenter.any_instance.expects(:humanized_card_body)
+      subject
     end
 
     context 'for a donation' do
       let(:humanize) { 'donation' }
-      let(:response) { [{ transaction_id: [transaction_id]},{ note: [note]}] }
-      it_behaves_like 'when there is not sufficient data', [{:transaction_id=>[""]}, {:note=>[""]}]
 
-      it { is_expected.to eq response }
+      it 'should call donation presenter' do
+        NfgCsvImporter::Onboarder::Steps::DonationPresenter.any_instance.expects(:humanized_card_body)
+        subject
+      end
     end
   end
 

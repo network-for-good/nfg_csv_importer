@@ -8,30 +8,18 @@ module NfgCsvImporter
       class PreviewConfirmationPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
         require 'nfg_csv_importer/utilities/arithmetic'
 
-        attr_accessor :preview_records, :macro_stats
+        attr_accessor :preview_records, :macro_stats, :user_presenter, :donation_presenter, :user_supplement_presenter
 
-        def humanized_card_header_icon(humanize)
-          return 'user' if humanize == 'user'
-          return 'dollar' if humanize == 'donation'
-        end
+        SUBCLASS_PRESENTER_METHODS = %w[
+                                humanized_card_header_icon humanized_card_heading humanized_card_heading_caption
+                                humanized_card_body humanized_card_body_icon
+                              ].freeze
 
-        def humanized_card_heading(humanize)
-          return name if humanize == 'user'
-          return amount if humanize == 'donation'
-        rescue StandardError => e
-          Rails.logger.error("Failed to retrieve humanized card heading.  Exception: #{e.message}")
-        end
 
-        def humanized_card_heading_caption(humanize)
-          return [phone, email] if humanize == 'user'
-          return [campaign, donated_at] if humanize == 'donation'
-        end
-
-        # Anticipating an array of arrays that we loop through.
-        # The keyword might then be used to sync up an icon for this data (e.g.: user address = 'house')
-        def humanized_card_body(humanize)
-          return [{ address: [address,address_2, "#{city}, #{state} #{zip}", country] }] if humanize == 'user'
-          return [{ transaction_id: [transaction_id]},{ note: [note]}] if humanize == 'donation'
+        SUBCLASS_PRESENTER_METHODS.each do |name|
+          define_method(name) do |humanize|
+            send("#{humanize}_presenter").send(name.to_s)
+          end
         end
 
         def humanized_card_body_icon(keyword)
@@ -90,7 +78,25 @@ module NfgCsvImporter
           end
         end
 
+        protected
+
+        def subset_of_records_for_preview
+          @preview_records ||= preview_template_service.rows_to_render&.first || {}
+        end
+
         private
+
+        def user_presenter
+          @user_presenter ||= NfgCsvImporter::Onboarder::Steps::UserPresenter.new(model, view, options)
+        end
+
+        def user_supplement_presenter
+          @user_supplement_presenter ||= NfgCsvImporter::Onboarder::Steps::UserSupplementPresenter.new(model, view, options)
+        end
+
+        def donation_presenter
+          @donation_presenter ||= NfgCsvImporter::Onboarder::Steps::DonationPresenter.new(model, view, options)
+        end
 
         def preview_statistics
           return @macro_stats unless @macro_stats.nil?
@@ -102,72 +108,6 @@ module NfgCsvImporter
             Rails.logger.error("Failed to parse statistics for import: #{e.message}")
             {}
           end
-        end
-
-        def subset_of_records_for_preview
-          @preview_records ||= preview_template_service.rows_to_render&.first || {}
-        end
-
-        def name
-          first_name = subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:first_name))
-          last_name = subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:last_name))
-          first_name.present? || last_name.present? ? "#{first_name} #{last_name}" : ""
-        end
-
-        def amount
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:amount)) || ""
-        end
-
-        def email
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:email)) || ""
-        end
-
-        def phone
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:phone)) || ""
-        end
-
-        def address
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:address)) || ""
-        end
-
-        def address_2
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:address_2)) || ""
-        end
-
-        def city
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:city)) || ""
-        end
-
-        def state
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:state)) || ""
-        end
-
-        def zip
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:zip_code)) || ""
-        end
-
-        def country
-          'USA'
-        end
-
-        def note
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:note)) || ""
-        end
-
-        def transaction_id
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:transaction_id)) || ""
-        end
-
-        def donated_at
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:donated_at)) || ""
-        end
-
-        def campaign
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:campaign)) || ""
-        end
-
-        def preview_template_service
-          NfgCsvImporter::PreviewTemplateService.new(import: view.import)
         end
       end
     end
