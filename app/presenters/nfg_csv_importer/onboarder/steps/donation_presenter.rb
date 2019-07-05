@@ -6,6 +6,8 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class DonationPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
+        require 'nfg_csv_importer/shareable/preview_presentable'
+        include NfgCsvImporter::PreviewPresentable
 
         attr_accessor :preview_records
 

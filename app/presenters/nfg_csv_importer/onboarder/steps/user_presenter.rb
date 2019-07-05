@@ -6,6 +6,8 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class UserPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
+        require 'nfg_csv_importer/shareable/preview_presentable'
+        include NfgCsvImporter::PreviewPresentable
 
         attr_accessor :preview_records
 
@@ -27,10 +29,6 @@ module NfgCsvImporter
         # The keyword might then be used to sync up an icon for this data (e.g.: user address = 'house')
         def humanized_card_body
           [{ address: [address,address_2, "#{city}, #{state} #{zip}", country] }]
-        end
-
-        def humanized_card_body_icon(keyword)
-          super(keyword)
         end
 
         private

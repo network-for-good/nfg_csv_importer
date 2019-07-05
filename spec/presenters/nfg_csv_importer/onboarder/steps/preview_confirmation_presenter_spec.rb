@@ -202,6 +202,27 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
     end
   end
 
+  describe '#humanized_card_body_icon' do
+    let(:keyword) { 'address' }
+    let(:present) { true }
+
+    subject { preview_confirmation_presenter.humanized_card_body_icon(keyword, present) }
+
+    it { is_expected.to eq 'home' }
+
+    context 'when present is false' do
+      let(:present) { false }
+
+      it { is_expected.to eq "" }
+    end
+
+    context 'when keyword is unknown' do
+      let(:keyword) { 'some-keyword' }
+
+      it { is_expected.to eq 'circle inverse' }
+    end
+  end
+
   describe "#macro_summary_heading_value" do
     let(:humanize) { 'user' }
 

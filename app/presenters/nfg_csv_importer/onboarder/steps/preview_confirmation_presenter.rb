@@ -22,20 +22,16 @@ module NfgCsvImporter
           end
         end
 
-        def humanized_card_body_icon(keyword)
-          begin
-            case keyword.to_s
-            when 'address'
-              address.present? ? 'home' : ""
-            when 'transaction_id'
-              transaction_id.present? ? 'search' : ""
-            when 'note'
-              note.present? ? 'file-o' : ""
-            else
-              'circle inverse'
-            end
-          rescue StandardError => e
-            Rails.logger.error("Failure to retrieve humanized_card_body_icon. Exception: #{e.message}")
+        def humanized_card_body_icon(keyword, present)
+          case keyword.to_s
+          when 'address'
+            present ? 'home' : ""
+          when 'transaction_id'
+            present ? 'search' : ""
+          when 'note'
+            present ? 'file-o' : ""
+          else
+            'circle inverse'
           end
         end
 
