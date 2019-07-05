@@ -35,34 +35,25 @@ describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
   end
 
   describe "#href(step, path: '')" do
-    let(:tested_step) { :first } # the logic for this test rests mostly on the controller; so we don't need to change the tested_step once we set it.
-
+    let(:tested_step) { :first }
     let(:tested_path) { nil }
+    let(:before_point_of_no_return) { nil }
     subject { navigation_bar_presenter.href(tested_step, path: tested_path) }
 
-    context 'when on the last step in the controller' do
-      let(:current_step) { last_step }
-      it 'sets all hrefs to nil regardless of the step value so that you cannot click back to any step' do
+    before { h.stubs(:before_last_visited_point_of_no_return?).with(tested_step).returns(before_point_of_no_return) }
+
+    context 'when #before_last_visited_point_of_no_return? is true' do
+      let(:before_point_of_no_return) { true }
+      it 'returns nil so that the step is not clickable' do
         expect(subject).to be_nil
       end
     end
 
-    context 'when not on the last step in the controller' do
-      let(:current_step) { first_step }
-      before { navigation_bar_presenter.stubs(:step_status).with(current_step).returns(tested_step_status) }
-
-      context 'and when the step status is disabled' do
-        let(:tested_step_status) { :disabled }
-        it 'returns a nil href so that the step is not clickable in the navigation'
-        it { is_expected.to be_nil }
-      end
-
-      context 'and when the step status is not disabled' do
-        let(:tested_step_status) { :active }
-        let(:tested_path) { '/tested_path' }
-        it 'is given the path it requests' do
-          expect(subject).to eq tested_path
-        end
+    context 'when #before_last_visited_point_of_no_return? is false' do
+      let(:before_point_of_no_return) { false }
+      let(:tested_path) { '/tested/path' }
+      it 'returns the path so that the step is clickable' do
+        expect(subject).to eq tested_path
       end
     end
   end
