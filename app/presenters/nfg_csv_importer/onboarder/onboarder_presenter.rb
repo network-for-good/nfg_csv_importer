@@ -50,6 +50,10 @@ module NfgCsvImporter
         h.first_step
       end
 
+      def on_last_step?
+        active_step == last_step
+      end
+
       def first_step
         all_steps.first
       end
