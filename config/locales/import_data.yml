@@ -7,7 +7,7 @@ en:
           submit: 'Next'
       import_data:
         title_bar:
-          caption: "Import Your %{name} Data"
+          caption: "Import Your Data"
           buttons:
             save_and_exit: 'Save & Exit'
             exit: 'Exit'

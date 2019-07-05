@@ -1,7 +1,9 @@
 .p-2.bg-dark
   .row.align-items-center.justify-content-between
     .col.py-1
-      = ui.nfg :typeface, :muted, caption: onboarder_presenter.onboarder_title, class: 'mb-0'
+      = ui.nfg :typeface, :muted, caption: t('nfg_csv_importer.onboarding.import_data.title_bar.caption'), class: 'mb-0'
+      = ui.nfg :typeface, title: file_origination_type&.name, class: 'text-white', render_if: file_origination_type.present?
+
     .col-auto
 
       - if first_step
