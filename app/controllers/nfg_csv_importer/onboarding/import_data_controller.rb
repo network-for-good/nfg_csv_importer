@@ -41,6 +41,10 @@ module NfgCsvImporter
 
       private
 
+      def points_of_no_return
+        [:overview]
+      end
+
       # on before save steps
       def file_origination_type_selection_on_before_save
         # you can add logic here to perform, such as appending data to the params, before the form is to be saved

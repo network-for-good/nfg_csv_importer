@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: eefd3f74c39bf89d8d44f2f3c5b1cb1bdbe4098c
-  branch: rails_5
+  revision: 782f245bfc0f27e91c556ecb2fd40fe01cc57c81
+  branch: points_of_no_return
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
