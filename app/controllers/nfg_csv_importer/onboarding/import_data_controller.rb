@@ -192,7 +192,7 @@ module NfgCsvImporter
       end
 
       def get_import
-        session[:onboarding_import_data_import_id] = params[:import_id] if params[:mport_id].present?
+        session[:onboarding_import_data_import_id] = params[:import_id] if params[:import_id].present?
         begin
           @imported_for.imports.find(session[:onboarding_import_data_import_id])
         rescue
