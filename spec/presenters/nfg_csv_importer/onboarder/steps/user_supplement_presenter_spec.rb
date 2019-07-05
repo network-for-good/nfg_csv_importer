@@ -2,7 +2,7 @@ require "rails_helper"
 # include Rails.application.routes.url_helpers
 require 'nfg_csv_importer/file_origination_types/self_import_csv_xls'
 
-describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
+describe NfgCsvImporter::Onboarder::Steps::UserSupplementPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
   let(:preview_confirmation_presenter) { described_class.new(onboarding_session, h) }
   let(:onboarding_session) { NfgOnboarder::Session.new(name: 'import_data', current_step: current_step, step_data: step_data) }
@@ -24,25 +24,30 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
   let(:city) { 'San Francisco' }
   let(:state) { 'CA' }
   let(:zip_code) { '95991' }
+  let(:job_title) { 'Football Player' }
+  let(:employer) { 'Amazing football league' }
+  let(:dob_month) { '6' }
+  let(:dob_year) { '1990' }
+  let(:dob_day) { '12' }
   let(:rows_to_render) do
     [
       {
-       "payment_method" => "credit_card",
-       "first_name" => first_name, "last_name" => last_name, "email" => email,
-       "address" => address, "address_2" => address_2, "city" => city,
-       "state" => state, "zip_code" => zip_code, "home_phone" => phone
+        "payment_method" => "credit_card",
+        "first_name" => first_name, "last_name" => last_name, "email" => email,
+        "address" => address, "address_2" => address_2, "city" => city,
+        "state" => state, "zip_code" => zip_code, "home_phone" => phone,
+        "job_title" => job_title, "employer" => employer, "dob_month" => dob_month,
+        "dob_day" => dob_day, "dob_year" => dob_year
       }
     ]
   end
   let(:nfg_csv_importer_to_host_mapping) do
     {
-      "amount" => 'gross', "email" => 'email', "address" => 'address', "first_name" => 'first_name', "last_name" => 'last_name',
-      "email" => 'email', "phone" => 'home_phone', "address" => 'address', "address_2" => 'address_2', "city" => 'city', "state" => 'state',
-      "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign'
+      job_title: 'job_title', employer: 'employer', gender: 'gender', dob_year: 'dob_year', dob_month: 'dob_month', dob_day: 'dob_day'
     }
   end
 
-  it { expect(described_class).to be < NfgCsvImporter::Onboarder::OnboarderPresenter }
+  it { expect(described_class).to be < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter }
 
   before { h.stubs(:import).returns(mock('import')) }
 
@@ -74,9 +79,7 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_heading }
 
-    let(:name) { "#{first_name} #{last_name}" }
-
-    it { is_expected.to eq name }
+    it { is_expected.to eq job_title }
 
     it_behaves_like 'when there is not sufficient data', ""
   end
@@ -90,9 +93,9 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_heading_caption }
 
-    it_behaves_like 'when there is not sufficient data', ["", ""]
+    it_behaves_like 'when there is not sufficient data', [""]
 
-    it { is_expected.to eq [phone, email] }
+    it { is_expected.to eq [employer] }
   end
 
   describe '#humanized_card_body' do
@@ -104,8 +107,9 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_body }
 
-    let(:response) { [{ address: [address, address_2, "#{city}, #{state} #{zip_code}", 'USA'] }] }
-    it_behaves_like 'when there is not sufficient data', [ { :address => ["", "", ",  ", "USA"] } ]
+    let(:response) { [{ date_of_birth: ["#{dob_month}/#{dob_day}/#{dob_year}"] }] }
+
+    it_behaves_like 'when there is not sufficient data', [{ :date_of_birth => [""] }]
 
     it { is_expected.to eq response }
   end

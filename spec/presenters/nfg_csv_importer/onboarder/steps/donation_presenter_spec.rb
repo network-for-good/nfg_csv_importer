@@ -36,14 +36,6 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
     }
   end
 
-  let(:stats) do
-    {
-      "total_amount" => total_amount, "num_addresses" => num_addresses, "num_emails" => num_emails,
-      "total_contacts" => total_contacts,
-      "zero_amount_donations" => zero_amount_donations, "non_zero_amount_donations" => non_zero_amount_donations
-    }.to_json
-  end
-
   it { expect(described_class).to be < NfgCsvImporter::Onboarder::OnboarderPresenter }
 
   before { h.stubs(:import).returns(mock('import')) }
@@ -56,18 +48,6 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     context 'when there are no stats keys' do
       let(:nfg_csv_importer_to_host_mapping) { {} }
-      it { is_expected.to eq result }
-    end
-  end
-
-  shared_examples_for 'when import statistics are not available' do |result|
-    context 'when import statistics are nil' do
-      let(:stats) { nil }
-      it { is_expected.to eq result }
-    end
-
-    context 'when import statistics do not have the right keys' do
-      let(:stats) { {}.to_json }
       it { is_expected.to eq result }
     end
   end
