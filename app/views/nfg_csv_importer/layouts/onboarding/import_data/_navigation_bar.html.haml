@@ -17,4 +17,6 @@
     .col-6.col-lg-auto.py-1.order-lg-1
       = ui.nfg :button, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'arrow-left', disable_with: ui.nfg(:icon, :loader), render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step) or at_point_of_no_return?)
     .col-6.col-lg-auto.py-1.text-right.order-lg-3
-      = ui.nfg :button, :submit, body: submit_button_text.html_safe, icon: 'arrow-right', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
+      - traits = [:submit]
+      - traits << :disabled if step.to_sym == :field_mapping && !import.ready_to_import?
+      = ui.nfg :button, *traits, body: submit_button_text.html_safe, icon: 'arrow-right', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
