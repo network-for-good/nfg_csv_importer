@@ -36,6 +36,20 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
     }
   end
 
+  let(:total_contacts) { 10 }
+  let(:total_amount) { 30 }
+  let(:num_addresses) { 2 }
+  let(:num_emails) { 5 }
+  let(:zero_amount_donations) { 15 }
+  let(:non_zero_amount_donations) { 15 }
+  let(:stats) do
+    {
+      "total_amount"=>total_amount, "num_addresses"=>num_addresses, "num_emails"=>num_emails,
+      "total_contacts"=>total_contacts,
+      "zero_amount_donations"=>zero_amount_donations, "non_zero_amount_donations"=>non_zero_amount_donations
+    }.to_json
+  end
+
   it { expect(described_class).to be < NfgCsvImporter::Onboarder::OnboarderPresenter }
 
   before { h.stubs(:import).returns(mock('import')) }
@@ -48,6 +62,18 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     context 'when there are no stats keys' do
       let(:nfg_csv_importer_to_host_mapping) { {} }
+      it { is_expected.to eq result }
+    end
+  end
+
+  shared_examples_for 'when import statistics are not available' do |result|
+    context 'when import statistics are nil' do
+      let(:stats) { nil }
+      it { is_expected.to eq result }
+    end
+
+    context 'when import statistics do not have the right keys' do
+      let(:stats) { {}.to_json }
       it { is_expected.to eq result }
     end
   end
@@ -102,4 +128,45 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
     it { is_expected.to eq response }
   end
 
+  describe "#macro_summary_heading_icon" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading_icon }
+
+    it { is_expected.to eq 'dollar' }
+  end
+
+  describe "#macro_summary_heading_value" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading_value }
+
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
+    let(:humanize) { 'donation'}
+    it { is_expected.to eq total_amount }
+
+    it_behaves_like 'when import statistics are not available', ""
+  end
+
+  describe "#macro_summary_heading" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading }
+
+    it { is_expected.to eq 'Total Est. Donations' }
+  end
+
+  describe "#macro_summary_charts" do
+
+    subject { preview_confirmation_presenter.macro_summary_charts }
+
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
+    let(:response) do
+      [{ title: "Regular Donations", total: non_zero_amount_donations, percentage: "50.00"  },
+       { title: "In-kind Donations", total: zero_amount_donations, percentage: "50.00" }]
+    end
+
+    it { is_expected.to eq response }
+
+    it_behaves_like 'when import statistics are not available', [{:percentage=>0, :title=>"Regular Donations", :total=>""}, {:percentage=>0, :title=>"In-kind Donations", :total=>""}]
+  end
 end

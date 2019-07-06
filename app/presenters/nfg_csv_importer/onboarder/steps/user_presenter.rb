@@ -31,6 +31,29 @@ module NfgCsvImporter
           [{ address: [address,address_2, "#{city}, #{state} #{zip}", country] }]
         end
 
+        def macro_summary_heading_icon
+          'user'
+        end
+
+        def macro_summary_heading_value
+          preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_CONTACTS_KEY) || ""
+        end
+
+        def macro_summary_heading
+          "Total Est. Contacts"
+        end
+
+        def macro_summary_charts
+          arithmetic = NfgCsvImporter::Utilities::Arithmetic
+          total_count = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_CONTACTS_KEY) || ""
+          unique_emails = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_UNIQUE_EMAILS_KEY) || ""
+          unique_addresses = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_UNIQUE_ADDRESSES_KEY) || ""
+          [
+            { title: "With Emails", total: unique_emails, percentage: arithmetic.percentage(unique_emails, total_count)  },
+            { title: "With Addresses", total: unique_addresses, percentage: arithmetic.percentage(unique_addresses, total_count) }
+          ]
+        end
+
         private
 
         def name

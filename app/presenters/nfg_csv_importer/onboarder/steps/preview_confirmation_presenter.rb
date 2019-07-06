@@ -12,8 +12,9 @@ module NfgCsvImporter
 
         SUBCLASS_PRESENTER_METHODS = %w[
                                 humanized_card_header_icon humanized_card_heading humanized_card_heading_caption
-                                humanized_card_body humanized_card_body_icon
-                              ].freeze
+                                humanized_card_body humanized_card_body_icon macro_summary_heading_icon
+                                macro_summary_heading_value macro_summary_heading macro_summary_charts
+        ].freeze
 
 
         SUBCLASS_PRESENTER_METHODS.each do |name|
@@ -37,45 +38,6 @@ module NfgCsvImporter
 
         def chart_thickness
           'C' # corresponds to the appearance of FF Chartwell pie charts.
-        end
-
-        def macro_summary_heading_icon(humanize)
-          return 'user' if humanize == 'user'
-          return 'dollar' if humanize == 'donation'
-        end
-
-        def macro_summary_heading(humanize)
-          return "Total Est. Contacts" if humanize == 'user'
-          return "Total Est. Donations" if humanize == 'donation'
-        end
-
-        def macro_summary_heading_value(humanize)
-            if humanize == 'user'
-              return preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_CONTACTS_KEY) || ""
-            end
-
-            if humanize == 'donation'
-              return preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY) || ""
-            end
-        end
-
-        def macro_summary_charts(humanize)
-          arithmetic = NfgCsvImporter::Utilities::Arithmetic
-          if humanize == 'user'
-            total_count = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_CONTACTS_KEY) || ""
-            unique_emails = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_UNIQUE_EMAILS_KEY) || ""
-            unique_addresses = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_UNIQUE_ADDRESSES_KEY) || ""
-            return [{ title: "With Emails", total: unique_emails, percentage: arithmetic.percentage(unique_emails, total_count)  },
-                    { title: "With Addresses", total: unique_addresses, percentage: arithmetic.percentage(unique_addresses, total_count) }]
-          end
-          if humanize == 'donation'
-            total_sum = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY)
-
-            non_zero_amount_donations =  preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_NON_ZERO_AMOUNT_DONATIONS_KEY) || ""
-            zero_amount_donations =  preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_ZERO_AMOUNT_DONATIONS_KEY) || ""
-            return [{ title: "Regular Donations", total: non_zero_amount_donations, percentage: arithmetic.percentage(non_zero_amount_donations, total_sum)  },
-                    { title: "In-kind Donations", total: zero_amount_donations, percentage: arithmetic.percentage(zero_amount_donations,total_sum) }]
-          end
         end
 
         protected

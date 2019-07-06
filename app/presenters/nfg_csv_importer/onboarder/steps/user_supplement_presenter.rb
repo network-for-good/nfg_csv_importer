@@ -31,6 +31,22 @@ module NfgCsvImporter
           [{ date_of_birth: [date_of_birth] }]
         end
 
+        def macro_summary_heading_icon
+          ''
+        end
+
+        def macro_summary_heading_value
+          ""
+        end
+
+        def macro_summary_heading
+          ''
+        end
+
+        def macro_summary_charts
+          []
+        end
+
         private
 
         def job_title

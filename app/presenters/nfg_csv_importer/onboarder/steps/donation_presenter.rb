@@ -31,6 +31,30 @@ module NfgCsvImporter
           [{ transaction_id: [transaction_id]},{ note: [note]}]
         end
 
+        def macro_summary_heading_icon
+          'dollar'
+        end
+
+        def macro_summary_heading_value
+          preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY) || ""
+        end
+
+        def macro_summary_heading
+          "Total Est. Donations"
+        end
+
+        def macro_summary_charts
+          arithmetic = NfgCsvImporter::Utilities::Arithmetic
+          total_sum = preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_TOTAL_SUM_KEY)
+
+          non_zero_amount_donations =  preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_NON_ZERO_AMOUNT_DONATIONS_KEY) || ""
+          zero_amount_donations =  preview_statistics&.dig(NfgCsvImporter::Import::STATISTICS_ZERO_AMOUNT_DONATIONS_KEY) || ""
+          [
+            { title: "Regular Donations", total: non_zero_amount_donations, percentage: arithmetic.percentage(non_zero_amount_donations, total_sum)  },
+            { title: "In-kind Donations", total: zero_amount_donations, percentage: arithmetic.percentage(zero_amount_donations,total_sum) }
+          ]
+        end
+
         private
 
         def amount

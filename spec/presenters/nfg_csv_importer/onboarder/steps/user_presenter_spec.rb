@@ -42,6 +42,20 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
     }
   end
 
+  let(:total_contacts) { 10 }
+  let(:total_amount) { 30 }
+  let(:num_addresses) { 2 }
+  let(:num_emails) { 5 }
+  let(:zero_amount_donations) { 15 }
+  let(:non_zero_amount_donations) { 15 }
+  let(:stats) do
+    {
+      "total_amount"=>total_amount, "num_addresses"=>num_addresses, "num_emails"=>num_emails,
+      "total_contacts"=>total_contacts,
+      "zero_amount_donations"=>zero_amount_donations, "non_zero_amount_donations"=>non_zero_amount_donations
+    }.to_json
+  end
+
   it { expect(described_class).to be < NfgCsvImporter::Onboarder::OnboarderPresenter }
 
   before { h.stubs(:import).returns(mock('import')) }
@@ -54,6 +68,18 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     context 'when there are no stats keys' do
       let(:nfg_csv_importer_to_host_mapping) { {} }
+      it { is_expected.to eq result }
+    end
+  end
+
+  shared_examples_for 'when import statistics are not available' do |result|
+    context 'when import statistics are nil' do
+      let(:stats) { nil }
+      it { is_expected.to eq result }
+    end
+
+    context 'when import statistics do not have the right keys' do
+      let(:stats) { {}.to_json }
       it { is_expected.to eq result }
     end
   end
@@ -108,6 +134,51 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
     it_behaves_like 'when there is not sufficient data', [ { :address => ["", "", ",  ", "USA"] } ]
 
     it { is_expected.to eq response }
+  end
+
+  describe "#macro_summary_heading_icon" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading_icon }
+
+    it { is_expected.to eq 'user' }
+  end
+
+  describe "#macro_summary_heading_value" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading_value }
+
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
+    context 'for a user' do
+      it { is_expected.to eq total_contacts }
+
+      it_behaves_like 'when import statistics are not available', ""
+    end
+  end
+
+  describe "#macro_summary_heading" do
+
+    subject { preview_confirmation_presenter.macro_summary_heading }
+
+    it { is_expected.to eq 'Total Est. Contacts' }
+  end
+
+  describe "#macro_summary_charts" do
+    let(:humanize) { 'user' }
+
+    subject { preview_confirmation_presenter.macro_summary_charts }
+
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
+    context 'for a user' do
+      let(:response) do
+        [{ title: "With Emails", total: num_emails, percentage: "50.00"  },
+         { title: "With Addresses", total: num_addresses, percentage: "20.00" }]
+      end
+      it { is_expected.to eq response }
+
+      it_behaves_like 'when import statistics are not available', [{:percentage=>0, :title=>"With Emails", :total=>""}, {:percentage=>0, :title=>"With Addresses", :total=>""}]
+    end
   end
 
 end
