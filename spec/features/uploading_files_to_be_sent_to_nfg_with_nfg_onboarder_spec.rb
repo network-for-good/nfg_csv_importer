@@ -42,8 +42,6 @@ describe "Using the nfg_onboarder engine to upload files for NFG staff to import
 
     and_it 'takes the user to the finish page' do
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.finish"
-      # Since we are making perform_later happen inline here, we go all the way through to complete
-      # in production, it would only be queued
     end
 
     and_by 'clicking the next button, takes the user to the imports_path' do

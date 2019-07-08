@@ -41,8 +41,6 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
 
     and_it 'takes the user to the preview_confirmation page' do
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
-      # Since we are making perform_later happen inline here, we go all the way through to complete
-      # in production, it would only be queued
     end
 
     and_by 'confirming the preview confirmation page it should kick off the import' do
