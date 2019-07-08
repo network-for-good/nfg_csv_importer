@@ -56,6 +56,20 @@ FactoryGirl.define do
     end
   end
 
+  # Note: to use an onboarding session it may require stubbing the controller params
+  # add this to your spec if you encounter the following error:
+  #
+  # Failure/Error: active_step = view.params[:id]
+  # NoMethodError:
+  # undefined method `parameters' for nil:NilClass
+  #
+  # Solution:
+  # 1. Generate the session with something like these `let` variables:
+  # let(:onboarding_session) { FactoryGirl.create(:onboarding_session, :"#{current_step}_step") }
+  # let(:current_step) { 'file_origination_type_selection' }
+  #
+  # 2. Then stub the controller so that the presenter and session are married:
+  # before { h.controller.stubs(:params).returns(id: current_step) }
   factory :onboarding_session, class: NfgOnboarder::Session do
     name { 'import_data' }
     association :owner, factory: :user
@@ -95,11 +109,5 @@ FactoryGirl.define do
         }
       }
     end
-
-    # NfgOnboarder::Session.new(id: 9, completed_high_level_steps: [], current_step: "upload_preprocessing", owner_id: nil, entity_id: nil, created_at: "2019-07-08 13:46:25", updated_at: "2019-07-08 13:57:07", step_data: {"import_data"=>{:file_origination_type_selection=><ActionController::Parameters {"file_origination_type"=>"paypal"} permitted: true>}}, current_high_level_step: "import_data", onboarder_progress: {"import_data"=>[:file_origination_type_selection]}, owner_type: nil, completed_at: nil, onboarder_prefix: nil, name: "import_data")
-
-
-
-    # completed_high_level_steps: [], current_step: "upload_preprocessing", owner_id: nil, entity_id: nil, created_at: "2019-07-05 20:13:37", updated_at: "2019-07-05 20:13:40", step_data: {"import_data"=>{:file_origination_type_selection=><ActionController::Parameters {"file_origination_type"=>"paypal"} permitted: true>}}, current_high_level_step: "import_data", onboarder_progress: {"import_data"=>[:file_origination_type_selection]}, owner_type: nil, completed_at: nil, onboarder_prefix: nil, name: "import_data">]
   end
 end
