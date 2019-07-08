@@ -779,8 +779,11 @@ var Dropzone = function (_Emitter) {
             }
 
             if (this.options.addRemoveLinks) {
-              file._removeLink = Dropzone.createElement("<a class=\"dz-remove\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
-              file.previewElement.appendChild(file._removeLink);
+              file._removeLink = Dropzone.createElement("<a class=\"dz-remove text-danger\" href=\"javascript:undefined;\" data-dz-remove>" + this.options.dictRemoveFile + "</a>");
+              $(file.previewElement.querySelector("[data-dz-remove-link-container]")).html(file._removeLink);
+
+              // Original source:
+              // file.previewElement.appendChild(file._removeLink);
             }
 
             var removeFileEvent = function removeFileEvent(e) {

@@ -25,7 +25,7 @@ module NfgCsvImporter
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
       expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
       expose(:import_type ) { get_import_type }
-      expose(:import) { get_import }
+      expose(:import) { get_import || new_import }
 
       expose(:imported_for ) { @imported_for }
       expose(:imported_by ) { @imported_by }
@@ -40,6 +40,10 @@ module NfgCsvImporter
       # expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
       private
+
+      def points_of_no_return
+        [:overview]
+      end
 
       # on before save steps
       def file_origination_type_selection_on_before_save
@@ -95,6 +99,11 @@ module NfgCsvImporter
       end
 
       def upload_post_processing_on_valid_step
+        # This line is duplicated in import_type_on_valid_step below b/c
+        # the import_type step is skipped if the admin only have access
+        # to a single import definition.
+        session[:onboarding_import_data_import_id] = form.model.id
+
         # you can add logic here to perform actions once a step has completed successfully
         import.uploaded!
         import.update(fields_mapping: NfgCsvImporter::FieldsMapper.new(import).call)
@@ -133,12 +142,12 @@ module NfgCsvImporter
         case step
             when :file_origination_type_selection
               OpenStruct.new(file_origination_type: file_origination_type_name) # replace with your object that the step will update
+            when :overview
+              OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
               new_import
             when :import_type
-              import || new_import
-            when :overview
-              OpenStruct.new(name: '') # replace with your object that the step will update
+              import
             when :upload_post_processing
               import
             when :field_mapping
@@ -183,7 +192,7 @@ module NfgCsvImporter
       end
 
       def get_import
-        session[:onboarding_import_data_import_id] = params[:import_id] if params[:mport_id].present?
+        session[:onboarding_import_data_import_id] = params[:import_id] if params[:import_id].present?
         begin
           @imported_for.imports.find(session[:onboarding_import_data_import_id])
         rescue
@@ -194,7 +203,8 @@ module NfgCsvImporter
 
       def get_import_type
         params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
-        onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type')
+        onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type') ||
+        import_definitions.keys.first
       end
 
       def new_onboarding_session
@@ -212,7 +222,7 @@ module NfgCsvImporter
       end
 
       def new_import
-        Import.new(imported_for: @imported_for, imported_by: @imported_by, file_origination_type: file_origination_type_name, status: "pending")
+        Import.new(imported_for: @imported_for, imported_by: @imported_by, file_origination_type: file_origination_type_name, status: "pending", import_type: get_import_type)
       end
 
       def fields_to_be_cleansed_from_form_params
@@ -226,6 +236,10 @@ module NfgCsvImporter
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
                     end
+
+        # We can skip the import_type step if the admin only have access
+        # to a single import definition.
+        self.steps -= [:import_type] if import_definitions.size == 1
       end
     end
   end

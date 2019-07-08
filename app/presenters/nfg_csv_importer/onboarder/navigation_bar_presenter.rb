@@ -23,8 +23,19 @@ module NfgCsvImporter
         true
       end
 
+      # Ensure that the href is nil (thus supporting accessibility via the nfg_ui Step)
+      # when the step is disabled / unclickable
+      # or on the last step, all links should have a nil :href
+      def href(step, path: '')
+        h.before_last_visited_point_of_no_return?(step) ? nil : path
+      end
+
       def show_nav?
-        active_step.to_sym != all_steps.first
+        active_step.to_sym != first_step
+      end
+
+      def points_of_no_return
+        @points_of_no_return ||= h.controller.send(:points_of_no_return)
       end
     end
   end

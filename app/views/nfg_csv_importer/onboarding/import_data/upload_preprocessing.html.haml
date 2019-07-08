@@ -16,25 +16,4 @@
     = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
 
 -# The following gets rendered by DropZone for each file that is dropped/added
-#tpl.invisible
-  .dz-preview.row.align-items-center
-    .col-2
-      %img.img.img-fluid{"data-dz-thumbnail" => ""}/
-    .col-10
-      %p.mb-0
-        %span{"data-dz-name" => ""}
-        %small.text-muted.mr-2
-          (
-          %span{"data-dz-size" => ""}>
-          )
-      .media.align-items-center.mt-1
-        .media-body
-          .progress.progress-sm
-            .progress-bar{"data-dz-uploadprogress" => "", :style => "width:0%;"}
-        .ml-2
-          .dz-success-mark
-            %i.fa.fa-fw.fa-check.text-success
-          .dz-error-mark
-            %i.fa.fa-fw.fa-times.text-danger
-      %p.mb-0.text-danger.font-weight-bold{"data-dz-errormessage" => ""}
-
+= render partial: 'nfg_csv_importer/onboarding/import_data/upload_preprocessing/dropzone_row'

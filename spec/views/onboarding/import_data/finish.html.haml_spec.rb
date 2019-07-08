@@ -8,7 +8,7 @@ RSpec.describe 'onboarding/import_data/finish.html.haml' do
     stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => "= yield"
 
     view.stubs(:file_origination_type_name).returns(file_origination_type_name)
-    view.stubs(:import).returns(stub(status: status, imported_records: stub(count: 4)))
+    view.stubs(:import).returns(stub(status: status, imported_records: stub(count: 4), number_of_records: 4, number_of_records_with_errors: 0))
     # view.stubs(:step).returns(:finish)
   end
   let(:file_origination_type_name) { "paypal" }

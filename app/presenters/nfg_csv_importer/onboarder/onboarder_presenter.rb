@@ -16,10 +16,6 @@ module NfgCsvImporter
         "NfgCsvImporter::Onboarder::Steps::#{active_step.camelize}Presenter".constantize.new(model, view, options)
       end
 
-      def onboarder_title
-        I18n.t("nfg_csv_importer.onboarding.import_data.title_bar.caption", name: (file_origination_type_name.try(:titleize) || ''))
-      end
-
       def color_theme(humanize)
         return :primary if humanize == 'user'
         return :success if humanize == 'donation'
@@ -48,6 +44,10 @@ module NfgCsvImporter
       # first step (e.g.: the steps nav)
       def on_first_step?
         h.first_step
+      end
+
+      def on_last_step?
+        active_step == last_step
       end
 
       def first_step

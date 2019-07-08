@@ -79,7 +79,7 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
       class_name: "Donation",
       alias_attributes: [],
       column_descriptions: {},
-      can_be_viewed_by: -> (user) { user.last_name != "Smith" },
+      can_be_viewed_by: -> (user) { user && user.last_name != "Smith" },
       description: %Q{Allows you to import donations}
     }
   end

@@ -1,13 +1,16 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-  = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/finish-success.png', alt: 'Successfully finished'
-  = ui.nfg :typeface, body: "This will be the page you get to after you've approved import or sent your files to NFG. From here, you go to the import's show page.", class: 'mt-3'
-  -# Due to some malfeasance within rails, if the last render fails
-  -# the error message will indicate only that it tried to render the first partial
-  - begin
-    = render "nfg_csv_importer/onboarding/import_data/finish/#{ file_origination_type_name }_#{ import.status }", import: import
-  - rescue ActionView::MissingTemplate
-    - begin
-      = render "nfg_csv_importer/onboarding/import_data/finish/#{ import.status }", import: import
-    - rescue ActionView::MissingTemplate
-      = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
+  .text-center
+    -# Due to some malfeasance within rails, if the last render fails
+    -# the error message will indicate only that it tried to render the first partial
+    - begin
+      = render "nfg_csv_importer/onboarding/import_data/finish/#{ file_origination_type_name }_#{ import.status }", import: import
+    - rescue ActionView::MissingTemplate
+      - begin
+        = render "nfg_csv_importer/onboarding/import_data/finish/#{ import.status }", import: import
+      - rescue ActionView::MissingTemplate
+        = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
+
+    = ui.nfg :button, :lg, href: '#', body: 'View All Imports'
+    .mt-2
+      = ui.nfg :button, :link, href: '#', body: 'Start a New Import'
