@@ -29,6 +29,7 @@ class NfgCsvImporter.Uploader
   directUploadDidProgress: (event) =>
     progressBar = this.file.previewElement.querySelector('.progress .progress-bar')
     progressBar.style.width = "#{event.loaded * 100 / event.total}%"
+    progressBar.setAttribute 'aria-valuenow', "#{event.loaded * 100 / event.total}"
 
 
 
