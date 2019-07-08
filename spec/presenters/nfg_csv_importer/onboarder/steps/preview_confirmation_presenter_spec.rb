@@ -143,11 +143,11 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
     it_behaves_like 'calling the right presenter', :humanized_card_body
   end
 
-  describe '#humanized_card_body_icon' do
+  describe '#humanized_card_body_symbol' do
     let(:keyword) { 'address' }
     let(:present) { true }
 
-    subject { preview_confirmation_presenter.humanized_card_body_icon(keyword, present) }
+    subject { preview_confirmation_presenter.humanized_card_body_symbol(keyword, present) }
 
     it { is_expected.to eq 'home' }
 

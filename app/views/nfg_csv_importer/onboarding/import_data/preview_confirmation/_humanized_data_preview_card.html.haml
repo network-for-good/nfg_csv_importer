@@ -21,7 +21,7 @@
     - content_sections.each do |content_section, array_of_information|
       = ui.nfg :media, class: 'mt-3' do
         = ui.nfg :media_object do
-          = ui.nfg :icon, onboarder_presenter.humanized_card_body_icon(content_section), class: 'mr-2 line-height'
+          = ui.nfg :icon, onboarder_presenter.humanized_card_body_icon(humanize, content_section), class: 'mr-2 line-height'
 
         = ui.nfg :media_body do
           - array_of_information.each do |content_block|

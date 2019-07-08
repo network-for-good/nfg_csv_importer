@@ -6,13 +6,15 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class DonationPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
-        require 'nfg_csv_importer/shareable/preview_presentable'
-        include NfgCsvImporter::PreviewPresentable
 
         attr_accessor :preview_records
 
         def humanized_card_header_icon
           'dollar'
+        end
+
+        def humanized_card_body_icon(keyword)
+          humanized_card_body_symbol(keyword, extant?(keyword))
         end
 
         def humanized_card_heading
@@ -79,6 +81,10 @@ module NfgCsvImporter
 
         def preview_template_service
           NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+        end
+
+        def extant?(keyword)
+          respond_to?(keyword.to_sym, :include_private) ? send(keyword).present? : false
         end
       end
     end

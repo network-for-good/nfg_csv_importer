@@ -14,16 +14,17 @@ module NfgCsvImporter
                                 humanized_card_header_icon humanized_card_heading humanized_card_heading_caption
                                 humanized_card_body humanized_card_body_icon macro_summary_heading_icon
                                 macro_summary_heading_value macro_summary_heading macro_summary_charts
+                                humanized_card_body_icon
         ].freeze
 
 
         SUBCLASS_PRESENTER_METHODS.each do |name|
-          define_method(name) do |humanize|
-            send("#{humanize}_presenter").send(name.to_s)
+          define_method(name) do |humanize, *args|
+            send("#{humanize}_presenter").send(name.to_s, *args)
           end
         end
 
-        def humanized_card_body_icon(keyword, present)
+        def humanized_card_body_symbol(keyword, present)
           case keyword.to_s
           when 'address'
             present ? 'home' : ""

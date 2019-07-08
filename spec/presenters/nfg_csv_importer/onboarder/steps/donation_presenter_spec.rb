@@ -169,4 +169,29 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     it_behaves_like 'when import statistics are not available', [{:percentage=>0, :title=>"Regular Donations", :total=>""}, {:percentage=>0, :title=>"In-kind Donations", :total=>""}]
   end
+
+  describe "#humanized_card_body_icon" do
+    let(:keyword) { 'transaction_id' }
+
+    before do
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:rows_to_render).returns(rows_to_render)
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:nfg_csv_importer_to_host_mapping).returns(nfg_csv_importer_to_host_mapping)
+    end
+
+    subject { preview_confirmation_presenter.humanized_card_body_icon(keyword) }
+
+    it { is_expected.to eq 'search' }
+
+    context 'when address is nil' do
+      let(:transaction_id) { nil }
+
+      it { is_expected.to eq '' }
+    end
+
+    context 'when keyword is unrecognized' do
+      let(:keyword) { 'some-keyword' }
+
+      it { is_expected.to eq 'circle inverse' }
+    end
+  end
 end
