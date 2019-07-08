@@ -24,7 +24,7 @@ module NfgCsvImporter
         end
 
         def humanized_card_heading_caption
-          [campaign, donated_at]
+          [campaign, donated_at, payment_method]
         end
 
         # Anticipating an array of arrays that we loop through.
@@ -77,6 +77,10 @@ module NfgCsvImporter
 
         def note
           subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:note)) || ""
+        end
+
+        def payment_method
+          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:payment_method)) || ""
         end
 
         def preview_template_service
