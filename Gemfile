@@ -11,6 +11,7 @@ gemspec
 # your gem to rubygems.org.
 
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'points_of_no_return'
+gem "nfg_ui", git: 'https://github.com/network-for-good/nfg_ui.git', branch: 'master'
 
 gem 'reform-rails', '~> 0.1.7'
 
