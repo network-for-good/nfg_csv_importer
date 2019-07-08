@@ -46,16 +46,8 @@ module NfgCsvImporter
         h.first_step
       end
 
-      def on_last_step?
-        active_step == last_step
-      end
-
       def first_step
         all_steps.first
-      end
-
-      def last_step
-        all_steps.last
       end
 
       # returns an array of symbols: [:step1, :step2, :step3]

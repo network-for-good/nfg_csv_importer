@@ -54,7 +54,60 @@ FactoryGirl.define do
       import_type nil
       import_file nil
     end
+  end
 
+  # Note: to use an onboarding session it may require stubbing the controller params
+  # add this to your spec if you encounter the following error:
+  #
+  # Failure/Error: active_step = view.params[:id]
+  # NoMethodError:
+  # undefined method `parameters' for nil:NilClass
+  #
+  # Solution:
+  # 1. Generate the session with something like these `let` variables:
+  # let(:onboarding_session) { FactoryGirl.create(:onboarding_session, :"#{current_step}_step") }
+  # let(:current_step) { 'file_origination_type_selection' }
+  #
+  # 2. Then stub the controller so that the presenter and session are married:
+  # before { h.controller.stubs(:params).returns(id: current_step) }
+  factory :onboarding_session, class: NfgOnboarder::Session do
+    name { 'import_data' }
+    association :owner, factory: :user
+    association :entity, factory: :entity
 
+    # Session Steps:
+    trait :file_origination_type_selection_step do
+      current_step { 'file_origination_type_selection' }
+    end
+
+    trait :upload_preprocessing_step do
+      current_step { 'upload_preprocessing' }
+      paypal_file_origination_type
+    end
+
+    trait :finish_step do
+
+    end
+
+    # Useful attributes / traits for Onboarding Sessions
+    trait :without_step_data do
+      step_data { {} }
+    end
+
+    trait :paypal_file_origination_type do
+      step_data {
+        { 'import_data' =>
+          { file_origination_type_selection: ActionController::Parameters.new('file_origination_type' => 'paypal') }
+        }
+      }
+    end
+
+    trait :self_import_csv_xls_file_origination_type do
+      step_data {
+        { 'import_data' =>
+          { file_origination_type_selection: ActionController::Parameters.new('file_origination_type' => 'self_import_csv_xls') }
+        }
+      }
+    end
   end
 end

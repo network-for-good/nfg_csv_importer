@@ -4,8 +4,6 @@ module NfgCsvImporter
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
       include NfgCsvImporter::ImportsHelper
       prepend_before_action :set_steps
-      before_action :load_imported_for
-      before_action :load_imported_by
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
@@ -18,17 +16,15 @@ module NfgCsvImporter
       steps *step_list
 
       expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
-
       expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
-      expose(:import_definitions) { user_import_definitions(imported_for: @imported_for, user: @imported_by, definition_class: ::ImportDefinition, imported_by: @imported_by)}
+      expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
       expose(:import_type ) { get_import_type }
       expose(:import) { get_import || new_import }
-
-      expose(:imported_for ) { @imported_for }
-      expose(:imported_by ) { @imported_by }
+      expose(:imported_for ) { self.send "#{NfgCsvImporter.configuration.imported_for_class.downcase}".to_sym }
+      expose(:imported_by ) { self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}") }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
 
       # The onboarder presenter, when built, automatically
@@ -42,7 +38,7 @@ module NfgCsvImporter
       private
 
       def points_of_no_return
-        [:overview]
+        [:finish]
       end
 
       # on before save steps
@@ -198,7 +194,7 @@ module NfgCsvImporter
       def get_import
         session[:onboarding_import_data_import_id] = params[:import_id] if params[:import_id].present?
         begin
-          @imported_for.imports.find(session[:onboarding_import_data_import_id])
+          imported_for.imports.find(session[:onboarding_import_data_import_id])
         rescue
           session.delete(:onboarding_import_data_import_id)
           return nil
@@ -226,7 +222,7 @@ module NfgCsvImporter
       end
 
       def new_import
-        Import.new(imported_for: @imported_for, imported_by: @imported_by, file_origination_type: file_origination_type_name, status: "pending", import_type: get_import_type)
+        Import.new(imported_for: imported_for, imported_by: imported_by, file_origination_type: file_origination_type_name, status: "pending", import_type: get_import_type)
       end
 
       def fields_to_be_cleansed_from_form_params
