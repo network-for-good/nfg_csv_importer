@@ -4,6 +4,8 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
   let(:entity) { create(:entity) }
   let(:admin) {  create(:user) }
   let(:file_origination_type) { 'paypal' }
+  let(:valid_filename) { 'paypal_sample_file.xlsx' }
+  let(:invalid_filename) { 'icon.jpg' }
 
   it 'walks the user through selecting the paypal file and eventually imports the donors/donations in the file' do
 
@@ -31,6 +33,14 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing.#{file_origination_type}"
     end
 
+    and_it 'defaults to the empty state dropzone interface' do
+      expect(page).to have_selector '.dropzone-target', text: 'Drag and drop your'
+
+      and_it 'does not have the activated css classes enabled' do
+        # expect(page).not_to have_css '.dz-started.dz-drag-hover'
+      end
+    end
+
     and_context 'when attaching an invalid file' do
       and_it 'does not pre-load an error state' do
         expect(page).not_to have_css "[data-dz-errormessage]"
@@ -39,8 +49,15 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
 
       by 'dropping an image file' do
         drop_in_dropzone(File.expand_path("spec/fixtures/icon.jpg"))
-        sleep 5
-        page.find("div.progress-bar[style='width: 100%;']", wait: 10)
+      end
+
+      # These css classes are specifically removed during the resetUI function.
+      and_it 'activates the dropzone' do
+        # expect(page).to have_css '.dz-started.dz-drag-hover'
+      end
+
+      and_it 'renders the progress bar' do
+        verify_progress_bar_completion(invalid_filename)
       end
 
       and_it 'puts the dropzone file field in an error state' do
@@ -59,23 +76,27 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
         expect(page).not_to have_css '.dz-success-mark .fa-check'
       end
 
-      # and_it 'is removable' do
-      #   click_link 'Remove file'
-      # end
+      and_it 'is removable from the dropzone interface' do
+        click_link 'Remove file'
+      end
 
-      # and_it 'returns to the standard presentation once the file is removed' do
+      and_it 'removes the file from the interface' do
+        expect(page).not_to have_css "[data-describe='progress-bar-for-#{invalid_filename}']"
+      end
 
-      # end
-
-      # and_it 'provides an invalid message when submitting an invalid file' do
-      #   click_button 'Next'
-      # end
+      and_it 'returns to the standard presentation once the file is removed' do
+        # expect(page).not_to have_css '.dz-started.dz-drag-hover'
+        expect(page).to have_selector '.dropzone-target', text: 'Drag and drop your'
+      end
     end
 
     and_by 'attaching the a paypal file to the dropzone file field' do
       drop_in_dropzone(File.expand_path("spec/fixtures/paypal_sample_file.xlsx"))
-      sleep 5
-      page.find("div.progress-bar[style='width: 100%;']", wait: 10)
+      verify_progress_bar_completion(valid_filename)
     end
   end
+end
+
+def verify_progress_bar_completion(filename)
+  expect(page.find("[data-describe='progress-bar-for-#{filename}'].progress-bar[style='width: 100%;']")).to be
 end
