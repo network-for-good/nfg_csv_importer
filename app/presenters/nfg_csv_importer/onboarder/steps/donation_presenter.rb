@@ -7,7 +7,7 @@ module NfgCsvImporter
     module Steps
       class DonationPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
 
-        attr_accessor :preview_records
+        attr_accessor :preview_records, :preview_template_service
 
         def humanized_card_header_icon
           'dollar'
@@ -60,31 +60,35 @@ module NfgCsvImporter
         private
 
         def amount
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:amount)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:amount)) || ""
         end
 
         def transaction_id
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:transaction_id)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:transaction_id)) || ""
         end
 
         def donated_at
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:donated_at)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:donated_at)) || ""
         end
 
         def campaign
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:campaign)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:campaign)) || ""
         end
 
         def note
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:note)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:note)) || ""
         end
 
         def payment_method
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:payment_method)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:payment_method)) || ""
         end
 
         def preview_template_service
-          NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+          @preview_template_service = NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+        end
+
+        def retrieve_host_specific_key_for(nfg_key)
+          preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(nfg_key)
         end
 
         def extant?(keyword)

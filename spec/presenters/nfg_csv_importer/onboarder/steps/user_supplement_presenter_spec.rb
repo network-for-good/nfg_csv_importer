@@ -29,6 +29,7 @@ describe NfgCsvImporter::Onboarder::Steps::UserSupplementPresenter do
   let(:dob_month) { '6' }
   let(:dob_year) { '1990' }
   let(:dob_day) { '12' }
+  let(:date_of_birth) { nil }
   let(:rows_to_render) do
     [
       {
@@ -37,13 +38,15 @@ describe NfgCsvImporter::Onboarder::Steps::UserSupplementPresenter do
         "address" => address, "address_2" => address_2, "city" => city,
         "state" => state, "zip_code" => zip_code, "home_phone" => phone,
         "job_title" => job_title, "employer" => employer, "dob_month" => dob_month,
-        "dob_day" => dob_day, "dob_year" => dob_year
+        "dob_day" => dob_day, "dob_year" => dob_year, "date_of_birth" => date_of_birth
       }
     ]
   end
   let(:nfg_csv_importer_to_host_mapping) do
     {
-      job_title: 'job_title', employer: 'employer', gender: 'gender', dob_year: 'dob_year', dob_month: 'dob_month', dob_day: 'dob_day'
+      job_title: 'job_title', employer: 'employer', gender: 'gender',
+      dob_year: 'dob_year', dob_month: 'dob_month', dob_day: 'dob_day',
+      date_of_birth: 'date_of_birth'
     }
   end
 
@@ -110,6 +113,17 @@ describe NfgCsvImporter::Onboarder::Steps::UserSupplementPresenter do
     let(:response) { [{ date_of_birth: ["#{dob_month}/#{dob_day}/#{dob_year}"] }] }
 
     it_behaves_like 'when there is not sufficient data', [{ :date_of_birth => [""] }]
+
+    context 'when there is full date of birth' do
+      let(:dob_month) { nil }
+      let(:dob_year) { nil }
+      let(:dob_day) { nil }
+      let(:date_of_birth) { '05/03/2010' }
+
+      let(:response) { [{ date_of_birth: ["#{date_of_birth}"] }] }
+
+      it { is_expected.to eq response }
+    end
 
     it { is_expected.to eq response }
   end

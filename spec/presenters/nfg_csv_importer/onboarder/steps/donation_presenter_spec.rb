@@ -20,10 +20,11 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
   let(:amount) { '20.00' }
   let(:transaction_id) { '12334343' }
   let(:note) { 'some note' }
+  let(:payment_method) { 'credit_card' }
   let(:rows_to_render) do
     [
       {
-       "gross" => amount, "donated_at" => donated_at, "payment_method" => "credit_card",
+       "gross" => amount, "donated_at" => donated_at, "payment_method" => payment_method,
        "campaign" => campaign, "transaction_id" => transaction_id, "user_notes" => note
       }
     ]
@@ -32,7 +33,8 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
     {
       "amount" => 'gross', "email" => 'email', "address" => 'address', "first_name" => 'first_name', "last_name" => 'last_name',
       "email" => 'email', "phone" => 'home_phone', "address" => 'address', "address_2" => 'address_2', "city" => 'city', "state" => 'state',
-      "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign'
+      "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign',
+      "payment_method" => 'payment_method'
     }
   end
 
@@ -108,9 +110,9 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     subject {preview_confirmation_presenter.humanized_card_heading_caption}
 
-    it_behaves_like 'when there is not sufficient data', ["", ""]
+    it_behaves_like 'when there is not sufficient data', ["", "", ""]
 
-    it { is_expected.to eq [campaign, donated_at] }
+    it { is_expected.to eq [campaign, donated_at, payment_method] }
   end
 
   describe '#humanized_card_body' do

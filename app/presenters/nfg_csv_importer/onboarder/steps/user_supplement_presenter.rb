@@ -7,7 +7,7 @@ module NfgCsvImporter
     module Steps
       class UserSupplementPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
 
-        attr_accessor :preview_records
+        attr_accessor :preview_records, :preview_template_service
 
         def humanized_card_header_icon
           'user'
@@ -52,36 +52,42 @@ module NfgCsvImporter
         private
 
         def job_title
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
-                                                                     .with_indifferent_access.dig(:job_title)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:job_title)) || ""
         end
 
         def employer
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
-                                               .with_indifferent_access.dig(:employer)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:employer)) || ""
         end
 
         def dob_year
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
-                                                                     .with_indifferent_access.dig(:dob_year)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:dob_year)) || ""
         end
 
         def dob_month
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
-                                               .with_indifferent_access.dig(:dob_month)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:dob_month)) || ""
         end
 
         def dob_day
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
-                                               .with_indifferent_access.dig(:dob_day)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:dob_day)) || ""
         end
 
         def date_of_birth
-          dob_month&.length > 0 ? "#{dob_month}/#{dob_day}/#{dob_year}" : ""
+          date_of_birth = dob_month&.length > 0 ? "#{dob_month}/#{dob_day}/#{dob_year}" : nil
+          date_of_birth ||= full_date_of_birth
+          date_of_birth
+        end
+
+        def full_date_of_birth
+          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping
+                                                                 .with_indifferent_access.dig(:date_of_birth)) || ""
         end
 
         def preview_template_service
-          NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+          @preview_template_service ||= NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+        end
+
+        def retrieve_host_specific_key_for(nfg_key)
+          preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(nfg_key)
         end
 
         def extant?(keyword)

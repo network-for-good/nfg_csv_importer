@@ -7,7 +7,7 @@ module NfgCsvImporter
     module Steps
       class UserPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
 
-        attr_accessor :preview_records
+        attr_accessor :preview_records, :preview_template_service
 
         def humanized_card_header_icon
           'user'
@@ -30,7 +30,13 @@ module NfgCsvImporter
         # Anticipating an array of arrays that we loop through.
         # The keyword might then be used to sync up an icon for this data (e.g.: user address = 'house')
         def humanized_card_body
-          [{ address: [address,address_2, "#{city}, #{state} #{zip}", country] }]
+          if address.present?
+            [{ address: [address, address_2, "#{city}, #{state} #{zip}", country] }]
+          elsif full_address.present?
+            [{ address: [full_address] }]
+          else
+            [{ address: [] }]
+          end
         end
 
         def macro_summary_heading_icon
@@ -61,35 +67,45 @@ module NfgCsvImporter
         def name
           first_name = subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:first_name))
           last_name = subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:last_name))
-          first_name.present? || last_name.present? ? "#{first_name} #{last_name}" : ""
+          name = first_name.present? || last_name.present? ? "#{first_name} #{last_name}" : nil
+          name ||= full_name
+          name
+        end
+
+        def full_name
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:full_name)) || ""
         end
 
         def email
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:email)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:email)) || ""
         end
 
         def phone
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:phone)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:phone)) || ""
         end
 
         def address
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:address)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:address)) || nil
         end
 
         def address_2
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:address_2)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:address_2)) || ""
+        end
+
+        def full_address
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:full_address)) || nil
         end
 
         def city
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:city)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:city)) || ""
         end
 
         def state
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:state)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:state)) || ""
         end
 
         def zip
-          subset_of_records_for_preview&.dig(preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(:zip_code)) || ""
+          subset_of_records_for_preview&.dig(retrieve_host_specific_key_for(:zip_code)) || ""
         end
 
         def country
@@ -97,7 +113,11 @@ module NfgCsvImporter
         end
 
         def preview_template_service
-          NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+          @preview_template_service ||= NfgCsvImporter::PreviewTemplateService.new(import: view.import)
+        end
+
+        def retrieve_host_specific_key_for(nfg_key)
+          preview_template_service.nfg_csv_importer_to_host_mapping.with_indifferent_access.dig(nfg_key)
         end
 
         def extant?(keyword)

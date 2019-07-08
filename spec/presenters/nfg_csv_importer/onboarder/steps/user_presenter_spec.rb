@@ -19,18 +19,22 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
   let(:email) { 'awesome@example.com' }
   let(:first_name) { 'Awesome' }
   let(:last_name) { 'Name' }
+  let(:full_name) { nil }
   let(:address) { '80 Rice Ave' }
   let(:address_2) { '#201' }
   let(:city) { 'San Francisco' }
   let(:state) { 'CA' }
   let(:zip_code) { '95991' }
+  let(:full_address) { nil }
+
   let(:rows_to_render) do
     [
       {
        "payment_method" => "credit_card",
        "first_name" => first_name, "last_name" => last_name, "email" => email,
        "address" => address, "address_2" => address_2, "city" => city,
-       "state" => state, "zip_code" => zip_code, "home_phone" => phone
+       "state" => state, "zip_code" => zip_code, "home_phone" => phone,
+       "full_name" => full_name, "full_address" => full_address
       }
     ]
   end
@@ -38,7 +42,8 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
     {
       "amount" => 'gross', "email" => 'email', "address" => 'address', "first_name" => 'first_name', "last_name" => 'last_name',
       "email" => 'email', "phone" => 'home_phone', "address" => 'address', "address_2" => 'address_2', "city" => 'city', "state" => 'state',
-      "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign'
+      "zip_code" => 'zip_code', "note" => 'user_notes', "transaction_id" => 'transaction_id', "donated_at" => 'donated_at', "campaign" => 'campaign',
+      "full_name" => 'full_name', "full_address" => "full_address"
     }
   end
 
@@ -104,6 +109,14 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     it { is_expected.to eq name }
 
+    context 'when full_name is given' do
+      let(:full_name) { 'Mike Davis' }
+      let(:first_name) { nil }
+      let(:last_name) { nil }
+
+      it { is_expected.to eq full_name }
+    end
+
     it_behaves_like 'when there is not sufficient data', ""
   end
 
@@ -131,9 +144,21 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
     subject { preview_confirmation_presenter.humanized_card_body }
 
     let(:response) { [{ address: [address, address_2, "#{city}, #{state} #{zip_code}", 'USA'] }] }
-    it_behaves_like 'when there is not sufficient data', [ { :address => ["", "", ",  ", "USA"] } ]
+    it_behaves_like 'when there is not sufficient data', [ { :address => [] } ]
 
     it { is_expected.to eq response }
+
+    context 'when full address is given' do
+      let(:address) { nil }
+      let(:full_address) { '1635 Awesome Dr., San Francisco, 45434' }
+      let(:response) { [{ address: [full_address] }] }
+
+      it { is_expected.to eq response }
+    end
+
+    context 'when both address and full address are not present' do
+
+    end
   end
 
   describe "#macro_summary_heading_icon" do
