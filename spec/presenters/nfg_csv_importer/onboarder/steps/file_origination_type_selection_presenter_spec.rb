@@ -1,6 +1,4 @@
 require "rails_helper"
-# include Rails.application.routes.url_helpers
-require 'nfg_csv_importer/file_origination_types/self_import_csv_xls'
 
 describe NfgCsvImporter::Onboarder::Steps::FileOriginationTypeSelectionPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
