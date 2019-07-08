@@ -16,7 +16,7 @@ module NfgCsvImporter
       end
 
       def step_icon(step)
-        step == last_step ? 'check' : nil
+        step == all_steps.last ? 'check' : nil
       end
 
       def show_step?(step)
