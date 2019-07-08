@@ -23,8 +23,8 @@ module NfgCsvImporter
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
       expose(:import_type ) { get_import_type }
       expose(:import) { get_import || new_import }
-      expose(:imported_for ) { self.send "#{NfgCsvImporter.configuration.imported_for_class.downcase}".to_sym }
-      expose(:imported_by ) { self.send("current_#{NfgCsvImporter.configuration.imported_by_class.downcase}") }
+      expose(:imported_for ) { load_imported_for }
+      expose(:imported_by ) { load_imported_by }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
 
       # The onboarder presenter, when built, automatically
