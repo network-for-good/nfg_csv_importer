@@ -133,12 +133,12 @@ module NfgCsvImporter
         case step
             when :file_origination_type_selection
               OpenStruct.new(file_origination_type: file_origination_type_name) # replace with your object that the step will update
-            when :overview
-              OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
               new_import
             when :import_type
               import || new_import
+            when :overview
+              OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_post_processing
               import
             when :field_mapping
