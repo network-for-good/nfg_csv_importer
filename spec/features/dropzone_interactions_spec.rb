@@ -144,7 +144,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       end
 
       and_it 'includes both files on the page' do
-        verify_progress_bar_completion(valid_filename)
+        expect(page.find("[data-describe='dz-#{valid_filename}']")).to be
       end
 
       and_it 'removes the file' do
@@ -167,8 +167,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 end
 
 def verify_progress_bar_completion(filename)
-  sleep 1
-  progress_bar = page.find("[data-describe='dz-#{filename}'] .progress-bar", wait: 10)
-  expect(progress_bar).to be
-  expect(progress_bar['style']).to eq 'width: 100%;'
+  sleep 3
+  expect(page.find("[data-describe='dz-#{filename}']", wait: 10)).to be
+  expect(page.find("[data-describe='dz-#{filename}'] .progress-bar")['style']).to eq 'width: 100%;'
 end
