@@ -81,7 +81,7 @@ module NfgCsvImporter
       end
 
       def finish_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
+        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step
@@ -158,6 +158,10 @@ module NfgCsvImporter
       end
 
       def finish_wizard_path
+        # since this should only be called when the user is leaving the last step
+        # in case they left the finish step without actually finishing
+        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+
         imports_path
          # where to take the user when the have finished this step
          # TODO add a path to where the user should go once they complete the onboarder
