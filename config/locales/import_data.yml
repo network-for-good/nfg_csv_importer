@@ -25,7 +25,7 @@ en:
             modal:
         finish:
           header:
-            message: 'Replace me at config/locales/import_data: finish'
+            message: ''
             form: ''
             page:
           button:
