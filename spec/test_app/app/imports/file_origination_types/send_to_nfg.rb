@@ -19,6 +19,14 @@ module FileOriginationTypes
       def skip_steps
         %i[overview import_type upload_post_processing field_mapping preview_confirmation]
       end
+
+      def post_preprocessing_upload_hook
+        ->(import) {
+          import.update(import_type: 'individual_donation')
+          import.import_file = File.open(Rails.root.join("spec", "fixtures", "temp_import_file.csv"))
+          import.complete!
+        }
+      end
     end
   end
 end
