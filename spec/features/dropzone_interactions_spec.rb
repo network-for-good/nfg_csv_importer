@@ -167,5 +167,6 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 end
 
 def verify_progress_bar_completion(filename)
+  sleep 0.5
   expect(page.find("[data-describe='dz-#{filename}'] .progress-bar[style='width: 100%;']")).to be
 end
