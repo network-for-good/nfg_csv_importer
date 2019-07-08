@@ -18,7 +18,7 @@
     .container.py-4
       .row
         .col.col-lg-8.mx-auto
-          = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, class: 'mb-0', icon: 'exclamation-circle', render_if: f.object.errors.any?
+          = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle', render_if: f.object.errors.any?
 
           = ui.nfg :tile do
             = ui.nfg :typeface, heading: header_message.html_safe, class: 'mb-3'
