@@ -1,3 +1,5 @@
+include ActionDispatch::TestProcess
+
 FactoryGirl.define do
   factory :imported_record, class: NfgCsvImporter::ImportedRecord do
     action "create"
@@ -18,6 +20,10 @@ FactoryGirl.define do
       file_origination_type { 'paypal' }
       import_file { File.open("spec/fixtures/paypal_processed_file.csv") }
       import_type { 'donation' }
+    end
+
+    trait :with_pre_processing_files do
+      pre_processing_files { fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx")  }
     end
 
     trait :is_complete_with_errors do
