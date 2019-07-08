@@ -168,5 +168,7 @@ end
 
 def verify_progress_bar_completion(filename)
   sleep 0.5
-  expect(page.find("[data-describe='dz-#{filename}'] .progress-bar[style='width: 100%;']")).to be
+  progress_bar = page.find("[data-describe='dz-#{filename}'] .progress-bar")
+  expect(progress_bar).to be
+  expect(progress_bar['style']).to eq 'width: 100%;'
 end
