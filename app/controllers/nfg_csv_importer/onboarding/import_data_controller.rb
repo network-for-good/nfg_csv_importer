@@ -42,7 +42,7 @@ module NfgCsvImporter
       private
 
       def points_of_no_return
-        [:overview]
+        [:finish]
       end
 
       # on before save steps
