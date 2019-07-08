@@ -29,7 +29,7 @@ class NfgCsvImporter.Uploader
   directUploadDidProgress: (event) =>
     progressBar = this.file.previewElement.querySelector('.progress .progress-bar')
     progressBar.style.width = "#{event.loaded * 100 / event.total}%"
-    progressBar.setAttribute 'data-describe', "progress-bar-for-#{this.file.name}"
+    progressBar.setAttribute 'aria-valuenow', "#{event.loaded * 100 / event.total}"
 
 
 
@@ -60,6 +60,7 @@ class NfgCsvImporter.DragdropUpload
       @resetUI $(myDropzone.element)
     myDropzone.on 'addedfile', (file)=>
       new NfgCsvImporter.Uploader(file, url, name)
+      file.previewElement.setAttribute 'data-describe', "dz-#{file.name}"
     myDropzone.on 'removedfile', (file)=>
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
       $("input[value='#{signed_id}']").remove()
@@ -74,7 +75,7 @@ class NfgCsvImporter.DragdropUpload
       successMark.hide()
 
   resetUI: (dropzoneEl) ->
-    dropzoneEl.removeClass 'dz-started dz-drag-hover'
+    dropzoneEl.removeClass 'dz-clickable dz-started'
 
 $ ->
   el = $("#pre_processing_files_upload")
