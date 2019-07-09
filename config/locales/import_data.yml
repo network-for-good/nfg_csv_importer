@@ -30,7 +30,7 @@ en:
             page:
           button:
             back: 'Prev'
-            submit: 'Finish'
+            submit: 'Exit'
           label:
           placeholder:
           hint:
