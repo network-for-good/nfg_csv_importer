@@ -45,10 +45,8 @@ en:
           button:
             <<: *default_buttons
             approve: 'Approve & Import'
-            cancel: 'Cancel & End Import'
           confirm:
             begin_import: 'Please confirm you are ready to begin importing your data into Donor Management'
-            cancel_import: "Please confirm you want to end this importing process and delete the files you've uploaded. No data will be imported into Donor Management."
           label:
           placeholder:
           hint:
