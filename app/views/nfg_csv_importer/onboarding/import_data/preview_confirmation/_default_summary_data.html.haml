@@ -1,0 +1,24 @@
+- stats_and_details = import.statistics_and_examples
+
+= ui.nfg :tile_section do
+  -# Always a contact record, regardless of import type.
+  -# For now, contact type is hard-coded as "user"
+  -# Perhaps contact type should be a configuration setting?
+  -# ex: config.contact_type_record_class_names = %w[user organization]
+  .card-deck
+    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"][0]
+    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"][1]
+
+= ui.nfg :tile_section do
+  = ui.nfg :typeface, heading: t('header.summary', scope: i18n_scope), class: 'mb-3'
+  = ui.nfg :typeface, :muted, body: t('body.summary', scope: i18n_scope), class: 'mb-0'
+  = ui.nfg :typeface, title: t("stats.user.heading", scope: i18n_scope)
+
+  -# the total, then the loop of charts
+  = ui.nfg :media, class: 'mt-3' do
+    = ui.nfg :media_object do
+      = fa_stacked_icon "table inverse", base: 'circle', class: "mr-2 text-primary fa-2x"
+
+    = ui.nfg :media_body do
+      = ui.nfg :typeface, title: "Total Rows", class: 'display-4'
+      %h2= stats_and_details["summary_data"]["number_of_rows"]
