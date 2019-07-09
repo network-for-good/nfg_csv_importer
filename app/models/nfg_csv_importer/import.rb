@@ -134,9 +134,10 @@ module NfgCsvImporter
     end
 
     def statistics_and_examples(update_stats: false)
-      # return stats if stats.present? && !update_stats
-      # update(statistics: generate_stats_and_examples)
-      generate_stats_and_examples
+      return stats if stats.present? && !update_stats
+      temp_stats = generate_stats_and_examples
+      update(statistics: temp_stats)
+      temp_stats
     end
 
     def unmapped_columns
