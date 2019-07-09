@@ -59,6 +59,9 @@ en:
             user:
               heading: Contacts snapshot
               total: 'Total Est. Contacts'
+            user_supplement:
+              heading: Contacts snapshot
+              total: 'Total Est. Contacts'
         field_mapping:
           header:
             message: ''

@@ -24,6 +24,6 @@
     = ui.nfg :typeface, heading: t('header.summary', scope: i18n_scope), class: 'mb-3'
     = ui.nfg :typeface, :muted, body: t('body.summary', scope: i18n_scope), class: 'mb-0'
     .row
-      - templates_to_render.each do |temp|
+      - macro_templates_to_render.each do |temp|
         .col-12.col-md.mt-4
           = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', humanize: temp, onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope

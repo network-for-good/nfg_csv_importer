@@ -4,6 +4,7 @@ describe NfgCsvImporter::PreviewTemplateService do
   let(:preview_template_service) { NfgCsvImporter::PreviewTemplateService.new(import: import) }
   let!(:import) { build(:import, imported_for: build_stubbed(:entity), import_type: :donation) }
   let(:templates) { %w(user donation) }
+  let(:macro_templates) { %w(user) }
   let(:columns) { %w(first_name last_name) }
   let(:nfg_csv_importer_to_host_mapping) do
     {
@@ -17,6 +18,7 @@ describe NfgCsvImporter::PreviewTemplateService do
     {
       columns_to_show: columns,
       templates_to_render: templates,
+      macro_templates_to_render: macro_templates,
       nfg_csv_importer_to_host_mapping: nfg_csv_importer_to_host_mapping
     }
   end
@@ -35,7 +37,24 @@ describe NfgCsvImporter::PreviewTemplateService do
       let(:preview_hash) { nil }
 
       it 'should return nil' do
-        expect(subject).to eq(nil)
+        expect(subject).to eq([])
+      end
+    end
+  end
+
+  describe "#macro_templates_to_render" do
+    subject { preview_template_service.macro_templates_to_render }
+
+
+    it "should return macro templates to render" do
+      expect(subject).to eq(macro_templates)
+    end
+
+    context 'when nfg_csv_importer_to_host_mapping is nil' do
+      let(:preview_hash) { nil }
+
+      it 'should return nil' do
+        expect(subject).to eq([])
       end
     end
   end
@@ -51,7 +70,7 @@ describe NfgCsvImporter::PreviewTemplateService do
       let(:preview_hash) { nil }
 
       it 'should return nil' do
-        expect(subject).to eq(nil)
+        expect(subject).to eq([])
       end
     end
   end
@@ -67,7 +86,7 @@ describe NfgCsvImporter::PreviewTemplateService do
       let(:preview_hash) { nil }
 
       it 'should return nil' do
-        expect(subject).to eq(nil)
+        expect(subject).to eq({})
       end
     end
   end

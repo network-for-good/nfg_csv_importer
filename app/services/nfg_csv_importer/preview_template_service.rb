@@ -14,6 +14,10 @@ module NfgCsvImporter
       preview_template&.with_indifferent_access&.dig('templates_to_render') || []
     end
 
+    def macro_templates_to_render
+      preview_template&.with_indifferent_access&.dig('macro_templates_to_render') || []
+    end
+
     def columns_to_render
       preview_template&.with_indifferent_access&.dig('columns_to_show') || []
     end
