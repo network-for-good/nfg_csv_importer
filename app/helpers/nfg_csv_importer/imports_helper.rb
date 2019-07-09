@@ -86,7 +86,7 @@ module NfgCsvImporter
       if import.status.try(:to_sym) == :uploaded
         html = fa_icon "minus", class: "text-muted"
       else
-        html = "<h4>#{ import.number_of_records }</h4>"
+        html = "<h5>#{ import.number_of_records }</h5>"
       end
       html.html_safe
     end

@@ -46,7 +46,7 @@
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
-  border: $input-btn-border-width solid transparent;
+  // border: $input-btn-border-width solid transparent;
   @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
   outline: none !important;
 

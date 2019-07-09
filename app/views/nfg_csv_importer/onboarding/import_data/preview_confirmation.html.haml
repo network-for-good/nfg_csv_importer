@@ -1,7 +1,6 @@
-/ - onboarder_presenter = NfgCsvImporter::PreviewConfirmationPresenter.new
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form') } do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form'), next_step_confirmation: t('confirm.begin_import', scope: i18n_scope) } do |f|
 
   - begin
     = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}_summary_data", i18n_scope: i18n_scope
@@ -13,4 +12,10 @@
       -# This button should be equivalent to clicking "Next" on the onboarder.
       -# Like with clicking "next", it should kick off the modal to confirm approval to import.
       = ui.nfg :button, :submit, :lg, body: t('button.approve', scope: i18n_scope), icon: 'caret-right'
+
+
+      -# Placed here for temporary storage or use when ready.
+      -# DOES NOT YET WORK.
+      = ui.nfg :button, :link, body: t('button.cancel', scope: i18n_scope), icon: 'times', confirm: t('confirm.cancel_import', scope: i18n_scope), class: 'ml-2 text-danger'
+
 

@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: 782f245bfc0f27e91c556ecb2fd40fe01cc57c81
-  branch: points_of_no_return
+  revision: b4e885b2e3440dae79b63b947b7d941b963b486f
+  branch: rails_5
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
@@ -9,23 +9,6 @@ GIT
       rails (~> 5.0)
       reform
       wicked
-
-GIT
-  remote: https://github.com/network-for-good/nfg_ui.git
-  revision: e6c3854edb35b5c91cf829df56edd80b348c469e
-  branch: master
-  specs:
-    nfg_ui (0.9.13)
-      autoprefixer-rails (= 9.4.9)
-      bootstrap (= 4.3.1)
-      browser (~> 1.1)
-      coffee-script (~> 2.4)
-      font-awesome-rails (~> 4.7)
-      inky-rb (~> 1.3.7)
-      jquery-rails (~> 4.3)
-      rails (>= 4.2.0)
-      sass-rails (~> 5.0)
-      select2-rails (~> 4.0)
 
 PATH
   remote: .
@@ -213,6 +196,17 @@ GEM
     minitest (5.11.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
+    nfg_ui (0.9.13)
+      autoprefixer-rails (= 9.4.9)
+      bootstrap (= 4.3.1)
+      browser (~> 1.1)
+      coffee-script (~> 2.4)
+      font-awesome-rails (~> 4.7)
+      inky-rb (~> 1.3.7)
+      jquery-rails (~> 4.3)
+      rails (>= 4.2.0)
+      sass-rails (~> 5.0)
+      select2-rails (~> 4.0)
     nio4r (2.4.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
@@ -381,7 +375,6 @@ DEPENDENCIES
   factory_girl_rails
   nfg_csv_importer!
   nfg_onboarder!
-  nfg_ui!
   pry
   pry-byebug
   puma
