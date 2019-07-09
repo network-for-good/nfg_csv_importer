@@ -1,4 +1,5 @@
 #= require nfg_ui/application
+#= require jquery_ujs
 
 #= require nfg_csv_importer/document_ready
 
