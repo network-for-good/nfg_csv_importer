@@ -34,7 +34,7 @@
               %span.m-l-quarter.hidden-sm-down= t("links.edit_import", scope: language_scope)
 
           - else
-            = link_to '#', class: 'btn btn-secondary' do
+            = link_to import_path(import), class: 'btn btn-secondary' do
               = fa_icon "info-circle", class: "m-r-quarter", text: t("links.details", scope: language_scope)
 
           - if import.can_be_deleted?(current_user)
