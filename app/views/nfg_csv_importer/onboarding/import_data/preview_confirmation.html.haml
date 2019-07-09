@@ -4,7 +4,7 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form') } do |f|
 
   - begin
-    = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}", i18n_scope: i18n_scope
+    = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}_summary_data", i18n_scope: i18n_scope
   - rescue
     = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope
 
