@@ -29,7 +29,8 @@ en:
             form: ''
             page:
           button:
-            <<: *default_buttons
+            back: 'Prev'
+            submit: 'Exit'
           label:
           placeholder:
           hint:
