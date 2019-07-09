@@ -133,6 +133,12 @@ module NfgCsvImporter
       self.save!
     end
 
+    def statistics_and_examples(update_stats: false)
+      # return stats if stats.present? && !update_stats
+      # update(statistics: generate_stats_and_examples)
+      generate_stats_and_examples
+    end
+
     def unmapped_columns
       mapped_fields.select { |column| column.unmapped? }
     end
