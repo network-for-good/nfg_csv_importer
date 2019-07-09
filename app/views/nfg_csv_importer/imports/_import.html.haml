@@ -2,38 +2,45 @@
 - imports_listing_row_column_structure_class = "" if local_assigns[:imports_listing_row_column_structure_class].nil?
 
 - if import.can_be_viewed_by(current_user)
-  .row.row-listing{ id: dom_id(import), data: { id: import.id, describe: 'import-slat' } }
-    %div{ class: imports_listing_row_column_structure_class, id: "#{dom_id(import)}_name" }
-      %h5.m-b-quarter
-        = import.imported_by_name
-      .small.text-truncate
-        = link_to import.import_file.url do
-          = fa_icon "paperclip fw", class: "m-r-quarter", text: import.import_file_name
-      .small
-        = fa_icon "cloud-upload fw", class: "m-r-quarter text-muted", text: import.created_at.to_s(:abrev_month_yyyy)
+  .slat{ id: dom_id(import), data: { id: import.id, describe: 'import-slat' } }
+    .row
+      %div{ class: imports_listing_row_column_structure_class, id: "#{dom_id(import)}_name" }
+        %h5= import.imported_by_name
+        %p.m-t-quarter.small= import.updated_at.to_s(:abrev_month_yyyy)
 
-    %div{ class: imports_listing_row_column_structure_class }
-      = number_of_records_without_errors_based_on_import_status(import)
+      %div{ class: imports_listing_row_column_structure_class }
+        %h5 Data Source (ex: PayPal)
+        %p.m-t-quarter.small
+          %strong= import_status_link(import)
 
-    %div{ class: imports_listing_row_column_structure_class }
-      = number_of_records_with_errors_based_on_import_status(import)
+      %div{ class: imports_listing_row_column_structure_class }
+        = number_of_records_without_errors_based_on_import_status(import)
+        %p.m-t-quarter.small 50 Unique
 
-    %div{ class: imports_listing_row_column_structure_class }
-      %h5.line-height-1.m-b-quarter= import.updated_at.to_s(:abrev_month_yyyy)
-      %p.small= import.updated_at.to_s(:abrev_time_alternative)
+      %div{ class: imports_listing_row_column_structure_class }
+        %h5 $2,000
+        %p.m-t-quarter.small 120 Donations
 
-    %div{ class: imports_listing_row_column_structure_class }
-      %p.line-height-normal
-        %strong= import_status_link(import)
+      %div{ class: imports_listing_row_column_structure_class }
+        %h5= number_of_records_with_errors_based_on_import_status(import)
+        %p.m-t-quarter.small= link_to t("links.download", scope: language_scope), import.import_file.url, class: 'text-danger'
 
-    %div{ class: imports_listing_row_column_structure_class }
-      - if import.uploaded?
-        = link_to edit_import_path(import), class: "btn btn-link" do
-          = fa_icon "pencil", text: t("links.edit_import", scope: language_scope)
-      - else
-        %p.display-inline-block{ bootstrap_tooltip(t("tooltips.edit_import", scope: language_scope), :bottom) }
-          %a.btn.btn-link.disabled{ href: "javascript:;" }
-            = fa_icon "pencil", class: "text-muted", text: t("links.edit_import", scope: language_scope)
-      - if import.can_be_deleted?(current_user)
-        = link_to import_path(import), method: :delete, class: "btn btn-link", data: { confirm: import_delete_confirmation(import) } do
-          = fa_icon "trash", text: t("links.delete_import", scope: language_scope)
+      %div.text-xs-right{ class: imports_listing_row_column_structure_class }
+        .btn-group
+
+          - if import.uploaded?
+            = link_to edit_import_path(import), class: 'btn btn-secondary' do
+              = fa_icon 'pencil'
+              %span.m-l-quarter.hidden-sm-down= t("links.edit_import", scope: language_scope)
+
+          - else
+            = link_to '#', class: 'btn btn-secondary' do
+              = fa_icon "info-circle", class: "m-r-quarter", text: t("links.details", scope: language_scope)
+
+          - if import.can_be_deleted?(current_user)
+            %a.btn.btn-secondary.dropdown-toggle{"data-toggle" => "dropdown"}
+              = fa_icon 'chevron-down'
+            .dropdown-menu.dropdown-menu-right{:role => "menu"}
+              = link_to import_path(import), method: :delete, class: 'dropdown-item text-danger', data: { confirm: import_delete_confirmation(import) } do
+                = fa_icon 'trash-o', class: 'm-r-quarter'
+                = t("links.delete_import", scope: language_scope)
