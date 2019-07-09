@@ -93,7 +93,20 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_header_icon }
 
+    before do
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:rows_to_render).returns(rows_to_render)
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:nfg_csv_importer_to_host_mapping).returns(nfg_csv_importer_to_host_mapping)
+    end
+
     it { is_expected.to eq 'user' }
+
+    context 'when humanized_card_heading is empty' do
+      let(:first_name) { nil }
+      let(:last_name) { nil }
+      let(:full_name) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 
   describe '#humanized_card_heading' do
@@ -165,7 +178,15 @@ describe NfgCsvImporter::Onboarder::Steps::UserPresenter do
 
     subject { preview_confirmation_presenter.macro_summary_heading_icon }
 
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
     it { is_expected.to eq 'user' }
+
+    context 'when macro_summary_heading_value is empty' do
+      let(:stats) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 
   describe "#macro_summary_heading_value" do

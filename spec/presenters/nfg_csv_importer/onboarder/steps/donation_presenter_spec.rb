@@ -84,8 +84,19 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     subject { preview_confirmation_presenter.humanized_card_header_icon }
 
+    before do
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:rows_to_render).returns(rows_to_render)
+      NfgCsvImporter::PreviewTemplateService.any_instance.stubs(:nfg_csv_importer_to_host_mapping).returns(nfg_csv_importer_to_host_mapping)
+    end
+
     let(:icon) {'dollar'}
     it { is_expected.to eq 'dollar' }
+
+    context 'when the heading does not exist' do
+      let(:amount) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 
   describe '#humanized_card_heading' do
@@ -134,7 +145,17 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     subject { preview_confirmation_presenter.macro_summary_heading_icon }
 
+    before { h.stubs(:import).returns(mock('import', statistics: stats)) }
+
+    let(:humanize) { 'donation' }
+
     it { is_expected.to eq 'dollar' }
+
+    context 'when total sum is nil' do
+      let(:stats) { nil }
+
+      it { is_expected.to eq '' }
+    end
   end
 
   describe "#macro_summary_heading_value" do
@@ -184,7 +205,7 @@ describe NfgCsvImporter::Onboarder::Steps::DonationPresenter do
 
     it { is_expected.to eq 'search' }
 
-    context 'when address is nil' do
+    context 'when transaction_id is nil' do
       let(:transaction_id) { nil }
 
       it { is_expected.to eq '' }

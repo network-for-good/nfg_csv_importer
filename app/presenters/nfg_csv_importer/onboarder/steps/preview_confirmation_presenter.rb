@@ -19,8 +19,8 @@ module NfgCsvImporter
 
 
         SUBCLASS_PRESENTER_METHODS.each do |name|
-          define_method(name) do |humanize, *args|
-            send("#{humanize}_presenter").send(name.to_s, *args)
+          define_method(name) do |humanize, arg = nil|
+            send("#{humanize}_presenter").send(name.to_s, arg)
           end
         end
 

@@ -8,9 +8,10 @@ module NfgCsvImporter
       class UserSupplementPresenter < NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter
 
         attr_accessor :preview_records, :preview_template_service
+        attr_reader :humanized_card_heading, :macro_summary_heading_value
 
         def humanized_card_header_icon
-          'user'
+          humanized_card_heading.empty? ? '' : 'user'
         end
 
         def humanized_card_body_icon(keyword)
@@ -18,7 +19,7 @@ module NfgCsvImporter
         end
 
         def humanized_card_heading
-          job_title
+          @humanized_card_heading ||= job_title
         rescue StandardError => e
           Rails.logger.error("Failed to retrieve humanized card heading.  Exception: #{e.message}")
         end
