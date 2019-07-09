@@ -1,0 +1,12 @@
+#!/bin/bash
+
+file_contents=$(cat $1)
+ticket_id=$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 | cut -d'-' -f1,2)
+
+case $ticket_id in
+	[A-Z]*[0-9]*)
+		echo -n "[#$ticket_id] " > $1
+		echo "$file_contents" >> $1
+esac
+
+
