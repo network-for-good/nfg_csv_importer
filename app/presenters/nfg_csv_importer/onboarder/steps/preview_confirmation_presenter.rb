@@ -6,6 +6,40 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class PreviewConfirmationPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
+
+        # Generate a Chartwell piechart that outputs HTML that looks like this:
+        # .chartwell.pies
+        #   %span.text-primary 75
+        #   %span.text-light 25
+        #   %span.text-white C
+        def preview_pie_chart(amount:, total:, theme: :primary)
+          h.content_tag(:div, class: 'chartwell pies mr-2', style: 'font-size: 76px; line-height: 1;') do
+
+            # The pie chart for the actual amount of data (primary color)
+            h.content_tag(:span, calculate_percentage(amount: amount, total: total), class: "text-#{theme}") +
+
+            # The second half of the pie chart, the remainder (gray)
+            h.content_tag(:span, calculate_remainder(amount: amount, total: total), class: 'text-light') +
+
+            # The style of the chart thickness (calculated by alpha character via Chartwell.js)
+            h.content_tag(:span, 'C', class: 'text-white')
+          end
+        end
+
+        private
+
+        def calculate_percentage(amount:, total:)
+          ((amount.to_f / total.to_f) * 100).ceil
+        end
+
+        # Chartwell piecharts are out of a total of 100
+        # So calculate the un-used percentage to return the second value
+        # for Chartwell.
+        #
+        # Example: if the amount is 75%. This will return 25.
+        def calculate_remainder(amount:, total:)
+          100 - calculate_percentage(amount: amount, total: total)
+        end
       end
     end
   end
