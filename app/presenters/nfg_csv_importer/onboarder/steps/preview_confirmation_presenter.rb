@@ -26,6 +26,16 @@ module NfgCsvImporter
           end
         end
 
+        def preview_card_data(data:)
+          body = data.present? ? data : 'Not available'
+
+          if data.present?
+            h.ui.nfg(:typeface, body: body, class: 'mb-0')
+          else
+            h.ui.nfg(:typeface, :muted, body: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available'), tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present'))
+          end
+        end
+
         private
 
         def calculate_percentage(amount:, total:)

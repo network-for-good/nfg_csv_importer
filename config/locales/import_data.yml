@@ -62,6 +62,8 @@ en:
             user:
               heading: Donations snapshot
               total: 'Total Est. Contacts'
+          tooltips:
+            preview_card_data_not_present: "This information was not available on the sampled spreadsheet row"
         field_mapping:
           header:
             message: ''
