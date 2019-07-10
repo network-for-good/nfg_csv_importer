@@ -1,4 +1,5 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: 'file_origination_type.name'), header_page: t('.header.page', file_origination_type: 'file_origination_type.name', description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
     .col-12#pre_processing_files_upload
@@ -13,7 +14,7 @@
               click here
             to browse.
       - unless f.object.pre_processing_files.empty?
-        - f.object.pre_processing_filess.each do |file|
+        - f.object.pre_processing_files.each do |file|
           = f.hidden_field :pre_processing_files , value: file.signed_id
 
   = ui.nfg :alert, :tip, class: 'mt-4 mb-0' do
