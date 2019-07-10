@@ -31,8 +31,6 @@ class NfgCsvImporter.Uploader
     progressBar.style.width = "#{event.loaded * 100 / event.total}%"
     progressBar.setAttribute 'aria-valuenow', "#{event.loaded * 100 / event.total}"
 
-
-
 class NfgCsvImporter.DragdropUpload
   constructor: (@el) ->
     root = @el
@@ -45,6 +43,7 @@ class NfgCsvImporter.DragdropUpload
     myDropzone = new Dropzone(root.querySelector('.dropzone-target'), {
       url: url,
       autoQueue: false,
+      clickable: '#dz_file_browser_link',
       dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
       preventDuplicates: true,
       addRemoveLinks: true,

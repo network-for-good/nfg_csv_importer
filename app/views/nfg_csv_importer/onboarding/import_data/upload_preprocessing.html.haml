@@ -7,7 +7,11 @@
         .dz-default.py-4.text-center
           = ui.nfg :icon, 'cloud-upload 3x', :primary
           = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
-          = ui.nfg :typeface, body: 'If you prefer to search your computer, click here to browse.', class: 'mb-0'
+          = ui.nfg :typeface, :body, class: 'mb-0' do
+            If you prefer to search your computer,
+            %a#dz_file_browser_link{ href: 'javascript:;' }
+              click here
+            to browse.
       - unless f.object.pre_processing_files.empty?
         - f.object.pre_processing_filess.each do |file|
           = f.hidden_field :pre_processing_files , value: file.signed_id
