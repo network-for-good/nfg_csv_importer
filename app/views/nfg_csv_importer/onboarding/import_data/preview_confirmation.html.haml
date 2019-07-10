@@ -2,18 +2,20 @@
 
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form'), next_step_confirmation: t('confirm.begin_import', scope: i18n_scope) } do |f|
 
-  -# Always a contact record, regardless of import type.
-  -# For now, contact type is hard-coded as "user"
-  -# Perhaps contact type should be a configuration setting?
-  -# ex: config.contact_type_record_class_names = %w[user organization]
-  .card-deck
-    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanize: 'user', onboarder_presenter: onboarder_presenter
-    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/humanized_data_preview_card', humanize: 'donation', onboarder_presenter: onboarder_presenter
+  - begin
+    = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}_detail_and_summary_data", i18n_scope: i18n_scope
+  - rescue ActionView::MissingTemplate
+    = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope
 
-  = ui.nfg :typeface, heading: t('header.summary', scope: i18n_scope), class: 'mt-4 mb-3'
-  = ui.nfg :typeface, :muted, body: t('body.summary', scope: i18n_scope), class: 'mb-0'
-  .row
-    .col-12.col-md.mt-4
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', humanize: 'user', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
-    .col-12.col-md.mt-4
-      = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/import_summary_details_column', humanize: 'donation', onboarder_presenter: onboarder_presenter, i18n_scope: i18n_scope
+  .row.mt-4
+    .col.text-center
+      -# This button should be equivalent to clicking "Next" on the onboarder.
+      -# Like with clicking "next", it should kick off the modal to confirm approval to import.
+      = ui.nfg :button, :submit, :lg, body: t('button.approve', scope: i18n_scope), icon: 'caret-right'
+
+
+      -# Placed here for temporary storage or use when ready.
+      -# DOES NOT YET WORK.
+      = ui.nfg :button, :link, body: t('button.cancel', scope: i18n_scope), icon: 'times', confirm: t('confirm.cancel_import', scope: i18n_scope), class: 'ml-2 text-danger'
+
+

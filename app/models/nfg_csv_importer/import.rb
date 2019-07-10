@@ -18,6 +18,7 @@ module NfgCsvImporter
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
+    serialize :statistics, JSON
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined, :pending]
     mount_uploader :import_file, ImportFileUploader
@@ -131,6 +132,13 @@ module NfgCsvImporter
       csv_file.original_filename = "import_error_file.csv"
       self.error_file = csv_file
       self.save!
+    end
+
+    def statistics_and_examples(update_stats: false)
+      return statistics if statistics.present? && !update_stats
+      temp_stats = generate_stats_and_examples
+      update(statistics: temp_stats)
+      temp_stats
     end
 
     def unmapped_columns
