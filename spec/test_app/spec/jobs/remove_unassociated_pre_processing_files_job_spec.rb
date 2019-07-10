@@ -12,10 +12,12 @@ RSpec.describe RemoveUnassociatedPreProcessingFilesJob, type: :job do
     end
 
     context 'when associated with attachment' do
-      # before { blob }
+      let(:import) { create(:import, :with_pre_processing_files) }
+      let!(:blob) { import.pre_processing_files.first.blob }
 
       it 'does not deletes it' do
-        pending
+        expect(blob).not_to be_nil
+        expect { subject }.to change(ActiveStorage::Blob, :count).by(0)
       end
     end
   end
