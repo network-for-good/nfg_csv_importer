@@ -18,15 +18,31 @@ RSpec.describe NfgCsvImporter::DefaultStatsGeneratorService do
     }
   end
 
-  before do
-    spreadsheet.expects(:last_row).returns(10)
-    row_conversion_method.expects(:call).with(2).returns(data)
-    row_conversion_method.expects(:call).with(4).returns(another_data)
-  end
+  before { spreadsheet.expects(:last_row).returns(10) }
 
   describe '#call' do
     subject { default_stats_generator.call }
 
-    it { is_expected.to eq response }
+    context 'when the row conversion method exists' do
+      before do
+        row_conversion_method.expects(:call).with(2).returns(data)
+        row_conversion_method.expects(:call).with(4).returns(another_data)
+      end
+
+      it { is_expected.to eq response }
+    end
+
+
+    context 'when the row converesion method is nil' do
+      let(:row_conversion_method) { nil }
+      let(:response) do
+        {
+          "summary_data" => { "number_of_rows" => 9 },
+          "example_rows" => [ nil, nil ]
+        }
+      end
+
+      it { is_expected.to eq response }
+    end
   end
 end

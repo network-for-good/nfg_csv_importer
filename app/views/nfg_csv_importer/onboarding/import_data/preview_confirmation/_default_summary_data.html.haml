@@ -6,8 +6,8 @@
   -# Perhaps contact type should be a configuration setting?
   -# ex: config.contact_type_record_class_names = %w[user organization]
   .card-deck
-    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"][0]
-    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"][1]
+    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"]&.first
+    = render 'nfg_csv_importer/onboarding/import_data/preview_confirmation/data_preview_card_default', details: stats_and_details["example_rows"]&.second
 
 = ui.nfg :tile_section do
   = ui.nfg :typeface, heading: t('header.summary', scope: i18n_scope), class: 'mb-3'
