@@ -14,7 +14,16 @@ describe NfgCsvImporter::Import do
   let(:admin) {  create(:user) }
   let(:error_file) { nil }
   let(:status) { :uploaded }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file, status: status) }
+  let(:import) do
+    FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+                      import_file: file, error_file: error_file, status: status, statistics: stats)
+  end
+
+  let(:stats) do
+    {
+      "total_amount"=> '10.00'
+    }
+  end
 
   # we use this so both the import file, and the onboarder UploadPostProcessingForm can have
   # the shared validations run against it.
@@ -445,5 +454,56 @@ describe NfgCsvImporter::Import do
         end
       end
     end
+  end
+
+  describe '#statistics_and_examples' do
+    let(:update_stats) { true }
+
+    subject { import.statistics_and_examples(update_stats: update_stats) }
+
+    shared_examples_for 'generating new stats' do
+      let(:response) { { 'some' => 'response' } }
+
+      before do
+        NfgCsvImporter::ImportService.any_instance.expects(:generate_stats_and_examples).returns(response)
+      end
+
+      it 'updates statistics with the generated stats' do
+        expect{ subject }.to change { import.reload&.statistics }.from(stats).to(response)
+      end
+
+      it { is_expected.to eq response }
+    end
+
+    context 'when update_stats is true' do
+      context 'when stats are already present' do
+        it_behaves_like 'generating new stats'
+      end
+
+      context 'when stats are not already present' do
+        let(:stats) { nil }
+
+        it_behaves_like 'generating new stats'
+      end
+    end
+
+    context 'when update_stats is false' do
+      let(:update_stats) { false }
+
+      context 'when stats are already present' do
+        it { is_expected.to eq stats }
+
+        it 'does not update import statistics' do
+          expect { subject }.to_not change { import.reload.statistics }
+        end
+      end
+
+      context 'when stats are not already present' do
+        let(:stats) { nil }
+
+        it_behaves_like 'generating new stats'
+      end
+    end
+
   end
 end
