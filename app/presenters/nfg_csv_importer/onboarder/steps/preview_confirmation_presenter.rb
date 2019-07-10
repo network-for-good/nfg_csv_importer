@@ -26,13 +26,14 @@ module NfgCsvImporter
           end
         end
 
-        def preview_card_data(data:)
+        def preview_card_data(data:, heading: false)
           body = data.present? ? data : 'Not available'
+          typeface_component = heading ? :heading : :body
 
           if data.present?
-            h.ui.nfg(:typeface, body: body, class: 'mb-0')
+            h.ui.nfg(:typeface, typeface_component => body, class: 'mb-0')
           else
-            h.ui.nfg(:typeface, :muted, body: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available'), tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present'))
+            h.ui.nfg(:typeface, :muted, typeface_component => h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available'), tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present'))
           end
         end
 
