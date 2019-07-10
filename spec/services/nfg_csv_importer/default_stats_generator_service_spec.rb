@@ -7,26 +7,28 @@ RSpec.describe NfgCsvImporter::DefaultStatsGeneratorService do
                                                   row_conversion_method: row_conversion_method)
   end
 
-  let(:spreadsheet) { mock('spreadsheet') }
+  let(:spreadsheet) { (1..10).to_a }
   let(:data) { 'some-data' }
   let(:another_data) { 'another-data' }
-  let(:row_conversion_method) { mock('method') }
+  let(:row_conversion_method) { -> (i) { spreadsheet[1] } }
   let(:response) do
     {
-      "summary_data" => { "number_of_rows" => 9 },
+      "summary_data" => { "number_of_rows" => spreadsheet.length },
       "example_rows" => [ data, another_data ]
     }
   end
 
-  before { spreadsheet.expects(:last_row).returns(10) }
+  before do
+    spreadsheet.expects(:last_row).at_least(1).returns(spreadsheet.length + 1)
+    # Random.expects(:new).returns(mock(rand: 7))
+  end
 
   describe '#call' do
     subject { default_stats_generator.call }
 
     context 'when the row conversion method exists' do
       before do
-        row_conversion_method.expects(:call).with(2).returns(data)
-        row_conversion_method.expects(:call).with(4).returns(another_data)
+        row_conversion_method.expects(:call).twice.with(any_of(*(1..10).to_a)).returns(data, another_data)
       end
 
       it { is_expected.to eq response }
@@ -37,7 +39,7 @@ RSpec.describe NfgCsvImporter::DefaultStatsGeneratorService do
       let(:row_conversion_method) { nil }
       let(:response) do
         {
-          "summary_data" => { "number_of_rows" => 9 },
+          "summary_data" => { "number_of_rows" => 10 },
           "example_rows" => [ nil, nil ]
         }
       end
