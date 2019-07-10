@@ -21,10 +21,10 @@ module NfgCsvImporter
       expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
-      expose(:import_type ) { get_import_type }
+      expose(:import_type) { get_import_type }
       expose(:import) { get_import || new_import }
-      expose(:imported_for ) { load_imported_for }
-      expose(:imported_by ) { load_imported_by }
+      expose(:imported_for) { load_imported_for }
+      expose(:imported_by) { load_imported_by }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
 
       # The onboarder presenter, when built, automatically
