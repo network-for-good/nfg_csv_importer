@@ -138,5 +138,5 @@ en:
           import_type: "Import Type"
           upload_post_processing: "Upload"
           field_mapping: "Spreadsheet Formatting"
-          preview_confirmation: "Review"
+          preview_confirmation: "Preview"
           finish: "Finished!"
