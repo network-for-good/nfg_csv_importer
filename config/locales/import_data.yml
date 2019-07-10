@@ -38,22 +38,22 @@ en:
             modal:
         preview_confirmation:
           header:
-            message: "Preview what your data will look like in Donor Management"
+            message: "Preview what your data will look like"
             form: ''
-            page: "We've taken a random row from your %{file_origination_type} spreadsheet and created a snapshot of what your data will look like in Donor Management."
+            page: "We've taken a row with from your %{file_origination_type} spreadsheet and created a snapshot of what your data will look like"
             summary: 'Overall Preview Summary'
           button:
             <<: *default_buttons
             approve: 'Approve & Import'
           confirm:
-            begin_import: 'Please confirm you are ready to begin importing your data into Donor Management.'
+            begin_import: 'Please confirm you are ready to begin importing your data.'
           label:
           placeholder:
           hint:
           guidance:
             modal:
           body:
-            summary: "These are a snapshot of the collected info we’ve uncovered after scanning your PayPal file. Keep in mind, this data has not yet been 'scrubbed' and may include duplicate donations, updates to existing contacts, etc."
+            summary: "These are a snapshot of the collected info we’ve uncovered after scanning your file. Keep in mind, this data has not yet been 'scrubbed' and may include duplicate donations, updates to existing contacts, etc."
           stats:
             # These should probably be moved out of the import gem and into the test app configuration / yml file... or figured out automatically from the import type.
             donation:
