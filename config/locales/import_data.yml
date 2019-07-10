@@ -46,7 +46,7 @@ en:
             <<: *default_buttons
             approve: 'Approve & Import'
           confirm:
-            begin_import: 'Please confirm you are ready to begin importing your data into Donor Management'
+            begin_import: 'Please confirm you are ready to begin importing your data into Donor Management.'
           label:
           placeholder:
           hint:
