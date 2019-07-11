@@ -165,8 +165,11 @@ describe "Running through the full import process", js: true do
         it "should display all the imports" do
           and_it 'shows all of the imports to the user' do
             expect(page).to have_css "[data-describe='import-slat']", count: imports_created_by_user_1.size
-            expect(page).to have_selector "#import_#{import.id}", text: user_1.name
-            expect(page).to have_content("donations.xlsx")
+            expect(page).to have_selector "[data-describe='imported-by-name']", text: user_1.name, count: imports_created_by_user_1.size
+
+            and_it 'shows the import the user is allowed to uniquely see' do
+              expect(page).to have_css "[data-import-type='donation']"
+            end
           end
 
           and_it 'accurately links you to the imports show page' do
@@ -182,14 +185,15 @@ describe "Running through the full import process", js: true do
       context "when the user is NOT allowed to see certain files" do
         let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Smith") }
 
-        pending "(... note: It's not clear why this spec passes)"
         # the import definition for the donation import excludes users with "Smith" as the last name
-
         it "should display all the imports sorted in recent order" do
-          # raise NfgCsvImporter::Import.where(imported_by: user_1).size.inspect
-          expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(6) # 2 for each import
+          expect(page).to have_css "#imports_listing [data-describe='import-slat']", count: 3
+
           expect(page).not_to have_css("#import_#{ donation_import.id }")
-          expect(page).not_to have_content("donation.xlsx")
+
+          and_it 'does not show the import type that the user is not allowed to see' do
+            expect(page).not_to have_css "[data-import-type='donation']"
+          end
         end
       end
     end
