@@ -9,7 +9,9 @@ describe NfgCsvImporter::ImportMailer, type: :mailer do
     # For standard view spec type testing
     let(:rendered_body) { Capybara.string(subject.body.raw_source) }
 
-    subject { NfgCsvImporter::ImportMailer.send_import_result(@import).deliver_now }
+    let(:send_import_result_mailer) { NfgCsvImporter::ImportMailer.send_import_result(@import) }
+
+    subject { send_import_result_mailer.deliver_now }
 
     it { expect(subject.subject).to eq("Your #{@import.import_type} import is complete!") }
 
@@ -126,8 +128,10 @@ describe NfgCsvImporter::ImportMailer, type: :mailer do
 
             and_it 'includes a link to download the error file' do
               expect(rendered_body).to have_css "a#error_link"
-              expect(subject.body).to match(%Q{test.example.com})
-              expect(subject.body).to match("nfg_csv_importer/#{import.id}")
+              href = import_url(import, host: 'lvh.me', subdomain: import.imported_for.subdomain)
+              expect(subject.body.encoded).to have_link('error_link', href: href)
+              # expect(subject.body.encoded).to match(%Q{test.example.com})
+              # expect(subject.body.encoded).to match("nfg_csv_importer/#{import.id}")
             end
           end
         end
