@@ -1,4 +1,5 @@
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
+- onboarder_presenter = nil if local_assigns[:onboarder_presenter].nil?
 
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), header_form: t('.header.form'), next_step_confirmation: t('confirm.begin_import', scope: i18n_scope) } do |f|
 

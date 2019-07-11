@@ -33,10 +33,4 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
       expect(subject).to render_template(partial: "nfg_csv_importer/onboarding/import_data/preview_confirmation/_default_summary_data", count: 1)
     end
   end
-
-  it 'should have the right buttons' do
-    subject
-    expect(rendered).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve')
-    expect(rendered).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.button.cancel')
-  end
 end

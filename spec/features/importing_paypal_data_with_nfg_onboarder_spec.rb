@@ -44,12 +44,15 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
     end
 
     and_by 'confirming the preview confirmation page it should kick off the import' do
-      expect { click_button 'Next' }.to change { @import.reload.status }.from("uploaded")
+      expect {
+        click_button 'Next'
+        page.driver.browser.switch_to.alert.accept
+        # we wait until the finish page displays
+        page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)
+        }.to change { @import.reload.status }.from("uploaded")
     end
 
-    and_by 'moving to the finish page' do
-      expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}"
-
+    and_by 'waiting until the import completes' do
       # this is a bit hacky, but i wanted to make sure
       # the import was finished before testing
       # for some proof that it was successful
@@ -71,7 +74,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       # since the import has already completed (which will unlikely be the case in production)
       # we show how many records were added
       # In production, we will likely have different messages depending on the status of the import
-      expect(page).to have_content "Your import has completed. There were a total of 4 records"
+      expect(page).to have_content "You've finished this import! There were a total of 4 records"
     end
   end
 end

@@ -61,7 +61,7 @@ describe NfgCsvImporter::ImportsHelper do
       it { expect(subject).to eq "<i class=\"fa fa-minus text-muted\"></i>" }
     end
 
-    it { expect(subject).to eq "<h4>4</h4>" }
+    it { expect(subject).to eq "<h5>4</h5>" }
   end
 
   describe "#number_of_records_with_errors_based_on_import_status" do
