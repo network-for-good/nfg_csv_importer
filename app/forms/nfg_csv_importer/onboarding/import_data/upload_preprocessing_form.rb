@@ -23,7 +23,7 @@ module NfgCsvImporter
             file_extension_invalid?(file_extension, VALID_FILE_EXTENSIONS)
           end
 
-          errors.add :base, file_extension_error_string(multiple: pre_processing_files.count > 1)
+          errors.add :pre_processing_files, file_extension_error_string(multiple: pre_processing_files.count > 1)
         end
       end
     end
