@@ -5,13 +5,6 @@ shared_examples_for "validate import file" do
     NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
   end
 
-  let(:import) do
-    # since we are testing validation, we have to build
-    # because we can't create invalid records
-    FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
-                      import_file: file, error_file: error_file, status: status, statistics: stats)
-  end
-
   it { expect(subject).to be }
 
   context "validate when there is no file" do

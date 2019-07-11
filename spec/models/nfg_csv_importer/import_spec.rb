@@ -69,6 +69,12 @@ describe NfgCsvImporter::Import do
   end
 
   context "when the import file has a status other than pending" do
+    let(:import) do
+      # since we are testing validation, we have to build
+      # because we can't create invalid records
+      FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+                        import_file: file, error_file: error_file, status: status, statistics: stats)
+    end
     subject { import_file_validateable_host.valid? }
 
     it_behaves_like 'validate import file'
