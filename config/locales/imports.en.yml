@@ -8,6 +8,7 @@ en:
       index:
         buttons:
           begin: 'Begin Your Import'
+          continue: 'Continue Your Import'
         jumbotron:
           headline: "Ready to start a <b>new</b> import?"
           sub_headline: "Just click the big button below and we'll walk you through the process of importing your contacts and donations."

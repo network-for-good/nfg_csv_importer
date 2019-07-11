@@ -15,21 +15,23 @@
         %p.m-t-quarter.small
           %strong= import_status_link(import)
 
-      %div{ class: imports_listing_row_column_structure_class }
-        %span{ data: { describe: 'amount-of-records-without-errors' } }= number_of_records_without_errors_based_on_import_status(import)
+      %div{ class: imports_listing_row_column_structure_class, data: { describe: 'amount-of-records-without-errors' } }
+        = number_of_records_without_errors_based_on_import_status(import)
 
       %div{ class: imports_listing_row_column_structure_class }
-        %h5 $2,000 (coming soon)
-        %p.m-t-quarter.small 120 Donations (coming soon)
+        -# NOTE: THIS IS STILL BASED ON SUMMARY DATA AND DOES NOT YET REFLECT THE ACCURATE TOTAL IMPORTED AMOUNT.
+          -# Coming soon
+          / - if import&.statistics['summary_data'].present?
+          /   %h5= number_to_currency(import&.statistics['summary_data']['total_donation_amount'])
+          /   %p.m-t-quarter.small= pluralize(import&.statistics['summary_data']['total_rows_with_non_zero_donations'], 'Donation')
 
       %div{ class: imports_listing_row_column_structure_class }
-        %h5= number_of_records_with_errors_based_on_import_status(import)
-        %p.m-t-quarter.small= link_to t("links.download", scope: language_scope), '#error_file', class: 'text-danger'
+        = number_of_records_with_errors_based_on_import_status(import)
 
       %div.text-xs-right{ class: imports_listing_row_column_structure_class }
         .btn-group
           - if import.uploaded?
-            = link_to nfg_csv_importer.edit_import_path(import), class: 'btn btn-secondary' do
+            = link_to nfg_csv_importer.onboarding_import_data_path(import_id: import.id), class: 'btn btn-secondary' do
               = fa_icon 'pencil'
               %span.m-l-quarter.hidden-sm-down= t("links.edit_import", scope: language_scope)
 

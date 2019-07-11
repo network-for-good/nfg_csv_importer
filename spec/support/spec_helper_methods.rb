@@ -40,3 +40,7 @@ def drop_in_dropzone(file_path)
     $('.dropzone-target')[0].dropzone.listeners[0].events.drop(e);
   JS
 end
+
+def save_and_open_view_spec_response(html = Capybara.string(rendered).native.inner_html)
+  File.open('/tmp/test.html','w'){|file| file.write(html)}; `open '/tmp/test.html'`
+end

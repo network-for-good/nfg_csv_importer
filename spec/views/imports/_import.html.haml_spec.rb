@@ -40,11 +40,11 @@ RSpec.describe "nfg_csv_importer/imports/_imports.html.haml", type: :view do
       let(:import_traits) { [:is_paypal, :is_complete_with_errors] }
       it 'displays information about the errors' do
         and_it 'displays the count of error rows' do
-          # pending 'coming soon'
+          expect(subject).to have_selector "[data-describe='number-of-errors']", text: '1'
         end
 
         and_it 'allows you to download the error file' do
-          # pending 'coming soon'
+          expect(subject).to have_css "[data-describe='error-file-link']"
         end
       end
     end
@@ -52,11 +52,11 @@ RSpec.describe "nfg_csv_importer/imports/_imports.html.haml", type: :view do
     context 'and when errors are not present' do
       it 'does not display error information' do
         and_it 'does not display the count of error rows' do
-          # pending 'coming soon'
+          expect(subject).not_to have_css "[data-describe='number-of-errors']"
         end
 
         and_it 'does not allow you to download an error file' do
-          # pending 'coming soon'
+          expect(subject).not_to have_css "[data-describe='error-file-link']"
         end
       end
     end

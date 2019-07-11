@@ -174,7 +174,7 @@ describe "Running through the full import process", js: true do
 
           and_it 'accurately links you to the imports show page' do
             within "#import_#{import.id}" do
-              click_link 'Complete'
+              click_link 'Details'
             end
 
             expect(page).to have_css "#import_#{import.id}[data-describe='import-show-page']"

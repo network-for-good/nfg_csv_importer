@@ -10,7 +10,9 @@
 
             %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
 
-            = ui.nfg :button, :secondary, :lg, body: t('.buttons.begin'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta'
+            - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
+
+            = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'sadf'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta'
 
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil
