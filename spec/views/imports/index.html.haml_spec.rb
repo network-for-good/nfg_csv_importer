@@ -15,8 +15,8 @@ RSpec.describe "nfg_csv_importer/imports/index.html.haml", type: :view do
 
   subject { render }
 
-  it 'renders the index_header' do
-    expect(subject).to render_template 'nfg_csv_importer/imports/_index_header'
+  it 'renders the header with a CTA link' do
+    expect(subject).to have_css "[data-describe='import-data-onboarder-cta']"
   end
 
   describe 'the imports listing' do

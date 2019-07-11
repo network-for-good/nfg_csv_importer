@@ -15,8 +15,15 @@
 
   -# Legacy
   .container-fluid.container-flush
-    -# To be removed once we switch over to the onboarder
-    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: [:nfg_csv_importer, :imports, :index], import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
+    .jumbotron.jumbotron-fluid.jumbotron-clouds-gray.bg-info.p-t-base-half
+      .container-fluid
+        .row
+          .col-xs-12.p-x-2
+            %h1.text-xs-center= t('.jumbotron.headline').html_safe
+
+            %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
+
+            = ui.nfg :button, :secondary, :lg, body: t('.buttons.begin'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta'
 
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil

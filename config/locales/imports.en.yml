@@ -7,10 +7,10 @@ en:
         column_mapping: "We just saved you some time by evaluating your column headers and <strong>matched</strong> some columns for you:"
       index:
         buttons:
-          begin: 'Begin Import'
+          begin: 'Begin Your Import'
         jumbotron:
           headline: "Ready to start a <b>new</b> import?"
-          sub_headline: "Just click 'Start Import' and we'll walk you through the process of importing your contacts and donations."
+          sub_headline: "Just click the big button below and we'll walk you through the process of importing your contacts and donations."
           import_types: "Import %{import_type}"
         headings:
           past_imports: "Past Imports"
