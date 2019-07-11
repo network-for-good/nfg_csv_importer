@@ -44,6 +44,16 @@ module NfgCsvImporter
         errors.add :base, 'The file must be an xls, xlsx, or csv'
       end
 
+      def file_extension_invalid?(extension, valid_extensions)
+        !valid_extensions.include? extension
+      end
+
+      def file_extension_error_string(multiple: false)
+        I18n.t('nfg_csv_importer.onboarding.import_data.file_extension',
+               str_1: multiple ? 'files' : 'file',
+               str_2: multiple ? 'formats' : 'format')
+      end
+
       private
 
       def validate_empty_columns

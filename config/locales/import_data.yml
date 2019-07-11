@@ -6,6 +6,7 @@ en:
           back: 'Prev'
           submit: 'Next'
       import_data:
+        file_extension: "The %{str_1} must be of xls, xlsx, or csv %{str_2}."
         title_bar:
           caption: "Import Your Data"
           buttons:
@@ -45,6 +46,7 @@ en:
           button:
             <<: *default_buttons
             approve: 'Approve & Import'
+            cancel: 'Cancel'
           confirm:
             begin_import: 'Please confirm you are ready to begin importing your data.'
           label:

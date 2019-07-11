@@ -13,7 +13,8 @@
             %a#dz_file_browser_link{ href: 'javascript:;' }
               click here
             to browse.
-      - unless f.object.pre_processing_files.empty?
+      - # if object has errors then file is a string with  no signed_id method
+      - unless f.object.pre_processing_files.empty? || f.object&.errors&.any?
         - f.object.pre_processing_files.each do |file|
           = f.hidden_field :pre_processing_files , value: file.signed_id
 
