@@ -15,7 +15,7 @@ module NfgCsvImporter
 
     def import_status_link(import)
       import_status_class = "m-r-quarter"
-      path = import_path(import)
+      path = nfg_csv_importer.import_path(import)
 
       case import.status.try(:to_sym)
       when :uploaded
