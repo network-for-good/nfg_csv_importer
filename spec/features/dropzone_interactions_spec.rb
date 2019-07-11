@@ -34,7 +34,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
     end
 
     and_it 'defaults to the empty state dropzone interface' do
-      expect(page).to have_selector '.dropzone-target.dz-clickable', text: 'Drag and drop your'
+      expect(page).to have_selector '.dropzone-target .dz-clickable', text: 'click here'
 
       and_it 'does not have the activated css classes enabled' do
         expect(page).not_to have_css '.dz-clickable.dz-started'
