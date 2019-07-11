@@ -22,7 +22,7 @@
     = render(partial: 'shared/flash_messages') rescue nil
 
     - if @imports.empty?
-      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true" } }
+      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true", describe: 'imports-empty-state' } }
 
     - else
       #imports_listing.row
@@ -48,7 +48,8 @@
                     %div{ class: imports_listing_row_column_structure_class }
 
                 .slat-list
-                  = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
+                  - @imports.each do |import|
+                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
 
                 .row.m-t-base
                   .col-xs-12
