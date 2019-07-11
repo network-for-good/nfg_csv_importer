@@ -79,10 +79,10 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
 
     describe '#calculate_remainder(amount:, total:)' do
       let(:tested_amount) { 1 }
-      let(:tested_total) { 2 }
-      let(:expected_answer) { 50 } # 50%
+      let(:tested_total) { 3 }
+      let(:expected_answer) { 66 } # 50%
       subject { onboarder_presenter.send(:calculate_remainder, amount: tested_amount, total: tested_total) }
-      it 'the remainder out of 100 of the whole number representation of the associated percentage (50, which is 50%)' do
+      it 'the remainder out of 100 of the whole number representation of the associated percentage (66, which is 66%)' do
         expect(subject).to eq expected_answer
       end
     end
