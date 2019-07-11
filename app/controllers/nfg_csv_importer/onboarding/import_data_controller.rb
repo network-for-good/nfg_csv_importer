@@ -41,6 +41,14 @@ module NfgCsvImporter
         [:finish]
       end
 
+      # on before show steps
+      def file_origination_type_selection_on_before_show
+        # clear onboarder session when cancelling an import
+        # This can be called using:
+        # = link_to 'Cancel', wizard_path(:file_origination_type_selection, reset_import: true)
+        reset_onboarding_session if params[:reset_import] == 'true'
+      end
+
       # on before save steps
       def file_origination_type_selection_on_before_save
         # you can add logic here to perform, such as appending data to the params, before the form is to be saved
@@ -81,7 +89,7 @@ module NfgCsvImporter
       end
 
       def finish_on_valid_step
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step
@@ -160,7 +168,7 @@ module NfgCsvImporter
       def finish_wizard_path
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
 
         imports_path
          # where to take the user when the have finished this step
@@ -240,6 +248,10 @@ module NfgCsvImporter
         # We can skip the import_type step if the admin only have access
         # to a single import definition.
         self.steps -= [:import_type] if import_definitions.size == 1
+      end
+
+      def reset_onboarding_session
+        session[:onboarding_session_id] = nil
       end
     end
   end
