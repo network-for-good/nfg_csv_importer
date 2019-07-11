@@ -11,15 +11,16 @@ RSpec.describe NfgCsvImporter::DefaultStatsGeneratorService do
   let(:data) { 'some-data' }
   let(:another_data) { 'another-data' }
   let(:row_conversion_method) { -> (i) { spreadsheet[1] } }
+  let(:number_of_rows) { spreadsheet.length - 1 } # we don't count the first row, which holds the header info
   let(:response) do
     {
-      "summary_data" => { "number_of_rows" => spreadsheet.length },
+      "summary_data" => { "number_of_rows" => number_of_rows },
       "example_rows" => [ data, another_data ]
     }
   end
 
   before do
-    spreadsheet.expects(:last_row).at_least(1).returns(spreadsheet.length + 1)
+    spreadsheet.expects(:last_row).at_least(1).returns(spreadsheet.length)
     # Random.expects(:new).returns(mock(rand: 7))
   end
 
@@ -39,7 +40,7 @@ RSpec.describe NfgCsvImporter::DefaultStatsGeneratorService do
       let(:row_conversion_method) { nil }
       let(:response) do
         {
-          "summary_data" => { "number_of_rows" => 10 },
+          "summary_data" => { "number_of_rows" => number_of_rows },
           "example_rows" => [ nil, nil ]
         }
       end
