@@ -1,16 +1,3 @@
-- count_of_import_types = ImportDefinition.import_types.size
-- import_type_column_structure_classes = "display-flex"
-- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
-- start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-- if count_of_import_types == 0
-  - import_type_column_structure_classes << " col-md-6 col-xl-1"
-- elsif count_of_import_types > 4
-  - import_type_column_structure_classes << " col-md-6 col-xl-3"
-- else
-  - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
-  - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
-
-
 .importer-gem{ data: { view_wrapper: 'importer-gem' } }
 
   -# Legacy
