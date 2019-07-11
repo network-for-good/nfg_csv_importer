@@ -14,14 +14,12 @@ module NfgCsvImporter
     end
 
     def import_status_link(import)
-      import_status_class = "m-r-quarter"
-      path = nfg_csv_importer.import_path(import)
+      import_status_class = ""
 
       case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "gear"
         import_status_class += " text-primary"
-        path = edit_import_path(import)
       when :defined
         import_status_icon = "table"
         import_status_class += " text-primary"
@@ -31,6 +29,9 @@ module NfgCsvImporter
       when :processing
         import_status_icon = "refresh"
         import_status_class += " text-warning"
+      when :pending
+        import_status_icon = "circle-o-notch"
+        import_status_class += " text-muted"
       when :complete
         import_status_icon = "check"
         import_status_class += " text-success"
@@ -42,8 +43,8 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      link_to path, class: import_status_class, data: { describe: 'import-status-link' } do
-        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize
+      content_tag :strong, class: "m-r-quarter #{import_status_class}", data: { describe: 'import-status-link' } do
+        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize, class: import_status_class
       end
     end
 

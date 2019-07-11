@@ -30,6 +30,7 @@ FactoryGirl.define do
       is_complete
       error_file { File.open("spec/fixtures/errors.xls") }
       number_of_records_with_errors { CSV.foreach(error_file, headers: true).count }
+      number_of_records { records_processed.to_i - number_of_records_with_errors.to_i }
     end
 
     trait :is_processing do
@@ -42,6 +43,7 @@ FactoryGirl.define do
       processing_started_at { 10.minutes.ago }
       processing_finished_at { 1.minute.ago }
       records_processed { CSV.foreach(import_file, headers: true).count }
+      number_of_records { records_processed }
     end
 
     trait :is_queued do
@@ -70,6 +72,8 @@ FactoryGirl.define do
   #
   # 2. Then stub the controller so that the presenter and session are married:
   # before { h.controller.stubs(:params).returns(id: current_step) }
+  #
+  # Note: `h` is view_context, like: ApplicationController.new.view_context
   factory :onboarding_session, class: NfgOnboarder::Session do
     name { 'import_data' }
     association :owner, factory: :user
