@@ -86,7 +86,13 @@ FactoryGirl.define do
     end
 
     trait :finish_step do
+      current_step { 'finish' }
+      paypal_file_origination_type
+    end
 
+    trait :preview_confirmation_step do
+      current_step { 'preview_confirmation' }
+      paypal_file_origination_type
     end
 
     # Useful attributes / traits for Onboarding Sessions

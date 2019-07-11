@@ -1,13 +1,11 @@
 module NfgCsvImporter
-  # This needs to inherit from GemPresenter when Imports are real.
-  #
-  # I anticipate we'll write an ImportResultsPresenter
-  # and the preview will inherit or overwrite the output methods for the actual output page. They are the same layout with different info coming in.
   module Onboarder
     module Steps
       class PreviewConfirmationPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
 
         # Generate a Chartwell piechart that outputs HTML that looks like this:
+        # (Note: chartwell.js assets are stored in nfg_ui)
+        #
         # .chartwell.pies
         #   %span.text-primary 75
         #   %span.text-light 25
@@ -26,6 +24,8 @@ module NfgCsvImporter
           end
         end
 
+        # Return the requested information or supply a
+        # "Not Available" text byte with a tooltip.
         def preview_card_data(data:, heading: false)
           body = data.present? ? data : 'Not available'
           typeface_component = heading ? :heading : :body
@@ -47,7 +47,7 @@ module NfgCsvImporter
         # So calculate the un-used percentage to return the second value
         # for Chartwell.
         #
-        # Example: if the amount is 75%. This will return 25.
+        # Example: if the amount is 75% (75.0). This will return 25.0
         def calculate_remainder(amount:, total:)
           100 - calculate_percentage(amount: amount, total: total)
         end
