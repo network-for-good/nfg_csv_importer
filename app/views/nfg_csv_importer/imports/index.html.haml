@@ -5,15 +5,11 @@
     .jumbotron.jumbotron-fluid.jumbotron-clouds-gray.bg-info.p-t-base-half
       .container-fluid
         .row
-          .col-xs-12.p-x-2
+          .col-xs-12.p-x-2.text-white
             %h1.text-xs-center= t('.jumbotron.headline').html_safe
-
             %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
-
             - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
-
             = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'sadf'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta'
-
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil
     .row
@@ -22,7 +18,10 @@
           .row
             - if @imports.empty?
               .col-xs-12{ data: { describe: 'imports-empty-state' } }
-                -# empty state.
+                .jumbotron
+                  %h4.display-3.m-b-half= fa_icon 'cloud-upload', class: 'text-light'
+                  %h2.h1 Add your first import!
+                  %p.m-t-quarter You're only a few steps away from importing data into your account.
             - else
               .col-xs-12.slats#imports_listing
                 .slat-header.hidden-sm-down
