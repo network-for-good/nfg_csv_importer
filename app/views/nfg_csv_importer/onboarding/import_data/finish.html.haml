@@ -11,6 +11,4 @@
       - rescue ActionView::MissingTemplate
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
-    = ui.nfg :button, :lg, href: '#', body: 'View All Imports'
-    .mt-2
-      = ui.nfg :button, :link, href: '#', body: 'Start a New Import'
+    = ui.nfg :button, :submit, :lg, body: "View All Imports"
