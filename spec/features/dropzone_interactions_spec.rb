@@ -37,7 +37,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       expect(page).to have_selector '.dropzone-target .dz-clickable', text: 'click here'
 
       and_it 'does not have the activated css classes enabled' do
-        expect(page).not_to have_css '.dz-clickable.dz-started'
+        expect(page).not_to have_css '.dz-started'
       end
     end
 
@@ -53,7 +53,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 
       # These css classes are specifically removed during the resetUI function.
       and_it 'activates the dropzone' do
-        expect(page).to have_css '.dz-clickable.dz-started'
+        expect(page).to have_css '.dz-started'
       end
 
       and_it 'renders the progress bar' do
@@ -90,16 +90,16 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       end
 
       and_it 'removes the file from the interface' do
-        expect(page).not_to have_css "[data-describe='progress-bar-for-#{invalid_filename}']"
+        expect(page).not_to have_css "[data-describe='dz-#{invalid_filename}']"
       end
 
       and_it 'returns to the standard presentation once the file is removed' do
-        expect(page).not_to have_css '.dz-clickable.dz-started'
+        expect(page).not_to have_css '.dz-started'
         expect(page).to have_selector '.dropzone-target', text: 'Drag and drop your'
       end
     end
 
-    and_context 'attaching the a (valid file) paypal file to the dropzone file field' do
+    and_context 'attaching the (valid file) paypal file to the dropzone file field' do
       drop_in_dropzone(File.expand_path("spec/fixtures/#{valid_filename}"))
       and_it 'confirms the upload of the file' do
         verify_progress_bar_completion(valid_filename)
@@ -167,8 +167,8 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 end
 
 def verify_progress_bar_completion(filename)
-  sleep 5
+  sleep 3
   expect(page.find("[data-describe='dz-#{filename}']", wait: 10)).to be
-
+  sleep 5
   expect(page.find("[data-describe='dz-#{filename}'] .progress-bar")['style']).to eq 'width: 100%;'
 end
