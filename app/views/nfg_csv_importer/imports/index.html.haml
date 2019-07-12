@@ -16,18 +16,15 @@
 
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil
-
-    - if @imports.empty?
-      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true", describe: 'imports-empty-state' } }
-
-    - else
-      #imports_listing.row
-        .col-xs-12
-          .container-division
-            -# Removing heading for now and need to replace in the page header
-            -# %h2= t(".headings.past_imports")
-            .row
-              .col-xs-12.slats
+    .row
+      .col-xs-12
+        .container-division
+          .row
+            - if @imports.empty?
+              .col-xs-12{ data: { describe: 'imports-empty-state' } }
+                -# empty state.
+            - else
+              .col-xs-12.slats#imports_listing
                 .slat-header.hidden-sm-down
                   .row.display-flex.flex-align-items-center
                     - imports_listing_row_column_structure_class = "col-md-2 m-b-half-down-sm"
