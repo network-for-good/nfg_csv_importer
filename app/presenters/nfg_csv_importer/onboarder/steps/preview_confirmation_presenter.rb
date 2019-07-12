@@ -33,7 +33,7 @@ module NfgCsvImporter
           if data.present?
             h.ui.nfg(:typeface, typeface_component => body, class: 'mb-0')
           else
-            h.ui.nfg(:typeface, :muted, typeface_component => h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present')))
+            h.ui.nfg(:typeface, :muted, typeface_component => h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present')), class: 'mb-0')
           end
         end
 
