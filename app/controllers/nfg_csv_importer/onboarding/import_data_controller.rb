@@ -81,7 +81,7 @@ module NfgCsvImporter
       end
 
       def finish_on_valid_step
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step
@@ -171,7 +171,7 @@ module NfgCsvImporter
       def finish_wizard_path
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
 
         imports_path
          # where to take the user when the have finished this step
@@ -199,7 +199,11 @@ module NfgCsvImporter
 
         # the following is a hack for the test app. So we can progress through the pages. It will need to be revised
         # when used in DM. Not sure of the best way to do that.
-        (session[:onboarding_session_id] ? ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) || new_onboarding_session : new_onboarding_session).tap { |os| session[:onboarding_session_id] = os.id }
+        onboarding_sess = nil
+        onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
+        onboarding_sess ||= get_import&.get_session(name: onboarder_name) if params[:import_id]
+        onboarding_sess ||= new_onboarding_session
+        onboarding_sess.tap { |os| session[:onboarding_session_id] = os.id }
       end
 
       def get_import
@@ -252,6 +256,12 @@ module NfgCsvImporter
         # to a single import definition.
         self.steps -= [:import_type] if import_definitions.size == 1
       end
+
+      def reset_onboarding_session
+        session[:onboarding_session_id] = nil
+        session[:onboarding_import_data_import_id] = nil
+      end
+
     end
   end
 end

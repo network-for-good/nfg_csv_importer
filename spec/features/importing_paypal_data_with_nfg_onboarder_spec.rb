@@ -5,8 +5,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
   let(:admin) {  create(:user) }
   let(:file_origination_type) { 'paypal' }
 
-  it 'walks the user through selecting the paypal file and eventually imports the donors/donations in the file' do
-
+  def visiting_till_the_preview_confirmation_page
     by 'visiting the index page' do
       visit nfg_csv_importer.imports_path
     end
@@ -56,6 +55,10 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
     and_it 'takes the user to the preview_confirmation page' do
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
     end
+  end
+
+  it 'walks the user through selecting the paypal file and eventually imports the donors/donations in the file' do
+    visiting_till_the_preview_confirmation_page
 
     and_it 'should not have invalid header message anymore' do
       expect(page).to_not have_content Roo::HeaderRowNotFoundError.new.message
@@ -93,6 +96,21 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       # we show how many records were added
       # In production, we will likely have different messages depending on the status of the import
       expect(page).to have_content "You've finished this import! There were a total of 4 records"
+    end
+  end
+
+  it 'leaves the onboarder flow and then clicks on edit on index page to land back at the last step' do
+    visiting_till_the_preview_confirmation_page
+    and_by 'visiting the imports index page' do
+      visit nfg_csv_importer.imports_path
+    end
+
+    and_by 'clicking the edit button' do
+      click_link "Edit"
+    end
+
+    and_it 'takes the user back to the preview confirmation page' do
+      expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
     end
   end
 end

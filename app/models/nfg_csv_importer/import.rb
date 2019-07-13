@@ -159,6 +159,10 @@ module NfgCsvImporter
       str
     end
 
+    def get_session(name: nil)
+      name.present? ? onboarding_session(name: name) : onboarding_session
+    end
+
     private
 
     def field_allowed_to_be_duplicated?(mapped_field)
