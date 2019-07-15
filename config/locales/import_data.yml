@@ -45,6 +45,7 @@ en:
           button:
             <<: *default_buttons
             approve: 'Approve & Import'
+            submit: 'Approve & Import'
           confirm:
             begin_import: 'Please confirm you are ready to begin importing your data.'
           label:
@@ -53,13 +54,13 @@ en:
           guidance:
             modal:
           body:
-            summary: "These are a snapshot of the collected info we’ve uncovered after scanning your file. Keep in mind, this data has not yet been 'scrubbed' and may include duplicate donations, updates to existing contacts, etc."
+            summary: "These are a snapshot of the collected info we’ve uncovered after scanning your file. Keep in mind, this data has not yet been 'scrubbed' and may include rows with duplicate data, invalid information, or missing information, etc."
           stats:
             donation:
-              heading: Contacts snapshot
+              heading: Donations snapshot
               total: 'Total Est. Donations'
             user:
-              heading: Donations snapshot
+              heading: Contacts snapshot
               total: 'Total Est. Contacts'
           tooltips:
             preview_card_data_not_present: "This information was not available on the sampled spreadsheet row"
