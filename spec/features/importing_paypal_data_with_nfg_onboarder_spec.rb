@@ -45,7 +45,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
 
     and_by 'confirming the preview confirmation page it should kick off the import' do
       expect {
-        click_button 'Next'
+        click_button  I18n.t("nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve")
         page.driver.browser.switch_to.alert.accept
         # we wait until the finish page displays
         page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)

@@ -45,7 +45,7 @@ describe "Using the nfg_onboarder engine to upload files for NFG staff to import
     end
 
     and_by 'clicking the next button, takes the user to the imports_path' do
-      click_button 'Next'
+      click_button I18n.t("nfg_csv_importer.onboarding.import_data.title_bar.buttons.exit")
       expect(current_path).to eq(nfg_csv_importer.imports_path)
     end
   end
