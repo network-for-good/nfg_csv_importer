@@ -115,8 +115,9 @@
 
       .col-xs-12
         .container-division
-          List of files
-          %p
-          - @import.pre_processing_files&.each do |file|
-            = link_to file.filename&.to_s, rails_blob_path(file, disposition: "attachment"), data: { describe: 'download-pre-processing' }
+          - if @import.pre_processing_files.any?
+            List of files
+            %p
+            - @import.pre_processing_files&.each do |file|
+              = link_to file.filename&.to_s, rails_blob_path(file, disposition: "attachment"), data: { describe: 'download-pre-processing' }
 
