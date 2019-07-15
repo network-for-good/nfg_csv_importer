@@ -40,3 +40,11 @@ def drop_in_dropzone(file_path)
     $('.dropzone-target')[0].dropzone.listeners[0].events.drop(e);
   JS
 end
+
+def click_next_button_for(step)
+  click_button next_button_label(step)
+end
+
+def next_button_label(step)
+  I18n.t("#{step}.button.submit", scope: [:nfg_csv_importer, :onboarding, :import_data])
+end
