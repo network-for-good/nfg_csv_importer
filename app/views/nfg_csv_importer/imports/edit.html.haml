@@ -28,7 +28,7 @@
       = fa_icon "arrow-circle-right"
 
     .container-importer
-      = form_for @import, url: import_url(@import, iframe: params[:iframe]), html: { id: "fields_mapping" } do
+      = form_for @import, url: import_path(@import, iframe: params[:iframe]), html: { id: "fields_mapping" } do
         .row.row-no-wrap
           - @import.mapped_fields.each_with_index do |mapped_column, index|
             = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
