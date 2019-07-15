@@ -112,3 +112,11 @@
                 %p.text-xs-center
                   = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-link' do
                     = fa_icon 'trash', text: 'Delete Import'
+
+      .col-xs-12
+        .container-division
+          List of files
+          %p
+          - @import.pre_processing_files&.each do |file|
+            = link_to file.filename&.to_s, rails_blob_path(file, disposition: "attachment"), data: { describe: 'download-pre-processing' }
+
