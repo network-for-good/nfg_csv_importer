@@ -17,9 +17,9 @@
 - error_file_tooltip = {}
 - error_file_tooltip = bootstrap_tooltip(t("tooltips.error_file", scope: language_scope), :bottom) if processing_import_tooltip_for_error_file
 
-%h5.text-danger.line-height-1
+%h5.text-danger.line-height-1{ data: { describe: 'number-of-errors' } }
   = error_records_count
 
 %p.display-inline-block{ error_file_tooltip }
-  =link_to error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex do
+  =link_to error_file_link_url, class: import_with_errors_color_class, style: error_file_link_style, tabindex: error_file_link_tabindex, data: { describe: 'error-file-link' } do
     = fa_icon "paperclip", class: import_with_errors_color_class, text: t("links.error_file", scope: language_scope)

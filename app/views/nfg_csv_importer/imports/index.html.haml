@@ -1,37 +1,29 @@
-- count_of_import_types = ImportDefinition.import_types.size
-- import_type_column_structure_classes = "display-flex"
-- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
-- start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-- if count_of_import_types == 0
-  - import_type_column_structure_classes << " col-md-6 col-xl-1"
-- elsif count_of_import_types > 4
-  - import_type_column_structure_classes << " col-md-6 col-xl-3"
-- else
-  - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
-  - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
-
-
 .importer-gem{ data: { view_wrapper: 'importer-gem' } }
 
   -# Legacy
   .container-fluid.container-flush
-    -# To be removed once we switch over to the onboarder
-    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: [:nfg_csv_importer, :imports, :index], import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
-
+    .jumbotron.jumbotron-fluid.jumbotron-clouds-gray.bg-info.p-t-base-half
+      .container-fluid
+        .row
+          .col-xs-12.p-x-2.text-white
+            %h1.text-xs-center= t('.jumbotron.headline').html_safe
+            %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
+            - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
+            = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'sadf'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta'
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil
-
-    - if @imports.empty?
-      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true", describe: 'imports-empty-state' } }
-
-    - else
-      #imports_listing.row
-        .col-xs-12
-          .container-division
-            -# Removing heading for now and need to replace in the page header
-            -# %h2= t(".headings.past_imports")
-            .row
-              .col-xs-12.slats
+    .row
+      .col-xs-12
+        .container-division
+          .row
+            - if @imports.empty?
+              .col-xs-12{ data: { describe: 'imports-empty-state' } }
+                .jumbotron
+                  %h4.display-3.m-b-half= fa_icon 'cloud-upload', class: 'text-light'
+                  %h2.h1 Add your first import!
+                  %p.m-t-quarter You're only a few steps away from importing data into your account.
+            - else
+              .col-xs-12.slats#imports_listing
                 .slat-header.hidden-sm-down
                   .row.display-flex.flex-align-items-center
                     - imports_listing_row_column_structure_class = "col-md-2 m-b-half-down-sm"
@@ -49,7 +41,9 @@
 
                 .slat-list
                   - @imports.each do |import|
-                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
+                    - import_presenter = NfgCsvImporter::ImportPresenter.new(import, self)
+
+                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class, import_presenter: import_presenter }
 
                 .row.m-t-base
                   .col-xs-12

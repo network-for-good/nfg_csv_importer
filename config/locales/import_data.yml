@@ -6,6 +6,7 @@ en:
           back: 'Prev'
           submit: 'Next'
       import_data:
+        file_extension: "The %{str_1} must be of xls, xlsx, or csv %{str_2}."
         title_bar:
           caption: "Import Your Data"
           buttons:

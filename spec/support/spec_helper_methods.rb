@@ -48,3 +48,7 @@ end
 def next_button_label(step)
   I18n.t("#{step}.button.submit", scope: [:nfg_csv_importer, :onboarding, :import_data])
 end
+
+def save_and_open_view_spec_response(html = Capybara.string(rendered).native.inner_html)
+  File.open('/tmp/test.html','w'){|file| file.write(html)}; `open '/tmp/test.html'`
+end
