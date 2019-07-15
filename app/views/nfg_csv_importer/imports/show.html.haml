@@ -112,7 +112,7 @@
                     = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-secondary text-danger' do
                       = fa_icon 'trash', text: 'Delete Import', class: 'm-r-quarter'
 
-          - if @import.pre_processing_files.any?
+          - if @import.pre_processing_files&.any?
             %h5 List of files
             .slats
               .slat-list
