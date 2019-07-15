@@ -31,6 +31,12 @@ RSpec.configure do |config|
   config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
 
+  # Traditional feature specs.
+  config.include_context 'default_url_options', js: true, type: :feature
+
+  # New fangled system tests.
+  config.include_context 'default_url_options', type: :system
+
  config.include SeleniumHelper, :type => :feature
 
  config.before(:suite) do
