@@ -21,7 +21,7 @@
           - if @import.can_be_deleted?(current_user)
             .btn-group
               = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: "btn btn-danger bg-danger #{'btn-lg' unless browser.mobile?}" do
-                = fa_icon 'trash', text: 'Delete Import', class: 'm-r-quarter'
+                = fa_icon 'trash', text: 'Delete', class: 'm-r-quarter'
 
   .container-fluid
     .row
@@ -88,7 +88,7 @@
 
                 = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", content_class: "h2 line-height-1", heading: heading, content: content }
 
-              .col-xs-6.col-md-3.red
+              .col-xs-6.col-md-3.red.text-xs-center
                 - content_class = "h2 line-height-1"
                 - heading = "Errors within our data"
 
@@ -107,9 +107,8 @@
                 = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
                 - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
-                  %p.small.text-xs-center.red
-                    = link_to @import.error_file.url do
-                      = fa_icon "paperclip", text: "Error file"
+                  = link_to @import.error_file.url, class: 'btn btn-secondary text-danger' do
+                    = fa_icon "download", class: 'm-r-quarter', text: "Download Error file"
 
           - if @import.pre_processing_files&.any?
             %h5 Pre-processed files
