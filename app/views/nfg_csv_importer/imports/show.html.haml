@@ -17,6 +17,12 @@
               = link_to nfg_csv_importer.imports_path, class: "btn btn-secondary #{'btn-lg' unless browser.mobile?} hidden-sm-down", data: { describe: 'page-header-back-button' } do
                 = fa_icon 'chevron-left', class: 'm-r-quarter'
                 Back
+
+          - if @import.can_be_deleted?(current_user)
+            .btn-group
+              = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: "btn btn-danger bg-danger #{'btn-lg' unless browser.mobile?}" do
+                = fa_icon 'trash', text: 'Delete Import', class: 'm-r-quarter'
+
   .container-fluid
     .row
       .col-xs-12
@@ -104,13 +110,6 @@
                   %p.small.text-xs-center.red
                     = link_to @import.error_file.url do
                       = fa_icon "paperclip", text: "Error file"
-
-            - if @import.can_be_deleted?(current_user)
-              .row
-                .col-xs-12
-                  %p.text-xs-center
-                    = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-secondary text-danger' do
-                      = fa_icon 'trash', text: 'Delete Import', class: 'm-r-quarter'
 
           - if @import.pre_processing_files&.any?
             %h5 Pre-processed files
