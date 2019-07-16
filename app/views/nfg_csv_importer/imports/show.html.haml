@@ -113,7 +113,7 @@
                       = fa_icon 'trash', text: 'Delete Import', class: 'm-r-quarter'
 
           - if @import.pre_processing_files&.any?
-            %h5 List of files
+            %h5 Pre-processed files
             .slats
               .slat-list
                 - @import.pre_processing_files&.each do |file|
