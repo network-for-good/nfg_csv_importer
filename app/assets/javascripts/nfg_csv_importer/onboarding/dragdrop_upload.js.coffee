@@ -73,6 +73,15 @@ class NfgCsvImporter.DragdropUpload
       errorMark.show()
       successMark.hide()
 
+    $('#stored_files input[type="hidden"]').each ->
+      existingFile = { name: @.dataset.name, size: @.dataset.size, accepted: true }
+      myDropzone.options.addedfile.call(myDropzone, existingFile)
+      previewElement = existingFile.previewElement
+      previewElement.querySelector('a.dz-remove').dataset.signed_id = @.value
+      previewElement.querySelector('.progress .progress-bar').style.width = "100%"
+      previewElement.querySelector('.progress .progress-bar').setAttribute('aria-valuenow',100)
+      myDropzone.files.push(existingFile)
+
   resetUI: (dropzoneEl) ->
     dropzoneEl.removeClass 'dz-clickable dz-started'
 
