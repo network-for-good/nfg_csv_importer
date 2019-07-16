@@ -39,10 +39,12 @@
             = link_to nfg_csv_importer.import_path(import), class: 'btn btn-secondary' do
               = fa_icon "info-circle", class: "m-r-quarter", text: t("links.details", scope: language_scope)
 
-          - if import.can_be_deleted?(current_user)
-            %a.btn.btn-secondary.dropdown-toggle{"data-toggle" => "dropdown"}
-              = fa_icon 'chevron-down'
-            .dropdown-menu.dropdown-menu-right{:role => "menu"}
+          %a.btn.btn-secondary.dropdown-toggle{"data-toggle" => "dropdown"}
+            = fa_icon 'chevron-down'
+          .dropdown-menu.dropdown-menu-right{:role => "menu"}
+            = link_to import.import_file.url, class: 'dropdown-item' do
+              = fa_icon 'download', class: 'm-r-quarter', text: t("links.download", scope: language_scope)
+
+            - if import.can_be_deleted?(current_user)
               = link_to import_path(import), method: :delete, class: 'dropdown-item text-danger', data: { confirm: import_delete_confirmation(import) } do
-                = fa_icon 'trash-o', class: 'm-r-quarter'
-                = t("links.delete_import", scope: language_scope)
+                = fa_icon 'trash-o', class: 'm-r-quarter', text: t("links.delete_import", scope: language_scope)
