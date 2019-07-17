@@ -1,16 +1,12 @@
-- import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
-
-- locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
-
-= render partial: 'nfg_csv_importer/import_mailer/send_import_result/steps', locals: { import_mailer_presenter: import_mailer_presenter }
+= render partial: 'nfg_csv_importer/import_mailer/send_import_result/steps', locals: { import_mailer_presenter: @import_mailer_presenter }
 
 %spacer{ size: spacer(:triple) }
 
 %row
   %columns
-    %p#hello= t "headings.hello", scope: locales_scope, first_name: @recipient.first_name
-    %p#introduction= t "body.introduction.#{@import.status}", scope: locales_scope
-    %p#what_to_expect= t "body.what_to_expect.#{@import.status}", scope: locales_scope
+    %p#hello= t "headings.hello", scope: @locales_scope, first_name: @recipient.first_name
+    %p#introduction= t "body.introduction.#{@import.status}", scope: @locales_scope
+    %p#what_to_expect= t "body.what_to_expect.#{@import.status}", scope: @locales_scope
 
     %spacer{ size: spacer(:double) }
 

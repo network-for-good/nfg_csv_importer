@@ -9,10 +9,12 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
     @recipient = import.imported_by
     @imported_for = imported_for(@import)
     @url_options = url_options
+    @locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
+    @import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self.view_context)
 
     mail(
       to: @recipient.email,
-      subject: "Your #{@import.import_type} import is #{@import.status}#{show_excitement}",
+      subject: "Your import is #{@import.status}#{show_excitement}",
       from: NfgCsvImporter.configuration.from_address,
       reply_to: NfgCsvImporter.configuration.reply_to_address,
       skip_premailer: true
@@ -38,7 +40,6 @@ class NfgCsvImporter::ImportMailer < ActionMailer::Base
   end
 
   def url_options
-    return {} if @import.deleted?
     options = Rails.application.config.action_mailer.default_url_options.merge(
       subdomain: @imported_for.send(NfgCsvImporter.configuration.imported_for_subdomain),
       only_path: false
