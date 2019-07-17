@@ -3,9 +3,8 @@
 - locales_scope = [:mailers, :nfg_csv_importer, :send_import_result_mailer]
 
 - if import_mailer_presenter.show_successful_import_illustration?
-  = image_tag image_url('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240', id: 'finish_success_image'
-
-- if import_mailer_presenter.show_steps?
+  = image_tag image_path('nfg_csv_importer/illustrations/finish-success.png'), class: 'text-center', height: '240', id: 'finish_success_image'
+- else
   %row
     %columns{ small: 12, large: 4 }
       -# Milestone 1
@@ -27,15 +26,14 @@
 
     %spacer{ size: spacer(:double) }
 
-    - if import_mailer_presenter.show_records_count?
-      %h5#number_of_records
-        There were
-        = @import.number_of_records
-        records added.
-        - if import_mailer_presenter.show_errors?
-          %span#error_records_count_of_total.text-alert
-            = pluralize(@import.number_of_records_with_errors.to_i, 'record')
-            had errors.
+    %h5#number_of_records
+      There were
+      = @import.number_of_records
+      records added.
+      - if import_mailer_presenter.show_errors?
+        %span#error_records_count_of_total.text-alert
+          = pluralize(@import.number_of_records_with_errors.to_i, 'record')
+          had errors.
 
     - if import_mailer_presenter.show_errors?
       %spacer{ size: spacer(:base) }
@@ -45,9 +43,8 @@
           You can download the error file
           = link_to 'by clicking here.', import_url(@import, @url_options), id: 'error_link'
 
-    - if import_mailer_presenter.show_visit_show_page_button?
-      %spacer{ size: spacer(:base) }
-      = render partial: 'nfg_ui/email/button', locals: { url: import_url(@import, @url_options), text: t('buttons.visit_show_page', scope: locales_scope), theme_color: theme_color(:primary) }
+    %spacer{ size: spacer(:base) }
+    = render partial: 'nfg_ui/email/button', locals: { url: import_url(@import, @url_options), text: t('buttons.visit_show_page', scope: locales_scope), theme_color: theme_color(:primary) }
 
     %spacer{ size: spacer(:base) }
     %p

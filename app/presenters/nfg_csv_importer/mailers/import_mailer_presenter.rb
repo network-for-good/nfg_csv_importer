@@ -22,10 +22,6 @@ module NfgCsvImporter
         I18n.t("send_import_result_mailer.alert.#{status}", scope: locales_scope)
       end
 
-      def show_visit_show_page_button?
-        status.to_sym == NfgCsvImporter::Import::COMPLETED_STATUS
-      end
-
       def milestone_image(milestone:)
         # Return a pre-made circle image with a number in it.
         if upcoming_milestone?(milestone: milestone)
@@ -81,8 +77,6 @@ module NfgCsvImporter
           NfgCsvImporter::Import::COMPLETED_STATUS
         ]
       end
-
-
     end
   end
 end

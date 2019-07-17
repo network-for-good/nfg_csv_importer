@@ -1,0 +1,12 @@
+- import_mailer_presenter = NfgCsvImporter::Mailers::ImportMailerPresenter.new(@import, self)
+
+%row
+  %columns{ small: 12, large: 4 }
+    -# Milestone 1
+    = render partial: 'nfg_csv_importer/import_mailer/send_import_result/milestone', locals: { milestone: NfgCsvImporter::Import::QUEUED_STATUS, import_mailer_presenter: import_mailer_presenter }
+  %columns{ small: 12, large: 4 }
+    -# Milestone 2
+    = render partial: 'nfg_csv_importer/import_mailer/send_import_result/milestone', locals: { milestone: NfgCsvImporter::Import::PROCESSING_STATUS, import_mailer_presenter: import_mailer_presenter }
+  %columns{ small: 12, large: 4 }
+    -# Milestone 3
+    = render partial: 'nfg_csv_importer/import_mailer/send_import_result/milestone', locals: { milestone: NfgCsvImporter::Import::COMPLETED_STATUS, import_mailer_presenter: import_mailer_presenter }

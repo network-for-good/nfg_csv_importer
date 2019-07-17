@@ -25,7 +25,7 @@ describe NfgCsvImporter::DestroyImportJob do
     let(:batch) { imported_records.map(&:id)}
 
     it "sends the notification email" do
-      NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).returns(mock("mailer", deliver_now: true))
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
       subject
     end
 
@@ -42,7 +42,7 @@ describe NfgCsvImporter::DestroyImportJob do
     let(:batch) { imported_records[0..1].map(&:id) }
 
     it "does not send the email" do
-      NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).never
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).never
       subject
     end
 

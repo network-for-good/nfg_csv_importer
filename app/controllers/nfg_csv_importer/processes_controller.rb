@@ -7,6 +7,7 @@ class NfgCsvImporter::ProcessesController < NfgCsvImporter::ApplicationControlle
 
   def create
     @import.queued!
+    NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
     NfgCsvImporter::ProcessImportJob.perform_later(@import.id)
     redirect_to import_path(@import, redirected_from_review: true), notice: I18n.t('process.create.notice')
   end

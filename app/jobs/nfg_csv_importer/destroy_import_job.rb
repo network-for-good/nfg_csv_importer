@@ -26,7 +26,7 @@ module NfgCsvImporter
 
       if import.imported_records.where(deleted: true).count == import.imported_records.count
         import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleted])
-        NfgCsvImporter::ImportMailer.send_destroy_result(import).deliver_now
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         Rails.logger.info "Final batch for #{import.class} #{import.id} finished processing at #{DateTime.now}"
       end
     end
