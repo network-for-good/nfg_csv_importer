@@ -35,6 +35,11 @@ describe NfgCsvImporter::DestroyImportJob do
     end
 
     it_behaves_like "destroying the imported record"
+
+    it 'enqueues a queued status email' do
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
+      subject
+    end
   end
 
   describe "For previous batches" do

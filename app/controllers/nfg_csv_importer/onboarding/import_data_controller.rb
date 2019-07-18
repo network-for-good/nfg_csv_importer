@@ -235,7 +235,7 @@ module NfgCsvImporter
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection]
                     else
-                      self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
+                      self.class.step_list.reject {|step| file_origination_type.skip_steps&.include? step}
                     end
 
         # We can skip the import_type step if the admin only have access

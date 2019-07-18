@@ -20,4 +20,8 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_deleted.html.h
   it 'renders step template' do
     expect(subject).to have_content "Your import with id #{import.id} has been successfully deleted."
   end
+
+  it 'renders the right content pertaining to delete status' do
+    expect(subject).to have_content "Your import with id #{import.id} has been successfully deleted."
+  end
 end

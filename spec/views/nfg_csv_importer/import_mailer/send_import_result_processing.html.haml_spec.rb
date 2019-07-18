@@ -19,4 +19,8 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_processing.htm
   it 'renders step template' do
     expect(subject).to render_template 'nfg_csv_importer/import_mailer/send_import_result/_steps'
   end
+
+  it 'renders the right content pertaining to processing status' do
+    expect(subject).to have_content I18n.t('mailers.nfg_csv_importer.send_import_result_mailer.body.introduction.processing')
+  end
 end

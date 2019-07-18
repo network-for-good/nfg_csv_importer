@@ -35,10 +35,16 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it { expect { subject }.to change { import.reload.processing_finished_at }.from(nil) }
 
-
   it "should set status to processing" do
     NfgCsvImporter::Import.stubs(:find).returns(import)
-    import.reload.expects(:processing!)
+    import.reload.expects(:processing!).returns(import.update(status: 'processing'))
+    subject
+  end
+
+  it 'enqueues an email' do
+    # it is expected twice one for processing, and one for complete
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
     subject
   end
 
