@@ -17,7 +17,8 @@
       - unless f.object.pre_processing_files.empty? || f.object.errors[:pre_processing_files].any?
         #stored_files
           - f.object.pre_processing_files.each do |file|
-            = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id, data: { name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)}
+            - if file.respond_to? (:signed_id)
+              = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id, data: { name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)}
 
   = ui.nfg :alert, :tip, class: 'mt-4 mb-0' do
     = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
