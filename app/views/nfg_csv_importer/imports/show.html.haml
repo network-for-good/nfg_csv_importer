@@ -106,32 +106,29 @@
 
                 = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
-                - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
-                  = link_to @import.error_file.url, class: 'btn btn-secondary text-danger' do
-                    = fa_icon "download", class: 'm-r-quarter', text: "Download Error file"
 
-          - if @import.pre_processing_files&.any?
-            %h5 Files
-            .slats
-              .slat-list
-                - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
-                  .slat
-                    .row
-                      .col-xs-8.text-danger
-                        %p Error File
-                        -# Error Badge with tooltip coming soon
-                      .col-xs-4.text-xs-right
-                        = link_to @import.error_file.url, data: { describe: 'download-error-file' }, class: 'btn btn-sm btn-danger m-l-quarter' do
-                          = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+          %h5 Files
+          .slats
+            .slat-list
+              - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
                 .slat
                   .row
-                    .col-xs-8
-                      %p System generated spreadsheet
-                      -# Badge with tooltip coming soon
+                    .col-xs-8.text-danger
+                      %p Error File
+                      -# Error Badge with tooltip coming soon
                     .col-xs-4.text-xs-right
-                      = link_to @import.import_file.url, class: 'btn btn-sm btn-secondary m-l-quarter' do
+                      = link_to @import.error_file.url, data: { describe: 'download-error-file' }, class: 'btn btn-sm btn-danger m-l-quarter' do
                         = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+              .slat
+                .row
+                  .col-xs-8
+                    %p System generated spreadsheet
+                    -# Badge with tooltip coming soon
+                  .col-xs-4.text-xs-right
+                    = link_to @import.import_file.url, class: 'btn btn-sm btn-secondary m-l-quarter' do
+                      = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
 
+              - if @import.pre_processing_files&.any?
                 - @import.pre_processing_files&.each do |file|
                   .slat
                     .row
