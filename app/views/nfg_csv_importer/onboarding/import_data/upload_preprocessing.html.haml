@@ -4,7 +4,7 @@
   .row
     .col-12#pre_processing_files_upload
       = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
-      .dropzone-target
+      .dropzone-target.mb-3
         .dz-default.py-4.text-center
           = ui.nfg :icon, 'cloud-upload 3x', :primary
           = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
@@ -13,6 +13,17 @@
             %a#dz_file_browser_link{ href: 'javascript:;' }
               click here
             to browse.
+
+      -# Do not use simple_form syntax. Remove me when done.
+      - if 1!=1
+        = ui.nfg :form_group, class: 'mb-3' do
+          / = f.label :note ...
+          / = f.text_area :note, class: 'form-control'
+          %label Please provide any additional notes or instructions that our team should know prior to importing this information
+          %textarea.form-control{ placeholder: 'Coming soon' }
+          -# if help text is needed... otherwise, please remove:
+          = ui.nfg :typeface, :muted, body: 'Help text here', class: 'mb-0'
+
       - # if object has errors then file is a string with no signed_id method
       - unless f.object.pre_processing_files.empty? || f.object.errors[:pre_processing_files].any?
         #stored_files
@@ -20,7 +31,7 @@
             - if file.respond_to? (:signed_id)
               = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id, data: { name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)}
 
-  = ui.nfg :alert, :tip, class: 'mt-4 mb-0' do
+  = ui.nfg :alert, :tip, class: 'mb-0' do
     = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
 
 -# The following gets rendered by DropZone for each file that is dropped/added
