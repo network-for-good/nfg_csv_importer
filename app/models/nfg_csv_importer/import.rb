@@ -78,6 +78,10 @@ module NfgCsvImporter
       end
     end
 
+    def file_origination_type
+      file_type_manager.type_for(file_origination_type_name)
+    end
+
     def header_errors
       return @header_errors if @header_errors
       @header_errors = invalid_column_rules.inject([]) { |hsh, invalid_rule| hsh << invalid_rule.message; hsh }
@@ -156,6 +160,27 @@ module NfgCsvImporter
 
     private
 
+    def field_allowed_to_be_duplicated?(mapped_field)
+      # fields can be duplicated if they are listed in the definition
+      # as fields_that_allow_multiple_mappings
+      fields_that_allow_multiple_mappings.include?(mapped_field)
+    end
+
+    def file_type_manager
+      NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration)
+    end
+
+    def file_origination_type_name
+      self["file_origination_type"]
+    end
+
+    def has_a_non_permitted_duplicate(mapped_field, fields)
+      mapped_field.present? &&
+      fields.count(mapped_field) > 1 &&
+      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
+      !field_allowed_to_be_duplicated?(mapped_field)
+    end
+
     def minutes_remaining
       return -1 if number_of_records.nil? || number_of_records == 0
       return -1 if records_processed.nil? || records_processed == 0
@@ -167,19 +192,6 @@ module NfgCsvImporter
       remaining_minutes = (estimated_total - minutes_processing).floor
     end
 
-    def has_a_non_permitted_duplicate(mapped_field, fields)
-      mapped_field.present? &&
-      fields.count(mapped_field) > 1 &&
-      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
-      !field_allowed_to_be_duplicated?(mapped_field)
-    end
-
-    def field_allowed_to_be_duplicated?(mapped_field)
-      # fields can be duplicated if they are listed in the definition
-      # as fields_that_allow_multiple_mappings
-      fields_that_allow_multiple_mappings.include?(mapped_field)
-    end
-
     def run_validations?
       return true unless status == 'pending'
       # # as part of the pre processing work we will need to allow for
@@ -189,6 +201,8 @@ module NfgCsvImporter
 
       # (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
     end
+
+
   end
 
   class FilelessIO < StringIO
