@@ -555,22 +555,4 @@ describe NfgCsvImporter::Import do
     end
 
   end
-
-  describe '#get_session' do
-    let(:name) { import.class.to_s.underscore + "_onboarder" }
-
-    let!(:onboarding_session) { create(:onboarding_session, name: name, owner: import) }
-
-    context 'when name is not passed' do
-      subject { import.get_session }
-
-      it 'should return the right session' do
-        expect(subject.id).to eq(onboarding_session.id)
-      end
-    end
-
-    context 'when name is passed in' do
-      #TODO: WRITE SPECS WHEN NFG_ONBOARDER change is merged in
-    end
-  end
 end

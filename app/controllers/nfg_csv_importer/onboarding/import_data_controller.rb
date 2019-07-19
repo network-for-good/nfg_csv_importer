@@ -33,7 +33,6 @@ module NfgCsvImporter
       # Each step has a presenter setup that, at minimum,
       # inherits the OnboarderPresenter.
       expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
-      # expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
       private
 
@@ -192,16 +191,9 @@ module NfgCsvImporter
       end
 
       def get_onboarding_session
-        # Use the following as an example of how an onboarding session would be either retrieved or instantiated
-        # We call new rather than create because we don't want the onboarding session
-        # to be saved if the user does not continue past the first step.
-        # onboarding_admin.onboarding_session_for(onboarder_name) || Onboarding::Session.new(onboarding_session_parameters)
-
-        # the following is a hack for the test app. So we can progress through the pages. It will need to be revised
-        # when used in DM. Not sure of the best way to do that.
         onboarding_sess = nil
         onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
-        onboarding_sess ||= get_import&.get_session(name: onboarder_name) if params[:import_id]
+        onboarding_sess ||= get_import&.onboarding_session if params[:import_id]
         onboarding_sess ||= new_onboarding_session
         onboarding_sess.tap { |os| session[:onboarding_session_id] = os.id }
       end
@@ -232,7 +224,7 @@ module NfgCsvImporter
           owner: nil,
           current_step: "file_origination_type_selection",  #typically the first step
           related_objects: {} ,# a hash containing the whatever object will be saved first, i.e. { project: get_project },
-          name: onboarder_name
+          name: onboarder_name # this is a temporary name as form.model is nil and name presence is required for validations, this gets overridden with form model class in the onboarder gem.
         }
       end
 
