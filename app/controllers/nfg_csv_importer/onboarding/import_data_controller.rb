@@ -25,7 +25,7 @@ module NfgCsvImporter
       expose(:import) { get_import || new_import }
       expose(:imported_for) { load_imported_for }
       expose(:imported_by) { load_imported_by }
-      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
+      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type, file_origination_type: [nil, file_origination_type_name]) }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
