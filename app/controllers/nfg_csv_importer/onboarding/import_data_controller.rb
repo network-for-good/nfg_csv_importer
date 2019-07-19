@@ -178,7 +178,7 @@ module NfgCsvImporter
       end
 
       def onboarder_name
-        "import_data"
+        "import_data_onboarder"
       end
 
       def get_file_origination_type_name
@@ -224,7 +224,7 @@ module NfgCsvImporter
           owner: nil,
           current_step: "file_origination_type_selection",  #typically the first step
           related_objects: {} ,# a hash containing the whatever object will be saved first, i.e. { project: get_project },
-          name: onboarder_name # this is a temporary name as form.model is nil and name presence is required for validations, this gets overridden with form model class in the onboarder gem.
+          name: onboarder_name
         }
       end
 
