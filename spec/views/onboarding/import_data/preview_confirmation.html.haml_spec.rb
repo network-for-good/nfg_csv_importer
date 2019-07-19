@@ -9,10 +9,12 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
     stub_template "nfg_csv_importer/onboarding/import_data/preview_confirmation/_default_summary_data" => "<p></p>"
 
     view.stubs(:import_type).returns(import_type)
+    view.stubs(:onboarder_presenter).returns(onboarder_presenter)
     view.stubs(:file_origination_type).returns(file_origination_type)
     view.stubs(:step).returns('preview_confirmation')
   end
   let(:import_type) { 'preview_confirmation' }
+  let(:onboarder_presenter) { mock() }
 
   let(:file_origination_type) { mock('file_origination_type', name: 'paypal')}
 

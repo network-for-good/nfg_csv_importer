@@ -9,10 +9,13 @@ RSpec.describe 'onboarding/import_data/finish.html.haml' do
 
     view.stubs(:file_origination_type_name).returns(file_origination_type_name)
     view.stubs(:import).returns(stub(status: status, imported_records: stub(count: 4), number_of_records: 4, number_of_records_with_errors: 0))
+    view.stubs(:onboarder_presenter).returns(onboarder_presenter)
     # view.stubs(:step).returns(:finish)
   end
+
   let(:file_origination_type_name) { "paypal" }
   let(:status) { "complete" }
+  let(:onboarder_presenter) { OpenStruct.new(queued_alert_msg: 'Your import is next in line.') }
 
   subject { render template: 'nfg_csv_importer/onboarding/import_data/finish' }
 

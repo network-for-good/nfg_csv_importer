@@ -20,6 +20,9 @@
     .container.py-4
       .row
         .col.col-lg-8.mx-auto
+          - if flash[:error].present?
+            = ui.nfg :alert, :danger, body: flash[:error]
+
           = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle', render_if: f.object.errors.any?
 
           = ui.nfg :tile do

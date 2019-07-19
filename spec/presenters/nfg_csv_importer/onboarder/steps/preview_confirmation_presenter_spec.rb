@@ -52,14 +52,14 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
       context 'when heading is true' do
         let(:tested_heading) { true }
         it 'renders a not available heading typeface component with a tooltip' do
-          expect(subject).to eq h.ui.nfg(:typeface, :muted, heading: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available'), tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present'))
+          expect(subject).to eq h.ui.nfg(:typeface, :muted, heading: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present')), class: 'mb-0')
         end
       end
 
       context 'when heading is false' do
         let(:tested_heading) { false }
         it 'renders a not available body typeface component with a tooltip' do
-          expect(subject).to eq h.ui.nfg(:typeface, :muted, body: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available'), tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present'))
+          expect(subject).to eq h.ui.nfg(:typeface, :muted, body: h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present')), class: 'mb-0')
         end
       end
     end

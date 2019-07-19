@@ -17,13 +17,19 @@
               = link_to nfg_csv_importer.imports_path, class: "btn btn-secondary #{'btn-lg' unless browser.mobile?} hidden-sm-down", data: { describe: 'page-header-back-button' } do
                 = fa_icon 'chevron-left', class: 'm-r-quarter'
                 Back
+
+          - if @import.can_be_deleted?(current_user)
+            .btn-group
+              = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: "btn btn-danger bg-danger #{'btn-lg' unless browser.mobile?}" do
+                = fa_icon 'trash', text: 'Delete', class: 'm-r-quarter'
+
   .container-fluid
     .row
       .col-xs-12
         .container-division
           = flash[:error]
           = render('shared/flash_messages') rescue nil
-          .text-xs-center
+          .text-xs-center.m-b-base
             - if params["redirected_from_review"]
               %h3
                 %strong
@@ -37,12 +43,11 @@
                   = @import.import_type.pluralize.humanize.downcase
                 are
                 %strong
-                  = t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])
+                  = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
               .m-t-half
                 This data was imported by
                 %strong
-                  = @import.imported_by_name
-
+                  = "#{@import.imported_by_name}."
 
           - if params["redirected_from_review"]
             .container-subdivision
@@ -55,9 +60,9 @@
                   .m-t-half
                     We'll email you when your import is done and in the system.
 
-          .container-subdivision.m-t-base
+          .container-subdivision
             .row
-              .col-md-3
+              .col-xs-6.col-md-3
                 - unless @import.complete?
                   - heading = "Estimated time remaining"
                   - content = @import.time_remaining_message
@@ -65,9 +70,9 @@
                   - heading = "Import completed on"
                   - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", content_class: "h2 line-height-1", heading: heading, content: content }
 
-              .col-md-3
+              .col-xs-6.col-md-3
                 - unless @import.complete?
                   - heading = "Importing"
                   - content = "#{@import.number_of_records} records"
@@ -75,17 +80,17 @@
                   - heading = "New records created"
                   - content = @import.imported_records.count
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", content_class: "h2 line-height-1", heading: heading, content: content }
 
-              .col-md-3
+              .col-xs-6.col-md-3
                 - heading = "Processed rows"
                 - content = @import.records_processed.to_i
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", content_class: "h2 line-height-1", heading: heading, content: content }
 
-              .col-md-3.red
-                - content_class = "lead m-b-0"
-                - heading = "Errors within your data"
+              .col-xs-6.col-md-3.red.text-xs-center
+                - content_class = "h2 line-height-1"
+                - heading = "Errors within our data"
 
                 - if @import.number_of_records_with_errors.to_i > 0
                   - icon = "exclamation"
@@ -99,16 +104,37 @@
                   - content = "0"
                   - content_class += " text-success"
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
+                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
-                - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
-                  %p.small.text-xs-center.red
-                    = link_to @import.error_file.url do
-                      = fa_icon "paperclip", text: "Error file"
 
-          - if @import.can_be_deleted?(current_user)
-            .row.p-b-1
-              .col-xs-12
-                %p.text-xs-center
-                  = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-link' do
-                    = fa_icon 'trash', text: 'Delete Import'
+          %h5 Files
+          .slats
+            .slat-list
+              - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
+                .slat
+                  .row
+                    .col-xs-8.text-danger
+                      %p Error File
+                      -# Error Badge with tooltip coming soon
+                    .col-xs-4.text-xs-right
+                      = link_to @import.error_file.url, data: { describe: 'download-error-file' }, class: 'btn btn-sm btn-danger m-l-quarter' do
+                        = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+              .slat
+                .row
+                  .col-xs-8
+                    %p System generated spreadsheet
+                    -# Badge with tooltip coming soon
+                  .col-xs-4.text-xs-right
+                    = link_to @import.import_file.url, class: 'btn btn-sm btn-secondary m-l-quarter' do
+                      = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+
+              - if @import.pre_processing_files&.any?
+                - @import.pre_processing_files&.each do |file|
+                  .slat
+                    .row
+                      .col-xs-8
+                        %p= file.filename&.to_s
+                      .col-xs-4.text-xs-right
+                        = link_to rails_blob_path(file, disposition: "attachment"), data: { describe: 'download-pre-processing' }, class: 'btn btn-sm btn-secondary m-l-quarter' do
+                          = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+

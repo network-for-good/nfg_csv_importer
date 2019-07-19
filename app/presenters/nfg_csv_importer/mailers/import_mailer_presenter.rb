@@ -6,24 +6,13 @@ module NfgCsvImporter
         milestones.index(milestone) == milestones.index(status.to_sym)
       end
 
-      def show_successful_import_illustration?
-        status.to_sym == NfgCsvImporter::Import::COMPLETED_STATUS && !errors?
-      end
-
       # for now, steps are shown except when
       # on the last step without errors.
       # This may change, so this is kept out as its own method
       # instead of the opposing `else` for `show_successful_import_illustration?`
-      def show_steps?
-        !show_successful_import_illustration?
-      end
 
       def status_result_alert_message
         I18n.t("send_import_result_mailer.alert.#{status}", scope: locales_scope)
-      end
-
-      def show_visit_show_page_button?
-        status.to_sym == NfgCsvImporter::Import::COMPLETED_STATUS
       end
 
       def milestone_image(milestone:)
@@ -48,10 +37,6 @@ module NfgCsvImporter
         milestones.index(milestone) < milestones.index(status.to_sym)
       end
 
-      def show_errors?
-        errors?
-      end
-
       def upcoming_milestone?(milestone:)
         milestones.index(milestone) > milestones.index(status.to_sym)
       end
@@ -60,11 +45,11 @@ module NfgCsvImporter
         status.to_sym == NfgCsvImporter::Import::COMPLETED_STATUS
       end
 
-      private
-
       def errors?
         error_file.present? && number_of_records_with_errors.to_i >= 1
       end
+
+      private
 
       def locales_scope
         [:mailers, :nfg_csv_importer]
@@ -81,8 +66,6 @@ module NfgCsvImporter
           NfgCsvImporter::Import::COMPLETED_STATUS
         ]
       end
-
-
     end
   end
 end

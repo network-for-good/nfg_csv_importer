@@ -31,6 +31,20 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing.#{file_origination_type}"
     end
 
+    and_by 'attaching an invalid paypal file to the dropzone file field' do
+      drop_in_dropzone(File.expand_path("spec/fixtures/files/invalid_import.csv"))
+      page.find("div.progress-bar[style='width: 100%;']", wait: 10)
+      click_button "Next"
+    end
+
+    and_it 'prevents the user from continuing to the next step' do
+      expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing"
+    end
+
+    and_it 'shows the error message' do
+      expect(page).to have_content Roo::HeaderRowNotFoundError.new.message
+    end
+
     and_by 'attaching the a paypal file to the dropzone file field' do
       drop_in_dropzone(File.expand_path("spec/fixtures/paypal_sample_file.xlsx"))
       sleep 5
@@ -43,9 +57,13 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
     end
 
+    and_it 'should not have invalid header message anymore' do
+      expect(page).to_not have_content Roo::HeaderRowNotFoundError.new.message
+    end
+
     and_by 'confirming the preview confirmation page it should kick off the import' do
       expect {
-        click_button 'Next'
+        click_button  I18n.t("nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve")
         page.driver.browser.switch_to.alert.accept
         # we wait until the finish page displays
         page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)

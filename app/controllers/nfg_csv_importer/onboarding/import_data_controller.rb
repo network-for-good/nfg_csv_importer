@@ -25,7 +25,7 @@ module NfgCsvImporter
       expose(:import) { get_import || new_import }
       expose(:imported_for) { load_imported_for }
       expose(:imported_by) { load_imported_by }
-      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
+      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type, file_origination_type: [nil, file_origination_type_name]) }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
@@ -87,6 +87,7 @@ module NfgCsvImporter
       def preview_confirmation_on_valid_step
         return unless import.uploaded? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
         import.queued!
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         NfgCsvImporter::ProcessImportJob.perform_later(import.id)
       end
 
@@ -116,7 +117,15 @@ module NfgCsvImporter
         # they want run after the preprocessed files are uploaded.
         # They should be defined in the file_origination type and
         # must respond to #call (as any Proc/lambda would)
-        file_origination_type.post_preprocessing_upload_hook.call(import)
+        begin
+          file_origination_type.post_preprocessing_upload_hook.call(import)
+          flash[:error] = nil
+        rescue Roo::HeaderRowNotFoundError => e
+          # on header errors for a file, we need to show error and keep the user from continuing
+          flash[:error] = "#{I18n.t('nfg_csv_importer.onboarding.import_data.invalid_headers')}: #{e.message}"
+          # true signifies there is an error, this block comes from nfg_onboarder where on_valid_step is called from
+          yield(true, step.to_sym) if block_given?
+        end
       end
 
       def overview_on_valid_step
@@ -234,7 +243,7 @@ module NfgCsvImporter
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection]
                     else
-                      self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
+                      self.class.step_list.reject {|step| file_origination_type.skip_steps&.include? step}
                     end
 
         # We can skip the import_type step if the admin only have access

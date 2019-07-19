@@ -12,13 +12,13 @@ FactoryGirl.define do
   factory :import, class: NfgCsvImporter::Import do
     association :imported_for, factory: :entity
     association :imported_by, factory: :user
-    import_file { File.open("spec/fixtures/subscribers.csv") }
+    import_file { File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/subscribers.csv") }
     import_type { 'users' }
     status { nil }
 
     trait :is_paypal do
       file_origination_type { 'paypal' }
-      import_file { File.open("spec/fixtures/paypal_processed_file.csv") }
+      import_file { File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/paypal_processed_file.csv") }
       import_type { 'donation' }
     end
 
@@ -28,7 +28,7 @@ FactoryGirl.define do
 
     trait :is_complete_with_errors do
       is_complete
-      error_file { File.open("spec/fixtures/errors.xls") }
+      error_file { File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.xls") }
       number_of_records_with_errors { CSV.foreach(error_file, headers: true).count }
       number_of_records { records_processed.to_i - number_of_records_with_errors.to_i }
     end
