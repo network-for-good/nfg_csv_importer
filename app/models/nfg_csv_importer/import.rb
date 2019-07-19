@@ -30,8 +30,9 @@ module NfgCsvImporter
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
-    validates_presence_of :import_type, :imported_by_id, :imported_for_id,  if: :run_validations?
-    validates_presence_of :import_file, if: :run_validations?
+    validates_presence_of :imported_by_id, :imported_for_id, if: :run_validations?
+    validates_presence_of :import_file, if: :validate_import_file_and_type
+    validates_presence_of :import_type, if: :validate_import_file_and_type
 
     # For backwards compatibility (prior to using the onboarder),
     # we only run import validations on create and if we are
@@ -193,16 +194,22 @@ module NfgCsvImporter
     end
 
     def run_validations?
-      return true unless status == 'pending'
-      # # as part of the pre processing work we will need to allow for
-      # # an import to be created, but then ensure that the user
-      # # supplies an uploaded file when needed. Likely, this will be
-      # # done through the onboarding form associated with that step
-
-      # (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
+      # when the import file is still pending we don't have to worry
+      # about whether its required attributes are present or any other
+      # validations as that will be the responsibility of the onboarding
+      # forms
+      return false if status == 'pending'
+      true
     end
 
-
+    def validate_import_file_and_type
+      run_validations? &&
+        #  to be consistent with imports prior to adding file origination
+        # types, assume that validations should be run when there is no
+        # file origination type, otherwise, we defer to the file origination
+        # type
+        (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
+    end
   end
 
   class FilelessIO < StringIO
