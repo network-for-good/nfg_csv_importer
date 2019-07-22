@@ -1,8 +1,10 @@
 require 'rails_helper'
+# require 'will_paginate' # so that tests can use will_paginate methods
+# require 'will_paginate/array'
 
 RSpec.describe "nfg_csv_importer/imports/index.html.haml", type: :view do
   let(:current_user) { FactoryGirl.create(:user) }
-  let!(:import) { FactoryGirl.create(:import, *import_traits, imported_by: current_user) }
+  let(:import) { FactoryGirl.create(:import, *import_traits, imported_by: current_user) }
   let(:import_traits) { [:is_complete, :is_paypal] }
   let!(:imports) { assign(:imports, [import]) }
   let(:tested_can_be_viewed_by) { false }

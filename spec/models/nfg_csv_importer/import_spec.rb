@@ -555,4 +555,10 @@ describe NfgCsvImporter::Import do
     end
 
   end
+
+  describe '#default_onboarder' do
+    subject { import.default_onboarder }
+
+    it { is_expected.to eq "import_data_onboarder"}
+  end
 end

@@ -45,9 +45,10 @@
 
                     = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class, import_presenter: import_presenter }
 
-                .row.m-t-base
-                  .col-xs-12
-                    - if defined?(WillPaginate)
-                      = will_paginate @imports
-                    - elsif defined?(Kaminari)
-                      = paginate @imports
+          - if @imports.present? && (defined?(WillPaginate) || defined?(Kaminari))
+            .row.m-t-base{ data: { describe: 'pagination' } }
+              .col-xs-12
+                - if defined?(WillPaginate)
+                  = will_paginate @imports
+                - elsif defined?(Kaminari)
+                  = paginate @imports

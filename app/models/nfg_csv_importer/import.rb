@@ -159,6 +159,11 @@ module NfgCsvImporter
       str
     end
 
+    def default_onboarder
+      # this is overriding onboardable_owner
+      "import_data_onboarder"
+    end
+
     private
 
     def field_allowed_to_be_duplicated?(mapped_field)

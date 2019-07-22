@@ -10,6 +10,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
   before do
     NfgCsvImporter::FileOriginationTypes::Manager.any_instance.stubs(:type_for).returns(file_origination_type)
     file_origination_type.expects(:skip_steps).at_least_once
+    file_origination_type.stubs(:requires_post_processing_file).returns(true)
   end
 
   render_views

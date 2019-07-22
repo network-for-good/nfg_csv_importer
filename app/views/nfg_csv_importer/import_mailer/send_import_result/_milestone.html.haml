@@ -1,6 +1,6 @@
 - milestone = local_assigns[:milestone]
 - import_mailer_presenter = local_assigns[:import_mailer_presenter]
 
-= image_tag image_path(import_mailer_presenter.milestone_image(milestone: milestone)), class: 'text-center', width: '36', height: '36', id: "#{milestone.to_s}_milestone_image"
+= image_tag image_url(import_mailer_presenter.milestone_image(milestone: milestone)), class: 'text-center', width: '36', height: '36', id: "#{milestone.to_s}_milestone_image"
 %spacer{ size: spacer(:quarter) }
 %p.m-b-0.text-center= import_mailer_presenter.milestone_typeface(milestone: milestone)
