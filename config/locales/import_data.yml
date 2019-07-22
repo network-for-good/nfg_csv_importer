@@ -115,6 +115,10 @@ en:
           hint:
           guidance:
             modal:
+          labels:
+            note: Please provide any additional notes or instructions that our team should know prior to importing this information
+          help_text:
+            note: ''
         overview:
           header:
             message: 'Setting up your spreadsheet for success'

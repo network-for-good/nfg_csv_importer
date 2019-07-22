@@ -29,7 +29,7 @@ module NfgCsvImporter
           # This should return a Proc that receives an instance of an import
           # and performs an action on that import. This is where any
           # preprocessing occurs, including file manipulation and messaging.
-          -> (import) {}
+          -> (import, options = {}) {}
         end
 
         def field_mapping

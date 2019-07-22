@@ -120,7 +120,7 @@ module NfgCsvImporter
         begin
           # we use form.model here because `import` was memoized
           # as a new import and won't be updated on this cycle
-          file_origination_type.post_preprocessing_upload_hook.call(form.model)
+          file_origination_type.post_preprocessing_upload_hook.call(form.model, note: get_note)
           flash[:error] = nil
         rescue Roo::HeaderRowNotFoundError => e
           # on header errors for a file, we need to show error and keep the user from continuing
@@ -216,6 +216,11 @@ module NfgCsvImporter
         params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
         onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type') ||
         import_definitions.keys.first
+      end
+
+      def get_note
+        params[:nfg_csv_importer_onboarding_import_data_upload_preprocessing].try(:[],:note) ||
+        onboarding_session.step_data['import_data'].try(:[], :upload_preprocessing).try(:[], 'note')
       end
 
       def new_onboarding_session

@@ -21,7 +21,7 @@ module FileOriginationTypes
       end
 
       def post_preprocessing_upload_hook
-        -> (import) { PayPalPreprocessorService.new(import).process }
+        -> (import, options = {}) { PayPalPreprocessorService.new(import).process }
       end
     end
   end

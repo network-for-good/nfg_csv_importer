@@ -20,10 +20,22 @@ module FileOriginationTypes
         %i[overview import_type upload_post_processing field_mapping preview_confirmation]
       end
 
+      def requires_post_processing_file
+        false
+      end
+
+      def collect_note_with_pre_processing_files
+        # for send to nfg, we want the user to tell us about
+        # the files they are uploading
+        true
+      end
+
       def post_preprocessing_upload_hook
-        ->(import) {
-          import.update(import_type: 'individual_donation')
-          import.import_file = File.open(Rails.root.join("spec", "fixtures", "temp_import_file.csv"))
+        ->(import, options = {}) {
+          # here is where DM should send the email to the import team.
+          # We don't do it here because there was no reason to create a dummy
+          # mailer to do that when this test app will never actually send
+          # that message.
           import.complete!
         }
       end

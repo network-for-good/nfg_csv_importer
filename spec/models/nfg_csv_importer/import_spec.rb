@@ -98,7 +98,7 @@ describe NfgCsvImporter::Import do
       context "when the import's file origination type does not require a post processing file" do
         let(:requires_post_processing_file) { false }
 
-        it { should_not validate_presence_of(:import_type)}
+        it { is_expected.not_to validate_presence_of(:import_type)}
         it { is_expected.not_to validate_presence_of(:import_file) }
       end
 
