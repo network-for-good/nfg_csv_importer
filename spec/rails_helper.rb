@@ -9,6 +9,7 @@ require 'database_cleaner'
 require 'rails-controller-testing'
 require 'capybara-screenshot/rspec'
 require 'action_dispatch/testing/test_process'
+require 'byebug'
 
 Rails.backtrace_cleaner.remove_silencers!
 Rails::Controller::Testing.install
