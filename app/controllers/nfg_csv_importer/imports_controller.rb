@@ -9,7 +9,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :load_import, only: [:show, :destroy, :edit, :update]
   before_action :authorize_user, except: [:index]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
-  skip_after_action :intercom_rails_auto_include, only: :edit, if: :iframe_param_present?
 
   def new
     @previous_imports = @imported_for.imports.order_by_recent.where(import_type: @import_type)
