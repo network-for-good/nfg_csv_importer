@@ -7,6 +7,7 @@ module NfgCsvImporter
         include NfgCsvImporter::Concerns::ImportFileValidateable
 
         property :pre_processing_files
+        property :note, virtual: true
 
         VALID_FILE_EXTENSIONS = %w[csv xls xlsx].freeze
 

@@ -1,4 +1,6 @@
 
+- i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
+
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
@@ -15,14 +17,13 @@
             to browse.
 
       -# Do not use simple_form syntax. Remove me when done.
-      - if 1!=1
+      - if file_origination_type.collect_note_with_pre_processing_files
         = ui.nfg :form_group, class: 'mb-3' do
-          / = f.label :note ...
-          / = f.text_area :note, class: 'form-control'
-          %label Please provide any additional notes or instructions that our team should know prior to importing this information
-          %textarea.form-control{ placeholder: 'Coming soon' }
-          -# if help text is needed... otherwise, please remove:
-          = ui.nfg :typeface, :muted, body: 'Help text here', class: 'mb-0'
+          %label{ for: "nfg_csv_importer_onboarding_import_data_upload_preprocessing_note" }
+            = t('labels.note', scope: i18n_scope)
+          = f.text_area :note, class: 'form-control'
+          - if t('help_text.note', scope: i18n_scope).present?
+            = ui.nfg :typeface, :muted, body: t('help_text.note', scope: i18n_scope), class: 'mb-0'
 
       - # if object has errors then file is a string with no signed_id method
       - unless f.object.pre_processing_files.empty? || f.object.errors[:pre_processing_files].any?

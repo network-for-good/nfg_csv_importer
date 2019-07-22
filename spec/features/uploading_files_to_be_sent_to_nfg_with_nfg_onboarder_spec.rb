@@ -37,6 +37,7 @@ describe "Using the nfg_onboarder engine to upload files for NFG staff to import
       drop_in_dropzone(File.expand_path("spec/fixtures/subscribers.csv"))
       sleep 2
       page.all("div.progress-bar[style='width: 100%;']", count: 2, wait: 10) # the first progress bar
+      fill_in I18n.t('labels.note', scope: [:nfg_csv_importer, :onboarding, :import_data, :upload_preprocessing]), with: "The are great files"
       expect { click_button 'Next' }.to change(NfgCsvImporter::Import, :count).by(1)
     end
 
