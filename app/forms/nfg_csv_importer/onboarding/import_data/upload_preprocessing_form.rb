@@ -17,10 +17,12 @@ module NfgCsvImporter
 
         def import_file_extension_validation
           return unless pre_processing_files.any? do |signed_id|
-            file_extension = NfgCsvImporter::ActiveStorageHelper.get_file_extension(
-              NfgCsvImporter::ActiveStorageHelper.find_by_signed_id(signed_id)
-            )
-            file_extension_invalid?(file_extension, VALID_FILE_EXTENSIONS)
+            unless signed_id.is_a?(ActiveStorage::Attachment)
+              file_extension = NfgCsvImporter::ActiveStorageHelper.get_file_extension(
+                NfgCsvImporter::ActiveStorageHelper.find_by_signed_id(signed_id)
+              )
+              file_extension_invalid?(file_extension, VALID_FILE_EXTENSIONS)
+            end
           end
 
           errors.add :pre_processing_files, file_extension_error_string(multiple: pre_processing_files.count > 1)
