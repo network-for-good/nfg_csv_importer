@@ -7,9 +7,21 @@ module NfgCsvImporter
     # Since we want the brand-version of the name "PayPal" and not a titleized version, 'Paypal'
     def file_origination_type_name
       # If a file origination type wasn't set, it's almost guaranteed to be a self-imported file from the past.
-      type = file_origination_type.present? ? file_origination_type : 'self_import_csv_xls'
+      if file_origination_type.type_sym == :self_import_csv_xls
+        'Spreadsheet'
+      else
+        file_origination_type.name
+      end
+    end
 
-       NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for(type)&.name
+    def show_files?
+      import_file&.present? || error_file&.present? || pre_processing_files&.any?
+    end
+    alias :show_download_link? :show_files?
+
+
+    def show_slat_actions?
+      show_files? || can_be_deleted?(h.current_user)
     end
   end
 end
