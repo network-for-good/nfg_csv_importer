@@ -29,11 +29,11 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
     NfgCsvImporter::ImportMailer.send_import_result(import(errors: true), @status)
   end
 
-  def send_destroy_result
+  def send_import_result_deleted
     @status = NfgCsvImporter::Import::COMPLETED_STATUS
     @recipient = recipient
 
-    NfgCsvImporter::ImportMailer.send_destroy_result(import)
+    NfgCsvImporter::ImportMailer.send_import_result(import)
   end
 
   private

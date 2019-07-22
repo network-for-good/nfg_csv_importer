@@ -7,7 +7,7 @@ module NfgCsvImporter
 
       def self.attrs
         [:name, :requires_preprocessing_files, :allowed_import_types, :post_preprocessing_upload_hook, :field_mapping,
-                    :expects_preprocessing_to_attach_post_processing_file, :logo_path, :description, :skip_steps]
+                    :requires_post_processing_file, :collect_note_with_pre_processing_files, :logo_path, :description, :skip_steps]
       end
 
       attr_accessor *attrs

@@ -30,8 +30,9 @@ module NfgCsvImporter
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
-    validates_presence_of :import_type, :imported_by_id, :imported_for_id,  if: :run_validations?
-    validates_presence_of :import_file, if: :run_validations?
+    validates_presence_of :imported_by_id, :imported_for_id, if: :run_validations?
+    validates_presence_of :import_file, if: :validate_import_file_and_type
+    validates_presence_of :import_type, if: :validate_import_file_and_type
 
     # For backwards compatibility (prior to using the onboarder),
     # we only run import validations on create and if we are
@@ -76,6 +77,10 @@ module NfgCsvImporter
         hsh[dupe_field] = fields_mapping.inject([]) { |arr, (column, field)| arr << column if field == dupe_field; arr }
         hsh
       end
+    end
+
+    def file_origination_type
+      file_type_manager.type_for(file_origination_type_name)
     end
 
     def header_errors
@@ -154,7 +159,33 @@ module NfgCsvImporter
       str
     end
 
+    def default_onboarder
+      # this is overriding onboardable_owner
+      "import_data_onboarder"
+    end
+
     private
+
+    def field_allowed_to_be_duplicated?(mapped_field)
+      # fields can be duplicated if they are listed in the definition
+      # as fields_that_allow_multiple_mappings
+      fields_that_allow_multiple_mappings.include?(mapped_field)
+    end
+
+    def file_type_manager
+      NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration)
+    end
+
+    def file_origination_type_name
+      self["file_origination_type"]
+    end
+
+    def has_a_non_permitted_duplicate(mapped_field, fields)
+      mapped_field.present? &&
+      fields.count(mapped_field) > 1 &&
+      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
+      !field_allowed_to_be_duplicated?(mapped_field)
+    end
 
     def minutes_remaining
       return -1 if number_of_records.nil? || number_of_records == 0
@@ -167,27 +198,22 @@ module NfgCsvImporter
       remaining_minutes = (estimated_total - minutes_processing).floor
     end
 
-    def has_a_non_permitted_duplicate(mapped_field, fields)
-      mapped_field.present? &&
-      fields.count(mapped_field) > 1 &&
-      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
-      !field_allowed_to_be_duplicated?(mapped_field)
-    end
-
-    def field_allowed_to_be_duplicated?(mapped_field)
-      # fields can be duplicated if they are listed in the definition
-      # as fields_that_allow_multiple_mappings
-      fields_that_allow_multiple_mappings.include?(mapped_field)
-    end
-
     def run_validations?
-      return true unless status == 'pending'
-      # # as part of the pre processing work we will need to allow for
-      # # an import to be created, but then ensure that the user
-      # # supplies an uploaded file when needed. Likely, this will be
-      # # done through the onboarding form associated with that step
+      # when the import file is still pending we don't have to worry
+      # about whether its required attributes are present or any other
+      # validations as that will be the responsibility of the onboarding
+      # forms
+      return false if status == 'pending'
+      true
+    end
 
-      # (new_record? && file_origination_type.blank?) || (persisted? && uploaded? && file_origination_type.present?)
+    def validate_import_file_and_type
+      run_validations? &&
+        #  to be consistent with imports prior to adding file origination
+        # types, assume that validations should be run when there is no
+        # file origination type, otherwise, we defer to the file origination
+        # type
+        (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
     end
   end
 

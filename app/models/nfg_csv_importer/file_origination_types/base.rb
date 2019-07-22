@@ -34,7 +34,7 @@ module NfgCsvImporter
 
         def field_mapping
           # This returns a hash of the fields expected after preprocessing
-          # (contained in the postprocess files, i.e. the import.file) mapped
+          # (contained in the postprocess files, i.e. the import_file) mapped
           # to the import type designated in the allowed_import_types (if only
           # one is designated). Return an empty hash if the user is the perform
           # the mapping manually
@@ -42,13 +42,21 @@ module NfgCsvImporter
           {}
         end
 
-        def expects_preprocessing_to_attach_post_processing_file
-          # For files that will be preprocessed, there is an expectation that
-          # the output will be a postprocessed file that will be attached
-          # to the Import record (import.file)
-          # If this value is false, the user will be required to supply the
-          # post processed file.
+        def requires_post_processing_file
+          # Most file origination types will require that a post processed file
+          # be attached to the import (on the import_file attachment)
+          # Some types will automatically create this file, others will ask the
+          # user to attach it. A few may skip this step, implying that no
+          # import will actually run (this is the case when we are)
           true
+        end
+
+        def collect_note_with_pre_processing_files
+          # In most cases, when a user attaches preprocessing files to an
+          # import we won't need them to also provide some information about those
+          # files. But in some cases we do, and it is up to the file origination
+          # type to decide that
+          false
         end
 
         def logo_path

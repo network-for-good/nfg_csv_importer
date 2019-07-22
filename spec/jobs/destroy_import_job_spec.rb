@@ -25,7 +25,7 @@ describe NfgCsvImporter::DestroyImportJob do
     let(:batch) { imported_records.map(&:id)}
 
     it "sends the notification email" do
-      NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).returns(mock("mailer", deliver_now: true))
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
       subject
     end
 
@@ -35,6 +35,11 @@ describe NfgCsvImporter::DestroyImportJob do
     end
 
     it_behaves_like "destroying the imported record"
+
+    it 'enqueues a queued status email' do
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
+      subject
+    end
   end
 
   describe "For previous batches" do
@@ -42,7 +47,7 @@ describe NfgCsvImporter::DestroyImportJob do
     let(:batch) { imported_records[0..1].map(&:id) }
 
     it "does not send the email" do
-      NfgCsvImporter::ImportMailer.expects(:send_destroy_result).with(import).never
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).never
       subject
     end
 

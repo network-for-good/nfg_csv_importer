@@ -121,4 +121,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def authorize_user
     redirect_to imports_path unless @import.can_be_viewed_by(current_user)
   end
+
+  def iframe_param_present?
+    params[:iframe].present?
+  end
 end

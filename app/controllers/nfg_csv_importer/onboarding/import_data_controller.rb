@@ -19,13 +19,13 @@ module NfgCsvImporter
       expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { get_file_origination_type_name }
-      expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
+      expose(:file_origination_type) { import.file_origination_type }
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
       expose(:import_type) { get_import_type }
       expose(:import) { get_import || new_import }
       expose(:imported_for) { load_imported_for }
       expose(:imported_by) { load_imported_by }
-      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type) }
+      expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type, file_origination_type: [nil, file_origination_type_name]) }
 
       # The onboarder presenter, when built, automatically
       # generates the step's presenter.
@@ -33,7 +33,6 @@ module NfgCsvImporter
       # Each step has a presenter setup that, at minimum,
       # inherits the OnboarderPresenter.
       expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
-      # expose(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, view_context) }
 
       private
 
@@ -81,12 +80,13 @@ module NfgCsvImporter
       end
 
       def finish_on_valid_step
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step
         return unless import.uploaded? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
         import.queued!
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         NfgCsvImporter::ProcessImportJob.perform_later(import.id)
       end
 
@@ -117,7 +117,9 @@ module NfgCsvImporter
         # They should be defined in the file_origination type and
         # must respond to #call (as any Proc/lambda would)
         begin
-          file_origination_type.post_preprocessing_upload_hook.call(import)
+          # we use form.model here because `import` was memoized
+          # as a new import and won't be updated on this cycle
+          file_origination_type.post_preprocessing_upload_hook.call(form.model)
           flash[:error] = nil
         rescue Roo::HeaderRowNotFoundError => e
           # on header errors for a file, we need to show error and keep the user from continuing
@@ -149,7 +151,7 @@ module NfgCsvImporter
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
-              new_import
+              import
             when :import_type
               import
             when :upload_post_processing
@@ -168,7 +170,7 @@ module NfgCsvImporter
       def finish_wizard_path
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
-        session[:onboarding_session_id] = nil # wipe out the session so we can work an another import
+        reset_onboarding_session # wipe out the session so we can work an another import
 
         imports_path
          # where to take the user when the have finished this step
@@ -176,7 +178,7 @@ module NfgCsvImporter
       end
 
       def onboarder_name
-        "import_data"
+        "import_data_onboarder"
       end
 
       def get_file_origination_type_name
@@ -189,14 +191,13 @@ module NfgCsvImporter
       end
 
       def get_onboarding_session
-        # Use the following as an example of how an onboarding session would be either retrieved or instantiated
-        # We call new rather than create because we don't want the onboarding session
-        # to be saved if the user does not continue past the first step.
-        # onboarding_admin.onboarding_session_for(onboarder_name) || Onboarding::Session.new(onboarding_session_parameters)
-
-        # the following is a hack for the test app. So we can progress through the pages. It will need to be revised
-        # when used in DM. Not sure of the best way to do that.
-        (session[:onboarding_session_id] ? ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) || new_onboarding_session : new_onboarding_session).tap { |os| session[:onboarding_session_id] = os.id }
+        # we have to find the onboarding session first from the user session, if we can't find it then we need to look at the params
+        # if still can't find it then we create a new onboarding session
+        onboarding_sess = nil
+        onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
+        onboarding_sess ||= get_import&.onboarding_session if params[:import_id]
+        onboarding_sess ||= new_onboarding_session
+        onboarding_sess.tap { |os| session[:onboarding_session_id] = os.id }
       end
 
       def get_import
@@ -242,13 +243,19 @@ module NfgCsvImporter
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection]
                     else
-                      self.class.step_list.reject {|step| file_origination_type.skip_steps.include? step}
+                      self.class.step_list.reject {|step| file_origination_type.skip_steps&.include? step}
                     end
 
         # We can skip the import_type step if the admin only have access
         # to a single import definition.
         self.steps -= [:import_type] if import_definitions.size == 1
       end
+
+      def reset_onboarding_session
+        session[:onboarding_session_id] = nil
+        session[:onboarding_import_data_import_id] = nil
+      end
+
     end
   end
 end

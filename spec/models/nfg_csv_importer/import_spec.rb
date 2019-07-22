@@ -16,8 +16,11 @@ describe NfgCsvImporter::Import do
   let(:status) { :uploaded }
   let(:import) do
     FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin,
-                      import_file: file, error_file: error_file, status: status, statistics: stats)
+                      import_file: file, error_file: error_file, status: status, statistics: stats,
+                      file_origination_type: file_origination_type_name)
   end
+  let(:default_file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
+  let(:file_origination_type_name) { default_file_origination_type }
 
   let(:stats) do
     {
@@ -53,19 +56,59 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
-  context "when the import has a status different from pending" do
-    let(:status) { :uploaded }
+  describe '#file_origination_type' do
+    subject { import.file_origination_type }
 
-    it { is_expected.to validate_presence_of(:import_type) }
-    it { is_expected.to validate_presence_of(:import_file) }
+    context 'when the file_origination_type has not been set' do
+      let(:file_origination_type_name) { nil }
+
+      it 'should be nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when it has been set" do
+      let(:file_origination_type_name) { default_file_origination_type }
+
+      it 'should return a FileOriginationType object with the matching the file_origination_type value' do
+        expect(subject).to be_an_instance_of(NfgCsvImporter::FileOriginationTypes::FileOriginationType)
+      end
+    end
   end
 
-  context "when the import file has a status of pending" do
-    let(:status) { 'pending' }
-    subject { import }
+  describe 'validating the import type and import file' do
+    subject { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+                      import_file: file, error_file: error_file, status: status, statistics: stats,
+                      file_origination_type: file_origination_type_name) }
 
-    it { is_expected.not_to validate_presence_of(:import_type)}
-    it { is_expected.not_to validate_presence_of(:import_file) }
+    context 'when the imports file origination type is nil'  do
+      let(:file_origination_type_name) { nil }
+
+      # this is to keep it consistent with imports prior to the role out of
+      # file origination types
+      it { is_expected.to validate_presence_of(:import_type) }
+      it { is_expected.to validate_presence_of(:import_file) }
+    end
+
+    context 'when the import has a file origination type' do
+      before do
+        NfgCsvImporter::FileOriginationTypes::FileOriginationType.any_instance.stubs(:requires_post_processing_file).returns(requires_post_processing_file)
+      end
+
+      context "when the import's file origination type does not require a post processing file" do
+        let(:requires_post_processing_file) { false }
+
+        it { should_not validate_presence_of(:import_type)}
+        it { is_expected.not_to validate_presence_of(:import_file) }
+      end
+
+      context "when the import's file origination type requires a post processing file" do
+        let(:requires_post_processing_file) { true }
+
+        it { is_expected.to validate_presence_of(:import_type) }
+        it { is_expected.to validate_presence_of(:import_file) }
+      end
+    end
   end
 
   context "when the import file has a status other than pending" do
@@ -511,5 +554,11 @@ describe NfgCsvImporter::Import do
       end
     end
 
+  end
+
+  describe '#default_onboarder' do
+    subject { import.default_onboarder }
+
+    it { is_expected.to eq "import_data_onboarder"}
   end
 end

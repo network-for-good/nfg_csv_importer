@@ -23,15 +23,6 @@ module NfgCsvImporter
           false
         end
 
-        def expects_preprocessing_to_attach_post_processing_file
-          # For files that will be preprocessed, there is an expectation that
-          # the output will be a postprocessed file that will be attached
-          # to the Import record (import.file)
-          # If this value is false, the user will be required to supply the
-          # post processed file.
-          false
-        end
-
         def skip_steps
           %i[upload_preprocessing]
         end

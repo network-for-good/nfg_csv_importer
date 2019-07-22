@@ -13,7 +13,7 @@ describe NfgCsvImporter::ImportMailer, type: :mailer do
 
     subject { send_import_result_mailer.deliver_now }
 
-    it { expect(subject.subject).to eq("Your #{@import.import_type} import is complete!") }
+    it { expect(subject.subject).to eq("Your import is complete!") }
 
     it { expect(Rails.configuration.default_from_address).to match(subject.from.first) }
 
