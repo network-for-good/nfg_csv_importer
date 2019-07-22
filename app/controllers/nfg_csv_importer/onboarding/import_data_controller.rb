@@ -19,7 +19,7 @@ module NfgCsvImporter
       expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { get_file_origination_type_name }
-      expose(:file_origination_type) { file_type_manager.type_for(file_origination_type_name) }
+      expose(:file_origination_type) { import.file_origination_type }
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
       expose(:import_type) { get_import_type }
       expose(:import) { get_import || new_import }
@@ -118,7 +118,9 @@ module NfgCsvImporter
         # They should be defined in the file_origination type and
         # must respond to #call (as any Proc/lambda would)
         begin
-          file_origination_type.post_preprocessing_upload_hook.call(import)
+          # we use form.model here because `import` was memoized
+          # as a new import and won't be updated on this cycle
+          file_origination_type.post_preprocessing_upload_hook.call(form.model)
           flash[:error] = nil
         rescue Roo::HeaderRowNotFoundError => e
           # on header errors for a file, we need to show error and keep the user from continuing
@@ -150,7 +152,7 @@ module NfgCsvImporter
             when :overview
               OpenStruct.new(name: '') # replace with your object that the step will update
             when :upload_preprocessing
-              new_import
+              import
             when :import_type
               import
             when :upload_post_processing
