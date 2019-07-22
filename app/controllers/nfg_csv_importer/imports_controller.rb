@@ -110,7 +110,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_new_import
-    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by))
+    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by, file_origination_type: NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s))
   end
 
   def set_import_type

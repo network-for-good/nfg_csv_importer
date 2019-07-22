@@ -14,6 +14,7 @@ FactoryGirl.define do
     association :imported_by, factory: :user
     import_file { File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/subscribers.csv") }
     import_type { 'users' }
+    file_origination_type { 'self_import_csv_xls' }
     status { nil }
 
     trait :is_paypal do

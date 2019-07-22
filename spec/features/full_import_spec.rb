@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe "Running through the full import process", js: true do
+  # this uses the old import forms, not the new import onboarder
+  # we are keeping this around and working until we have fully tested
+  # the import onboarder and it has been in use for a while
+
   let!(:entity) { Entity.create(subdomain: "test") }
   let(:upload_button_name) { I18n.t("nfg_csv_importer.imports.new.form.buttons.upload") }
 
@@ -133,10 +137,11 @@ describe "Running through the full import process", js: true do
 
       expect(page).to have_content("Your import is complete")
 
-      expect(page).to have_content("New records created\n3")
-      expect(page).to have_content("Processed rows\n6")
-      expect(page).to have_content("Errors within your data\n3")
-      expect(page).to have_link("Error file")
+      expect(page).to have_content("NEW RECORDS CREATED\n3")
+      expect(page).to have_content("PROCESSED ROWS\n6")
+      expect(page).to have_content("ERRORS WITHIN OUR DATA\n3")
+      expect(page).to have_content("Error File")
+      expect(page).to have_link("Download")
     end
   end
 

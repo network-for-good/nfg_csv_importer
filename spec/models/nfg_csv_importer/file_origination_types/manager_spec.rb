@@ -46,7 +46,7 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
 
       context "and there is a file named for it in the host apps imports/file_origination_types folder" do
         let(:file_types) { [file_type_sym] }
-        let(:file_type_sym) { :constant_contact }
+        let(:file_type_sym) { :paypal }
 
         it 'return an array of FileOriginationType objects' do
           expect(subject).to be_a(Array)
@@ -66,10 +66,10 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
 
   describe '#type_for' do
     subject { manager.type_for(file_type_name) }
-    let(:file_types) { [:constant_contact] }
+    let(:file_types) { [:paypal] }
 
     context "when the supplied name matches one of the types" do
-      let(:file_type_name) { "constant_contact" }
+      let(:file_type_name) { "paypal" }
 
       it 'returns a type whose name matches' do
         expect(subject).to be_a(file_type_class)
