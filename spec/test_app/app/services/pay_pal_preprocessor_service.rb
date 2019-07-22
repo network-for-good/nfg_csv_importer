@@ -60,7 +60,7 @@ class PayPalPreprocessorService
     data = []
     doc.each_with_index(mapped_headers) do |row, index|
       next if index < 1
-      date_string = "#{row[:date]} #{get_time_string(row[:time])} #{row[:zone]}"
+      date_string = "#{row[:donated_at]} #{get_time_string(row[:time])} #{row[:zone]}"
       donated_at = Time.parse(date_string).utc
       row[:full_name] = row[:email] if row[:full_name].blank?
       payment_method = row[:amount].to_i == 0 ? 'in_kind' : 'Paypal'
@@ -82,7 +82,7 @@ class PayPalPreprocessorService
 
   def mapped_headers
     {
-      date: 'Date',
+      donated_at: 'Date',
       time: 'Time',
       zone: 'TimeZone',
       full_name: 'Name',
