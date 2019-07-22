@@ -29,8 +29,8 @@
 
       %div.text-xs-right{ class: imports_listing_row_column_structure_class }
         .btn-group
-          - if import.uploaded?
-            = link_to nfg_csv_importer.onboarding_import_data_path(import_id: import.id), class: 'btn btn-secondary' do
+          - if import.uploaded? # we need to disable turbolinks for this link as it sends multiple requests
+            = link_to nfg_csv_importer.onboarding_import_data_path(import_id: import.id), class: 'btn btn-secondary', data: { turbolinks: false } do
               = fa_icon 'pencil'
               %span.m-l-quarter.hidden-sm-down= t("links.edit_import", scope: language_scope)
 
