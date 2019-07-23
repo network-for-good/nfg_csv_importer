@@ -119,7 +119,7 @@ module NfgCsvImporter
         begin
           # we use form.model here because `import` was memoized
           # as a new import and won't be updated on this cycle
-          file_origination_type.post_preprocessing_upload_hook.call(form.model, note: get_note)
+          file_origination_type.post_preprocessing_upload_hook.call(form.model, { note: get_note })
           flash[:error] = nil
         rescue Roo::HeaderRowNotFoundError => e
           # on header errors for a file, we need to show error and keep the user from continuing
