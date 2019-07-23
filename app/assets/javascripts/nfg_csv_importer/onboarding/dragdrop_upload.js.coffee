@@ -62,7 +62,9 @@ class NfgCsvImporter.DragdropUpload
       file.previewElement.setAttribute 'data-describe', "dz-#{file.name}"
     myDropzone.on 'removedfile', (file)=>
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
-      $("input[value='#{signed_id}']").remove()
+      if signed_id
+        $.ajax({ url: @el.dataset.deleteUrl.replace("dummy", signed_id), type: 'DELETE', dataType: 'json'})
+        $("input[value='#{signed_id}']").remove()
 
     myDropzone.on 'error', (file) =>
       successMark = $(file.previewElement).find('.dz-success-mark')
@@ -73,11 +75,11 @@ class NfgCsvImporter.DragdropUpload
       errorMark.show()
       successMark.hide()
 
-    $('#stored_files input[type="hidden"]').each ->
+    $('#stored_files span.pre_processing_file').each ->
       existingFile = { name: @.dataset.name, size: @.dataset.size, accepted: true }
       myDropzone.options.addedfile.call(myDropzone, existingFile)
       previewElement = existingFile.previewElement
-      previewElement.querySelector('a.dz-remove').dataset.signed_id = @.value
+      previewElement.querySelector('a.dz-remove').dataset.signed_id = @.dataset.value
       previewElement.querySelector('.progress .progress-bar').style.width = "100%"
       previewElement.querySelector('.progress .progress-bar').setAttribute('aria-valuenow',100)
       myDropzone.files.push(existingFile)

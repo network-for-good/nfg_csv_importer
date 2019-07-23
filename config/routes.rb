@@ -10,4 +10,5 @@ NfgCsvImporter::Engine.routes.draw do
   namespace :onboarding do
     resources :import_data, controller: :import_data
   end
+  delete 'attachments/:id', to: 'attachments#destroy', as: :delete_attachment
 end
