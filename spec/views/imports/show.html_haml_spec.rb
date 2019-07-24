@@ -10,6 +10,7 @@ RSpec.describe "nfg_csv_importer/imports/show.html.haml", type: :view do
   before do
     view.stubs(:current_user).returns(current_user)
     view.stubs(:dom_id).returns(1)
+    view.stubs(:rails_blob_path).returns('some/path')
     assign(:import, import)
     import.stubs(:pre_processing_files).returns(pre_processing_files)
   end
