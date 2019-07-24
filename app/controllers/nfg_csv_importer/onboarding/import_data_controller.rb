@@ -40,44 +40,8 @@ module NfgCsvImporter
         [:finish]
       end
 
-      # on before save steps
-      def file_origination_type_selection_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def finish_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def preview_confirmation_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def field_mapping_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def upload_post_processing_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def import_type_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def upload_preprocessing_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
-      def overview_on_before_save
-        # you can add logic here to perform, such as appending data to the params, before the form is to be saved
-      end
-
 
       # on valid steps
-      def file_origination_type_selection_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
-      end
 
       def finish_on_valid_step
         reset_onboarding_session # wipe out the session so we can work an another import
@@ -88,10 +52,6 @@ module NfgCsvImporter
         import.queued!
         NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         NfgCsvImporter::ProcessImportJob.perform_later(import.id)
-      end
-
-      def field_mapping_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
       end
 
       def upload_post_processing_on_valid_step
@@ -129,9 +89,7 @@ module NfgCsvImporter
         end
       end
 
-      def overview_on_valid_step
-        # you can add logic here to perform actions once a step has completed successfully
-      end
+      # end on valid steps
 
       def get_onboarding_admin
         defined?(current_admin) ? current_admin : OpenStruct.new(id: 999, first_name: 'Any', last_name: 'User', email: 'any@user.com', primary_key: 'id')
