@@ -17,7 +17,7 @@ describe "Deleting imports", js: true do
   context 'when the import can be deleted by the current user' do
     it 'displays a Delete Import link near the bottom of the page' do
       visit nfg_csv_importer.import_path(import)
-      click_link 'Delete Import'
+      click_link I18n.t("buttons.delete", scope: [:nfg_csv_importer, :imports, :show])
 
       expect do
         page.driver.browser.switch_to.alert.accept
@@ -35,7 +35,7 @@ describe "Deleting imports", js: true do
     let(:admin) { create(:user, last_name: 'Jones') }
     it "doesn't display the Delete Import link" do
       visit nfg_csv_importer.import_path(import)
-      expect(page).not_to have_link 'Delete Import'
+      expect(page).not_to have_link 'Delete'
     end
   end
 end

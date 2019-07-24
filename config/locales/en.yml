@@ -1,15 +1,19 @@
 en:
   import:
-    cant_edit_or_reprocess: "This file is queued, processing, or has finished importing and can't be edited or reprocessed."
+    cant_edit_or_reprocess: This file is queued, processing, or has finished importing and can't be edited or reprocessed.
     create:
-      error: 'There was an error when attempting to import 1 or more of the records. Any record not listed here has been imported successfully %{errors}'
+      error: There was an error when attempting to import 1 or more of the records. Any record not listed here has been imported successfully %{errors}
     destroy:
-      cannot_delete: 'You cannot delete this import.'
-      success: 'The import and its %{number_of_records} associated records have been successfully removed.'
-      success_without_records: 'The import has been successfully removed.'
+      cannot_delete: You cannot delete this import.
+      success: The import and its %{number_of_records} associated records have been successfully removed.
+      success_without_records: The import has been successfully removed.
+  nfg_csv_importer:
+    imports:
+      show:
+        buttons:
+          delete: Delete
   process:
     create:
-      notice: 'We’ve started importing your file. This page will display the status of your import. You can refresh this page to see how the import is progressing or, simply wait for an email to be sent to your inbox confirming that the import is complete! If there are any errors in the import that need your attention, you can download the import error spreadsheet from this page or from the link in the email. And don’t worry, if you happen to have errors in your file, we’ll help guide you through fixing any errors you might encounter.'
-      error: "This file is either queued, processing, or has finished importing and can't be reimported."
-      exception_while_saving_row: "An unknown error occurred. Please carefully check each field in this row to ensure that it contains valid data."
-
+      error: This file is either queued, processing, or has finished importing and can't be reimported.
+      exception_while_saving_row: An unknown error occurred. Please carefully check each field in this row to ensure that it contains valid data.
+      notice: We’ve started importing your file. This page will display the status of your import. You can refresh this page to see how the import is progressing or, simply wait for an email to be sent to your inbox confirming that the import is complete! If there are any errors in the import that need your attention, you can download the import error spreadsheet from this page or from the link in the email. And don’t worry, if you happen to have errors in your file, we’ll help guide you through fixing any errors you might encounter.

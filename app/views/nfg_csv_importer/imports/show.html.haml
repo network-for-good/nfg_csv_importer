@@ -21,7 +21,7 @@
           - if @import.can_be_deleted?(current_user)
             .btn-group
               = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: "btn btn-danger bg-danger #{'btn-lg' unless browser.mobile?}" do
-                = fa_icon 'trash', text: 'Delete', class: 'm-r-quarter'
+                = fa_icon 'trash', text: t(".buttons.delete"), class: 'm-r-quarter'
 
   .container-fluid
     .row
