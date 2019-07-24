@@ -63,8 +63,8 @@ class NfgCsvImporter.DragdropUpload
     myDropzone.on 'removedfile', (file)=>
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
       if signed_id
-        $.ajax({ url: @el.dataset.deleteUrl.replace("dummy", signed_id), type: 'DELETE', dataType: 'json'})
         $("input[value='#{signed_id}']").remove()
+        $.ajax({ url: @el.dataset.deleteUrl.replace("dummy", signed_id), type: 'DELETE', dataType: 'json'})
 
     myDropzone.on 'error', (file) =>
       successMark = $(file.previewElement).find('.dz-success-mark')

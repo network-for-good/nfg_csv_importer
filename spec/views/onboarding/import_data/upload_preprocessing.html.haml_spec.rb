@@ -34,6 +34,8 @@ RSpec.describe 'onboarding/import_data/upload_preprocessing.html.haml', type: :v
   before do
     stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => fake_form
 
+    view.stubs(:rails_direct_uploads_url).returns('some/path')
+    view.stubs(:delete_attachment_path).returns('some/path')
     view.stubs(:file_origination_type).returns(file_origination_type)
     view.stubs(:step).returns('upload_preprocessing')
   end
