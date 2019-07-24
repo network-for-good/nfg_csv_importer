@@ -4,7 +4,7 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
-    .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_url(id: 'dummy')}}
+    .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_path(id: 'dummy')}}
       = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
       .dropzone-target.mb-3
         .dz-default.py-4.text-center
