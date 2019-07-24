@@ -23,6 +23,12 @@ module NfgCsvImporter
       DEFAULT_FILE_ORIGINATION_TYPE_SYM = :self_import_csv_xls
 
       attr_accessor :host_config
+
+      def self.default_file_origination_type
+        file_type_manager = self.new(NfgCsvImporter.configuration)
+        file_type_manager.type_for(DEFAULT_FILE_ORIGINATION_TYPE_SYM)
+      end
+
       def initialize(config)
         @host_config = config
         require_origination_files

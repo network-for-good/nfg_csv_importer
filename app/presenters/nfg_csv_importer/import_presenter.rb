@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NfgCsvImporter
   class ImportPresenter < NfgCsvImporter::GemPresenter
     # Grabs the stored, official #name of the FileOriginationType
@@ -7,8 +9,8 @@ module NfgCsvImporter
     # Since we want the brand-version of the name "PayPal" and not a titleized version, 'Paypal'
     def file_origination_type_name
       # If a file origination type wasn't set, it's almost guaranteed to be a self-imported file from the past.
-      if file_origination_type.type_sym == :self_import_csv_xls
-        'Spreadsheet'
+      if file_origination_type.nil?
+        NfgCsvImporter::FileOriginationTypes::Manager.default_file_origination_type.name
       else
         file_origination_type.name
       end
@@ -17,8 +19,7 @@ module NfgCsvImporter
     def show_files?
       import_file&.present? || error_file&.present? || pre_processing_files&.any?
     end
-    alias :show_download_link? :show_files?
-
+    alias show_download_link? show_files?
 
     def show_slat_actions?
       show_files? || can_be_deleted?(h.current_user)
