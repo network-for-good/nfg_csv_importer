@@ -19,10 +19,10 @@ module NfgCsvImporter
       expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
       expose(:file_origination_types) { file_type_manager.types }
       expose(:file_origination_type_name) { get_file_origination_type_name }
-      expose(:file_origination_type) { import.file_origination_type }
+      expose(:file_origination_type) { get_file_origination_type }
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}
       expose(:import_type) { get_import_type }
-      expose(:import) { get_import || new_import }
+      expose(:import) { (get_import || new_import) }
       expose(:imported_for) { load_imported_for }
       expose(:imported_by) { load_imported_by }
       expose(:previous_imports) { imported_for.imports.complete.order_by_recent.where(import_type: import_type, file_origination_type: [nil, file_origination_type_name]) }
@@ -153,6 +153,11 @@ module NfgCsvImporter
         onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type')
       end
 
+      def get_file_origination_type
+        update_file_origination_type_if_it_has_changed(import)
+        import.file_origination_type
+      end
+
       def get_onboarding_session
         # we have to find the onboarding session first from the user session, if we can't find it then we need to look at the params
         # if still can't find it then we create a new onboarding session
@@ -227,6 +232,12 @@ module NfgCsvImporter
       def reset_onboarding_session
         session[:onboarding_session_id] = nil
         session[:onboarding_import_data_import_id] = nil
+      end
+
+      def update_file_origination_type_if_it_has_changed(import)
+        if file_origination_type_name != import.file_origination_type.name
+          import.file_origination_type = file_origination_type_name
+        end
       end
     end
   end
