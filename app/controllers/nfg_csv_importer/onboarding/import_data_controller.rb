@@ -76,16 +76,21 @@ module NfgCsvImporter
         # they want run after the preprocessed files are uploaded.
         # They should be defined in the file_origination type and
         # must respond to #call (as any Proc/lambda would)
-        begin
-          # we use form.model here because `import` was memoized
-          # as a new import and won't be updated on this cycle
-          file_origination_type.post_preprocessing_upload_hook.call(form.model, { note: get_note })
+        # begin
+        #   # we use form.model here because `import` was memoized
+        #   # as a new import and won't be updated on this cycle
+        result = file_origination_type.post_preprocessing_upload_hook.call(form.model, { note: get_note })
+        if result.status == :success
           flash[:error] = nil
-        rescue Roo::HeaderRowNotFoundError => e
+        else
+
           # on header errors for a file, we need to show error and keep the user from continuing
-          flash[:error] = "#{I18n.t('nfg_csv_importer.onboarding.import_data.invalid_headers')}: #{e.message}"
+          flash[:error] = result.errors.join("; ")
+
+        # flash[:error] = "#{I18n.t('nfg_csv_importer.onboarding.import_data.invalid_headers')}: #{e.message}"
           # true signifies there is an error, this block comes from nfg_onboarder where on_valid_step is called from
-          yield(true, step.to_sym) if block_given?
+          reset_on_failure(step)
+          # yield(true, step.to_sym) if block_given?
         end
       end
 
@@ -202,6 +207,11 @@ module NfgCsvImporter
         %w{ import_file pre_processing_files }
       end
 
+      def reset_on_failure(step)
+        onboarding_session.update(current_step: step)
+        @override_next_step = step
+      end
+
       def set_steps
         self.steps = if file_origination_type.nil?
                       [:file_origination_type_selection]
@@ -218,7 +228,6 @@ module NfgCsvImporter
         session[:onboarding_session_id] = nil
         session[:onboarding_import_data_import_id] = nil
       end
-
     end
   end
 end
