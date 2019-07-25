@@ -20,7 +20,7 @@ module NfgCsvImporter
       def import_validation
         begin
           if import_file.blank?
-            errors.add :base, "Import File can't be blank, Please Upload a File"
+            errors.add :base, "Please select a file to upload."
             return false
           end
           validate_empty_columns

@@ -26,7 +26,7 @@
           = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle', render_if: f.object.errors.any?
 
           = ui.nfg :tile do
-            = ui.nfg :typeface, heading: header_message.html_safe, class: 'mb-3'
+            = ui.nfg :typeface, heading: header_message.html_safe, class: 'mb-2', render_if: header_message.present?
             = ui.nfg :typeface, :muted, body: header_page.html_safe, render_if: header_page.present?
             = yield f
 

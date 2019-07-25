@@ -4,8 +4,6 @@
 
 #edit.importer-gem{ data: { unmapped_highlight: 'disabled', view_wrapper: "importer-gem" } }
 
-  = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
-
   = render 'nfg_csv_importer/imports/import_header_stats', import: @import, ready_for_import: ready_for_import
 
   #importer_errors

@@ -49,7 +49,7 @@ en:
             approve: 'Approve & Import'
             submit: 'Approve & Import'
           confirm:
-            begin_import: 'Please confirm you are ready to begin importing your data.'
+            begin_import: 'Please confirm you are ready to begin importing your data by clicking the "OK" button.'
           label:
           placeholder:
           hint:
@@ -132,7 +132,7 @@ en:
           guidance:
             modal:
           body:
-            intro: 'There are a few things you can do to help simplify this process and ensure that your data is properly imported.'
+            intro: 'There are a few things you can do setup your spreadsheet for success so your data is properly imported. Read through the requirements and column headers below, and download a template if you need it.'
           headings:
             requirements: "Spreadsheet requirements for importing %{import_type}"
             required_column_headers: "Required column headers"
@@ -145,6 +145,6 @@ en:
           upload_preprocessing: "Upload"
           import_type: "Import Type"
           upload_post_processing: "Upload"
-          field_mapping: "Spreadsheet Formatting"
+          field_mapping: "Mapping"
           preview_confirmation: "Preview"
           finish: "Finished!"

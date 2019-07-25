@@ -4,32 +4,20 @@
 
   .container.py-4
     .row
-      .col-12.col-lg-4.mt-3
-        = ui.nfg :tile do
-
-          - if onboarder_presenter.show_import_template_menu?
-            = ui.nfg :tile_section, class: 'text-center' do
-              = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/map-previous-import.png', alt: 'Map previous import'
-              = ui.nfg :typeface, heading: t("form.labels.import_template_id", scope: language_scope).html_safe, class: 'mt-3'
-              = ui.nfg :form_group do
-                = f.select :import_template_id, options_from_collection_for_select(previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "custom-select mt-3" }
-              = ui.nfg :typeface, :muted, body: t("body.import_template_id", scope: [:nfg_csv_importer, :onboarding, :import_data, :upload_post_processing]), class: 'mb-0'
-
-          - else
-            = ui.nfg :tile_section, class: 'text-center' do
-              = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/import-files.png', alt: 'Importing your first file'
-              = ui.nfg :typeface, heading: 'Importing your first file', class: 'mt-3 mb-2'
-              = ui.nfg :typeface, :muted, body: 'Brief intro about importing your first file followed by a link to a helpful Knowledge Base article.'
-              = ui.nfg :button, :outlined, :secondary, href: '#', body: 'Read this help article'
-
-      .col-12.col-lg-8.mt-3
+      .col.col-lg-8.mx-auto
         = ui.nfg :tile, heading: t('header.message', scope: [locale_namespace, :upload_post_processing]) do
-          .mt-3
+          = ui.nfg :tile_section, class: 'mt-2' do
             = ui.nfg :typeface, :muted, body: t('content.file_types', scope: language_scope, acceptable_file_types: "<strong>.csv, .xls</strong> or <strong>.xlsx</strong>").html_safe
-
             %div{ class: "form-group  #{'is-invalid' if f.object.errors.messages.any?}" }
               .custom-file
                 = f.label :import_file, 'Choose file', class: 'custom-file-label'
                 = f.file_field :import_file, class: "custom-file-input"
-
-
+          = ui.nfg :tile_section, render_if: onboarder_presenter.show_import_template_menu? do
+            = ui.nfg :media do
+              = ui.nfg :media_object do
+                = ui.nfg :illustration, image: 'nfg_csv_importer/illustrations/map-previous-import.png', alt: 'Map previous import', class: 'mr-4'
+              = ui.nfg :media_body do
+                = ui.nfg :typeface, title: t("form.labels.import_template_id", scope: language_scope).html_safe, class: 'mb-2'
+                = ui.nfg :typeface, :muted, body: t("body.import_template_id", scope: [:nfg_csv_importer, :onboarding, :import_data, :upload_post_processing])
+                = ui.nfg :form_group do
+                  = f.select :import_template_id, options_from_collection_for_select(previous_imports, "id", -> (import) { "Apply the mappings from #{ import.import_file_name } #{ import.created_at.strftime("uploaded on %m/%d/%Y at %I:%M%p") } with #{ pluralize(import.number_of_records, 'record') }  " } ), { prompt: t("form.form_controls.selects.prompt.import_template_id", scope: language_scope) }, { class: "custom-select" }
