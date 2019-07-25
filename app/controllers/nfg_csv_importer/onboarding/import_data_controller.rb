@@ -235,6 +235,7 @@ module NfgCsvImporter
       end
 
       def update_file_origination_type_if_it_has_changed(import)
+        return unless import&.file_origination_type
         if file_origination_type_name != import.file_origination_type.name
           import.file_origination_type = file_origination_type_name
         end
