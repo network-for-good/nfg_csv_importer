@@ -120,7 +120,7 @@ class PayPalPreprocessorService
   end
 
   def get_time_string(number)
-    if number.is_a(String)
+    if number.is_a?(String)
       Time.parse(number).utc.strftime('%H:%M:%S')
     else
       Time.at(number).utc.strftime('%H:%M:%S')
