@@ -26,14 +26,14 @@ module NfgCsvImporter
 
         # Return the requested information or supply a
         # "Not Available" text byte with a tooltip.
-        def preview_card_data(data:, heading: false)
+        def preview_card_data(data:, heading: false, field_name: 'this information')
           body = data.present? ? data : 'Not available'
           typeface_component = heading ? :heading : :body
 
           if data.present?
             h.ui.nfg(:typeface, typeface_component => body, class: 'mb-0')
           else
-            h.ui.nfg(:typeface, :muted, typeface_component => h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present')), class: 'mb-0')
+            h.ui.nfg(:typeface, :muted, typeface_component => h.ui.nfg(:icon, 'info-circle', :primary, :right, text: 'Not available', tooltip: I18n.t('nfg_csv_importer.onboarding.import_data.preview_confirmation.tooltips.preview_card_data_not_present', field_name: field_name)), class: 'mb-0')
           end
         end
 
