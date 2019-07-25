@@ -26,24 +26,20 @@
               .col-xs-12.slats#imports_listing
                 .slat-header.hidden-sm-down
                   .row.display-flex.flex-align-items-center
-                    - imports_listing_row_column_structure_class = "col-md-2 m-b-half-down-sm"
-                    %div{ class: imports_listing_row_column_structure_class }
+                    %div{ class: "col-md-3 m-b-half-down-sm" }
                       %h4.display-4= t(".headings.imported_by_name")
-                    %div{ class: imports_listing_row_column_structure_class }
+                    %div{ class: "col-md-3 m-b-half-down-sm" }
                       %h4.display-4= t(".headings.data")
-                    %div{ class: imports_listing_row_column_structure_class }
+                    %div{ class: "col-md-2 m-b-half-down-sm" }
                       %h4.display-4= t(".headings.contacts")
-                    %div{ class: imports_listing_row_column_structure_class }
-                      %h4.display-4= t(".headings.donations")
-                    %div{ class: imports_listing_row_column_structure_class }
+                    %div{ class: "col-md-2 m-b-half-down-sm" }
                       %h4.display-4= t(".headings.errors")
-                    %div{ class: imports_listing_row_column_structure_class }
+                    %div{ class: "col-md-2 m-b-half-down-sm" }
 
                 .slat-list
-                  - @imports.each do |import|
+                  - @imports.each_with_index do |import, i|
                     - import_presenter = NfgCsvImporter::ImportPresenter.new(import, self)
-
-                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class, import_presenter: import_presenter }
+                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, import_presenter: import_presenter }
 
           - if @imports.present? && (defined?(WillPaginate) || defined?(Kaminari))
             .row.m-t-base{ data: { describe: 'pagination' } }

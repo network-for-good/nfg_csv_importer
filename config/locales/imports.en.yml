@@ -16,7 +16,7 @@ en:
         headings:
           past_imports: "Past Imports"
           imported_by_name: "Admin"
-          contacts: "Contacts"
+          contacts: "Records"
           data: "Data"
           errors: "Errors"
           donations: "Donations"
