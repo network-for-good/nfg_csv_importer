@@ -34,14 +34,18 @@ def visiting_till_the_preview_confirmation_page
   end
 
   and_it 'shows the error message' do
-    expect(page).to have_content Roo::HeaderRowNotFoundError.new.message
+    expect(page).to have_content "The file is not formatted correctly"
+  end
+
+  and_by 'removing the invalid data' do
+    click_link "Remove file"
+    sleep 2
   end
 
   and_by 'attaching the a paypal file to the dropzone file field' do
     drop_in_dropzone(File.expand_path("spec/fixtures/paypal_sample_file.xlsx"))
-    sleep 5
     page.find("div.progress-bar[style='width: 100%;']", wait: 10)
-    expect { click_button 'Next' }.to change(NfgCsvImporter::Import, :count).by(1)
+    click_button 'Next' # the import was created on the invalid step above
     @import = NfgCsvImporter::Import.last
   end
 
