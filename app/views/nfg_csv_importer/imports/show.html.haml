@@ -35,7 +35,7 @@
                   Well done!
                 You’re all set, we’ve got it from here
 
-            - else
+            - elsif @import.import_type.present? && @import.import_file.present?
               %h3
                 Your
                 %strong
@@ -58,52 +58,52 @@
                       = t("status.#{ @import.status }", default: @import.status)
                   .m-t-half
                     We'll email you when your import is done and in the system.
+          - if @import.import_type.present? && @import.import_file.present?
+            .container-subdivision
+              .row
+                .col-xs-6.col-md-3
+                  - unless @import.complete?
+                    - heading = "Estimated time remaining"
+                    - content = @import.time_remaining_message
+                  - else
+                    - heading = "Import completed on"
+                    - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
 
-          .container-subdivision
-            .row
-              .col-xs-6.col-md-3
-                - unless @import.complete?
-                  - heading = "Estimated time remaining"
-                  - content = @import.time_remaining_message
-                - else
-                  - heading = "Import completed on"
-                  - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
+                  = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", content_class: "h2 line-height-1", heading: heading, content: content }
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", content_class: "h2 line-height-1", heading: heading, content: content }
+                .col-xs-6.col-md-3
+                  - unless @import.complete?
+                    - heading = "Importing"
+                    - content = "#{@import.number_of_records} records"
+                  - else
+                    - heading = "New records created"
+                    - content = @import.imported_records.count
 
-              .col-xs-6.col-md-3
-                - unless @import.complete?
-                  - heading = "Importing"
-                  - content = "#{@import.number_of_records} records"
-                - else
-                  - heading = "New records created"
-                  - content = @import.imported_records.count
+                  = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", content_class: "h2 line-height-1", heading: heading, content: content }
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", content_class: "h2 line-height-1", heading: heading, content: content }
+                .col-xs-6.col-md-3
+                  - heading = "Processed rows"
+                  - content = @import.records_processed.to_i
 
-              .col-xs-6.col-md-3
-                - heading = "Processed rows"
-                - content = @import.records_processed.to_i
+                  = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", content_class: "h2 line-height-1", heading: heading, content: content }
 
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", content_class: "h2 line-height-1", heading: heading, content: content }
+                .col-xs-6.col-md-3.red.text-xs-center
+                  - content_class = "h2 line-height-1"
+                  - heading = "Errors within our data"
 
-              .col-xs-6.col-md-3.red.text-xs-center
-                - content_class = "h2 line-height-1"
-                - heading = "Errors within our data"
+                  - if @import.number_of_records_with_errors.to_i > 0
+                    - icon = "exclamation"
+                    - color = "text-danger"
+                    - content_class += " text-danger"
+                    - content = @import.number_of_records_with_errors
 
-                - if @import.number_of_records_with_errors.to_i > 0
-                  - icon = "exclamation"
-                  - color = "text-danger"
-                  - content_class += " text-danger"
-                  - content = @import.number_of_records_with_errors
+                  - else
+                    - icon = "check"
+                    - color = "text-success"
+                    - content = "0"
+                    - content_class += " text-success"
 
-                - else
-                  - icon = "check"
-                  - color = "text-success"
-                  - content = "0"
-                  - content_class += " text-success"
-
-                = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
+                  = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
 
           - if import_presenter.show_files?
@@ -111,7 +111,7 @@
               %h5 Files
               .slats
                 .slat-list
-                  - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
+                  - if @import.import_type? && @import.number_of_records_with_errors.to_i > 0 && @import.complete?
                     .slat
                       .row
                         .col-xs-8.text-danger
@@ -120,14 +120,15 @@
                         .col-xs-4.text-xs-right
                           = link_to @import.error_file.url, data: { describe: 'download-error-file' }, class: 'btn btn-sm btn-danger text-danger m-l-quarter' do
                             = fa_icon 'download', text: 'Download', class: 'm-r-quarter text-danger'
-                  .slat
-                    .row
-                      .col-xs-8
-                        %p System generated spreadsheet
-                        -# Badge with tooltip coming soon
-                      .col-xs-4.text-xs-right
-                        = link_to @import.import_file.url, class: 'btn btn-sm btn-secondary m-l-quarter' do
-                          = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+                  - if @import.import_file.present?
+                    .slat
+                      .row
+                        .col-xs-8
+                          %p Your uploaded file or the file generated by the system from your file(s)
+                          -# Badge with tooltip coming soon
+                        .col-xs-4.text-xs-right
+                          = link_to @import.import_file.url, class: 'btn btn-sm btn-secondary m-l-quarter' do
+                            = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
 
                   - if @import.pre_processing_files&.any?
                     - @import.pre_processing_files&.each do |file|
