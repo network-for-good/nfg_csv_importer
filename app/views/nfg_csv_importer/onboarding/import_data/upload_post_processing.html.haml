@@ -4,7 +4,6 @@
 
   .container.py-4
     .row
-
       .col.col-lg-8.mx-auto
         = ui.nfg :tile, heading: t('header.message', scope: [locale_namespace, :upload_post_processing]) do
           = ui.nfg :tile_section, class: 'mt-2' do
@@ -13,7 +12,6 @@
               .custom-file
                 = f.label :import_file, 'Choose file', class: 'custom-file-label'
                 = f.file_field :import_file, class: "custom-file-input"
-
           = ui.nfg :tile_section, render_if: onboarder_presenter.show_import_template_menu? do
             = ui.nfg :media do
               = ui.nfg :media_object do
