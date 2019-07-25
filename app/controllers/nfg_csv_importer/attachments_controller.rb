@@ -2,7 +2,8 @@ class NfgCsvImporter::AttachmentsController < NfgCsvImporter::ApplicationControl
 
   def destroy
     blob = ActiveStorage::Blob.find_signed(params[:id])
-    blob.purge_later
+    blob.attachments.map(&:purge)
+    # blob.purge_later
     head :no_content
   end
 
