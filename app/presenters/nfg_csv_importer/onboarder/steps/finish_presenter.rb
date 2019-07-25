@@ -4,9 +4,9 @@ module NfgCsvImporter
       class FinishPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
         def queued_alert_msg
           if queue_index == 0
-            "Your import is next in line."
+            "Your import is in the queue and next in line to be processed!"
           else
-            "There #{queue_index == 1 ? 'is' : 'are'} #{h.pluralize(queue_index, 'import')} in line ahead of yours."
+            "Your import is in the queue and there #{queue_index == 1 ? 'is' : 'are'} #{h.pluralize(queue_index, 'import')} in line ahead of yours before being processed."
           end
         end
 

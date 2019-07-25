@@ -14,7 +14,7 @@ shared_examples_for "validate import file" do
 
     it "should add errors to base" do
       subject
-      expect(import_file_validateable_host.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
+      expect(import_file_validateable_host.errors.messages[:base]).to eq(["Please select a file to upload."])
     end
   end
 

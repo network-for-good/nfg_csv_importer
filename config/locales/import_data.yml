@@ -49,7 +49,7 @@ en:
             approve: 'Approve & Import'
             submit: 'Approve & Import'
           confirm:
-            begin_import: 'Please confirm you are ready to begin importing your data.'
+            begin_import: 'Please confirm you are ready to begin importing your data by clicking the "OK" button.'
           label:
           placeholder:
           hint:
@@ -145,6 +145,6 @@ en:
           upload_preprocessing: "Upload"
           import_type: "Import Type"
           upload_post_processing: "Upload"
-          field_mapping: "Spreadsheet Formatting"
+          field_mapping: "Mapping"
           preview_confirmation: "Preview"
           finish: "Finished!"
