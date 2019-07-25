@@ -42,38 +42,6 @@
 }
 
 
-// TODO: Fix header bar arrow. Looks disconnected on scroll up.
-
-.header-bar-arrow{
-  position:relative;
-  z-index:3;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  transition: all 0.5s ease-in-out;
-
-  &:after {
-    top: 100%;
-    left: 50%;
-    // top: 84px;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-
-    pointer-events: none;
-    border-color: rgba(59, 180, 237, 0);
-    border-top-color: #3bb4ed;
-    border-width: 15px;
-    margin-left: -15px;
-    z-index: 3;
-  }
-}
-
-
-
-
 .row-importer-stats{
   background-color:$brand-primary;
   color:#fff;
