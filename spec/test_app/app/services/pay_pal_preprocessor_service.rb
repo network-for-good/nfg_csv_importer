@@ -23,6 +23,9 @@ class PayPalPreprocessorService
     import.save!
     temp_file.close
     FileUtils.rm_rf temp_folder
+    OpenStruct.new({ status: :success })
+  rescue Roo::HeaderRowNotFoundError
+    OpenStruct.new({ status: :error, errors: ["The file is not formatted correctly"] })
   end
 
   protected

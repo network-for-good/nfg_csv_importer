@@ -37,6 +37,7 @@ module FileOriginationTypes
           # mailer to do that when this test app will never actually send
           # that message.
           import.complete!
+          OpenStruct.new({ status: :success })
         }
       end
     end
