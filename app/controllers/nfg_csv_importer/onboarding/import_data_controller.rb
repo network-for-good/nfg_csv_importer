@@ -240,6 +240,10 @@ module NfgCsvImporter
           import.file_origination_type = file_origination_type_name
         end
       end
+
+      def upload_preprocessing_on_before_save
+        form.pre_processing_files = [] if form_params.empty?
+      end
     end
   end
 end

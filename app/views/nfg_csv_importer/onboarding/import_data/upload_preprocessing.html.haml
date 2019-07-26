@@ -30,7 +30,8 @@
         #stored_files
           - f.object.pre_processing_files.each do |file|
             - if file.respond_to? (:signed_id)
-              = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id
+              - if f.object.errors[:pre_processing_files].any?
+                = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id
               %span.pre_processing_file{ data: { value: file.signed_id, name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)} }
   = ui.nfg :alert, :tip, class: 'mb-0' do
     = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
