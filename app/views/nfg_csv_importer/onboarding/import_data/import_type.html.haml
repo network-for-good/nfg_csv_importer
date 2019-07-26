@@ -1,9 +1,8 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
-
-  #import_type_row.row.m-t-1{ data: { show_hide: "hide" } }
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', default: '') } do |f|
+  #import_type_row.row{ data: { show_hide: "hide" } }
     - import_definitions.each do |import_type, definition|
       - import_type = import_type.to_s
-      .col-md-4.col-6.mt-3{ data: { describe: "#{import_type}_import_type" } }
+      .col-md-4.col-6.mb-3{ data: { describe: "#{import_type}_import_type" } }
         .custom-control.custom-radio.custom-control-block.d-flex.align-items-start.h-100
           = f.radio_button 'import_type', import_type, class: "custom-control-input"
           %label.custom-control-label.text-center.w-100.h-100.bg-white{ for: "nfg_csv_importer_onboarding_import_data_import_type_import_type_#{import_type}" }

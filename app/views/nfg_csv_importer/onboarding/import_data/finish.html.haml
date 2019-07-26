@@ -1,4 +1,4 @@
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { show_exit_button: false, header_message: t('.header.message'), header_page: t('.header.page', default: ''), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { show_exit_button: false } do |f|
 
   .text-center
     -# Due to some malfeasance within rails, if the last render fails
@@ -11,4 +11,4 @@
       - rescue ActionView::MissingTemplate
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
-    = ui.nfg :button, :submit, :lg, body: "View All Imports"
+    = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish])

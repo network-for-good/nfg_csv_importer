@@ -33,6 +33,7 @@ en:
           button:
             back: 'Prev'
             submit: 'Exit'
+            view_all: 'View All Imports'
           label:
           placeholder:
           hint:
@@ -80,7 +81,7 @@ en:
             modal:
         upload_post_processing:
           header:
-            message: Let's upload your spreadsheet
+            message: "Let's upload your spreadsheet!"
             form: ''
           button:
             <<: *default_buttons
@@ -121,9 +122,9 @@ en:
             note: ''
         overview:
           header:
-            message: 'Setting up your spreadsheet for success'
+            message: "Let's take a moment to ensure your file is ready to import. Once it is, click \"Next\" to upload your file."
             form: ''
-            page: ''
+            page: 'There are a few things you can do setup your spreadsheet for success so your data is properly imported. Read through the requirements and column headers below, and download a template if you need it.'
           button:
             <<: *default_buttons
           label:
@@ -131,8 +132,6 @@ en:
           hint:
           guidance:
             modal:
-          body:
-            intro: 'There are a few things you can do setup your spreadsheet for success so your data is properly imported. Read through the requirements and column headers below, and download a template if you need it.'
           headings:
             requirements: "Spreadsheet requirements for importing %{import_type}"
             required_column_headers: "Required column headers"
