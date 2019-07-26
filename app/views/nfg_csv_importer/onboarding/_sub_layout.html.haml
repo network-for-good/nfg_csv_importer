@@ -2,6 +2,7 @@
 - show_exit_button = true if local_assigns[:show_exit_button].nil?
 
 - guidance = '' if local_assigns[:guidance].nil?
+- header_message = '' if local_assigns[:header_message].nil?
 - header_page = '' if local_assigns[:header_page].nil?
 - enable_next_button = true if local_assigns[:enable_next_button].nil?
 - next_step_confirmation = nil if local_assigns[:next_step_confirmation].nil? # pass in a confirmation prompt on submit
@@ -32,9 +33,9 @@
 
   - else
     - if f.object.errors.any?
-      .container.pt-4
+      .container.pt-3
         .row
-          .col.col-lg-10.mx-auto
-            = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, class: 'mb-0', icon: 'exclamation-circle'
+          .col.col-lg-8.mx-auto
+            = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle'
 
     = yield f
