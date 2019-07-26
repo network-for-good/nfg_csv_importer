@@ -238,6 +238,7 @@ module NfgCsvImporter
         return unless import&.file_origination_type
         if file_origination_type_name != import.file_origination_type.name
           import.file_origination_type = file_origination_type_name
+          import.pre_processing_files.map(&:purge)
         end
       end
 

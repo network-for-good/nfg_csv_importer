@@ -5,7 +5,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
   let(:params) { { params: { import_id: import.id, use_route: :nfg_csv_importer, id: step } } }
   let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" )) }
   let(:current_step) { step }
-  let(:file_origination_type) { mock('paypal') }
+  let(:file_origination_type) { mock('paypal', name: 'test.csv') }
 
   before do
     NfgCsvImporter::FileOriginationTypes::Manager.any_instance.stubs(:type_for).returns(file_origination_type)
