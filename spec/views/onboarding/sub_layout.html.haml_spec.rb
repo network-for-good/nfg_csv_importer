@@ -13,7 +13,7 @@ RSpec.describe 'onboarding/sub_layout.html.haml' do
     view.stubs(:step).returns([:some_step])
     view.stubs(:form).returns(form)
     view.stubs(:wizard_path).returns('some/path')
-    view.stubs(:header_message).returns(mock('header_message', html_safe: 'message'))
+    view.stubs(:header_message).returns(mock('header_message'))
     form.stubs(:errors).returns(errors)
     form.stubs(:model_name).returns(model_name)
     form.stubs(:to_key).returns([])
