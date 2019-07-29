@@ -51,6 +51,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def edit
+    if @import.onboarding_session.present? && params[:iframe].blank?
+      return redirect_to nfg_csv_importer.onboarding_import_data_path(import_id: @import.id)
+    end
+
     # mapped_column_count is passed as a param from the create action. All other cases it is nil
     @mapped_column_count = params[:mapped_column_count].to_i
 
