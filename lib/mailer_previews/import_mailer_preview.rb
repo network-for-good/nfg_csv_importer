@@ -5,28 +5,28 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
     @status = NfgCsvImporter::Import::PROCESSING_STATUS
     @recipient = recipient
 
-    NfgCsvImporter::ImportMailer.send_import_result(import, @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import)
   end
 
   def send_import_result_queued
     @status = NfgCsvImporter::Import::QUEUED_STATUS
     @recipient = recipient
 
-    NfgCsvImporter::ImportMailer.send_import_result(import, @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import)
   end
 
   def send_import_result_completed
     @status = NfgCsvImporter::Import::COMPLETED_STATUS
     @recipient = recipient
 
-    NfgCsvImporter::ImportMailer.send_import_result(import, @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import)
   end
 
   def send_import_result_completed_with_errors
     @status = NfgCsvImporter::Import::COMPLETED_STATUS
     @recipient = recipient
 
-    NfgCsvImporter::ImportMailer.send_import_result(import(errors: true), @status)
+    NfgCsvImporter::ImportMailer.send_import_result(import(errors: true))
   end
 
   def send_import_result_deleted
