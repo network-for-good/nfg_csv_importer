@@ -13,7 +13,7 @@
         .btn-toolbar.pull-xs-right
           - unless browser.mobile?
             .btn-group
-              = link_to nfg_csv_importer.imports_path, class: "btn btn-secondary #{'btn-lg' unless browser.mobile?} hidden-sm-down", data: { describe: 'page-header-back-button' } do
+              = link_to nfg_csv_importer.imports_path, class: 'btn btn-secondary btn-lg hidden-sm-down', data: { describe: 'page-header-back-button' } do
                 = fa_icon 'chevron-left', class: 'm-r-quarter'
                 Back
 
@@ -28,22 +28,24 @@
         .container-division
           = flash[:error]
           = render('shared/flash_messages') rescue nil
-          .text-xs-center.m-b-base
-            - if params["redirected_from_review"]
-              %h3
+
+          - if params["redirected_from_review"]
+            .text-xs-center.m-b-base
+              %h3.m-b-0
                 %strong
                   Well done!
-                You’re all set, we’ve got it from here
+                You’re all set, we've got it from here
 
-            - elsif @import.import_type.present? && @import.import_file.present?
-              %h3
+          - elsif @import.import_type.present? && @import.import_file.present?
+            .text-xs-center.m-b-base
+              %h3.m-b-0
                 Your
                 %strong
                   = @import.import_type.pluralize.humanize.downcase
                 are
                 %strong
                   = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
-              .m-t-half
+              %p.m-t-half
                 This data was imported by
                 %strong
                   = "#{@import.imported_by_name}."
@@ -56,8 +58,8 @@
                     Your import is
                     %strong
                       = t("status.#{ @import.status }", default: @import.status)
-                  .m-t-half
-                    We'll email you when your import is done and in the system.
+                  %p.m-t-half We'll email you when your import is done and in the system.
+
           - if @import.import_type.present? && @import.import_file.present?
             .container-subdivision
               .row
@@ -105,6 +107,10 @@
 
                   = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
+          - else
+            .text-xs-center.m-b-base
+              = image_tag image_path('nfg_csv_importer/illustrations/import-files.png'), style: 'height: 240px;'
+              %h3.m-t-base.m-b-0 We have successfully received your files.
 
           - if import_presenter.show_files?
             #files
