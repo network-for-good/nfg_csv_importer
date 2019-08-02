@@ -164,6 +164,10 @@ module NfgCsvImporter
       "import_data_onboarder"
     end
 
+    def send_to_nfg?
+      file_origination_type_name == 'send_to_nfg'
+    end
+
     private
 
     def field_allowed_to_be_duplicated?(mapped_field)

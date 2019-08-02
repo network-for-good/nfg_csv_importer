@@ -561,4 +561,22 @@ describe NfgCsvImporter::Import do
 
     it { is_expected.to eq "import_data_onboarder"}
   end
+
+  describe '#send_to_nfg?' do
+    subject { import.send_to_nfg? }
+
+    context 'when file origination type name is send_to_nfg' do
+      let(:file_origination_type_name) { 'send_to_nfg' }
+      it 'returns true' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'when file origination type name is not send_to_nfg' do
+      let(:file_origination_type_name) { 'send_to_abc' }
+      it 'returns true' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
 end

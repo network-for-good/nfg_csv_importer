@@ -107,7 +107,7 @@
 
                   = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, content_class: content_class, heading: heading, content: content, color: color }
 
-          - if @import.read_attribute(:file_origination_type) == 'send_to_nfg'
+          - if @import.send_to_nfg?
             .text-xs-center.m-b-base
               = image_tag image_path('nfg_csv_importer/illustrations/import-files.png'), style: 'height: 240px;'
               %h3.m-t-base.m-b-0 We have successfully received your files.
