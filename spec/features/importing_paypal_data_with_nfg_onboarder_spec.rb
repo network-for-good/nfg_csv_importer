@@ -60,6 +60,14 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
     and_it 'takes the user back to the preview confirmation page' do
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
     end
+
+    and_by 'clicking save and exit' do
+      click_link "Save & Exit"
+    end
+
+    and_it 'should go back to imports page' do
+      expect(current_path).to eq imports_path
+    end
   end
 
   it 'allows to navigate back from preview' do

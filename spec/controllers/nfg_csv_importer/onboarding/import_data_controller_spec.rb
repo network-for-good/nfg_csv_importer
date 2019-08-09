@@ -26,5 +26,18 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
       NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
       subject
     end
+
+    context 'when exit parameter is defined' do
+      let(:params) { { params: { import_id: import.id, exit: true, use_route: :nfg_csv_importer, id: step } } }
+
+      before { session[:onboarding_session_id] = import.id }
+      it 'should redirect to imports path' do
+        expect(subject).to redirect_to imports_path
+      end
+
+      it 'should clear onboarding session' do
+        expect{ subject }.to change { session[:onboarding_session_id] }.from(import.id).to(nil)
+      end
+    end
   end
 end

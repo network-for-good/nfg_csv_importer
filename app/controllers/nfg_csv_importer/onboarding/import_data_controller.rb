@@ -36,6 +36,12 @@ module NfgCsvImporter
 
       private
 
+      # on valid steps
+      def on_valid_step
+        super
+        redirect_to finish_wizard_path if params[:exit]
+      end
+
       def points_of_no_return
         [:finish]
       end
