@@ -202,4 +202,27 @@ describe NfgCsvImporter::ImportsController do
       expect(response.body).to include('email,first_name,last_name,full_name')
     end
   end
+
+  describe "#reset_onboarder_session" do
+    subject { get :reset_onboarder_session, params }
+    let(:session_id) { 234 }
+    let(:import_id) { 123 }
+
+    before do
+      session[:onboarding_session_id] = session_id
+      session[:onboarding_import_data_import_id] = import_id
+    end
+
+    it 'redirects to the imports path' do
+      expect(subject).to redirect_to :action => :index
+    end
+
+    it 'resets user session id' do
+      expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+    end
+
+    it 'resets user session onboarding_import_data_import_id' do
+      expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+    end
+  end
 end

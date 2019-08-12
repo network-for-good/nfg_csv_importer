@@ -7,7 +7,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
   before_action :load_import, only: [:show, :destroy, :edit, :update]
-  before_action :authorize_user, except: [:index]
+  before_action :authorize_user, except: [:index, :reset_onboarder_session]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
@@ -100,6 +100,12 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def template
     import_template_service = NfgCsvImporter::ImportTemplateService.new(import: @import, format: 'csv')
     send_data import_template_service.call, type: "text/csv", filename: "#{@import.import_type}_import_template.#{import_template_service.format}", disposition: 'attachment'
+  end
+
+  def reset_onboarder_session
+    session[:onboarding_session_id] = nil
+    session[:onboarding_import_data_import_id] = nil
+    redirect_to nfg_csv_importer.imports_path
   end
 
   protected

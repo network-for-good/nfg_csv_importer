@@ -5,6 +5,7 @@ NfgCsvImporter::Engine.routes.draw do
     end
     resource :process, only: :create
     get :template, on: :collection
+    get :reset_onboarder_session, on: :collection
   end
 
   namespace :onboarding do
