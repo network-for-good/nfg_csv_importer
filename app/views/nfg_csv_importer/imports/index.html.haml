@@ -8,17 +8,8 @@
           .col-xs-12.p-x-2.text-white
             %h1.text-xs-center= t('.jumbotron.headline').html_safe
             %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
-            -# Allows us to use a beta feature to control which sites/admin can access the
-            -# new import onboarder w/pre-processing.
-            -# Hopefully we can't get rid of this in the near future.
-            - if @imported_by.try(:is_sys_user?) || !@imported_for.respond_to?(:feature_enabled?) || @imported_for.feature_enabled?('automagical_imports')
-              - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
-              - button_href = nfg_csv_importer.onboarding_import_data_path
-            - else
-              - button_text = 'begin'
-              - import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
-              - button_href = nfg_csv_importer.new_import_path(import_type: import_definitions.keys.first)
-            = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: button_href, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
+            - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
+            = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
   .container-fluid
     = render(partial: 'shared/flash_messages') rescue nil
     .row
