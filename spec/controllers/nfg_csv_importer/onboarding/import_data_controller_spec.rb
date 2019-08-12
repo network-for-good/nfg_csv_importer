@@ -20,43 +20,11 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
 
     subject { put :update, params }
 
-    context 'when exit param is not passed in' do
-      before { NfgCsvImporter::ProcessImportJob.expects(:perform_later) }
+    before { NfgCsvImporter::ProcessImportJob.expects(:perform_later) }
 
-      it "should send mail on import is queued" do
-        NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
-        subject
-      end
-
-      it 'should save onboarding session' do
-        Onboarding::Session.any_instance.expects(:save).at_least_once
-        subject
-      end
-
-      it 'should advance the onboarding step' do
-        subject
-        expect(Onboarding::Session.find(import.id).current_step).to eq('finish')
-      end
-    end
-
-
-    context 'when exit parameter is defined' do
-      let(:params) { { params: { import_id: import.id, exit: true, use_route: :nfg_csv_importer, id: step } } }
-
-      before { session[:onboarding_session_id] = import.id }
-
-      it 'should redirect to imports path' do
-        expect(subject).to redirect_to imports_path
-      end
-
-      it 'should clear onboarding session' do
-        expect{ subject }.to change { session[:onboarding_session_id] }.from(import.id).to(nil)
-      end
-
-      it 'should not advance the onboarding step' do
-        subject
-        expect(Onboarding::Session.find(import.id).current_step).to_not eq('finish')
-      end
+    it "should send mail on import is queued" do
+      NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
+      subject
     end
   end
 end

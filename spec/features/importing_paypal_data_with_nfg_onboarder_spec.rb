@@ -50,7 +50,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
   it 'leaves the onboarder flow and then clicks on edit on index page to land back at the last step' do
     visiting_till_the_preview_confirmation_page
     and_by 'visiting the imports index page' do
-      click_link "Save & Exit"
+      click_link "Exit"
     end
 
     and_by 'clicking the edit button' do
