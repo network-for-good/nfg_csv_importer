@@ -83,6 +83,10 @@ module NfgCsvImporter
           # This should be overridden by the child class
           %i[]
         end
+
+        def display_mappings
+          true
+        end
       end
     end
   end

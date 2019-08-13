@@ -45,9 +45,6 @@ describe "Importing your own spreadsheet", js: true do
       # upload_post_processing
       attach_file 'nfg_csv_importer_onboarding_import_data_upload_post_processing_import_file', path_to_file, visible: false
       click_next_button_for('upload_post_processing')
-      # expect do
-      #   click_next_button_for('upload_post_processing')
-      # end.to change { import.reload.import_file.filename }.from(nil)
     end
 
     and_by 'mapping the fields' do
@@ -84,6 +81,10 @@ describe "Importing your own spreadsheet", js: true do
           sleep 0.05
         end
       end.to change(User, :count).by(2)
+
+      and_it 'shows the column mapping conversion table' do
+        expect(page).to have_css "[data-describe='column-mappings']"
+      end
     end
 
     and_by "finishing the import process by leaving the onboarder" do
@@ -96,6 +97,15 @@ describe "Importing your own spreadsheet", js: true do
 
       # back to the import list
       expect(page.current_path).to eq '/nfg_csv_importer/'
+    end
+
+    and_by 'visiting the show page' do
+      page.find("#import_#{import.id} .btn", text: 'Details').click
+      expect(page).to have_css 'body.nfg_csv_importer-imports.show'
+    end
+
+    and_it 'shows column mapping information' do
+      expect(page).to have_css "[data-describe='column-mappings']"
     end
   end
 end

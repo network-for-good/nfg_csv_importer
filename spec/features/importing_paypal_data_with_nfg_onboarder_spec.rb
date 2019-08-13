@@ -12,6 +12,10 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to_not have_content Roo::HeaderRowNotFoundError.new.message
     end
 
+    and_it 'does not show the column mapping conversion table' do
+      expect(page).not_to have_css "[data-describe='column-mappings']"
+    end
+
     and_by 'confirming the preview confirmation page it should kick off the import' do
       expect {
         click_button  I18n.t("nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve")
@@ -44,6 +48,21 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       # we show how many records were added
       # In production, we will likely have different messages depending on the status of the import
       expect(page).to have_content "You've finished this import! There were a total of 4 records"
+    end
+
+    and_by 'returning to the imports index page' do
+      page.find("[data-describe='view-all']").click
+
+      expect(page).to have_css "body.nfg_csv_import-imports.index"
+    end
+
+    and_by 'browsing to the imports show page' do
+      page.find("#import_#{@import.id} .btn", text: 'Details').click
+      expect(page).to have_css 'body.nfg_csv_importer-imports.show'
+    end
+
+    and_it 'does not show the column header mapping' do
+      expect(page).not_to have_css "[data-describe='column-mappings']"
     end
   end
 

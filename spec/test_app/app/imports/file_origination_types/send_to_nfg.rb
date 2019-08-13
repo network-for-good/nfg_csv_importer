@@ -40,6 +40,10 @@ module FileOriginationTypes
           OpenStruct.new({ status: :success })
         }
       end
+
+      def display_mappings
+        false
+      end
     end
   end
 end

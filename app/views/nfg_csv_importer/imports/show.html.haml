@@ -145,4 +145,6 @@
                           .col-xs-4.text-xs-right
                             = link_to rails_blob_path(file, disposition: "attachment"), data: { describe: 'download-pre-processing' }, class: 'btn btn-sm btn-secondary m-l-quarter' do
                               = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
+        - if @import.file_origination_type.display_mappings
+          .container-division{ data: { describe: 'column-mappings' } }
 

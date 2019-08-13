@@ -11,4 +11,4 @@
       - rescue ActionView::MissingTemplate
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
-    = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish])
+    = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish]), describe: 'view-all'
