@@ -147,4 +147,10 @@
                               = fa_icon 'download', text: 'Download', class: 'm-r-quarter'
         - if @import.file_origination_type.display_mappings
           .container-division{ data: { describe: 'column-mappings' } }
+            %h4
+              = @import.column_stats[:mapped_column_count]
+              of
+              = @import.column_stats[:column_count]
+              column were mapped:
+            = render 'nfg_csv_importer/imports/mapped_column_headers', import: @import, max_height: 100
 

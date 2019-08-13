@@ -8,4 +8,6 @@
     = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter
 
   - if file_origination_type.display_mappings
-    %div{ data: { describe: 'column-mappings' } }
+    = ui.nfg :tile_section, describe: 'column-mappings' do
+      = ui.nfg :collapse, id: 'mapped_column_headers', heading: "Review #{import.column_stats[:mapped_column_count]} of #{import.column_stats[:column_count]} columns to be mapped", collapsed: true do
+        = render 'nfg_csv_importer/imports/mapped_column_headers', import: import
