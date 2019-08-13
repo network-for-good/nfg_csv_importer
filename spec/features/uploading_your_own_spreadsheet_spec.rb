@@ -100,7 +100,7 @@ describe "Importing your own spreadsheet", js: true do
     end
 
     and_by 'visiting the show page' do
-      page.find("#import_#{import.id} .btn", text: 'Details').click
+      page.find("#import_#{import.id} [data-describe='import-details']").click
       expect(page).to have_css 'body.nfg_csv_importer-imports.show'
     end
 

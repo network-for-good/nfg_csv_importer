@@ -57,7 +57,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
     end
 
     and_by 'browsing to the imports show page' do
-      page.find("#import_#{@import.id} .btn", text: 'Details').click
+      page.find("#import_#{@import.id} [data-describe='import-details']", text: 'Details').click
       expect(page).to have_css 'body.nfg_csv_importer-imports.show'
     end
 
