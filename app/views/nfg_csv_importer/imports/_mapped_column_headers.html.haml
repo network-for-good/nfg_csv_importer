@@ -1,8 +1,9 @@
-- import = local_assigns[:import]
-- max_height = '300' if local_assigns[:max_height].nil?
 -# This partial is shared across nfg_ui and legacy code
 -# So both grids css classes are used until
 -# DMS is converted to nfg_ui
+
+- import = local_assigns[:import]
+- max_height = '300' if local_assigns[:max_height].nil?
 
 .expandable{ data: { max_height: max_height.to_s } }
   .row
@@ -14,25 +15,27 @@
       %small.display-block.text-muted.text-uppercase Field in system
 
   - import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
-    .row
+    .row{ data: { describe: 'mapped-column-header' } }
       .col-xs-5.col-5
         = fa_icon "check", class: "text-success small"
-        %strong= mapped_column.name
+        %strong{ data: { describe: 'original-column-header' } }= mapped_column.name
       .col-xs-2.col-2
         = fa_icon "long-arrow-right", class: "text-muted fa-lg"
-      .col-md-5.col-12
+      .col-md-5.col-12{ data: { describe: 'new-column-header' } }
         = import_column_display_name(import.import_type, mapped_column.mapped_to)
-  %hr
-  .row
-    .col-xs-12.col-12
-      %h5
-        = import.column_stats[:ignored_column_count]
-        Ignored Columns
 
-      - import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
+  - if import.column_stats[:ignored_column_count] > 0
+    %hr
+    .row{ data: { describe: 'ignored-columns' } }
+      .col-xs-12.col-12
+        %h5
+          = import.column_stats[:ignored_column_count]
+          Ignored Columns
 
-        .row
-          .col-xs-12.col
-            = fa_icon "close", class: "text-danger small"
-            %span.text-muted
-              = ignored_column.name
+        - import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
+
+          .row{ data: { describe: 'ignored-column-header' } }
+            .col-xs-12.col
+              = fa_icon "close", class: "text-danger small"
+              %span.text-muted
+                = ignored_column.name
