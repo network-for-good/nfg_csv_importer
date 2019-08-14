@@ -82,9 +82,9 @@ describe "Importing your own spreadsheet", js: true do
         end
       end.to change(User, :count).by(2)
 
-      and_it 'shows the column mapping conversion table' do
-        expect(page).to have_css "[data-describe='column-mappings']"
-      end
+      # and_it 'shows the column mapping conversion table' do
+      #   expect(page).to have_css "[data-describe='column-mappings']"
+      # end
     end
 
     and_by "finishing the import process by leaving the onboarder" do
@@ -101,7 +101,7 @@ describe "Importing your own spreadsheet", js: true do
 
     and_by 'visiting the show page' do
       page.find("#import_#{import.id} [data-describe='import-details']").click
-      expect(page).to have_css 'body.nfg_csv_importer-imports.show'
+      expect(page).to have_css "[data-describe='import-show-page']"
     end
 
     and_it 'shows column mapping information' do

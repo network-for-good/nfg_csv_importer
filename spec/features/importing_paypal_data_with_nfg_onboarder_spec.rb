@@ -52,13 +52,12 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
 
     and_by 'returning to the imports index page' do
       page.find("[data-describe='view-all']").click
-
-      expect(page).to have_css "body.nfg_csv_import-imports.index"
+      expect(page).to have_css "#imports_listing"
     end
 
     and_by 'browsing to the imports show page' do
       page.find("#import_#{@import.id} [data-describe='import-details']", text: 'Details').click
-      expect(page).to have_css 'body.nfg_csv_importer-imports.show'
+      expect(page).to have_css "[data-describe='import-show-page']"
     end
 
     and_it 'does not show the column header mapping' do
