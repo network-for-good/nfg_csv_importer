@@ -6,7 +6,7 @@ module NfgCsvImporter
       private
 
       def redirect_unless_uploaded_status
-        if @import && !@import.uploaded?
+        if @import && !@import.pending_or_uploaded?
           respond_to do |format|
             format.html do
               flash[:error] = I18n.t('import.cant_edit_or_reprocess')

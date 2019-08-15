@@ -168,6 +168,10 @@ module NfgCsvImporter
       file_origination_type_name == 'send_to_nfg'
     end
 
+    def pending_or_uploaded?
+      pending? || uploaded?
+    end
+
     private
 
     def field_allowed_to_be_duplicated?(mapped_field)

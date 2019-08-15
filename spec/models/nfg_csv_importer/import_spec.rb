@@ -579,4 +579,26 @@ describe NfgCsvImporter::Import do
       end
     end
   end
+
+  describe '#pending_or_uploaded?' do
+    subject { import.pending_or_uploaded? }
+
+    context 'when the import is uploaded' do
+      let(:status) { 'uploaded' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is pending' do
+      let(:status) { 'pending' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is neither pending nor uploaded' do
+      let(:status) { 'defined' }
+
+      it { is_expected.to eq false }
+    end
+  end
 end
