@@ -1,7 +1,6 @@
 - import = nil if local_assigns[:import].nil?
 
 #importer_header_stats.container-fluid.container-flush
-  %span.header-bar-arrow
   .row.flex-items-xs-middle.row-importer-stats
 
     .col-md-2.col-xs-center.col-importer-stat
@@ -49,7 +48,8 @@
             = fa_icon "times-circle inverse"
             %br
             Not ready to import
-      %p.m-t-1
-        = link_to import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
-          = fa_icon "chevron-right inverse", text: "Review & Confirm", right: true
+      - unless params[:iframe].present?
+        %p.m-t-1
+          = link_to import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
+            = fa_icon "chevron-right inverse", text: "Review & Confirm", right: true
 

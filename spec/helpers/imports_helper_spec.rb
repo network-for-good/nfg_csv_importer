@@ -61,7 +61,7 @@ describe NfgCsvImporter::ImportsHelper do
       it { expect(subject).to eq "<i class=\"fa fa-minus text-muted\"></i>" }
     end
 
-    it { expect(subject).to eq "<h4>4</h4>" }
+    it { expect(subject).to eq "<h5>4</h5>" }
   end
 
   describe "#number_of_records_with_errors_based_on_import_status" do
@@ -103,7 +103,7 @@ describe NfgCsvImporter::ImportsHelper do
       let(:status) { :uploaded }
 
       it { expect(subject).to match("gear") }
-      it { expect(subject).to match("Review &amp; Mapping") }
+      it { expect(subject).to match("In Process") }
     end
 
     context "when status is :defined" do
@@ -146,6 +146,13 @@ describe NfgCsvImporter::ImportsHelper do
 
       it { expect(subject).to match("trash-o") }
       it { expect(subject).to match("text-danger") }
+    end
+
+    context "when status is :pending" do
+      let(:status) { :pending }
+
+      it { expect(subject).to match("circle-o-notch") }
+      it { expect(subject).to match("text-muted") }
     end
 
   end

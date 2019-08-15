@@ -33,8 +33,12 @@ Gem::Specification.new do |s|
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 5.0"
-  s.add_dependency "font-awesome-rails", "~> 4.7"
   s.add_dependency "browser", "~> 1.1" # browser/device detection
+  s.add_dependency "nfg_ui", "~>0.9"
+  s.add_dependency "nfg_onboarder", "~> 0.0.3"
+  s.add_dependency "reform-rails", '~> 0.1.7'
+  s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
+  s.add_dependency 'aws-sdk-s3', '~> 1.17.0'
 
   s.add_development_dependency "sqlite3", '~> 1.3.0'
   s.add_development_dependency "rails-controller-testing"
@@ -43,13 +47,13 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec-rails-mocha"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "capybara"
+  s.add_development_dependency "capybara-screenshot"
+  s.add_development_dependency "shoulda"
   s.add_development_dependency "shoulda-matchers"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "ejs"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "database_cleaner"
-  s.add_development_dependency "bootstrap-sass"
-  s.add_development_dependency "capybara-screenshot"
   s.add_development_dependency "puma"
 end

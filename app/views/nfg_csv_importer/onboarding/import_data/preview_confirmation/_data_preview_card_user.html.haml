@@ -1,0 +1,24 @@
+
+= ui.nfg :card, class: 'mt-2' do
+  -# The headline of the card (e.g.: User's name or the donation amount)
+  = ui.nfg :media do
+    = ui.nfg :media_object do
+      -# For sizing purposes, use a typeface component with an icon instead of a conventional icon component.
+      = ui.nfg :typeface, :heading, :primary, icon: 'user', class: 'mr-2'
+
+    -# The caption / summary (e.g.: donation details or contact information)
+    = ui.nfg :media_body do
+      = ui.nfg :typeface, heading: "#{details["full_name"]}"
+
+      = ui.nfg :typeface, body: details["email"], class: 'mb-0'
+      = ui.nfg :typeface, body: details["home_phone"], class: 'mb-0'
+
+  -# The rest of the information, e.g.: full address, or donation note, etc.
+  = ui.nfg :media, class: 'mt-3' do
+    = ui.nfg :media_object do
+      = ui.nfg :icon, 'home', class: 'mr-2 line-height'
+
+    = ui.nfg :media_body do
+      = ui.nfg :typeface, body: details["address"], class: 'mb-0'
+      = ui.nfg :typeface, body: details["address_2"], class: 'mb-0'
+      = ui.nfg :typeface, body: "#{details["city"]}, #{details["state"]} #{details["zip_code"]}", class: 'mb-0'

@@ -1,0 +1,5 @@
+defaults:
+  aws_s3_bucket: baz
+  aws_access_key_id: bar
+  aws_secret_access_key: baz
+development:

@@ -1,0 +1,13 @@
+.dropzone-target {
+  padding: 36px;
+  min-height: 252px;
+  box-shadow: 0 0 5px transparentize(#000, 0.7);
+  transition: all .2s ease-in-out;
+}
+.dz-default {
+  transition: opacity .15s linear;
+  .dz-drag-hover & { opacity: 0.5; }
+  .dz-started & { display: none; }
+}
+[data-dz-remove] { cursor: pointer; }
+.dz-preview + .dz-preview { margin-top: 36px; }

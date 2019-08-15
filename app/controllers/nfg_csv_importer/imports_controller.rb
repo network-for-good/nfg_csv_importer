@@ -7,7 +7,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
   before_action :load_import, only: [:show, :destroy, :edit, :update]
-  before_action :authorize_user, except: [:index]
+  before_action :authorize_user, except: [:index, :reset_onboarder_session]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
@@ -51,13 +51,19 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def edit
+    if @import.onboarding_session.present? && params[:iframe].blank?
+      return redirect_to nfg_csv_importer.onboarding_import_data_path(import_id: @import.id)
+    end
+
     # mapped_column_count is passed as a param from the create action. All other cases it is nil
     @mapped_column_count = params[:mapped_column_count].to_i
 
     @first_x_rows = @import.first_x_rows
+    render layout: (params[:iframe] ? 'full_width' : 'application')
   end
 
   def index
+    @import = NfgCsvImporter::Import.new
     # if no pagination engine is available, just so the records
     @imports = @imported_for.imports.order_by_recent
     if defined?(WillPaginate)
@@ -88,13 +94,18 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     end
 
-
     redirect_to imports_path
   end
 
   def template
     import_template_service = NfgCsvImporter::ImportTemplateService.new(import: @import, format: 'csv')
     send_data import_template_service.call, type: "text/csv", filename: "#{@import.import_type}_import_template.#{import_template_service.format}", disposition: 'attachment'
+  end
+
+  def reset_onboarder_session
+    session[:onboarding_session_id] = nil
+    session[:onboarding_import_data_import_id] = nil
+    redirect_to nfg_csv_importer.imports_path
   end
 
   protected
@@ -109,7 +120,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def load_new_import
-    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by))
+    @import ||= NfgCsvImporter::Import.queued.new(import_params.merge(import_type: @import_type, imported_for: @imported_for, imported_by: @imported_by, file_origination_type: NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s))
   end
 
   def set_import_type
@@ -119,5 +130,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def authorize_user
     redirect_to imports_path unless @import.can_be_viewed_by(current_user)
+  end
+
+  def iframe_param_present?
+    params[:iframe].present?
   end
 end

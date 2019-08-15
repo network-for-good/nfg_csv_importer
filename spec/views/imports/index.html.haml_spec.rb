@@ -1,73 +1,56 @@
 require 'rails_helper'
+# require 'will_paginate' # so that tests can use will_paginate methods
+# require 'will_paginate/array'
 
-describe "imports/index.html.haml" do
-  include Capybara::RSpecMatchers
+RSpec.describe "nfg_csv_importer/imports/index.html.haml", type: :view do
+  let(:current_user) { FactoryGirl.create(:user) }
+  let(:import) { FactoryGirl.create(:import, *import_traits, imported_by: current_user) }
+  let(:import_traits) { [:is_complete, :is_paypal] }
+  let!(:imports) { assign(:imports, [import]) }
+  let(:tested_can_be_viewed_by) { false }
+
   before do
-    assign(:imports, imports)
-    assign(:imported_for, entity)
     view.extend NfgCsvImporter::ImportsHelper
     view.stubs(:current_user).returns(current_user)
+    view.stubs(:import).returns(import)
   end
-  let(:imports) { [] }
-  let(:entity) { create(:entity) }
-  let(:current_user) { stub("user") }
 
-  subject { render template: 'nfg_csv_importer/imports/index' }
+  subject { render }
 
-  context 'when the ImportDefinition.import_types is empty' do
-    before do
-      ImportDefinition.stubs(:import_types).returns([])
-    end
+  it 'renders the header with a CTA link' do
+    expect(subject).to have_css "[data-describe='import-data-onboarder-cta']"
+  end
 
-    it "should not have any links to a new import" do
-      expect(subject).not_to have_selector(".panel-heading a")
-    end
-
-    context 'when there are no previous imports' do
-      it "should display an empty content area that includes a unique data attribute" do
-        expect(subject).to have_selector("[data-set-full-page='true']")
+  describe 'the imports listing' do
+    context 'when imports are present' do
+      it 'does not display the empty state' do
+        expect(subject).not_to have_css "[data-describe='imports-empty-state']"
       end
-    end
-  end
 
-  context "when the ImportDefinition.import_types returns values" do
-    before do
-      ImportDefinition.stubs(:import_types).returns([:users, :donation])
-      NfgCsvImporter::ImportDefinitionDetails.any_instance.expects(:can_be_viewed_by).with(current_user).returns(can_be_viewed_by).twice
-    end
+      it 'displays the listing rows' do
+        and_it 'displays the listing row container' do
+          expect(subject).to have_css '#imports_listing'
+        end
 
-    context "when the import definition detail's can_be_viewed_by returns true" do
-      let(:can_be_viewed_by) { true }
-
-      it "should display a link to each of the types where no can_be_viewed_by entry is provided" do
-        expect(subject).to have_selector(".card .card-block a[href$='/new?import_type=users']")
-        expect(subject).to have_selector(".card .card-block a[href$='/new?import_type=donation']")
+        and_it 'renders the import slat' do
+          expect(subject).to render_template 'nfg_csv_importer/imports/_import', count: 1
+        end
       end
     end
 
-    context "when the import definition detail's can_be_viewed_by returns true" do
-      let(:can_be_viewed_by) { false }
+    context 'when imports are not present' do
+      let!(:imports) { assign(:imports, []) }
+      it 'displays the empty state' do
+        expect(subject).to have_css "[data-describe='imports-empty-state']"
 
-      it "should NOT display a link to each of the types where no can_be_viewed_by entry is provided" do
-        expect(subject).not_to have_selector(".card .card-block a[href$='/new?import_type=users']")
-        expect(subject).not_to have_selector(".card .card-block a[href$='/new?import_type=donation']")
+        and_it 'does not display the listing row container' do
+          expect(subject).not_to have_css '#imports_listing'
+        end
+
+        and_it 'does not render an import slat' do
+          expect(subject).not_to render_template 'nfg_csv_importer/imports/_import'
+        end
       end
     end
   end
-
-  context "when only one import definition can be viewed" do
-    before do
-      ImportDefinition.stubs(:import_types).returns([:users])
-      NfgCsvImporter::ImportDefinitionDetails.any_instance.expects(:can_be_viewed_by).with(current_user).returns(true).once
-    end
-
-    it "should not display import_type_row" do
-      expect(subject).not_to have_selector("#import_type_row")
-    end
-
-    it "start button should have link to first accessible import definition" do
-      expect(subject).to have_link(I18n.t("links.start", scope: [:imports, :index]), href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: 'users'))
-    end
-  end
-
 end

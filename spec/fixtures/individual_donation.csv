@@ -1,0 +1,8 @@
+gross,donated_at,payment_method,first_name,last_name,email,address,address_2,city,state,zip_code,transaction_id,campaign
+10,2/2/19,credit_card,super,man,pathakh@msn.com,1635 pebble beadh dr,,Yuba City,CA,95993,2342423423,my awesome campaign
+10,2/2/19,credit_card,wonder,woman,,1645 pebble beadh dr,,Yuba City,CA,95993,2342423423,my awesome campaign
+10,2/2/19,credit_card,Luke,Skywalker,star@wars.com,,,Yuba City,CA,95993,2342423423,my awesome campaign
+20,2/3/19,credit_card,spider,man,asdfa@asdf.com,1434 abc drive,,yuba City,ca,95993,,
+0,2/5/19,credit_card,harsh,pathak,asdflkj2@example.com,342 def drive,#203,yuba City,cA,95993,,
+0,2/5/19,credit_card,harsh,pathak,,,#203,yuba City,cA,95993,,
+,2/5/19,credit_card,harsh,pathak,,,#203,yuba City,cA,95993,,

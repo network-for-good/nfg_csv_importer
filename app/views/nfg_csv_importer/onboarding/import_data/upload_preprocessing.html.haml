@@ -1,0 +1,40 @@
+
+- i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
+
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+
+  .row
+    .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_path(id: 'dummy')}}
+      = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
+      .dropzone-target.mb-3
+        .dz-default.py-4.text-center
+          = ui.nfg :icon, 'cloud-upload 3x', :primary
+          = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
+          = ui.nfg :typeface, :body, class: 'mb-0' do
+            If you prefer to search your computer,
+            %a#dz_file_browser_link{ href: 'javascript:;' }
+              click here
+            to browse.
+
+      -# Do not use simple_form syntax. Remove me when done.
+      - if file_origination_type.collect_note_with_pre_processing_files
+        = ui.nfg :form_group, class: 'mb-3' do
+          %label{ for: "nfg_csv_importer_onboarding_import_data_upload_preprocessing_note" }
+            = t('labels.note', scope: i18n_scope)
+          = f.text_area :note, class: 'form-control'
+          - if t('help_text.note', scope: i18n_scope).present?
+            = ui.nfg :typeface, :muted, body: t('help_text.note', scope: i18n_scope), class: 'mb-0'
+
+      - # if object has errors then file is a string with no signed_id method
+      - unless f.object.pre_processing_files.empty? || f.object.errors[:pre_processing_files].any?
+        #stored_files
+          - f.object.pre_processing_files.each do |file|
+            - if file.respond_to? (:signed_id)
+              - if f.object.errors[:pre_processing_files].any?
+                = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id
+              %span.pre_processing_file{ data: { value: file.signed_id, name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)} }
+  = ui.nfg :alert, :tip, class: 'mb-0' do
+    = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
+
+-# The following gets rendered by DropZone for each file that is dropped/added
+= render partial: 'nfg_csv_importer/onboarding/import_data/upload_preprocessing/dropzone_row'

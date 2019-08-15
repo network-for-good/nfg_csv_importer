@@ -2,29 +2,48 @@ module NfgCsvImporter
   class Import < ActiveRecord::Base
     attr_accessor :import_template_id # captures the id of a previous import from which fields mappings should be generated
 
-    STATUSES = [:uploaded, :defined, :queued, :processing, :complete, :deleting, :deleted]
+    include NfgOnboarder::OnboardableOwner
+    include NfgCsvImporter::Concerns::ImportServiceable
+    include NfgCsvImporter::Concerns::ImportFileValidateable
+
+    # These statuses set as constants
+    # are used as status "hooks" for UX workflows
+    #
+    # ex: sending emails to the imported_by recipient at certain stages of import processing.
+    PROCESSING_STATUS = :processing
+    QUEUED_STATUS = :queued
+    COMPLETED_STATUS = :complete
+
+    STATUSES = [:pending, :uploaded, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
+    serialize :statistics, JSON
 
-    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined, :pending]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
+
+    has_many_attached :pre_processing_files
 
     has_many :imported_records, dependent: :destroy
     belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
     belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
 
-    validates_presence_of :import_file, :import_type, :imported_by_id, :imported_for_id
-    validate :import_validation, on: [:create]
+    validates_presence_of :imported_by_id, :imported_for_id, if: :run_validations?
+    validates_presence_of :import_file, if: :validate_import_file_and_type
+    validates_presence_of :import_type, if: :validate_import_file_and_type
+
+    # For backwards compatibility (prior to using the onboarder),
+    # we only run import validations on create and if we are
+    # running all of the other validations. Most of these validations
+    # are happening in the onboarders forms, but in case we need to
+    # create an import file outside of that, we can still validate
+    # the import file.
+    validate :import_validation, on: [:create], if: :run_validations?
+    validate :import_file_extension_validation, on: [:create], if: :run_validations?
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
-
-    delegate :description, :required_columns, :optional_columns, :column_descriptions, :transaction_id,
-      :header, :missing_required_columns, :import_class_name, :headers_valid?, :valid_file_extension?,
-      :import_model, :unknown_columns, :all_valid_columns, :field_aliases, :first_x_rows,
-      :invalid_column_rules, :column_validation_rules, :can_be_viewed_by,
-      :fields_that_allow_multiple_mappings, :can_be_deleted_by?, :to => :service
 
     def self.ignore_column_value
       IGNORE_COLUMN_VALUE
@@ -60,6 +79,10 @@ module NfgCsvImporter
       end
     end
 
+    def file_origination_type
+      file_type_manager.type_for(file_origination_type_name)
+    end
+
     def header_errors
       return @header_errors if @header_errors
       @header_errors = invalid_column_rules.inject([]) { |hsh, invalid_rule| hsh << invalid_rule.message; hsh }
@@ -68,20 +91,6 @@ module NfgCsvImporter
 
     def imported_by_name
       imported_by.try(:name)
-    end
-
-    def import_validation
-      begin
-        errors.add :base, "Import File can't be blank, Please Upload a File" and return false if import_file.blank?
-        errors.add :base, "At least one empty column header was detected. Please ensure that all column headers contain a value." if empty_column_headers.present?
-        errors.add :base, "The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: #{ duplicated_headers.map { |dupe, columns| "'#{ dupe }' on columns #{ columns.join(' & ') }" }.join("; ") }" if duplicated_headers.present?
-      rescue  => e
-        errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
-        Rails.logger.error e.message
-        Rails.logger.error e.backtrace.join("\n")
-        return false
-      end
-      true
     end
 
     def mapped_fields(header_column = nil)
@@ -122,12 +131,6 @@ module NfgCsvImporter
       true
     end
 
-    def service
-      return @service if @service
-      service_class = Object.const_get(service_name) rescue NfgCsvImporter::ImportService
-      @service = service_class.new(imported_by: imported_by, imported_for: imported_for, type: import_type, file: import_file, import_record: self)
-    end
-
     def set_upload_error_file(errors_csv)
       errors_csv = maybe_append_to_existing_errors(errors_csv)
       csv_file = FilelessIO.new(errors_csv)
@@ -136,12 +139,11 @@ module NfgCsvImporter
       self.save!
     end
 
-    def time_zone
-      if imported_for.respond_to?(:time_zone) && imported_for.time_zone
-        imported_for.time_zone
-      else
-        'Eastern Time (US & Canada)'
-      end
+    def statistics_and_examples(update_stats: false)
+      return statistics if statistics.present? && !update_stats
+      temp_stats = generate_stats_and_examples
+      update(statistics: temp_stats)
+      temp_stats
     end
 
     def unmapped_columns
@@ -157,22 +159,36 @@ module NfgCsvImporter
       str
     end
 
+    def default_onboarder
+      # this is overriding onboardable_owner
+      "import_data_onboarder"
+    end
+
+    def send_to_nfg?
+      file_origination_type_name == 'send_to_nfg'
+    end
+
     private
 
-    def service_name
-      "#{import_type.capitalize}".classify + "ImportService"
+    def field_allowed_to_be_duplicated?(mapped_field)
+      # fields can be duplicated if they are listed in the definition
+      # as fields_that_allow_multiple_mappings
+      fields_that_allow_multiple_mappings.include?(mapped_field)
     end
 
-    def empty_column_headers
-      header.select { |h| h.blank? }
+    def file_type_manager
+      NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration)
     end
 
-    def duplicated_headers
-      duplicates = header.select { |f|  header.count(f) > 1 }.uniq
-      duplicates.inject({}) do |hsh, dupe_field|
-        hsh[dupe_field] = header.each.with_index.inject([]) { |arr, (field, index)| arr << (index + 1).to_s26.upcase if field == dupe_field; arr }
-        hsh
-      end
+    def file_origination_type_name
+      self["file_origination_type"]
+    end
+
+    def has_a_non_permitted_duplicate(mapped_field, fields)
+      mapped_field.present? &&
+      fields.count(mapped_field) > 1 &&
+      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
+      !field_allowed_to_be_duplicated?(mapped_field)
     end
 
     def minutes_remaining
@@ -186,17 +202,22 @@ module NfgCsvImporter
       remaining_minutes = (estimated_total - minutes_processing).floor
     end
 
-    def has_a_non_permitted_duplicate(mapped_field, fields)
-      mapped_field.present? &&
-      fields.count(mapped_field) > 1 &&
-      mapped_field != NfgCsvImporter::Import.ignore_column_value &&
-      !field_allowed_to_be_duplicated?(mapped_field)
+    def run_validations?
+      # when the import file is still pending we don't have to worry
+      # about whether its required attributes are present or any other
+      # validations as that will be the responsibility of the onboarding
+      # forms
+      return false if status == 'pending'
+      true
     end
 
-    def field_allowed_to_be_duplicated?(mapped_field)
-      # fields can be duplicated if they are listed in the definition
-      # as fields_that_allow_multiple_mappings
-      fields_that_allow_multiple_mappings.include?(mapped_field)
+    def validate_import_file_and_type
+      run_validations? &&
+        #  to be consistent with imports prior to adding file origination
+        # types, assume that validations should be run when there is no
+        # file origination type, otherwise, we defer to the file origination
+        # type
+        (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
     end
   end
 

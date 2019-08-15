@@ -7,6 +7,7 @@ require "action_mailer/railtie"
 require "action_view/railtie"
 require "sprockets/railtie"
 require "jquery-rails"
+require "active_storage/engine"
 # require "rails/test_unit/railtie"
 
 Bundler.require(*Rails.groups)
@@ -27,6 +28,9 @@ module TestApp
     # config.i18n.default_locale = :de
     config.default_from_address = 'noreply@networkforgood.com'
     config.action_mailer.default_url_options = { host: "example.com" }
+
+    config.action_mailer.preview_path = "#{NfgCsvImporter::Engine.root}/lib/mailer_previews"
+    config.action_view.raise_on_missing_translations = true
   end
 end
 

@@ -1,0 +1,21 @@
+!!! Strict
+%html{ xmlns: "http://www.w3.org/1999/xhtml" }
+  %head
+    %title= content_for(:title) || "Network for Good"
+    %meta{ content: "text/html; charset=utf-8", "http-equiv" => "Content-Type" }
+    %meta{ content: "width=device-width", name: "viewport" }
+    = stylesheet_link_tag "nfg_csv_importer/email/application", :media => "all"
+
+  %body
+    %table.body
+      %tr
+        %td.center{ align: "center", valign: "top" }
+          %center
+            %spacer{ size: spacer(:quadruple) }
+            %container
+              = render "nfg_ui/email/rainbow_bar"
+              %wrapper
+                = render "nfg_ui/email/logo"
+                = yield
+
+            = render "nfg_ui/email/footer"

@@ -7,21 +7,19 @@ module NfgCsvImporter
 
     def import_delete_confirmation(import)
       if import.uploaded?
-        t('imports.confirmations.delete_without_records')
+        t('nfg_csv_importer.imports.confirmations.delete_without_records')
       else
-        t('imports.confirmations.delete', number_of_records: import.imported_records.size)
+        t('nfg_csv_importer.imports.confirmations.delete', number_of_records: import.imported_records.size)
       end
     end
 
     def import_status_link(import)
-      import_status_class = "m-r-quarter"
-      path = import_path(import)
+      import_status_class = ""
 
       case import.status.try(:to_sym)
       when :uploaded
         import_status_icon = "gear"
         import_status_class += " text-primary"
-        path = edit_import_path(import)
       when :defined
         import_status_icon = "table"
         import_status_class += " text-primary"
@@ -31,6 +29,9 @@ module NfgCsvImporter
       when :processing
         import_status_icon = "refresh"
         import_status_class += " text-warning"
+      when :pending
+        import_status_icon = "circle-o-notch"
+        import_status_class += " text-muted"
       when :complete
         import_status_icon = "check"
         import_status_class += " text-success"
@@ -42,8 +43,8 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      link_to path, class: import_status_class do
-        fa_icon import_status_icon, text: I18n.t("imports.index.status.#{import.status}", default: import.status).titleize
+      content_tag :strong, class: "m-r-quarter #{import_status_class}", data: { describe: 'import-status-link' } do
+        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize, class: import_status_class
       end
     end
 
@@ -86,7 +87,7 @@ module NfgCsvImporter
       if import.status.try(:to_sym) == :uploaded
         html = fa_icon "minus", class: "text-muted"
       else
-        html = "<h4>#{ import.number_of_records }</h4>"
+        html = "<h5>#{ import.number_of_records }</h5>"
       end
       html.html_safe
     end
@@ -109,7 +110,7 @@ module NfgCsvImporter
 
     def import_column_display_name(import_type, column, titleize = false)
       display_name = ""
-      display_name = t("imports.column_display_names.#{import_type}.#{column}", default: column) if column.present?
+      display_name = I18n.t("imports.column_display_names.#{import_type}.#{column}", default: column) if column.present?
       display_name = display_name.downcase.tr("_", " ").titleize if titleize
       display_name
     end

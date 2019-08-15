@@ -56,6 +56,7 @@ describe NfgCsvImporter::ImportService do
   it { should delegate_method(:column_validation_rules).to(:import_definition)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:import_definition)}
   it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
+  it { should delegate_method(:statistics_and_detail_generator).to(:import_definition)}
 
   describe "subscriber" do
     let!(:csv_data) { mock }
@@ -487,6 +488,38 @@ describe NfgCsvImporter::ImportService do
 
     it 'sets start_timestamp to current timestamp' do
       expect { subject }.to change { import_service.start_timestamp }.from(nil).to(Time.zone.now.to_i)
+    end
+  end
+
+  describe "generate_stats_and_examples" do
+    let(:generator) { mock('generator') }
+    let(:generator_response) { 'generator_response' }
+    let(:response) { 'response' }
+    let(:import_definition) { mock('import_definition') }
+
+    subject { import_service.generate_stats_and_examples }
+
+    before do
+      NfgCsvImporter::ImportDefinition.stubs(:get_definition).returns(import_definition)
+      import_definition.stubs(:statistics_and_detail_generator).returns(generator)
+    end
+
+    context 'when statistics_and_detail_generator is present' do
+      before do
+        generator.stubs(:new).returns(generator_response)
+        generator_response.stubs(:call).returns(response)
+      end
+
+      it { is_expected.to eq response }
+    end
+
+    context 'when statistics_and_detail_generator is not present' do
+      let(:generator) { nil }
+
+      it 'calls default generator' do
+        NfgCsvImporter::DefaultStatsGeneratorService.any_instance.expects(:call)
+        subject
+      end
     end
   end
 end

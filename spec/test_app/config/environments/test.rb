@@ -15,7 +15,7 @@ Rails.application.configure do
   # Configure static asset server for tests with Cache-Control for performance.
   config.serve_static_assets  = true
   config.static_cache_control = 'public, max-age=3600'
-
+  config.active_job.queue_adapter = :inline
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
@@ -33,11 +33,16 @@ Rails.application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+  config.active_storage.service = :test
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
   #config.action_mailer.default_url_options = { :host => 'lvh.me', :port => 3000 }
+  default_url_options = { :host => 'localhost', :port => 3000, protocol: "http" }
+  config.action_mailer.default_url_options = default_url_options
+  # Rails.application.routes.default_url_options = default_url_options
 end
 
-#Rails.application.routes.default_url_options[:host] = "lvh.me:3000"
+# Rails.application.routes.default_url_options[:host] = "lvh.me:3000"
+# Rails.application.routes.default_url_options[:host] = 'localhost:3000'

@@ -15,7 +15,6 @@ class NfgCsvImporter.FieldsMapper
   @HEADER_STATS_AREA_SELECTOR: "#importer_header_stats"
   @ERROR_AREA_SELECTOR: "#importer_errors"
 
-
   constructor: () ->
     @importerPage = $(FieldsMapper.MAIN_CONTAINER_CLASS)
     @columnsWrapper = $(FieldsMapper.COLUMN_WRAPPER_ID)
@@ -32,7 +31,6 @@ class NfgCsvImporter.FieldsMapper
     @form = $(FieldsMapper.COLUMN_WRAPPER_ID)
 
   setEventListeners: () ->
-
     # scroll control
     @rightScrollButton.on 'click', (event) ->
       event.preventDefault()

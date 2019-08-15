@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_20_173436) do
+ActiveRecord::Schema.define(version: 2019_07_10_232157) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -70,6 +70,35 @@ ActiveRecord::Schema.define(version: 2019_05_20_173436) do
     t.string "import_file_name"
     t.datetime "processing_started_at"
     t.datetime "processing_finished_at"
+    t.string "file_origination_type"
+    t.string "statistics"
+  end
+
+  create_table "onboarding_related_objects", force: :cascade do |t|
+    t.string "name", limit: 255
+    t.integer "target_id", limit: 4
+    t.string "target_type", limit: 255
+    t.integer "onboarding_session_id", limit: 4
+    t.index ["onboarding_session_id"], name: "index_onboarding_related_objects_on_onboarding_session_id"
+  end
+
+  create_table "onboarding_sessions", force: :cascade do |t|
+    t.text "completed_high_level_steps", limit: 65535
+    t.string "current_step", limit: 255
+    t.integer "owner_id", limit: 4
+    t.integer "entity_id", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text "step_data", limit: 65535
+    t.string "current_high_level_step", limit: 255
+    t.text "onboarder_progress", limit: 65535
+    t.string "owner_type", limit: 255
+    t.datetime "completed_at"
+    t.string "onboarder_prefix", limit: 255
+    t.string "name", limit: 255
+    t.index ["entity_id"], name: "fk__onboarding_sessions_entity_id"
+    t.index ["name"], name: "index_onboarding_sessions_on_name"
+    t.index ["owner_id"], name: "fk__onboarding_sessions_owner_id"
   end
 
   create_table "projects", force: :cascade do |t|

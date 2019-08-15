@@ -33,6 +33,10 @@ module NfgCsvImporter
       self["fields_that_allow_multiple_mappings"] || []
     end
 
+    def statistics_and_detail_generator
+      self["statistics_and_detail_generator"] || nil
+    end
+
     def can_be_viewed_by(user)
       return true if can_be_viewed_by_rule.nil?
 

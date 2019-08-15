@@ -7,8 +7,12 @@ require "coffee-script"
 require "sass-rails"
 require "font-awesome-rails"
 require "browser"
+require "nfg_ui"
+require "nfg_csv_importer/configuration"
+require "premailer/rails"
 
 module NfgCsvImporter
+
   module ApplicationHelper
     def method_missing(method, *args, &block)
       if (method.to_s.end_with?('_path') || method.to_s.end_with?('_url')) && main_app.respond_to?(method)
@@ -19,20 +23,11 @@ module NfgCsvImporter
     end
   end
 
-  class Configuration
-    attr_accessor :imported_for_class, :imported_by_class, :base_controller_class,
-                  :from_address, :reply_to_address, :imported_for_subdomain, :max_run_time
-
-    def imported_for_field
-      (imported_for_class.downcase + "_id")
-    end
-  end
-
   class << self
     attr_writer :configuration
 
     def configuration
-      @configuration ||= Configuration.new
+      @configuration ||= NfgCsvImporter::Configuration.new
     end
 
     def configure

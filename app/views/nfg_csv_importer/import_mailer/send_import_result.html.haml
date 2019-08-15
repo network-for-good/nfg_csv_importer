@@ -1,9 +1,0 @@
-%p
-  Dear #{@recipient.name},
-%p
-  On #{@import.created_at.to_s(:us_time)} you imported a #{@import.import_type} file. There were #{@import.number_of_records} records and #{@import.number_of_records_with_errors.to_i} records had errors.
-- if @import.error_file && @import.number_of_records_with_errors.to_i >= 1
-  %p
-    Since there were errors encountered, we have included a link for the file containing those records with the errors listed in the last column. You can fix the errors, delete the last column, and reimport this file.
-  %p
-    You can download the error file here: #{link_to('Link to error file', import_url(@import, @url_options))}
