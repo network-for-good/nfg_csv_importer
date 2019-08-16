@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
-
   let(:user) { FactoryGirl.create(:user) }
   let(:tested_import) { FactoryGirl.create(:import, *import_traits) }
   let(:import_traits) { [] }
@@ -14,7 +13,6 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
   end
 
   describe "access to the the import's import_file" do
-
     context 'when pre_processing files are present' do
       let(:import_traits) { :with_pre_processing_files }
       it 'shows the system generated version of the file' do
