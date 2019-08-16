@@ -15,7 +15,7 @@ en:
             exit: 'Exit'
         file_origination_type_selection:
           header:
-            message: 'Where is the data you are importing coming from?'
+            message: 'How would you like to proceed with your import?'
             form: ''
             page:
           button:
@@ -108,7 +108,7 @@ en:
           header:
             message: "Let's upload your files from %{file_origination_type}"
             form: ''
-            page: "When you downloaded your exported CSVs from %{file_origination_type}, %{description_of_files}. Add them below."
+            page: "When you download your files from %{file_origination_type}, %{description_of_files}. Add them below."
           button:
             <<: *default_buttons
           label:

@@ -12,7 +12,7 @@ module NfgCsvImporter
         end
 
         def description
-          'Every single contact can be brought over to donor management.'
+          'Import contacts and donations from a csv or xls file.'
         end
 
         def requires_preprocessing_files

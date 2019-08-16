@@ -13,7 +13,7 @@ module FileOriginationTypes
       end
 
       def description
-        'Instantly import all of your donors and donations.'
+        'Import all of your donors and donations from your PayPal account.'
       end
 
       def skip_steps
