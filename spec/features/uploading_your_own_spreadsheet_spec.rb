@@ -35,6 +35,18 @@ describe "Importing your own spreadsheet", js: true do
       end.to change(NfgCsvImporter::Import, :count).by(1)
     end
 
+    and_by 'exiting' do
+      click_link('Exit')
+    end
+
+    and_by 'clicking on edit while the import is still pending' do
+      click_link ('Edit')
+    end
+
+    and_it 'takes you back to the current step' do
+      expect(page).to have_content(I18n.t('nfg_csv_importer.onboarding.import_data.overview.header.page'))
+    end
+
     import = NfgCsvImporter::Import.last
 
     and_by 'reviewing the import overview page' do
