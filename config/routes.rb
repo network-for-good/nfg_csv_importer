@@ -1,6 +1,4 @@
 NfgCsvImporter::Engine.routes.draw do
-  default_url_options :host => "localhost"
-
   resources :imports, path: '' do
     resource :review do
       get :show
