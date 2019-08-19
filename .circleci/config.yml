@@ -40,6 +40,7 @@ jobs:
       - run:
           name: flakey specs
           command: |
+            mkdir /tmp/test-results
             bundle exec rspec --tag "flakey" \
                               --format documentation \
                               --format RspecJunitFormatter \
@@ -49,8 +50,6 @@ jobs:
       - run:
           name: run tests
           command: |
-            mkdir /tmp/test-results
-
             bundle exec rspec --tag "~flakey" --tag "~exclude_from_circle" --format progress \
                             --format RspecJunitFormatter \
                             --out /tmp/test-results/rspec.xml
