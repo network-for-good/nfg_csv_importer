@@ -12,7 +12,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
     view.stubs(:current_user).returns(user)
   end
 
-  describe "access to the the import's import_file", :flakey do
+  describe "access to the the import's import_file" do
     context 'when pre_processing files are present' do
       let(:import_traits) { :with_pre_processing_files }
       it 'shows the system generated version of the file' do
@@ -25,7 +25,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
     end
 
     context 'when pre_processing files are not present' do
-      it 'shows the user generated version of the file' do
+      it 'shows the user generated version of the file', :flakey do
         expect(subject).to have_css "[data-describe='user-generated-import-file']"
 
         and_it 'does not show the system-generated import file' do
