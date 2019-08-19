@@ -12,7 +12,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
     view.stubs(:current_user).returns(user)
   end
 
-  describe "access to the the import's import_file" do
+  describe "access to the the import's import_file", :flakey do
     context 'when pre_processing files are present' do
       let(:import_traits) { :with_pre_processing_files }
       it 'shows the system generated version of the file' do
