@@ -15,7 +15,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
   describe "access to the the import's import_file" do
     context 'when pre_processing files are present' do
       let(:import_traits) { :with_pre_processing_files }
-      it 'shows the system generated version of the file' do
+      it 'shows the system generated version of the file', :flakey do
         expect(subject).to have_css "[data-describe='system-generated-import-file']"
 
         and_it 'does not show the user-generated import file' do
