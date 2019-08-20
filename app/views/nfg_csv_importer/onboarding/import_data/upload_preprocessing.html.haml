@@ -1,7 +1,6 @@
-
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: onboarder_presenter.header_page_text, header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: onboarder_presenter.header_message_text, header_page: onboarder_presenter.header_page_text, header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
     .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_path(id: 'dummy')}}
@@ -16,7 +15,6 @@
               click here
             to browse.
 
-      -# Do not use simple_form syntax. Remove me when done.
       - if file_origination_type.collect_note_with_pre_processing_files
         = ui.nfg :form_group, class: 'mb-3' do
           %label{ for: "nfg_csv_importer_onboarding_import_data_upload_preprocessing_note" }
@@ -33,8 +31,9 @@
               - if f.object.errors[:pre_processing_files].any?
                 = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id
               %span.pre_processing_file{ data: { value: file.signed_id, name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)} }
-  = ui.nfg :alert, :tip, class: 'mb-0' do
-    = ui.nfg :typeface, body: 'Have any questions about your import? Read this article.', class: 'mb-0'
+
+  -# Optionally provide a message below the uploader, for example: "Need help with this import? Visit this artcle"
+  = render "nfg_csv_importer/onboarding/import_data/upload_preprocessing/below_file_attachment_#{file_origination_type.type_sym}" rescue nil
 
 -# The following gets rendered by DropZone for each file that is dropped/added
 = render partial: 'nfg_csv_importer/onboarding/import_data/upload_preprocessing/dropzone_row'

@@ -1,0 +1,17 @@
+# TEST APP VERSION
+# UPDATED / MANAGED FOR SPECS & GENERAL TESTING
+en:
+  nfg_csv_importer:
+    onboarding:
+      defaults:
+        button: &default_buttons
+          back: 'Prev'
+          submit: 'Next'
+      import_data:
+        upload_preprocessing:
+          header:
+            file_origination_type:
+              page:
+                paypal: "When you downloaded your exported CSVs from PayPal, they come in a 'package' and look like this: some_filename.csv. Add them below"
+              message:
+                send_to_nfg: 'Let’s upload your files to send to Network for Good'
