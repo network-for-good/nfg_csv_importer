@@ -1,7 +1,7 @@
 
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
 
-= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: t('.header.page', file_origination_type: file_origination_type.name, description_of_files: "they come in a 'package' and look like this: some_filename.csv"), header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message', file_origination_type: file_origination_type.name), header_page: onboarder_presenter.header_page_text, header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
 
   .row
     .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_path(id: 'dummy')}}
