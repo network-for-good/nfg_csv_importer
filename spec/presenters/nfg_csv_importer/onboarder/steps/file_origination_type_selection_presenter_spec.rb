@@ -28,7 +28,7 @@ describe NfgCsvImporter::Onboarder::Steps::FileOriginationTypeSelectionPresenter
       let(:traits) { [:self_import_csv_xls_file_origination_type] }
       let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for('self_import_csv_xls') }
       it 'outputs the fallback default value of the file origination type #name' do
-        expect(subject).to eq "Your own spreadsheet"
+        expect(subject).to eq file_origination_type.name
       end
 
     end
