@@ -10,4 +10,5 @@ else
   APP_CONFIG = config_hash[:defaults]
 end
 # Initialize the Rails application.
+TestApp::Application.default_url_options = { host: "example.com" }
 Rails.application.initialize!
