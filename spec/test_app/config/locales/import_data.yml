@@ -8,6 +8,9 @@ en:
           back: 'Prev'
           submit: 'Next'
       import_data:
+        file_origination_type_selection:
+          file_origination_type_title:
+            paypal: "Import Your PayPal Files"
         upload_preprocessing:
           header:
             file_origination_type:
