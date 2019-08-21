@@ -120,5 +120,13 @@ FactoryGirl.define do
         }
       }
     end
+
+    trait :send_to_nfg_file_origination_type do
+      step_data {
+        { 'import_data' =>
+          { file_origination_type_selection: ActionController::Parameters.new('file_origination_type' => 'send_to_nfg') }
+        }
+      }
+    end
   end
 end
