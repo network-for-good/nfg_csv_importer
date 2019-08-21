@@ -234,9 +234,12 @@ module NfgCsvImporter
 
       def update_file_origination_type_if_it_has_changed(import)
         return unless import&.file_origination_type
-        if file_origination_type_name != import.file_origination_type.name
+
+        if file_origination_type_name.downcase != import.file_origination_type.name.downcase
+          import.update_column(:fields_mapping, nil) if import.fields_mapping.present?
+          import.pre_processing_files.map(&:purge) if import.pre_processing_files.any?
+          import.remove_import_file! if import.import_file.present?
           import.file_origination_type = file_origination_type_name
-          # import.pre_processing_files.map(&:purge)
         end
       end
 
