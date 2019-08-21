@@ -94,15 +94,15 @@ class NfgCsvImporter.DragdropUpload
     @toggleEmptyStateFileBrowser dropzoneEl, 'off'
 
   toggleEmptyStateFileBrowser: (dropzoneEl, toggle_status) ->
-    if toggle_status == 'on'
-      emptyState = dropzoneEl.find('.dz_active_empty_state')
+    emptyState = dropzoneEl.find('.dz_active_empty_state')
 
+    if toggle_status == 'on'
       # Move the empty state div to below the file progress bar area.
       emptyState
         .appendTo dropzoneEl
         .removeClass 'd-none'
     else if toggle_status == 'off'
-      dropzoneEl.find('.dz_active_empty_state').addClass 'd-none'
+      emptyState.addClass 'd-none'
 
 
 $ ->
