@@ -30,17 +30,19 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
     end
 
     context 'when the file origination type changes' do
+      before { file_origination_type.stubs(:requires_post_processing_file).returns(false) }
+
       let(:step) { 'file_origination_type_selection'}
-      let(:file_origination_type) { mock('file_origination_type', name: 'name') }
+      let(:file_origination_type) { mock('file_origination_type', name: 'send_to_nfg') }
 
       subject { put :update, params }
 
       it 'should reset import attributes' do
-        NfgCsvImporter::Import.any_instance.expects(:remove_import_file!) do |imp|
-          expect(imp.id).to eq(import.id)
-        end
+        expect(import.reload.import_file.file.present?).to be_truthy
+
         ActiveStorage::Attachment.any_instance.expects(:purge)
         expect{ subject }.to change { import.reload.fields_mapping }.from(mapping).to(nil)
+        expect(import.reload.import_file.file.present?).to be_falsey
       end
     end
   end

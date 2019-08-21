@@ -172,6 +172,14 @@ module NfgCsvImporter
       pending? || uploaded?
     end
 
+    def reset_fields_mapping
+
+    end
+
+    def delete_import_file
+
+    end
+
     private
 
     def field_allowed_to_be_duplicated?(mapped_field)
