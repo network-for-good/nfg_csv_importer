@@ -2,21 +2,25 @@ module NfgCsvImporter
   module Onboarder
     module Steps
       class FileOriginationTypeSelectionPresenter < NfgCsvImporter::Onboarder::OnboarderPresenter
-        # Shows or hides the file origiation type's #name
-        # based on a manually generated blacklist
+        # To add a custom file_origination_type title to the file origination type radio buttons
         #
-        # This should probably be set on the host app, for now this manually
-        # turns on or off the file origination type's #name as a string
-        # on the file origination type radio button partial:
-        # app/views/nfg_csv_importer/onboarding/import_data/file_origination_type_selection/_file_origination_type_radio_button.html.haml
-        def show_file_origination_type_name?(type_sym = '')
-          file_origination_types_that_require_names_to_be_visible.include?(type_sym.to_s)
-        end
-
-        private
-
-        def file_origination_types_that_require_names_to_be_visible
-          %w[self_import_csv_xls send_to_nfg]
+        # Add a `file_origination_type` heading to nfg_csv_importer.onboarding.import_data.file_origination_type_selection in your yml file.
+        #
+        # Then add an entry for each file_origination_type named after their #type_sym
+        #
+        # Example: config/locales/import_data.yml
+        # en:
+        #   nfg_csv_importer:
+        #     onboarding:
+        #       import_data:
+        #         file_origination_type_selection:
+        #           file_origination_type_title:
+        #             paypal: 'Import PayPal Files'
+        #             mailchimp: 'etc...'
+        #
+        # Fallsback to the file_origination_type.name
+        def file_origination_type_title(file_origination_type:)
+          I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_title.#{file_origination_type.type_sym}", default: file_origination_type.name)
         end
       end
     end

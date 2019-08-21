@@ -2,12 +2,10 @@
 - f = local_assigns[:f]
 - onboarder_presenter = local_assigns[:onboarder_presenter]
 
-- maybe_show_name = onboarder_presenter.show_file_origination_type_name?(file_origination_type.type_sym)
-
 .col-md-4.col-6.mt-3{ data: { describe: "#{file_origination_type.type_sym}_file_origination_type" } }
   .custom-control.custom-radio.custom-control-block.d-flex.align-items-start.h-100
     = f.radio_button 'file_origination_type', file_origination_type.type_sym, class: "custom-control-input"
     %label.custom-control-label.text-center.w-100.h-100.bg-white{ for: "nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_#{file_origination_type.type_sym}" }
       = ui.nfg :illustration, :sm, src: file_origination_type.logo_path, alt: file_origination_type.type_sym
-      = ui.nfg :typeface, title: file_origination_type.name, class: 'mt-3 mb-1', render_if: maybe_show_name
-      = ui.nfg :typeface, body: file_origination_type.description, class: "#{'mt-3' unless maybe_show_name} mb-0 text-break"
+      = ui.nfg :typeface, title: onboarder_presenter.file_origination_type_title(file_origination_type: file_origination_type), class: 'mt-3 mb-1'
+      = ui.nfg :typeface, body: file_origination_type.description, class: 'mb-0 text-break'

@@ -11,18 +11,26 @@ describe NfgCsvImporter::Onboarder::Steps::FileOriginationTypeSelectionPresenter
 
   it { expect(described_class).to be < NfgCsvImporter::Onboarder::OnboarderPresenter }
 
-  describe '#show_file_origination_type_name?(type_sym = '')' do
-    let(:file_origination_types_that_require_names_to_be_visible) { %w[self_import_csv_xls send_to_nfg] }
-    subject { onboarder_presenter.show_file_origination_type_name?(type_sym) }
+  describe '#file_origination_type_title' do
+    subject { onboarder_presenter.file_origination_type_title(file_origination_type: file_origination_type) }
 
-    context 'when the file origination type name is included on the list of names required' do
-      let(:type_sym) { :self_import_csv_xls }
-      it { is_expected.to be }
+    context 'when the file_origination_type_title is present' do
+      let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for('paypal') }
+
+      let(:traits) { [:paypal_file_origination_type] }
+      it 'outputs the custom file origination type title' do
+        expect(subject).to eq I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_title.paypal")
+      end
+
     end
 
-    context 'when the file origination type name is *not* included on the list of names required' do
-      let(:type_sym) { :paypal }
-      it { is_expected.not_to be }
+    context 'when the file_origination_type_title is not present' do
+      let(:traits) { [:self_import_csv_xls_file_origination_type] }
+      let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for('self_import_csv_xls') }
+      it 'outputs the fallback default value of the file origination type #name' do
+        expect(subject).to eq file_origination_type.name
+      end
+
     end
   end
 end
