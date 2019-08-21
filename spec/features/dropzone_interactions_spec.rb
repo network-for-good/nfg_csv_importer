@@ -39,12 +39,20 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       and_it 'does not have the activated css classes enabled' do
         expect(page).not_to have_css '.dz-started'
       end
+
+      and_it 'does not show the empty state file browser' do
+        expect(page).not_to have_css '.dz_active_empty_state'
+      end
     end
 
     and_context 'when attaching an invalid file' do
       and_it 'does not pre-load an error state' do
         expect(page).not_to have_css "[data-dz-errormessage]"
         expect(page).not_to have_css '.dz-error-mark .fa-times'
+      end
+
+      and_it 'does not show the empty state file browser' do
+        expect(page).not_to have_css '.dz_active_empty_state'
       end
 
       by 'dropping an image file' do
@@ -66,6 +74,10 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 
       and_it 'renders the filesize' do
         expect(page).to have_selector "[data-dz-size]", text: '24.5 KB'
+      end
+
+      and_it 'shows the empty state add file browser' do
+        expect(page).to have_css '.dz_active_empty_state'
       end
 
       and_it 'puts the dropzone file field in an error state' do
@@ -96,6 +108,7 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       and_it 'returns to the standard presentation once the file is removed' do
         expect(page).not_to have_css '.dz-started'
         expect(page).to have_selector '.dropzone-target', text: 'Drag and drop your'
+        expect(page).not_to have_css '.dz_active_empty_state'
       end
     end
 
@@ -103,6 +116,10 @@ describe "The dropzone drag/drop file uploader feature", js: true do
       drop_in_dropzone(File.expand_path("spec/fixtures/#{valid_filename}"))
       and_it 'confirms the upload of the file' do
         verify_progress_bar_completion(valid_filename)
+      end
+
+      and_it 'adds the empty state file selector browser' do
+        expect(page).to have_css '.dz_active_empty_state'
       end
 
       and_it 'does not display any error messages' do
@@ -145,6 +162,10 @@ describe "The dropzone drag/drop file uploader feature", js: true do
 
       and_it 'includes both files on the page' do
         expect(page.find("[data-describe='dz-#{valid_filename}']")).to be
+      end
+
+      and_it 'maintains the empty state add file browser' do
+        expect(page).to have_css '.dz_active_empty_state'
       end
 
       and_it 'removes the file' do
