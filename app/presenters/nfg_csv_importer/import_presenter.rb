@@ -16,6 +16,10 @@ module NfgCsvImporter
       end
     end
 
+    def import_note
+      onboarding_session.step_data['import_data'].try(:[], :upload_preprocessing).try(:[], 'note')
+    end
+
     def show_files?
       import_file&.present? || error_file&.present? || pre_processing_files&.any?
     end

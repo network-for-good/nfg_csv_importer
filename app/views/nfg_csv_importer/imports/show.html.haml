@@ -114,8 +114,8 @@
 
           - if @import.file_origination_type.collect_note_with_pre_processing_files
             #note.m-b-base
-              %h5 Submitted Notes
-              %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam facilisis fringilla elit quis gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sagittis orci justo, non cursus purus sodales ac. Vestibulum semper auctor leo, nec fringilla nibh semper at. Sed imperdiet nibh ac diam egestas, sit amet tempor neque blandit. Donec in lectus vitae nibh posuere viverra in in mi. Cras non accumsan erat. Maecenas vitae sagittis massa.
+              %h5 Your notes
+              %p= import_presenter.import_note
 
 
           - if import_presenter.show_files?

@@ -6,6 +6,22 @@ describe NfgCsvImporter::ImportPresenter do
   let(:import_traits) { [] }
   let(:import_presenter) { NfgCsvImporter::ImportPresenter.new(import, h) }
 
+  describe '#import_note' do
+    let(:onboarding_session) { FactoryGirl.create(:onboarding_session, :send_to_nfg_file_origination_type) }
+    let(:test_note) { 'the tested note' }
+
+    before do
+      import.stubs(:onboarding_session).returns(onboarding_session)
+      onboarding_session.step_data['import_data'] = { upload_preprocessing: { 'note' => test_note } }
+    end
+
+    subject { import_presenter.import_note }
+
+    it "yields the saved note stored in the factory" do
+      expect(subject).to eq test_note
+    end
+  end
+
   describe '#file_origination_type_name' do
     let(:tested_file_origination_type) { nil }
     let(:import) { FactoryGirl.create(:import, file_origination_type: tested_file_origination_type) }
