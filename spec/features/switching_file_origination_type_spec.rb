@@ -9,7 +9,6 @@ describe "switching file origination types", js: true do
     visiting_till_the_preview_confirmation_page
 
     page.find("[data-describe='file_origination_type_selection-step']").click
-    puts 1
     and_by 'selecting send_to_nfg file origination type' do
       page.find("label[for='nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_send_to_nfg']").click
     end

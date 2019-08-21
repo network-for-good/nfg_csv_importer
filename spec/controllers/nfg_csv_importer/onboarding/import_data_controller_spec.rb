@@ -2,12 +2,11 @@ require 'rails_helper'
 
 describe NfgCsvImporter::Onboarding::ImportDataController do
 
-  let(:params) { { params: { import_id: import.id, use_route: :nfg_csv_importer, id: step, note: note, nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name} } } }
+  let(:params) { { params: { import_id: import.id, use_route: :nfg_csv_importer, id: step, nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name} } } }
   let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
   let(:current_step) { step }
   let(:file_origination_type) { mock('paypal', name: 'test.csv') }
   let(:mapping) { { 'some' => 'mapping'} }
-  let(:note) { 'a note' }
   before do
     NfgCsvImporter::FileOriginationTypes::Manager.any_instance.stubs(:type_for).returns(file_origination_type)
     file_origination_type.expects(:skip_steps).at_least_once
