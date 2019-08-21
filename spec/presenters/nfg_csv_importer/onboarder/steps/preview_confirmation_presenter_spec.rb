@@ -87,4 +87,25 @@ describe NfgCsvImporter::Onboarder::Steps::PreviewConfirmationPresenter do
       end
     end
   end
+
+  describe '#donation_date' do
+    subject { onboarder_presenter.donation_date(donated_at) }
+
+    context 'when donated_at is a string' do
+      context 'when it can be parsed to a date/time' do
+        let(:donated_at) { '2019-08-21' }
+        it { should eq 'August 21, 2019' }
+      end
+
+      context "when it can't be parsed" do
+        let(:donated_at) { 'something invalid' }
+        it { should eq 'something invalid' }
+      end
+    end
+
+    context 'when donated_at is a date/time' do
+      let(:donated_at) { Time.parse('2019-08-21') }
+      it { should eq 'August 21, 2019' }
+    end
+  end
 end
