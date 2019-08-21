@@ -43,7 +43,7 @@ class NfgCsvImporter.DragdropUpload
     myDropzone = new Dropzone(root.querySelector('.dropzone-target'), {
       url: url,
       autoQueue: false,
-      clickable: '#dz_file_browser_link',
+      clickable: '.dz_file_browser_link',
       dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
       preventDuplicates: true,
       addRemoveLinks: true,
@@ -57,9 +57,14 @@ class NfgCsvImporter.DragdropUpload
     # the started and drag-hover classes.
     myDropzone.on 'reset', =>
       @resetUI $(myDropzone.element)
+
     myDropzone.on 'addedfile', (file)=>
       new NfgCsvImporter.Uploader(file, url, name)
       file.previewElement.setAttribute 'data-describe', "dz-#{file.name}"
+
+      # Enable the inactive element
+      @toggleEmptyStateFileBrowser $(myDropzone.element), 'on'
+
     myDropzone.on 'removedfile', (file)=>
       signed_id = file.previewElement.querySelector('a.dz-remove').dataset.signed_id
       if signed_id
@@ -86,6 +91,19 @@ class NfgCsvImporter.DragdropUpload
 
   resetUI: (dropzoneEl) ->
     dropzoneEl.removeClass 'dz-clickable dz-started'
+    @toggleEmptyStateFileBrowser dropzoneEl, 'off'
+
+  toggleEmptyStateFileBrowser: (dropzoneEl, toggle_status) ->
+    if toggle_status == 'on'
+      emptyState = dropzoneEl.find('.dz_active_empty_state')
+
+      # Move the empty state div to below the file progress bar area.
+      emptyState
+        .appendTo dropzoneEl
+        .removeClass 'd-none'
+    else if toggle_status == 'off'
+      dropzoneEl.find('.dz_active_empty_state').addClass 'd-none'
+
 
 $ ->
   el = $("#pre_processing_files_upload")
