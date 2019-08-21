@@ -113,6 +113,14 @@ FactoryGirl.define do
       }
     end
 
+    trait :with_note do
+      send_to_nfg_file_origination_type
+
+      after :build do |onboarding_session|
+        onboarding_session.step_data['import_data'] = { upload_preprocessing: { 'note' => 'test note' } }
+      end
+    end
+
     trait :self_import_csv_xls_file_origination_type do
       step_data {
         { 'import_data' =>

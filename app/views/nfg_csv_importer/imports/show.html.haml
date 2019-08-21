@@ -112,6 +112,12 @@
               = image_tag image_path('nfg_csv_importer/illustrations/import-files.png'), style: 'height: 240px;'
               %h3.m-t-base.m-b-0 We have successfully received your files.
 
+          - if @import.file_origination_type.collect_note_with_pre_processing_files
+            #note.m-b-base
+              %h5 Your notes
+              %p= import_presenter.import_note
+
+
           - if import_presenter.show_files?
             #files
               %h5 Files
