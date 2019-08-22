@@ -172,12 +172,18 @@ module NfgCsvImporter
       pending? || uploaded?
     end
 
-    def reset_fields_mapping
-
-    end
-
-    def delete_import_file
-
+    def reset_attributes_on_file_origination_type_change
+      tag_for_save = false
+      if self.fields_mapping.present?
+        self.fields_mapping = nil
+        tag_for_save = true
+      end
+      pre_processing_files.map(&:purge) if pre_processing_files.any?
+      if import_file.present?
+        remove_import_file!
+        tag_for_save = true
+      end
+      save! if tag_for_save # only save if required, new imports won't have field_mappings, or import_files yet
     end
 
     private

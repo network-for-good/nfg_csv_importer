@@ -236,17 +236,7 @@ module NfgCsvImporter
         return unless import&.file_origination_type
         if file_origination_type_name.downcase != import.file_origination_type.formatted_type_sym
           import.file_origination_type = file_origination_type_name
-          tag_for_save = false
-          if import.fields_mapping.present?
-            import.fields_mapping = nil
-            tag_for_save = true
-          end
-          import.pre_processing_files.map(&:purge) if import.pre_processing_files.any?
-          if import.import_file.present?
-            import.remove_import_file!
-            tag_for_save = true
-          end
-          import.save! if tag_for_save # only save if required, new imports won't have field_mappings, or import_files yet
+          import.reset_attributes_on_file_origination_type_change
           reset_note
         end
       end
