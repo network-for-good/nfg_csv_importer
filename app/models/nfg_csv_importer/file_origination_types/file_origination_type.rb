@@ -10,6 +10,10 @@ module NfgCsvImporter
                     :requires_post_processing_file, :collect_note_with_pre_processing_files, :logo_path, :description, :skip_steps, :display_mappings]
       end
 
+      def formatted_type_sym
+        type_sym.to_s.downcase
+      end
+
       attr_accessor *attrs
 
       def initialize(file_type_sym, type_klass)
