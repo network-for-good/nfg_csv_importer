@@ -249,8 +249,8 @@ module NfgCsvImporter
         if params.dig(:nfg_csv_importer_onboarding_import_data_upload_preprocessing, :note)
           params[:nfg_csv_importer_onboarding_import_data_upload_preprocessing][:note] = nil
         end
-        if onboarding_session.step_data.dig('import_data', :upload_preprocessing, 'note')
-          step_data = onboarding_session.step_data
+        step_data = onboarding_session.step_data
+        if step_data.dig('import_data', :upload_preprocessing, 'note')
           step_data['import_data'][:upload_preprocessing]['note'] = nil
           onboarding_session.update_attributes!(step_data: step_data)
         end

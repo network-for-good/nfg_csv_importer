@@ -605,7 +605,7 @@ describe NfgCsvImporter::Import do
 
   describe "reset_attributes_on_file_origination_type_change" do
     subject { import.reset_attributes_on_file_origination_type_change }
-    let(:status) { 'pending' }
+
     let(:fields_mapping) { { 'some' => 'mapping' } }
 
     it 'should delete fields mapping' do
@@ -621,6 +621,10 @@ describe NfgCsvImporter::Import do
         file.expects(:purge)
       end
       subject
+    end
+
+    it 'changes the status to pending' do
+      expect{ subject }.to change { import.reload.status }.from(status.to_s).to('pending')
     end
   end
 end

@@ -8,7 +8,6 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
                 import_id: import.id,
                 use_route: :nfg_csv_importer,
                 id: step,
-                nfg_csv_importer_onboarding_import_data_upload_preprocessing: { note: 'some-note' },
                 nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name}
               }
      }
