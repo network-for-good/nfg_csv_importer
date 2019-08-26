@@ -115,7 +115,7 @@
           - if @import.file_origination_type.collect_note_with_pre_processing_files
             #note.m-b-base
               %h5 Your notes
-              %p= import_presenter.import_note
+              %p= simple_format(import_presenter.import_note)
 
 
           - if import_presenter.show_files?
