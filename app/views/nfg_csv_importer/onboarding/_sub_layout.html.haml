@@ -12,7 +12,7 @@
 - hide_navigation_bar = false if local_assigns[:hide_navigation_bar].nil?
 
 = simple_form_for form, url: wizard_path, html: { id: 'onboarding_main_form', multipart: true, autocomplete: 'off', class: ('was-validated' if form.errors.any?), novalidate: form.errors.any? }, method: :put do |f|
-  = render partial: "nfg_csv_importer/layouts/onboarding/import_data/title_bar", locals: { show_exit_button: show_exit_button }
+  = render partial: "layouts/onboarding/import_data/title_bar", locals: { show_exit_button: show_exit_button }
 
   - unless hide_navigation_bar
     = render partial: 'nfg_csv_importer/layouts/onboarding/import_data/navigation_bar', locals: { back_button_text: back_button_text, submit_button_text: submit_button_text, next_step_confirmation: next_step_confirmation }
