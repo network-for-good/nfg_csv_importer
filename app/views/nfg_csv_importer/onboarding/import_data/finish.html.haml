@@ -12,3 +12,8 @@
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
     = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish]), describe: 'view-all'
+    / = f.input :redirect_to_show_page, as: :hidden, input_html: { value: 'true' }
+
+    = submit_tag 'Import details', class: "btn btn-secondary",  name: "show_page['true']"
+
+    / = ui.nfg :button, :submit, :secondary, :lg, body: 'Import Details', describe: 'view-import-show-page', name: 'show_page', value: 'true'
