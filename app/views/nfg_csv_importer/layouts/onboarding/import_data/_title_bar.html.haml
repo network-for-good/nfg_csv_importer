@@ -1,9 +1,10 @@
 - show_exit_button = true if local_assigns[:show_exit_button].nil?
+- title_bar_presenter = NfgCsvImporter::Onboarder::TitleBarPresenter.new(onboarding_session, self)
 
 .p-2.bg-dark
   .row.align-items-center.justify-content-between
     .col.pl-3
-      = ui.nfg :typeface, :muted, caption: t('nfg_csv_importer.onboarding.import_data.title_bar.caption'), class: 'mb-0'
+      = ui.nfg :typeface, :muted, caption: title_bar_presenter.title_bar_caption, class: 'mb-0', describe: 'onboarder-caption'
       = ui.nfg :typeface, title: file_origination_type&.name, class: 'text-white', render_if: file_origination_type.present?
 
     - if show_exit_button
