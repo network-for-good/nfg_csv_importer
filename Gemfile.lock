@@ -1,11 +1,12 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: a5a50e151e313d974e58c2eb9bc37a3e7c51477b
-  branch: rails_5
+  revision: 0d076769c427576eec5eba368d72e3220325c0bf
+  branch: feature/DM-5471_DM-2499_quickbooks_integration_base
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
       haml
+      nfg_ui (~> 0.9)
       rails (~> 5.0)
       reform
       wicked
