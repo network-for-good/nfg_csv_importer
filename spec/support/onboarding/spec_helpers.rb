@@ -53,3 +53,41 @@ def visiting_till_the_preview_confirmation_page
     expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
   end
 end
+
+def visiting_till_the_history_page
+  visiting_till_the_preview_confirmation_page
+
+  and_by 'confirming the preview confirmation page it should kick off the import' do
+    expect {
+      click_button  I18n.t("nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve")
+      page.driver.browser.switch_to.alert.accept
+      # we wait until the finish page displays
+      page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)
+    }.to change { @import.reload.status }.from("uploaded")
+  end
+
+  and_by 'waiting until the import completes' do
+    # this is a bit hacky, but i wanted to make sure
+    # the import was finished before testing
+    # for some proof that it was successful
+    # on the page.
+    # In reality, we may want to assume that the
+    # job has been queued and not provide any
+    # indication that this page could display
+    # some results from the import, but instead
+    # note that the job has been enqueued and perhaps
+    # let the user know how many other jobs are in
+    # from of it
+    until @import.reload.complete? do
+      # wait until the import has completed
+      sleep 0.5
+    end
+    # reload the page once the import has completed
+    page.evaluate_script 'window.location.reload()'
+
+    # since the import has already completed (which will unlikely be the case in production)
+    # we show how many records were added
+    # In production, we will likely have different messages depending on the status of the import
+    expect(page).to have_content "You've finished this import! There were a total of 4 records"
+  end
+end

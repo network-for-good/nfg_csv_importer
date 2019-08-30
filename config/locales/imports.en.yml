@@ -78,6 +78,7 @@ en:
       show:
         headings:
           overview: "Data import status overview"
+          imported_by: "This data was imported by"
         body:
           introduction: "Now that we've imported your data, here are the actual, final details for what was imported."
         status:
