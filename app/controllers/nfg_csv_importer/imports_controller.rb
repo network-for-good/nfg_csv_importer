@@ -32,6 +32,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       # to prevent brackets and other special chars from causing issues with mapping.
       # See DM-4219 for more details.
       header_name = Base64.decode64(header_name)
+
+      # [#DM-5844] force_encoding removes byte order mark
+      # See https://estl.tech/of-ruby-and-hidden-csv-characters-ef482c679b35
+      header_name.force_encoding('UTF-8')
+
       next unless @import.fields_mapping.has_key?(header_name) # don't do an assignment if something strange was submitted
       @import.fields_mapping[header_name] = mapped_field_name
       @mapped_column = @import.mapped_fields(header_name)
