@@ -46,7 +46,7 @@
                 %strong
                   = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
               %p.m-t-half
-                This data was imported by
+                = I18n.t('nfg_csv_importer.imports.show.headings.imported_by')
                 %strong
                   = "#{@import.imported_by_name}."
 
