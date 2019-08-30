@@ -1,7 +1,6 @@
 module NfgCsvImporter
   module Onboarding
     class ImportDataController < NfgCsvImporter::Onboarding::BaseController
-      attr_accessor :on_valid_finish_path
       include NfgCsvImporter::Concerns::ImportAttributeLoaders
       include NfgCsvImporter::ImportsHelper
       prepend_before_action :set_steps
@@ -45,27 +44,7 @@ module NfgCsvImporter
       # on valid steps
 
       def finish_on_valid_step
-        # puts "*" * 100
-        # puts params
-        # puts "---"
-        # puts "params['show_page'].present?: #{params['show_page'].present?}"
-        # puts "*" * 100
-
-         # "show_page"=>{"'true'"=>"Import details"}
-         # byebug
-
-
         reset_onboarding_session # wipe out the session so we can work an another import
-
-      end
-
-      def on_valid_finish_path
-        @on_valid_finish_path ||=
-          if params['show_page'].present?
-            import_path(import)
-          else
-            imports_path
-          end
       end
 
       def preview_confirmation_on_valid_step
@@ -155,20 +134,8 @@ module NfgCsvImporter
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
         reset_onboarding_session # wipe out the session so we can work an another import
-        p "+" *100
-        p @on_valid_finish_path
-        p "+" *100
-        # byebug
-        # @finish_wizard_path ||= imports_path
-
-        # if params['show_page']
-        #   import_path(import)
-        # else
-        #   imports_path
-        # end
-        @on_valid_finish_path
+        params['alternative_finish_wizard_path'] && params['import_id'] ? import_path(params['import_id']) : imports_path
          # where to take the user when the have finished this step
-         # TODO add a path to where the user should go once they complete the onboarder
       end
 
       def onboarder_name
