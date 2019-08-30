@@ -34,6 +34,7 @@ en:
             back: 'Prev'
             submit: 'Exit'
             view_all: 'View All Imports'
+            details: 'View Import Results'
           label:
           placeholder:
           hint:

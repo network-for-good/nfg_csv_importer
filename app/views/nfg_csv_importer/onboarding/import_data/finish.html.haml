@@ -12,6 +12,6 @@
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
     = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish]), describe: 'view-all', left_icon: 'list'
-    = ui.nfg :button, :submit, :lg, :secondary, :outlined, left_icon: 'info-circle', body: 'View This Import', name: 'alternative_finish_wizard_path', class: 'ml-4'
+    = ui.nfg :button, :submit, :lg, :secondary, :outlined, left_icon: 'info-circle', body: t('button.details', scope: [locale_namespace, :finish]), name: 'alternative_finish_wizard_path', class: 'ml-3'
 
 
