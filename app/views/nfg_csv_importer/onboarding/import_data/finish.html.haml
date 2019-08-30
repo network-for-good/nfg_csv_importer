@@ -11,5 +11,10 @@
       - rescue ActionView::MissingTemplate
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
-    = ui.nfg :button, :submit, :lg, :secondary, :outlined, left_icon: 'info-circle', body: t('button.details', scope: [locale_namespace, :finish]), name: 'alternative_finish_wizard_path'
-    = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish]), describe: 'view-all', icon: 'chevron-right', class: 'ml-3'
+    .text-center
+      -# This ends the onboarder and goes to the imports index page.
+      = ui.nfg :button, :submit, :lg, body: t('button.view_all', scope: [locale_namespace, :finish]), describe: 'view-all', icon: 'chevron-right'
+      %br
+      -# This button sends the user to the import's show page
+      = ui.nfg :button, :submit, :lg, :secondary, :outlined, body: t('button.details', scope: [locale_namespace, :finish]), name: 'alternative_finish_wizard_path', class: 'mt-3'
+
