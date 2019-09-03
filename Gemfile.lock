@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: b6b55635815f71ce2afbad62f97de493f73e5be9
+  revision: 9a5cee6187091720660e37c2f1ee336e7839281b
   branch: hotfix/DM-5856_provide_access_to_import_show_page_from_finish_step
   specs:
     nfg_onboarder (0.0.3)

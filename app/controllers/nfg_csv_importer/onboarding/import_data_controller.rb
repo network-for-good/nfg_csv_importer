@@ -44,7 +44,6 @@ module NfgCsvImporter
       # on valid steps
 
       def finish_on_valid_step
-        reset_onboarding_session # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step
@@ -133,8 +132,9 @@ module NfgCsvImporter
       def finish_wizard_path
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
+        import_id = session[:onboarding_import_data_import_id]
         reset_onboarding_session # wipe out the session so we can work an another import
-        params['alternative_finish_wizard_path'] && params['import_id'] ? import_path(params['import_id']) : imports_path
+        params['alternative_finish_wizard_path'] && import_id ? import_path(import_id) : imports_path
          # where to take the user when the have finished this step
       end
 
