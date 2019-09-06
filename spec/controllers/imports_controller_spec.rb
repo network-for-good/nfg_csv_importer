@@ -205,6 +205,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#reset_onboarder_session" do
     subject { get :reset_onboarder_session, params }
+
     let(:session_id) { 234 }
     let(:import_id) { 123 }
 
@@ -223,6 +224,42 @@ describe NfgCsvImporter::ImportsController do
 
     it 'resets user session onboarding_import_data_import_id' do
       expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+    end
+  end
+
+  describe '#download_attachments' do
+    let(:params) { { params: { import_id: import.id } } }
+    let(:folder) { "../../tmp/archive_#{user.id}"}
+    let(:delete_job) { mock('delete_pre_processing_job', perform_later: nil) }
+    subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
+
+    context 'when pre_processing_files exist' do
+      before do
+        NfgCsvImporter::DeletePreProcessingZipJob.stubs(:set).returns(delete_job)
+        import.pre_processing_files.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'temp_import_file.csv')), filename: 'temp_import_file.csv')
+        import.save
+      end
+
+      let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
+
+      it 'sends a file in the response' do
+        NfgCsvImporter::ImportsController.any_instance.expects(:send_file)
+        subject
+      end
+    end
+
+    context 'when pre_processing_files do not exist' do
+      let(:import) { create(:import, imported_for_id: entity.id) }
+
+      it 'does not send a file in the response' do
+        NfgCsvImporter::ImportsController.any_instance.expects(:send_file).never
+        subject
+      end
+
+      it 'returns status 404' do
+        subject
+        expect(response.status).to eq(404)
+      end
     end
   end
 end

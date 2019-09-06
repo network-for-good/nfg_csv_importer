@@ -6,8 +6,8 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :load_imported_by
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
-  before_action :load_import, only: [:show, :destroy, :edit, :update]
-  before_action :authorize_user, except: [:index, :reset_onboarder_session]
+  before_action :load_import, only: [:show, :destroy, :edit, :update, :download_attachments]
+  before_action :authorize_user, except: [:index, :reset_onboarder_session, :download_attachments]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
@@ -113,6 +113,24 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     redirect_to nfg_csv_importer.imports_path
   end
 
+  def download_attachments
+    tmp_user_folder =  "tmp/archive_#{current_user.id}"
+    tmp_import_folder = "#{tmp_user_folder}/import_#{@import.id}"
+    FileUtils.remove_dir(tmp_user_folder) if Dir.exists?(tmp_user_folder)
+    FileUtils.mkdir_p(tmp_import_folder) unless Dir.exists?(tmp_import_folder)
+    if @import&.pre_processing_files&.any?
+      @import.pre_processing_files.each do |document|
+        filename = "#{document.blob.id}_#{document.blob.filename}"
+        create_tmp_user_folder_and_store_documents(document, tmp_import_folder, filename)
+        create_zip_from_tmp_user_folder(tmp_import_folder, filename)
+      end
+      NfgCsvImporter::DeletePreProcessingZipJob.set(wait: 30.minutes).perform_later(tmp_user_folder)
+      send_file(Rails.root.join("#{tmp_import_folder}.zip"), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", :disposition => 'attachment')
+    end
+
+    render json: {}, status: 404 unless performed?
+  end
+
   protected
   # the standard event tracking (defined in application controller) attempts to include
   # the imported file, which crashes the write to the db. So here we only track the type of import
@@ -139,5 +157,19 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def iframe_param_present?
     params[:iframe].present?
+  end
+
+  private
+
+  def create_tmp_user_folder_and_store_documents(document, tmp_import_folder, filename)
+    File.open(File.join(tmp_import_folder, filename), 'wb') do |file|
+      document.download { |chunk| file.write(chunk) }
+    end
+  end
+
+  def create_zip_from_tmp_user_folder(tmp_import_folder, filename)
+    Zip::File.open("#{tmp_import_folder}.zip", Zip::File::CREATE) do |zf|
+      zf.add(filename, "#{tmp_import_folder}/#{filename}")
+    end
   end
 end
