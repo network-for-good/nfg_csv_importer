@@ -229,21 +229,14 @@ describe NfgCsvImporter::ImportsController do
 
   describe '#download_attachments' do
     let(:params) { { params: { import_id: import.id } } }
-    let(:folder) { "../../tmp/archive_#{user.id}"}
-    let(:delete_job) { mock('delete_pre_processing_job', perform_later: nil) }
     subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
 
     context 'when pre_processing_files exist' do
-      before do
-        NfgCsvImporter::DeletePreProcessingZipJob.stubs(:set).returns(delete_job)
-        import.pre_processing_files.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'temp_import_file.csv')), filename: 'temp_import_file.csv')
-        import.save
-      end
 
       let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
 
-      it 'sends a file in the response' do
-        NfgCsvImporter::ImportsController.any_instance.expects(:send_file)
+      it 'calls create zip service' do
+        NfgCsvImporter::CreateZipService.any_instance.expects(:call)
         subject
       end
     end

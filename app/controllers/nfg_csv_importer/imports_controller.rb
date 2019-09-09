@@ -114,21 +114,9 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def download_attachments
-    tmp_user_folder =  "tmp/archive_#{current_user.id}"
-    tmp_import_folder = "#{tmp_user_folder}/import_#{@import.id}"
-    FileUtils.remove_dir(tmp_user_folder) if Dir.exists?(tmp_user_folder)
-    FileUtils.mkdir_p(tmp_import_folder) unless Dir.exists?(tmp_import_folder)
-    if @import&.pre_processing_files&.any?
-      @import.pre_processing_files.each do |document|
-        filename = "#{document.blob.id}_#{document.blob.filename}"
-        create_tmp_user_folder_and_store_documents(document, tmp_import_folder, filename)
-        create_zip_from_tmp_user_folder(tmp_import_folder, filename)
-      end
-      NfgCsvImporter::DeletePreProcessingZipJob.set(wait: 30.minutes).perform_later(tmp_user_folder)
-      send_file(Rails.root.join("#{tmp_import_folder}.zip"), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", :disposition => 'attachment')
-    end
-
-    render json: {}, status: 404 unless performed?
+    render json: {}, status: 404 and return unless @import.pre_processing_files.any?
+    zip_file = NfgCsvImporter::CreateZipService.new(model: @import, attr: 'pre_processing_files', user_id: current_user.id).call
+    send_file(Rails.root.join("#{zip_file}.zip"), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", :disposition => 'attachment') if zip_file
   end
 
   protected
@@ -159,17 +147,4 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     params[:iframe].present?
   end
 
-  private
-
-  def create_tmp_user_folder_and_store_documents(document, tmp_import_folder, filename)
-    File.open(File.join(tmp_import_folder, filename), 'wb') do |file|
-      document.download { |chunk| file.write(chunk) }
-    end
-  end
-
-  def create_zip_from_tmp_user_folder(tmp_import_folder, filename)
-    Zip::File.open("#{tmp_import_folder}.zip", Zip::File::CREATE) do |zf|
-      zf.add(filename, "#{tmp_import_folder}/#{filename}")
-    end
-  end
 end

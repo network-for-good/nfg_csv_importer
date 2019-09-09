@@ -1,5 +1,5 @@
 module NfgCsvImporter
-  class DeletePreProcessingZipJob < ActiveJob::Base
+  class DeleteZipJob < ActiveJob::Base
     queue_as :temp_zip_deletions
 
     def perform(tmp_user_folder)
