@@ -121,7 +121,7 @@
             .container-subdivision
               .col-xs-12
                 = link_to import_download_attachments_path(@import), data: { describe: 'download-all' }, class: 'btn btn-sm btn-secondary m-l-quarter', method: :post, download: true do
-                  = fa_icon 'download', text: 'Download All Submitted Files', class: 'm-r-quarter'
+                  = fa_icon 'download', text: I18n.t('nfg_csv_importer.imports.show.body.download_all'), class: 'm-r-quarter'
 
           - if import_presenter.show_files?
             #files

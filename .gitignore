@@ -13,3 +13,4 @@ spec/test_app/config/api-keys.yml
 .solano*
 .idea/
 .idea/*
+.byebug_history
