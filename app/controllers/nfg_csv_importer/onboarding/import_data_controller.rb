@@ -44,6 +44,7 @@ module NfgCsvImporter
       # on valid steps
 
       def finish_on_valid_step
+        reset_onboarding_session # wipe out the session so we can work an another import
       end
 
       def preview_confirmation_on_valid_step

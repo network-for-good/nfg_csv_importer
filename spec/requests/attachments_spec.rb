@@ -6,7 +6,7 @@ RSpec.describe "ActiveStorage Attachments", type: :request do
 
   it "deletes attachments and blob records" do
     expect do
-      delete "/nfg_csv_importer/attachments/#{blob_id}"
+      delete "/imports/attachments/#{blob_id}"
     end.to change(ActiveStorage::Blob, :count).by(-1)
     .and change(ActiveStorage::Attachment, :count).by(-1)
   end
