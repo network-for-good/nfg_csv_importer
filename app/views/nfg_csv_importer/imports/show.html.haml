@@ -109,7 +109,7 @@
 
           - if @import.send_to_nfg?
             .text-xs-center.m-b-base
-              = image_tag image_path('nfg_csv_importer/illustrations/import-files.png'), style: 'height: 240px;'
+              = image_tag image_path('nfg_csv_importer/illustrations/import_files.png'), style: 'height: 240px;'
               %h3.m-t-base.m-b-0 We have successfully received your files.
 
           - if @import.file_origination_type.collect_note_with_pre_processing_files
