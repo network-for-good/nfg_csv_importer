@@ -42,7 +42,7 @@
           - content = @import.time_remaining_message
         - else
           - heading = "Import completed on"
-          - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
+          - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time) if @import.processing_finished_at.present?
 
         = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
 
