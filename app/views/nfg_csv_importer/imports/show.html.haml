@@ -46,7 +46,7 @@
                 %strong
                   = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
               %p.m-t-half
-                = I18n.t('nfg_csv_importer.imports.show.headings.imported_by')
+                = I18n.t('nfg_csv_importer.imports.show.imported_by')
                 %strong
                   = "#{@import.imported_by_name}."
 
@@ -69,7 +69,7 @@
                     - content = @import.time_remaining_message
                   - else
                     - heading = "Import completed on"
-                    - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
+                    - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time) if @import.processing_finished_at.present?
 
                   = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", content_class: "h2 line-height-1", heading: heading, content: content }
 
