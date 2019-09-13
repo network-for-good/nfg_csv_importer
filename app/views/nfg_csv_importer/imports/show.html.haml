@@ -17,7 +17,7 @@
           %strong
             = t("status.#{@import.status}", default: @import.status, scope: [:imports, :show])
         .p-t-1
-          This data was imported by
+          = I18n.t('imports.show.imported_by')
           %strong
             = @import.imported_by_name
 

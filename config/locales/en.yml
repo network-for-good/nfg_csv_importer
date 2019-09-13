@@ -86,3 +86,4 @@ en:
         complete: "imported"
         deleting: "queued for deletion"
         uploaded: "processing"
+      imported_by: "This data was imported by"
