@@ -46,7 +46,7 @@
                 %strong
                   = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
               %p.m-t-half
-                = I18n.t('nfg_csv_importer.imports.show.imported_by')
+                = t('.imported_by')
                 %strong
                   = "#{@import.imported_by_name}."
 
