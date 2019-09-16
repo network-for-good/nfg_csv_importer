@@ -29,8 +29,10 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
     context 'when the status is complete' do
       let(:status) { 'complete' }
 
-      it 'does not error and loads the page' do
-        expect(subject).to have_content I18n.t('nfg_csv_importer.imports.show.imported_by')
+      context 'when the processing_finished_at is nil' do
+        it 'does not error and loads the page' do
+          expect(subject).to have_content I18n.t('nfg_csv_importer.imports.show.imported_by')
+        end
       end
     end
 
