@@ -134,10 +134,8 @@ module NfgCsvImporter
         # since this should only be called when the user is leaving the last step
         # in case they left the finish step without actually finishing
         reset_onboarding_session # wipe out the session so we can work an another import
-
-        imports_path
+        params[ALT_FINISH_PATH_PREPEND_KEY] || imports_path
          # where to take the user when the have finished this step
-         # TODO add a path to where the user should go once they complete the onboarder
       end
 
       def onboarder_name

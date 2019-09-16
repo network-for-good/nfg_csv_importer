@@ -95,4 +95,16 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
     end
   end
+
+  it 'allows navigation to imports show page from the finish step' do
+    visiting_till_the_history_page
+
+    and_by 'clicking on the import details button' do
+      click_button I18n.t('nfg_csv_importer.onboarding.import_data.finish.button.details')
+    end
+
+    and_it 'takes the user back to the imports show page' do
+      expect(page).to have_content I18n.t('nfg_csv_importer.imports.show.headings.imported_by')
+    end
+  end
 end
