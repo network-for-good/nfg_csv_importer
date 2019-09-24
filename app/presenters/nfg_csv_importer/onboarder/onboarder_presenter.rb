@@ -16,6 +16,16 @@ module NfgCsvImporter
         "NfgCsvImporter::Onboarder::Steps::#{active_step.camelize}Presenter".constantize.new(model, view, options)
       end
 
+      # Place a "_google_tag_manager" partial in your host app's
+      # app/views/shared folder to auto-load google tag manager
+      # on your importer.
+      def render_google_tag_manager
+        begin
+          h.render "shared/google_tag_manager"
+        rescue ActionView::MissingTemplate # fail silently if there's no file
+        end
+      end
+
       def color_theme(humanize)
         return :primary if humanize == 'user'
         return :success if humanize == 'donation'

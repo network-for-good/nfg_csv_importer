@@ -9,6 +9,6 @@
     = javascript_include_tag "nfg_csv_importer/onboarding/application", "data-turbolinks-track" => "reload"
     = csrf_meta_tags
   %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:file_origination_type).try(:type_sym)}" }
-
+    = onboarder_presenter.render_google_tag_manager
     = yield
     = yield :before_closing_body
