@@ -47,3 +47,5 @@
 
 -# The following gets rendered by DropZone for each file that is dropped/added
 = render partial: 'nfg_csv_importer/onboarding/import_data/upload_preprocessing/dropzone_row'
+
+= provide :after_opening_body, onboarder_presenter.render_google_tag_manager

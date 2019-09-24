@@ -11,3 +11,5 @@
     = ui.nfg :tile_section, describe: 'column-mappings' do
       = ui.nfg :collapse, id: 'mapped_column_headers', heading: "Review #{import.column_stats[:mapped_column_count]} of #{import.column_stats[:column_count]} columns to be mapped", collapsed: true do
         = render 'nfg_csv_importer/imports/mapped_column_headers', import: import
+
+= provide :after_opening_body, onboarder_presenter.render_google_tag_manager
