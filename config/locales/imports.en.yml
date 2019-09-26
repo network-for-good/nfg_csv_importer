@@ -80,6 +80,7 @@ en:
           overview: "Data import status overview"
         body:
           introduction: "Now that we've imported your data, here are the actual, final details for what was imported."
+          download_all: 'Download All Submitted Files'
         status:
           complete: "imported"
           deleting: "queued for deletion"

@@ -205,6 +205,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#reset_onboarder_session" do
     subject { get :reset_onboarder_session, params }
+
     let(:session_id) { 234 }
     let(:import_id) { 123 }
 
@@ -223,6 +224,58 @@ describe NfgCsvImporter::ImportsController do
 
     it 'resets user session onboarding_import_data_import_id' do
       expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+    end
+  end
+
+  describe '#download_attachments' do
+    let(:params) { { params: { import_id: import.id } } }
+    let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
+
+    subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
+
+    context 'when pre_processing_files exist' do
+      context 'when there is only one pre processing file' do
+        it 'does not create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call).never
+          subject
+        end
+      end
+
+      context 'when there are more than one pre processing files' do
+        let!(:import) { create(:import, :with_multiple_pre_processing_files, imported_for_id: entity.id) }
+
+        it 'calls create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call)
+          subject
+        end
+      end
+
+    end
+
+    context 'when pre_processing_files do not exist' do
+      let(:import) { create(:import, imported_for_id: entity.id) }
+
+      it 'does not send a file in the response' do
+        NfgCsvImporter::ImportsController.any_instance.expects(:send_file).never
+        subject
+      end
+
+      it 'returns status 404' do
+        subject
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context 'when there is an error' do
+      let(:error) { StandardError }
+
+      before { ActiveStorage::Attachment.any_instance.expects(:service_url).raises(error) }
+
+      it 'returns 400' do
+        Rails.logger.expects(:error)
+        subject
+        expect(response.status).to eq(400)
+      end
     end
   end
 end

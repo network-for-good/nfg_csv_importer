@@ -6,6 +6,7 @@ NfgCsvImporter::Engine.routes.draw do
     resource :process, only: :create
     get :template, on: :collection
     get :reset_onboarder_session, on: :collection
+    post :download_attachments, to: "imports#download_attachments", as: :download_attachments
   end
 
   namespace :onboarding do
