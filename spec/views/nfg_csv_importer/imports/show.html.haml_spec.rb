@@ -12,6 +12,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
   before do
     view.stubs(:current_user).returns(user)
     import.stubs(:can_be_deleted?).returns(false)
+    view.stubs(:import_download_attachments_path).returns('some_path')
   end
 
   describe "access to the the import's import_file" do
@@ -23,6 +24,10 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
         and_it 'does not show the user-generated import file' do
           expect(subject).not_to have_css "[data-describe='user-generated-import-file']"
         end
+      end
+
+      it 'shows the download all link' do
+        expect(subject).to have_css "[data-describe='download-all']"
       end
     end
 
@@ -43,6 +48,10 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
         and_it 'does not show the system-generated import file' do
           expect(subject).not_to have_css "[data-describe='system-generated-import-file']"
         end
+      end
+
+      it 'shows the download all link' do
+        expect(subject).to_not have_css "[data-describe='download-all']"
       end
     end
   end

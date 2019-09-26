@@ -6,7 +6,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :load_imported_by
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
-  before_action :load_import, only: [:show, :destroy, :edit, :update]
+  before_action :load_import, only: [:show, :destroy, :edit, :update, :download_attachments]
   before_action :authorize_user, except: [:index, :reset_onboarder_session]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
@@ -113,6 +113,20 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     redirect_to nfg_csv_importer.imports_path
   end
 
+  def download_attachments
+    render json: {}, status: 404 and return unless @import.pre_processing_files.any?
+    if @import.pre_processing_files.count == 1
+      redirect_to @import.pre_processing_files.first.service_url and return
+    else
+      zip_file = NfgCsvImporter::CreateZipService.new(model: @import, attr: 'pre_processing_files', user_id: current_user.id).call
+      send_file(Rails.root.join(zip_file), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", disposition: 'attachment') if zip_file
+    end
+
+  rescue StandardError => e
+    Rails.logger.error("Exception while downloading attachments. Exception: #{e.message}")
+    head :bad_request
+  end
+
   protected
   # the standard event tracking (defined in application controller) attempts to include
   # the imported file, which crashes the write to the db. So here we only track the type of import
@@ -140,4 +154,5 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def iframe_param_present?
     params[:iframe].present?
   end
+
 end

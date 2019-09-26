@@ -117,11 +117,16 @@
               %h5 Your notes
               %p= simple_format(import_presenter.import_note)
 
-
           - if import_presenter.show_files?
             #files
-              %h5 Files
-              .slats
+              .row
+                .col-md-8.col-xs-4
+                  %h5 Files
+                - if @import.pre_processing_files&.any?
+                  .col-md-4.col-xs-8.text-xs-right
+                    = link_to import_download_attachments_path(@import), data: { describe: 'download-all' }, class: 'btn btn-sm btn-secondary m-l-quarter', method: :post, download: true do
+                      = fa_icon 'download', text: I18n.t('nfg_csv_importer.imports.show.body.download_all'), class: 'm-r-quarter'
+              .slats.m-t-1
                 .slat-list
                   - if @import.import_type? && @import.number_of_records_with_errors.to_i > 0 && @import.complete?
                     .slat

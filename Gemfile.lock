@@ -27,6 +27,7 @@ PATH
       reform-rails (~> 0.1.7)
       roo (= 2.6.0)
       roo-xls
+      rubyzip (~> 1.2.3)
       sass-rails (~> 5.0)
       simple_form
 
