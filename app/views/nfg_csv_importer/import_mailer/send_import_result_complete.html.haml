@@ -1,7 +1,7 @@
 - if @import_mailer_presenter.errors?
   = render partial: 'nfg_csv_importer/import_mailer/send_import_result/steps', locals: { import_mailer_presenter: @import_mailer_presenter }
 - else
-  = image_tag 'nfg_csv_importer/illustrations/finish-success.png', class: 'text-center', height: '240', id: 'finish_success_image'
+  = image_tag 'nfg_csv_importer/illustrations/finish_success.png', class: 'text-center', height: '240', id: 'finish_success_image'
 
 %spacer{ size: spacer(:triple) }
 

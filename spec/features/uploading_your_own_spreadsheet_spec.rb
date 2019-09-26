@@ -108,7 +108,7 @@ describe "Importing your own spreadsheet", js: true do
       click_next_button_for('finish')
 
       # back to the import list
-      expect(page.current_path).to eq '/nfg_csv_importer/'
+      expect(page.current_path).to eq '/imports/'
     end
 
     and_by 'visiting the show page' do

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: a5a50e151e313d974e58c2eb9bc37a3e7c51477b
+  revision: fd593d1462111dd1ed38109b49c0cb225102daae
   branch: rails_5
   specs:
     nfg_onboarder (0.0.3)

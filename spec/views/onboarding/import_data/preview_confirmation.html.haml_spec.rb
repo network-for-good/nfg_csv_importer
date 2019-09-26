@@ -12,6 +12,7 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
     view.stubs(:onboarder_presenter).returns(onboarder_presenter)
     view.stubs(:file_origination_type).returns(file_origination_type)
     view.stubs(:step).returns('preview_confirmation')
+    onboarder_presenter.stubs(:render_google_tag_manager).returns('')
   end
   let(:display_mappings) { false }
   let(:import_type) { 'preview_confirmation' }
