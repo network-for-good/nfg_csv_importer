@@ -36,3 +36,5 @@
 
     .text-center.mt-4
       = ui.nfg :button, :outlined, :secondary, :lg, href: nfg_csv_importer.template_imports_path(import_type: import_type), body: t("nfg_csv_importer.imports.new.links.file"), icon: 'download'
+
+= provide :after_opening_body, onboarder_presenter.render_google_tag_manager

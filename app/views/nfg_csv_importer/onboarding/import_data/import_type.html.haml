@@ -8,3 +8,5 @@
           %label.custom-control-label.text-center.w-100.h-100.bg-white{ for: "nfg_csv_importer_onboarding_import_data_import_type_import_type_#{import_type}" }
             = ui.nfg :typeface, title: import_type.pluralize.titleize
             = ui.nfg :typeface, body: definition.headline, class: 'mt-1 mb-0 text-break'
+
+= provide :after_opening_body, onboarder_presenter.render_google_tag_manager
