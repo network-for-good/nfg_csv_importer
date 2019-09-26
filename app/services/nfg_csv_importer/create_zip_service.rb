@@ -37,7 +37,7 @@ module NfgCsvImporter
 
     def create_zip_from_tmp_user_folder(tmp_model_folder)
       archive = "#{tmp_model_folder}.zip"
-      `zip -r "#{archive}" "#{tmp_model_folder}"`
+      `zip -rj "#{archive}" "#{tmp_model_folder}"`
     end
 
     def tmp_dir_name

@@ -234,10 +234,22 @@ describe NfgCsvImporter::ImportsController do
     subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
 
     context 'when pre_processing_files exist' do
-      it 'calls create zip service' do
-        NfgCsvImporter::CreateZipService.any_instance.expects(:call)
-        subject
+      context 'when there is only one pre processing file' do
+        it 'does not create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call).never
+          subject
+        end
       end
+
+      context 'when there are more than one pre processing files' do
+        let!(:import) { create(:import, :with_multiple_pre_processing_files, imported_for_id: entity.id) }
+
+        it 'calls create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call)
+          subject
+        end
+      end
+
     end
 
     context 'when pre_processing_files do not exist' do
@@ -257,7 +269,7 @@ describe NfgCsvImporter::ImportsController do
     context 'when there is an error' do
       let(:error) { StandardError }
 
-      before { NfgCsvImporter::CreateZipService.any_instance.expects(:call).raises(error) }
+      before { ActiveStorage::Attachment.any_instance.expects(:service_url).raises(error) }
 
       it 'returns 400' do
         Rails.logger.expects(:error)

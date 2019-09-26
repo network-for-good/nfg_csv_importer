@@ -115,11 +115,16 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
 
   def download_attachments
     render json: {}, status: 404 and return unless @import.pre_processing_files.any?
-    zip_file = NfgCsvImporter::CreateZipService.new(model: @import, attr: 'pre_processing_files', user_id: current_user.id).call
-    send_file(Rails.root.join(zip_file), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", disposition: 'attachment') if zip_file
+    if @import.pre_processing_files.count == 1
+      redirect_to @import.pre_processing_files.first.service_url and return
+    else
+      zip_file = NfgCsvImporter::CreateZipService.new(model: @import, attr: 'pre_processing_files', user_id: current_user.id).call
+      send_file(Rails.root.join(zip_file), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", disposition: 'attachment') if zip_file
+    end
+
   rescue StandardError => e
     Rails.logger.error("Exception while downloading attachments. Exception: #{e.message}")
-    render json: {}, status: :bad_request
+    head :bad_request
   end
 
   protected
