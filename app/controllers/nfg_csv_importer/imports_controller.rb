@@ -7,7 +7,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
   before_action :load_import, only: [:show, :destroy, :edit, :update, :download_attachments]
-  before_action :authorize_user, except: [:index, :reset_onboarder_session, :download_attachments]
+  before_action :authorize_user, except: [:index, :reset_onboarder_session]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
   def new
@@ -116,7 +116,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def download_attachments
     render json: {}, status: 404 and return unless @import.pre_processing_files.any?
     zip_file = NfgCsvImporter::CreateZipService.new(model: @import, attr: 'pre_processing_files', user_id: current_user.id).call
-    send_file(Rails.root.join("#{zip_file}.zip"), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", :disposition => 'attachment') if zip_file
+    send_file(Rails.root.join(zip_file), :type => 'application/zip', :filename => "Files_for_import_#{@import.id}.zip", disposition: 'attachment') if zip_file
+  rescue StandardError => e
+    Rails.logger.error("Exception while downloading attachments. Exception: #{e.message}")
+    render json: {}, status: :bad_request
   end
 
   protected

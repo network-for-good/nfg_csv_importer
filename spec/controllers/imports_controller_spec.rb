@@ -229,12 +229,11 @@ describe NfgCsvImporter::ImportsController do
 
   describe '#download_attachments' do
     let(:params) { { params: { import_id: import.id } } }
+    let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
+
     subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
 
     context 'when pre_processing_files exist' do
-
-      let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
-
       it 'calls create zip service' do
         NfgCsvImporter::CreateZipService.any_instance.expects(:call)
         subject
@@ -252,6 +251,18 @@ describe NfgCsvImporter::ImportsController do
       it 'returns status 404' do
         subject
         expect(response.status).to eq(404)
+      end
+    end
+
+    context 'when there is an error' do
+      let(:error) { StandardError }
+
+      before { NfgCsvImporter::CreateZipService.any_instance.expects(:call).raises(error) }
+
+      it 'returns 400' do
+        Rails.logger.expects(:error)
+        subject
+        expect(response.status).to eq(400)
       end
     end
   end

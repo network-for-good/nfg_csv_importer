@@ -17,6 +17,8 @@ RSpec.describe NfgCsvImporter::CreateZipService do
     context 'when pre_processing_files exist' do
       before do
         NfgCsvImporter::DeleteZipJob.stubs(:set).returns(delete_job)
+        ActiveStorage::Attachment.any_instance.expects(:service_url).returns('some-url')
+        Object.any_instance.expects(:open).returns(File.open("spec/fixtures/individual_donation.csv")).twice
       end
 
       let!(:import) { create(:import, :with_pre_processing_files) }
