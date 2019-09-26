@@ -20,8 +20,8 @@ module NfgCsvImporter
         submitted_files.each do |document|
           filename = "#{document.blob.filename}_#{document.blob.id}"
           store_documents_in_tmp_user_folder(document, tmp_model_folder, filename)
-          create_zip_from_tmp_user_folder(tmp_model_folder)
         end
+        create_zip_from_tmp_user_folder(tmp_model_folder)
         NfgCsvImporter::DeleteZipJob.set(wait: 60.minutes).perform_later(tmp_user_folder)
         return "#{tmp_model_folder}.zip"
       end
@@ -36,8 +36,7 @@ module NfgCsvImporter
     end
 
     def create_zip_from_tmp_user_folder(tmp_model_folder)
-      archive = "#{tmp_model_folder}.zip"
-      `zip -rj "#{archive}" "#{tmp_model_folder}"`
+      `zip -rj "#{tmp_model_folder}.zip" "#{tmp_model_folder}"`
     end
 
     def tmp_dir_name
