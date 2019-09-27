@@ -1,6 +1,6 @@
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { show_exit_button: false } do |f|
 
-  .text-center
+  %div{ class: 'text-center', id: file_origination_type.type_sym }
     -# Due to some malfeasance within rails, if the last render fails
     -# the error message will indicate only that it tried to render the first partial
     - begin

@@ -11,14 +11,19 @@ RSpec.describe 'onboarding/import_data/finish.html.haml' do
     view.stubs(:import).returns(stub(id: 1, status: status, imported_records: stub(count: 4), number_of_records: 4, number_of_records_with_errors: 0))
     view.stubs(:onboarder_presenter).returns(onboarder_presenter)
     view.stubs(:locale_namespace).returns([:nfg_csv_importer, :onboarding, :import_data])
+    view.stubs(:file_origination_type).returns(file_origination_type)
     # view.stubs(:step).returns(:finish)
   end
-
+  let(:file_origination_type) { OpenStruct.new(type_sym: 'paypal') }
   let(:file_origination_type_name) { "paypal" }
   let(:status) { "complete" }
   let(:onboarder_presenter) { OpenStruct.new(queued_alert_msg: 'Your import is next in line.') }
 
   subject { render template: 'nfg_csv_importer/onboarding/import_data/finish' }
+
+  it 'includes the file origination type symbol as an id used by the Full Story app' do
+    expect(subject).to have_css "#paypal"
+  end
 
   context 'when the file_origination_type_name and import status have a matching partial' do
 
