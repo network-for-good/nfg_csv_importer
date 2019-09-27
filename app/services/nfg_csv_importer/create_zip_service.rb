@@ -18,7 +18,7 @@ module NfgCsvImporter
       submitted_files = @model.send(@attr)
       if submitted_files&.any?
         submitted_files.each do |document|
-          filename = "#{document.blob.filename}_#{document.blob.id}"
+          filename = "#{document.blob.id}_#{document.blob.filename}"
           store_documents_in_tmp_user_folder(document, tmp_model_folder, filename)
         end
         create_zip_from_tmp_user_folder(tmp_model_folder)
