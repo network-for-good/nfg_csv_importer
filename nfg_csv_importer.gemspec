@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.add_dependency "reform-rails", '~> 0.1.7'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
   s.add_dependency 'aws-sdk-s3', '~> 1.17.0'
-  s.add_dependency 'rubyzip', '~> 1.2.3'
+  s.add_dependency 'rubyzip', '~> 1.3'
 
   s.add_development_dependency "sqlite3", '~> 1.3.0'
   s.add_development_dependency "rails-controller-testing"
