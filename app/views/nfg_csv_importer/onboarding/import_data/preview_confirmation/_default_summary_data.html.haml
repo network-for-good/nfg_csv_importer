@@ -20,4 +20,4 @@
 
     = ui.nfg :media_body do
       = ui.nfg :typeface, title: "Total Rows", class: 'display-4'
-      %h2= stats_and_details["summary_data"]["number_of_rows"]
+      %h2= stats_and_details.dig("summary_data", "number_of_rows")

@@ -49,6 +49,10 @@ def visiting_till_the_preview_confirmation_page
     @import = NfgCsvImporter::Import.last
   end
 
+  and_it 'shows the loader' do
+    expect(page).to have_css('.loader')
+  end
+
   and_it 'takes the user to the preview_confirmation page' do
     expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
   end
