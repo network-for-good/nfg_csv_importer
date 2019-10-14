@@ -5,7 +5,24 @@ module NfgCsvImporter
     # The FileOriginationType::Base class is the template on which other
     # FileOriginationType classes are based and should inherit from.
     class Base
+
       class << self
+        def valid_file_extensions
+          %w[csv xls xlsx].freeze
+        end
+
+        def get_valid_file_extensions(class_name)
+          # self_import resides in NfgCsvImporter gem and is prefixed with NfgCsvImproter
+          # All other imports are in the host application and are not prefixed
+          begin
+            file_origination = "NfgCsvImporter::FileOriginationTypes::#{class_name}".constantize
+          rescue NameError
+            file_origination = "::FileOriginationTypes::#{class_name}".constantize
+          end
+
+          file_origination.valid_file_extensions
+        end
+
         def requires_preprocessing_files
           # If this file origination type expects the user to supply
           # pre-processing files to be worked on by the system or handed
