@@ -50,7 +50,7 @@ def visiting_till_the_preview_confirmation_page
   end
 
   and_it 'shows the loader' do
-    expect(page).to have_css('.loader')
+    expect(page).to have_css("[data-describe='preview-confirmation-spinner']")
   end
 
   and_it 'takes the user to the preview_confirmation page' do

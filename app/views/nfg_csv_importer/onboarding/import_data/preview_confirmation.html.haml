@@ -9,7 +9,9 @@
     - rescue ActionView::MissingTemplate
       = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter
   - else
-    = ui.nfg :icon, :loader
+    .text-center.py-5
+      = ui.nfg :icon, :loader, :muted, data: { describe: 'preview-confirmation-spinner' }
+      = ui.nfg :typeface, :muted, title: 'Loading', class: 'display-4'
 
   - if file_origination_type.display_mappings
     = ui.nfg :tile_section, describe: 'column-mappings' do
