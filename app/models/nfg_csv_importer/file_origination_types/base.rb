@@ -11,14 +11,13 @@ module NfgCsvImporter
           %w[csv xls xlsx].freeze
         end
 
-        def get_valid_file_extensions(class_name)
+        def get_valid_file_extensions(type_name)
+          class_name = type_name&.to_s&.camelcase
           # self_import resides in NfgCsvImporter gem and is prefixed with NfgCsvImproter
           # All other imports are in the host application and are not prefixed
-          begin
-            file_origination = "NfgCsvImporter::FileOriginationTypes::#{class_name}".constantize
-          rescue NameError
-            file_origination = "::FileOriginationTypes::#{class_name}".constantize
-          end
+
+          file_origination = NfgCsvImporter::FileOriginationTypes::SelfImportCsvXls if class_name == 'SelfImportCsvXls'
+          file_origination ||= "::FileOriginationTypes::#{class_name}".constantize
 
           file_origination.valid_file_extensions
         end

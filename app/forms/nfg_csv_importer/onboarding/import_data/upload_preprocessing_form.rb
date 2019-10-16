@@ -9,8 +9,6 @@ module NfgCsvImporter
         property :pre_processing_files
         property :note, virtual: true
 
-        VALID_FILE_EXTENSIONS = %w[csv xls xlsx].freeze
-
         validates :pre_processing_files, presence: true
         validate :import_file_extension_validation
 
@@ -32,12 +30,8 @@ module NfgCsvImporter
         def valid_file_extensions
           return @valid_file_extensions if @valid_file_extensions.present?
 
-          @valid_file_extensions ||= VALID_FILE_EXTENSIONS if !model.respond_to?(:file_origination_type) || model&.file_origination_type.nil?
-          @valid_file_extensions ||= NfgCsvImporter::FileOriginationTypes::Base.get_valid_file_extensions(file_origination_type_name)
-        end
-
-        def file_origination_type_name
-          model.file_origination_type.type_sym&.to_s&.camelcase
+          @valid_file_extensions ||= NfgCsvImporter::FileOriginationTypes::Base.valid_file_extensions if !model.respond_to?(:file_origination_type) || model&.file_origination_type.nil?
+          @valid_file_extensions ||= NfgCsvImporter::FileOriginationTypes::Base.get_valid_file_extensions(model.file_origination_type.type_sym)
         end
       end
     end
