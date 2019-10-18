@@ -174,18 +174,13 @@ module NfgCsvImporter
     end
 
     def reset_attributes_on_file_origination_type_change
-      tag_for_save = false
+      return unless persisted?
+
       self.status = PENDING_STATUS
-      if self.fields_mapping.present?
-        self.fields_mapping = nil
-        tag_for_save = true
-      end
-      pre_processing_files.map(&:purge) if pre_processing_files.any?
-      if import_file.present?
-        remove_import_file!
-        tag_for_save = true
-      end
-      save! if tag_for_save # only save if required, new imports might not be saved yet.
+      self.fields_mapping = nil
+      pre_processing_files.map(&:purge)
+      remove_import_file! if import_file.present?
+      save!
     end
 
     private
