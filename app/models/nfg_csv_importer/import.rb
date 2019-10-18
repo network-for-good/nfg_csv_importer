@@ -14,8 +14,9 @@ module NfgCsvImporter
     QUEUED_STATUS = :queued
     COMPLETED_STATUS = :complete
     CALCULATING_STATISTICS_STATUS = :calculating_statistics
+    PENDING_STATUS = :pending
 
-    STATUSES = [:pending, :uploaded, CALCULATING_STATISTICS_STATUS, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
+    STATUSES = [PENDING_STATUS, :uploaded, CALCULATING_STATISTICS_STATUS, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
@@ -179,6 +180,16 @@ module NfgCsvImporter
 
     def uploaded_or_calculating_statistics?
       uploaded? || calculating_statistics?
+    end
+
+    def reset_attributes_on_file_origination_type_change
+      return unless persisted?
+
+      self.status = PENDING_STATUS
+      self.fields_mapping = nil
+      pre_processing_files.map(&:purge)
+      remove_import_file! if import_file.present?
+      save!
     end
 
     private

@@ -14,10 +14,11 @@ describe NfgCsvImporter::Import do
   let(:admin) {  create(:user) }
   let(:error_file) { nil }
   let(:status) { :uploaded }
+  let(:fields_mapping) { nil }
   let(:import) do
-    FactoryGirl.create(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+    FactoryGirl.create(:import, :with_pre_processing_files, imported_for: entity, import_type: import_type, imported_by: admin,
                       import_file: file, error_file: error_file, status: status, statistics: stats,
-                      file_origination_type: file_origination_type_name)
+                      file_origination_type: file_origination_type_name, fields_mapping: fields_mapping)
   end
   let(:default_file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
   let(:file_origination_type_name) { default_file_origination_type }
@@ -605,6 +606,31 @@ describe NfgCsvImporter::Import do
       let(:status) { 'defined' }
 
       it { is_expected.to eq false }
+    end
+  end
+
+  describe "reset_attributes_on_file_origination_type_change" do
+    subject { import.reset_attributes_on_file_origination_type_change }
+
+    let(:fields_mapping) { { 'some' => 'mapping' } }
+
+    it 'should delete fields mapping' do
+      expect{ subject }.to change { import.reload.fields_mapping }.from(fields_mapping).to(nil)
+    end
+
+    it 'should remove import_file' do
+      expect { subject }.to change { import.reload.import_file.file.present? }.from(true).to(false)
+    end
+
+    it 'should purge pre processing files' do
+      import.pre_processing_files.each do |file|
+        file.expects(:purge)
+      end
+      subject
+    end
+
+    it 'changes the status to pending' do
+      expect{ subject }.to change { import.reload.status }.from(status.to_s).to('pending')
     end
   end
 end
