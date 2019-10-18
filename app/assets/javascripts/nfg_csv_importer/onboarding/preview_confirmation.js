@@ -7,7 +7,7 @@ function retrieve_statistics(import_id) {
     },
     error: function(data) {
       numTimes += 1;
-      if(numTimes < 20) { setTimeout( function(){ retrieve_statistics(import_id) }, 3000) }
+      if(numTimes < 30) { setTimeout( function(){ retrieve_statistics(import_id) }, 3000) }
     }
   })
 }

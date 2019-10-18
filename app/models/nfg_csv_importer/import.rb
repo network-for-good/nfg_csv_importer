@@ -51,7 +51,7 @@ module NfgCsvImporter
     end
 
     def can_be_deleted?(admin)
-      pending_or_uploaded? || (complete? && can_be_deleted_by?(admin))
+      pending_or_uploaded_or_calculating_statistics? || (complete? && can_be_deleted_by?(admin))
     end
 
     def column_stats
@@ -173,7 +173,7 @@ module NfgCsvImporter
       file_origination_type_name == 'send_to_nfg'
     end
 
-    def pending_or_uploaded?
+    def pending_or_uploaded_or_calculating_statistics?
       pending? || uploaded_or_calculating_statistics?
     end
 

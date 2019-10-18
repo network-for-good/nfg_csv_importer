@@ -87,7 +87,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       return redirect_to import_path(@import)
     end
 
-    if @import.pending_or_uploaded?
+    if @import.uploaded_or_calculating_statistics?
       @import.destroy
       flash[:success] = t(:success_without_records, scope: [:import, :destroy])
     else # completed?
