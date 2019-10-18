@@ -6,7 +6,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   before_action :load_imported_by
   before_action :set_import_type, only: [:create, :new, :template]
   before_action :load_new_import, only: [:create, :new, :template]
-  before_action :load_import, only: [:show, :destroy, :edit, :update, :download_attachments]
+  before_action :load_import, only: [:show, :destroy, :edit, :update, :download_attachments, :statistics]
   before_action :authorize_user, except: [:index, :reset_onboarder_session]
   before_action :redirect_unless_uploaded_status, only: [:edit, :update]
 
@@ -87,7 +87,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       return redirect_to import_path(@import)
     end
 
-    if @import.uploaded?
+    if @import.uploaded_or_calculating_statistics?
       @import.destroy
       flash[:success] = t(:success_without_records, scope: [:import, :destroy])
     else # completed?
@@ -125,6 +125,13 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   rescue StandardError => e
     Rails.logger.error("Exception while downloading attachments. Exception: #{e.message}")
     head :bad_request
+  end
+
+  def statistics
+    render json: {}, status: :not_found and return if @import.nil?
+    render json: {}, status: :ok and return if @import.statistics.present?
+    NfgCsvImporter::CalculateImportStatisticsJob.perform_later(@import.id) unless @import.calculating_statistics?
+    render json: {}, status: :not_found
   end
 
   protected

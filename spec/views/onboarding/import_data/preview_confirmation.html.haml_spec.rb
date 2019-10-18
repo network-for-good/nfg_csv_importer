@@ -12,11 +12,14 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
     view.stubs(:onboarder_presenter).returns(onboarder_presenter)
     view.stubs(:file_origination_type).returns(file_origination_type)
     view.stubs(:step).returns('preview_confirmation')
+    view.stubs(:import).returns(import)
     onboarder_presenter.stubs(:render_google_tag_manager).returns('')
   end
   let(:display_mappings) { false }
   let(:import_type) { 'preview_confirmation' }
-  let(:onboarder_presenter) { mock() }
+  let(:onboarder_presenter) { mock('onboarder-presenter') }
+  let(:import) { create(:import, statistics) }
+  let(:statistics) { :with_statistics }
 
   let(:file_origination_type) { mock('file_origination_type', name: 'paypal', display_mappings: display_mappings)}
 
@@ -38,11 +41,19 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
     end
   end
 
+  context 'when the statistics are not present' do
+    let(:statistics) { nil }
+
+    it 'shows the loader' do
+      expect(subject).to have_css("[data-describe='preview-confirmation-spinner']")
+    end
+  end
+
   describe 'displaying mappings of the column headers' do
 
     context 'and when the file origination type does display mappings' do
       let(:display_mappings) { true }
-      let(:import) { FactoryGirl.build(:import) }
+      let(:import) { FactoryGirl.build(:import, :with_statistics) }
       before { view.stubs(:import).returns(import) }
       it { is_expected.to render_template('nfg_csv_importer/imports/_mapped_column_headers') }
     end
