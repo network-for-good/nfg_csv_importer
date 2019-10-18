@@ -26,7 +26,7 @@ describe "switching file origination types", js: true do
       if new_fot == NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s
         expect(page).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.import_type.header.message')
       else
-        expect(page).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.upload_preprocessing.header.message', file_origination_type: @import.reload.file_origination_type.name)
+        expect(page).to have_content I18n.t("nfg_csv_importer.onboarding.import_data.upload_preprocessing.header.file_origination_type.message.#{new_fot}")
       end
 
       expect(@import.onboarding_session.reload.step_data['import_data'][:upload_preprocessing]['note']).to be_nil
