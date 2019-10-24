@@ -64,6 +64,10 @@ FactoryGirl.define do
       import_type nil
       import_file nil
     end
+
+    trait :with_statistics do
+      statistics {{"summary_data" => { "number_of_rows" => 4 }, "example_rows" => [ { "donated_at" => "2016-05-07 18:30:09 UTC", "full_name" => "Ian Mowbray", "amount" => "35", "email" => "Ian_Mowbray@nfg.com", "transaction_id" => "09B930045X391394D", "address" => "3555 Bristol Breeze Lane", "address_2" => nil, "city" => "Rockville", "state" => "MD", "zip_code" => "77573", "country" => "United States", "home_phone" => nil, "description" => nil, "payment_method" => "Paypal"}, {"donated_at" => "2016-05-27 13:21:59 UTC", "full_name" => "info2@NFG.org", "amount" => "22", "email" => "info2@NFG.org", "transaction_id" => "70S7423316828942V", "payment_method"=>"Paypal" }] }}
+    end
   end
 
   # Note: to use an onboarding session it may require stubbing the controller params

@@ -6,7 +6,7 @@ module NfgCsvImporter
     end
 
     def import_delete_confirmation(import)
-      if import.uploaded?
+      if import.pending_or_uploaded_or_calculating_statistics?
         t('nfg_csv_importer.imports.confirmations.delete_without_records')
       else
         t('nfg_csv_importer.imports.confirmations.delete', number_of_records: import.imported_records.size)

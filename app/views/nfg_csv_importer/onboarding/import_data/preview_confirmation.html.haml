@@ -1,11 +1,17 @@
 - i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
-
+- import_id = import.id
+- statistics_present = import.statistics.present?
 = render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: t('.header.message'), header_page: t('.header.page', file_origination_type: file_origination_type.try(:name)), next_step_confirmation: t('confirm.begin_import', scope: i18n_scope) } do |f|
 
-  - begin
-    = render partial: "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}_detail_and_summary_data", locals: { i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter }
-  - rescue ActionView::MissingTemplate
-    = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter
+  - if statistics_present
+    - begin
+      = render partial: "nfg_csv_importer/onboarding/import_data/preview_confirmation/#{import_type}_detail_and_summary_data", locals: { i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter }
+    - rescue ActionView::MissingTemplate
+      = render "nfg_csv_importer/onboarding/import_data/preview_confirmation/default_summary_data", i18n_scope: i18n_scope, onboarder_presenter: onboarder_presenter
+  - else
+    .text-center.py-5
+      = ui.nfg :icon, :loader, :muted, data: { describe: 'preview-confirmation-spinner' }
+      = ui.nfg :typeface, :muted, title: 'Loading', class: 'display-4'
 
   - if file_origination_type.display_mappings
     = ui.nfg :tile_section, describe: 'column-mappings' do
@@ -13,3 +19,8 @@
         = render 'nfg_csv_importer/imports/mapped_column_headers', import: import
 
 = provide :after_opening_body, onboarder_presenter.render_google_tag_manager
+/* Strictly check if it is not true as statistics_present returns ruby's stringified true */
+:javascript
+  if("#{statistics_present}" != 'true'){
+    retrieve_statistics("#{import_id}")
+  }

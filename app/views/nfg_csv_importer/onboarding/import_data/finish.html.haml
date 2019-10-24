@@ -12,7 +12,7 @@
         = render "nfg_csv_importer/onboarding/import_data/finish/default", import: import
 
 
-    = ui.nfg :button_group, :vertical, class: 'align-items-center w-100' do
+    = ui.nfg :button_group, :vertical, class: 'align-items-center w-100 mt-3' do
       -# This button sends the user to the import's show page
       = ui.nfg :button, :submit, :lg, body: t('button.details', scope: [locale_namespace, :finish]), name: "#{NfgCsvImporter::Onboarding::ImportDataController::ALT_FINISH_PATH_PREPEND_KEY}_/imports/#{import.id}", icon: 'chevron-right'
 
