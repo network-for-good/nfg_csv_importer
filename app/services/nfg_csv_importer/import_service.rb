@@ -305,7 +305,7 @@ module NfgCsvImporter
           hsh[field] = spreadsheet.row(i)[index]
         else
           hsh[field] << MERGE_FIELD_SEPARATOR # not sure if we always want a carriage return
-          hsh[field] << spreadsheet.row(i)[index]
+          hsh[field] << spreadsheet.row(i)[index].to_s #in case the value is nil or a date field, we want to ensure it gets converted to a string
         end
         hsh
       end
