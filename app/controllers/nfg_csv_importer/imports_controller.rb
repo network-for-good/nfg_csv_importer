@@ -130,7 +130,6 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def statistics
     render json: {}, status: :not_found and return if @import.nil?
     render json: {}, status: :ok and return if @import.statistics.present?
-    NfgCsvImporter::CalculateImportStatisticsJob.perform_later(@import.id) unless @import.calculating_statistics?
     render json: {}, status: :not_found
   end
 
