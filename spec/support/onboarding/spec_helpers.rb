@@ -49,10 +49,6 @@ def visiting_till_the_preview_confirmation_page
     @import = NfgCsvImporter::Import.last
   end
 
-  and_it 'shows the loader' do
-    expect(page).to have_css("[data-describe='preview-confirmation-spinner']")
-  end
-
   and_it 'takes the user to the preview_confirmation page' do
     expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
   end
@@ -67,7 +63,7 @@ def visiting_till_the_history_page
       page.driver.browser.switch_to.alert.accept
       # we wait until the finish page displays
       page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)
-    }.to change { @import.reload.status }.from("uploaded")
+    }.to change { @import.reload.status }.from(NfgCsvImporter::Import::CALCULATING_STATISTICS_STATUS.to_s)
   end
 
   and_by 'waiting until the import completes' do

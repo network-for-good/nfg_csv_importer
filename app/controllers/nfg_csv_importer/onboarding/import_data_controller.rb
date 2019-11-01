@@ -40,6 +40,14 @@ module NfgCsvImporter
         [:finish]
       end
 
+      # on before show steps
+
+      def preview_confirmation_on_before_show
+        return unless import.present? && !import.calculating_statistics?
+
+        NfgCsvImporter::CalculateImportStatisticsJob.perform_later(import.id)
+        import.update_column(:status, NfgCsvImporter::Import::CALCULATING_STATISTICS_STATUS)
+      end
 
       # on valid steps
 
