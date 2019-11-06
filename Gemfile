@@ -14,8 +14,6 @@ gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git
 
 gem 'reform-rails', '~> 0.1.7'
 
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'master'
-
 group :development do
   gem 'better_errors' # displays errors in the browser better
   gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
