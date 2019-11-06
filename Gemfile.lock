@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 406a535566ecbfcb72729341bf41f87a3fe43f89
-  branch: hotfix/resolve_host_engines_not_having_access_to_vendors_folder
+  revision: 08cce6dc9fd8f6c4468d59f994010dc335d851b1
+  branch: master
   specs:
-    nfg_ui (0.9.24)
+    nfg_ui (0.9.24.2)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 1.1)
