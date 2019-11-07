@@ -242,14 +242,26 @@ module NfgCsvImporter
 
       def update_file_origination_type_if_it_has_changed(import)
         return unless import&.file_origination_type
-        if file_origination_type_name != import.file_origination_type.name
+        if file_origination_type_name.downcase != import.file_origination_type.formatted_type_sym
           import.file_origination_type = file_origination_type_name
-          # import.pre_processing_files.map(&:purge)
+          import.reset_attributes_on_file_origination_type_change
+          reset_note
         end
       end
 
       def upload_preprocessing_on_before_save
         form.pre_processing_files = [] if form_params.empty?
+      end
+
+      def reset_note
+        if params.dig(:nfg_csv_importer_onboarding_import_data_upload_preprocessing, :note)
+          params[:nfg_csv_importer_onboarding_import_data_upload_preprocessing][:note] = nil
+        end
+        step_data = onboarding_session.step_data
+        if step_data.dig('import_data', :upload_preprocessing, 'note')
+          step_data['import_data'][:upload_preprocessing]['note'] = nil
+          onboarding_session.update_attributes!(step_data: step_data)
+        end
       end
     end
   end
