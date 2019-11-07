@@ -48,9 +48,10 @@ module NfgCsvImporter
         !valid_extensions.include? extension.downcase
       end
 
-      def file_extension_error_string(multiple: false)
+      def file_extension_error_string(multiple: false, valid_extensions:)
         I18n.t('nfg_csv_importer.onboarding.import_data.file_extension',
                str_1: multiple ? 'files' : 'file',
+               valid_files: valid_extensions.join(','),
                str_2: multiple ? 'formats' : 'format')
       end
 
