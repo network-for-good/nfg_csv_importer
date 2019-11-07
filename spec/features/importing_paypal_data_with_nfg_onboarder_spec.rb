@@ -69,6 +69,21 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
     end
   end
 
+  it 'shows the invalid file type error' do
+    visiting_till_the_upload_preprocessing_page
+
+    and_by 'attaching the a wrong extensions file to the dropzone file field' do
+      drop_in_dropzone(File.expand_path("spec/fixtures/text_file.txt"))
+      page.find("div.progress-bar[style='width: 100%;']", wait: 10)
+      click_button 'Next' # the import was created on the invalid step above
+      @import = NfgCsvImporter::Import.last
+    end
+
+    and_it 'shows the error message' do
+      expect(page).to have_content "Pre processing files The file must be of csv,xls,xlsx format"
+    end
+  end
+
   it 'leaves the onboarder flow and then clicks on edit on index page to land back at the last step' do
     visiting_till_the_preview_confirmation_page
     and_by 'visiting the imports index page' do

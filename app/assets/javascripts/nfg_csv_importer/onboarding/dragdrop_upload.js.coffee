@@ -47,7 +47,7 @@ class NfgCsvImporter.DragdropUpload
       dictDuplicateFile: "Duplicate Files Cannot Be Uploaded",
       preventDuplicates: true,
       addRemoveLinks: true,
-      acceptedFiles: 'text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xls',
+      acceptedFiles: 'text/csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xls,application/zip',
       previewTemplate: document
                         .querySelector('#tpl')
                         .innerHTML
