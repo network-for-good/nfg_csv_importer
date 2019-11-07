@@ -581,8 +581,8 @@ describe NfgCsvImporter::Import do
     end
   end
 
-  describe '#pending_or_uploaded?' do
-    subject { import.pending_or_uploaded? }
+  describe '#pending_or_uploaded_or_calculating_statistics?' do
+    subject { import.pending_or_uploaded_or_calculating_statistics? }
 
     context 'when the import is uploaded' do
       let(:status) { 'uploaded' }
@@ -592,6 +592,12 @@ describe NfgCsvImporter::Import do
 
     context 'when the import is pending' do
       let(:status) { 'pending' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is calculating_statistics' do
+      let(:status) { 'calculating_statistics' }
 
       it { is_expected.to eq true }
     end

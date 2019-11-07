@@ -14,14 +14,15 @@ module NfgCsvImporter
     QUEUED_STATUS = :queued
     COMPLETED_STATUS = :complete
     PENDING_STATUS = :pending
+    CALCULATING_STATISTICS_STATUS = :calculating_statistics
 
-    STATUSES = [PENDING_STATUS, :uploaded, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
+    STATUSES = [PENDING_STATUS, :uploaded, CALCULATING_STATISTICS_STATUS, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
     serialize :statistics, JSON
 
-    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :defined, :pending]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending]
     mount_uploader :import_file, ImportFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
@@ -51,7 +52,7 @@ module NfgCsvImporter
     end
 
     def can_be_deleted?(admin)
-      uploaded? || (complete? && can_be_deleted_by?(admin))
+      pending_or_uploaded_or_calculating_statistics? || (complete? && can_be_deleted_by?(admin))
     end
 
     def column_stats
@@ -142,6 +143,10 @@ module NfgCsvImporter
 
     def statistics_and_examples(update_stats: false)
       return statistics if statistics.present? && !update_stats
+      calculate_statistics
+    end
+
+    def calculate_statistics
       temp_stats = generate_stats_and_examples
       update(statistics: temp_stats)
       temp_stats
@@ -169,8 +174,12 @@ module NfgCsvImporter
       file_origination_type_name == 'send_to_nfg'
     end
 
-    def pending_or_uploaded?
-      pending? || uploaded?
+    def pending_or_uploaded_or_calculating_statistics?
+      pending? || uploaded_or_calculating_statistics?
+    end
+
+    def uploaded_or_calculating_statistics?
+      uploaded? || calculating_statistics?
     end
 
     def reset_attributes_on_file_origination_type_change

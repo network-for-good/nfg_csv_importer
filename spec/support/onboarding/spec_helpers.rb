@@ -63,7 +63,7 @@ def visiting_till_the_history_page
       page.driver.browser.switch_to.alert.accept
       # we wait until the finish page displays
       page.find("body.nfg_csv_importer-onboarding-import_data.finish.#{file_origination_type}", wait: 5)
-    }.to change { @import.reload.status }.from("uploaded")
+    }.to change { @import.reload.status }.from(NfgCsvImporter::Import::CALCULATING_STATISTICS_STATUS.to_s)
   end
 
   and_by 'waiting until the import completes' do

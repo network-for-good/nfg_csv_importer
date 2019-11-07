@@ -8,6 +8,7 @@
 #= require nfg_csv_importer/onboarding/ff_chartwell
 #= require nfg_csv_importer/onboarding/dragdrop_upload
 #= require nfg_csv_importer/onboarding/custom_file
+#= require nfg_csv_importer/onboarding/preview_confirmation
 
 #= require readmore.min
 #= require nfg_csv_importer/read_more

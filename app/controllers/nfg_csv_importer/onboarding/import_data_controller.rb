@@ -40,6 +40,14 @@ module NfgCsvImporter
         [:finish]
       end
 
+      # on before show steps
+
+      def preview_confirmation_on_before_show
+        return unless import.present? && !import.calculating_statistics?
+
+        NfgCsvImporter::CalculateImportStatisticsJob.perform_later(import.id)
+        import.update_column(:status, NfgCsvImporter::Import::CALCULATING_STATISTICS_STATUS)
+      end
 
       # on valid steps
 
@@ -48,7 +56,7 @@ module NfgCsvImporter
       end
 
       def preview_confirmation_on_valid_step
-        return unless import.uploaded? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
+        return unless import.uploaded_or_calculating_statistics? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
         import.queued!
         NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         NfgCsvImporter::ProcessImportJob.perform_later(import.id)
