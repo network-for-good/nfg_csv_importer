@@ -32,11 +32,33 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
     let(:name) { 'test.csv' }
     subject { put :update, params }
 
-    context 'when processing an import' do
+
+    context 'when the step is preview confirmation' do
       before { NfgCsvImporter::ProcessImportJob.expects(:perform_later) }
 
       it "should send mail on import is queued" do
         NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
+        subject
+      end
+    end
+
+    context 'when the current step is upload_post_processing' do
+      let(:step) { 'upload_post_processing' }
+
+      it 'resets statistics' do
+        NfgCsvImporter::Import.any_instance.expects(:update_column).with(:statistics, nil)
+        subject
+      end
+    end
+
+    context 'when the current step is upload_preprocessing' do
+      let(:step) { 'upload_preprocessing' }
+      let(:post_preprocessing_upload_hook) { mock('post_preprocessing_upload_hook', call: mock('result', status: :success)) }
+
+      before { file_origination_type.expects(:post_preprocessing_upload_hook).returns(post_preprocessing_upload_hook) }
+
+      it 'resets statistics' do
+        NfgCsvImporter::Import.any_instance.expects(:update_column).with(:statistics, nil)
         subject
       end
     end
