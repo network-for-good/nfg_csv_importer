@@ -67,6 +67,8 @@ module NfgCsvImporter
         # the import_type step is skipped if the admin only have access
         # to a single import definition.
         session[:onboarding_import_data_import_id] = form.model.id
+
+        # Because the user may have added or removed files, we can't assume that the statistics previously calculated are still valid, so we blank them out.
         import.update_column(:statistics, nil) if import&.persisted?
 
         # you can add logic here to perform actions once a step has completed successfully
@@ -89,6 +91,8 @@ module NfgCsvImporter
         #   # we use form.model here because `import` was memoized
         #   # as a new import and won't be updated on this cycle
         result = file_origination_type.post_preprocessing_upload_hook.call(form.model, { note: get_note })
+
+        # Because the user may have added or removed files, we can't assume that the statistics previously calculated are still valid, so we blank them out.
         form.model.update_column(:statistics, nil) if form.model&.persisted? && form.model&.respond_to?(:statistics)
 
         if result.status == :success
