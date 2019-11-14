@@ -242,7 +242,7 @@ module NfgCsvImporter
 
       def update_file_origination_type_if_it_has_changed(import)
         return unless import&.file_origination_type
-        if file_origination_type_name&.downcase != import.file_origination_type.formatted_type_sym
+        if file_origination_type_name.downcase != import.file_origination_type.formatted_type_sym
           import.file_origination_type = file_origination_type_name
           import.reset_attributes_on_file_origination_type_change
           reset_note
