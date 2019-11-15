@@ -54,7 +54,7 @@ describe "Importing your own spreadsheet", js: true do
   end
 
   context 'when the import is marked as deleting' do
-    it 'takes the user through a new import' do
+    it 'it takes the user to a new import state from the index page' do
       navigating_till_user_import_type
       import = NfgCsvImporter::Import.last
       navigating_from_overview_to_finish(import: import)
