@@ -4,6 +4,7 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
   let(:manager) { described_class.new(config) }
   let(:file_type_class) { NfgCsvImporter::FileOriginationTypes::FileOriginationType }
   let(:config) { OpenStruct.new(additional_file_origination_types: file_types) }
+  let(:file_types) { [] }
 
   let(:default_file_type_sym) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
 
@@ -92,6 +93,16 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
         expect(subject).to be_a(file_type_class)
         expect(subject.type_sym).to eq(file_type_name.to_sym)
       end
+    end
+  end
+
+  describe "#types_available_for" do
+    let(:user) { create(:user) }
+    subject { manager.types_available_for(user: user) }
+
+    it 'calls the file type to see if current user can access it' do
+      "NfgCsvImporter::FileOriginationTypes::#{default_file_type_sym.to_s.camelize}".constantize.expects(:can_be_viewed_by?).with(user)
+      subject
     end
   end
 end
