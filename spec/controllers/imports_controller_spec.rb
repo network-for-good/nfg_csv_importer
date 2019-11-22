@@ -103,14 +103,18 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#destroy" do
-    let!(:import) { create(:import, imported_for: entity, status: 'complete') }
+    let(:import) { create(:import, imported_for: entity, imported_by: user, status: 'complete') }
     let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
+    let(:session_id) { '123' }
+    let(:import_id) { import.id }
 
     before do
       NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
       NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
+      session[:onboarding_session_id] = session_id
+      session[:onboarding_import_data_import_id] = import_id
     end
 
     subject { delete :destroy, params }
@@ -136,6 +140,43 @@ describe NfgCsvImporter::ImportsController do
       subject
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
+    end
+
+    context 'when import is being deleted by the user who created it' do
+      context 'when the session import id is same as the import id' do
+        it 'resets user session id' do
+          expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+        end
+
+        it 'resets user session onboarding_import_data_import_id' do
+          expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+        end
+      end
+
+      context 'when the session import id is not same as the import id' do
+        let(:import_id) { '2343' }
+
+        it 'does not reset user session id' do
+          expect{subject}.to_not change { session[:onboarding_session_id] }
+        end
+
+        it 'does not reset user session onboarding_import_data_import_id' do
+          expect{subject}.to_not change { session[:onboarding_import_data_import_id] }
+        end
+      end
+    end
+
+    context 'when import is being deleted by the user who did not create it' do
+      let(:another_user) { create(:user) }
+      let(:import) { create(:import, imported_for: entity, imported_by: another_user, status: 'complete') }
+
+      it 'does not reset user session id' do
+        expect{subject}.to_not change { session[:onboarding_session_id] }
+      end
+
+      it 'does not reset user session onboarding_import_data_import_id' do
+        expect{subject}.to_not change { session[:onboarding_import_data_import_id] }
+      end
     end
 
     context "when the import can't be deleted by the current user" do

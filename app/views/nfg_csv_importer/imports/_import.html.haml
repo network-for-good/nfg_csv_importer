@@ -33,7 +33,7 @@
               = fa_icon "info-circle", class: "m-r-quarter", text: t("links.details", scope: language_scope)
 
           - if import_presenter.show_slat_actions?
-            %a.btn.btn-secondary.dropdown-toggle{"data-toggle" => "dropdown"}
+            %a.btn.btn-secondary.dropdown-toggle{"data-toggle" => "dropdown", data: { describe: "import_dropdown-#{import.id}" }}
               = fa_icon 'chevron-down'
             .dropdown-menu.dropdown-menu-right{:role => "menu"}
               -if import_presenter.show_download_link?

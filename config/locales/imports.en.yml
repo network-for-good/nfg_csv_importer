@@ -37,6 +37,7 @@ en:
           edit_import: "Once an import has been submitted, it's no longer editable"
         status:
           uploaded: "In-process"
+          deleted: "Deleted"
         confirmations:
           delete: "Are you sure want to delete this import?"
       new:
