@@ -17,7 +17,7 @@ module NfgCsvImporter
 
       expose(:onboarding_group_steps) { [] } # this should be removed if you are using a group step controller as a parent of this controller
       expose(:file_type_manager) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration) }
-      expose(:file_origination_types) { file_type_manager.types }
+      expose(:file_origination_types) { file_type_manager.types.select { |type| type.type_class.can_be_viewed_by?(current_admin) } }
       expose(:file_origination_type_name) { get_file_origination_type_name }
       expose(:file_origination_type) { get_file_origination_type }
       expose(:import_definitions) { user_import_definitions(imported_for: imported_for, user: imported_by, definition_class: ::ImportDefinition, imported_by: imported_by)}

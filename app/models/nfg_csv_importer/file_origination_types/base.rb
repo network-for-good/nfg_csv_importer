@@ -103,6 +103,13 @@ module NfgCsvImporter
         def display_mappings
           true
         end
+
+        def can_be_viewed_by?(user)
+          # user arg gets used in the overridden method in donor management by
+          # individual_donation_with_groups file origination type to check if user
+          # has the permissions to view the import
+          true
+        end
       end
     end
   end

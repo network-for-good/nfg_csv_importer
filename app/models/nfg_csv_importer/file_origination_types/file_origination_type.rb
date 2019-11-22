@@ -3,7 +3,7 @@
 module NfgCsvImporter
   module FileOriginationTypes
     class FileOriginationType
-      attr_accessor :type_sym
+      attr_accessor :type_sym, :type_class
 
       def self.attrs
         [:name, :requires_preprocessing_files, :allowed_import_types, :post_preprocessing_upload_hook, :field_mapping,
@@ -18,6 +18,7 @@ module NfgCsvImporter
 
       def initialize(file_type_sym, type_klass)
         @type_sym = file_type_sym
+        @type_class = type_klass
         self.class.attrs.each do |attr|
           self.send("#{attr}=", type_klass.send(attr))
         end
