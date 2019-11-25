@@ -133,6 +133,15 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
     render json: {}, status: :not_found
   end
 
+  def disable_import_initiation_message
+    return if NfgCsvImporter::Configuration.disable_import_initiation_message.nil?
+
+    return unless NfgCsvImporter::Configuration.disable_import_initiation_message.respond_to?(:call)
+
+    NfgCsvImporter::Configuration.disable_import_initiation_message.call(current_user)
+  end
+  helper_method :disable_import_initiation_message
+
   protected
   # the standard event tracking (defined in application controller) attempts to include
   # the imported file, which crashes the write to the db. So here we only track the type of import
@@ -160,5 +169,4 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def iframe_param_present?
     params[:iframe].present?
   end
-
 end

@@ -278,4 +278,42 @@ describe NfgCsvImporter::ImportsController do
       end
     end
   end
+
+  describe '#disable_import_initiation_message' do
+    before do
+      NfgCsvImporter::Configuration.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
+    end
+
+    subject { controller.disable_import_initiation_message }
+
+    context "when nothing has been configured for the disable_import_initiation_message configuration" do
+      let(:disable_import_initiation_message) { nil }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when disable_import_initiation_message has been configured, but not with a callable object" do
+      let(:disable_import_initiation_message) { 'true' }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context 'when disable_import_initiation_message is callable' do
+      let(:disable_import_initiation_message) { ->(user) { "I am here" } }
+
+      it 'returns the value returned from the proc' do
+        expect(subject).to eq("I am here")
+      end
+    end
+
+    # context "when the rails cache holds no value for the disable import initiate message" do
+    #   it 'is nil' do
+    #     expect(subject).to be_nil
+    #   end
+    # end
+  end
 end
