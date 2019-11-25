@@ -18,6 +18,7 @@
       config.from_address = Rails.configuration.default_from_address
       config.reply_to_address = Rails.configuration.default_from_address
       config.additional_file_origination_types = [:constant_contact, :sales_force, :kindful]
+      config.disable_import_initiation_message = ->(user) { user.can_import? ? nil : "You do not have permission to initiate an import" }
     end
     ````
 
@@ -28,6 +29,10 @@
     If the additional_file_origination_types is assigned no value, or is assigned an empty array, the user will not be given any file types to
     select and will proceed to select the type of import they want to
     complete.
+
+    #disable_import_initiation_message must be a proc that accepts the current user. It must return nil, or an html string that will be displayed the header area on the index page where new imports are kicked off from. It is likely that it would use some authorization scheme like CanCanCan or Pundit in this proc. Though it also could include a check for a Rails.cache key so it could be set at any time. It could also just always return nil, if users of the parent app can always import. If nothing is passed, or if something is passed that is not callable, imports will not be disabled.
+
+    This also disables completing an import that was not finished
 
 3. Add has_many relationships to any relevant models. Make sure you specify the foreign key.
 
