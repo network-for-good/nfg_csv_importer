@@ -8,17 +8,38 @@ RSpec.describe "nfg_csv_importer/imports/index.html.haml", type: :view do
   let(:import_traits) { [:is_complete, :is_paypal] }
   let!(:imports) { assign(:imports, [import]) }
   let(:tested_can_be_viewed_by) { false }
+  let(:disable_import_initiation_message) { nil }
 
   before do
     view.extend NfgCsvImporter::ImportsHelper
+    # TODO: the below works only because the two including applications expose
+    # current_user. Instead, we should have an nfg_importer_user that
+    # gets its value from the imported_by configuration setting. We  should
+    # also consider changing that to configuration setting from being a class
+    # to being the helper method in the included application (ie. current_user, current_admin, etc)
     view.stubs(:current_user).returns(current_user)
     view.stubs(:import).returns(import)
+    view.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
   end
 
   subject { render }
 
-  it 'renders the header with a CTA link' do
-    expect(subject).to have_css "[data-describe='import-data-onboarder-cta']"
+  context 'when disable_import_initiation_message returns nil' do
+    it 'renders the header with a CTA link' do
+      expect(subject).to have_css "[data-describe='import-data-onboarder-cta']"
+    end
+  end
+
+  context "when the disable_import_initiation_message returns a message" do
+    let(:disable_import_initiation_message) { 'No Imports Today' }
+
+    it 'does not render the header with a CTA link' do
+      expect(subject).not_to have_css "[data-describe='import-data-onboarder-cta']"
+    end
+
+    it 'displays the message from the disable_import_initiation_message' do
+      expect(subject).to have_content(disable_import_initiation_message)
+    end
   end
 
   describe 'the imports listing' do

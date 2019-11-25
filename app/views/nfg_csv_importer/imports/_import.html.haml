@@ -11,7 +11,7 @@
         %p.m-t-quarter.small= import.updated_at.to_s(:abrev_month_yyyy)
 
       %div{ class: 'col-md-3 m-b-half-down-sm' }
-        %h5{ data: { describe: 'file-origination-type' } }= import_presenter.file_origination_type_name
+        %h5{ data: { describe: 'file-origination-type' } }=   import_presenter.file_origination_type_name
         %p.m-t-quarter.small
           %strong= import_status_link(import)
 
@@ -23,8 +23,9 @@
 
       %div.text-xs-right{ class: 'col-md-2 m-b-half-down-sm' }
         .btn-group
-          - if import.pending_or_uploaded_or_calculating_statistics? # we need to disable turbolinks for this link as it sends multiple requests
-            = link_to edit_import_path(import), class: 'btn btn-secondary', data: { turbolinks: false } do
+          - if import.pending_or_uploaded_or_calculating_statistics? && disable_import_initiation_message.blank?
+            - # we need to disable turbolinks for this link as it sends multiple requests
+            = link_to nfg_csv_importer.edit_import_path(import), class: 'btn btn-secondary', data: { turbolinks: false, describe: 'edit-import' } do
               = fa_icon 'pencil'
               %span.m-l-quarter.hidden-sm-down= t("links.edit_import", scope: language_scope)
 
@@ -41,5 +42,5 @@
                   = fa_icon 'download', class: 'm-r-quarter', text: t("links.download", scope: language_scope)
 
               - if import.can_be_deleted?(current_user)
-                = link_to import_path(import), method: :delete, class: 'dropdown-item text-danger', data: { confirm: import_delete_confirmation(import) } do
+                = link_to nfg_csv_importer.import_path(import), method: :delete, class: 'dropdown-item text-danger', data: { confirm: import_delete_confirmation(import) } do
                   = fa_icon 'trash-o', class: 'm-r-quarter', text: t("links.delete_import", scope: language_scope)
