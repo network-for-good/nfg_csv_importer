@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NfgCsvImporter
   module Onboarding
     class ImportDataController < NfgCsvImporter::Onboarding::BaseController
@@ -176,7 +178,19 @@ module NfgCsvImporter
         # if still can't find it then we create a new onboarding session
         onboarding_sess = nil
         onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
-        onboarding_sess ||= get_import&.onboarding_session if params[:import_id]
+        import = onboarding_sess&.owner
+
+        if onboarding_sess.blank? && params[:import_id]
+          import = get_import
+          onboarding_sess = import&.onboarding_session
+        end
+
+        # We do not want to get onboarder session for imports to be deleted
+        if import&.deleting? || import&.deleted?
+          reset_onboarding_session
+          onboarding_sess = nil
+        end
+
         onboarding_sess ||= new_onboarding_session
         onboarding_sess.tap { |os| session[:onboarding_session_id] = os.id }
       end

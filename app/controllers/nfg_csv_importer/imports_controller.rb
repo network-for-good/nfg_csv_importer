@@ -96,6 +96,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
         NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
       end
+      reset_onboarder_session_variables if @import.imported_by&.id == current_user.id && session[:onboarding_import_data_import_id] == @import.id
       flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     end
 
@@ -108,8 +109,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def reset_onboarder_session
-    session[:onboarding_session_id] = nil
-    session[:onboarding_import_data_import_id] = nil
+    reset_onboarder_session_variables
     redirect_to nfg_csv_importer.imports_path
   end
 
@@ -169,4 +169,12 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   def iframe_param_present?
     params[:iframe].present?
   end
+
+  private
+
+  def reset_onboarder_session_variables
+    session[:onboarding_session_id] = nil
+    session[:onboarding_import_data_import_id] = nil
+  end
+
 end
