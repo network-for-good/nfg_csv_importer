@@ -134,11 +134,11 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
   end
 
   def disable_import_initiation_message
-    return if NfgCsvImporter::Configuration.disable_import_initiation_message.nil?
-
-    return unless NfgCsvImporter::Configuration.disable_import_initiation_message.respond_to?(:call)
-
-    NfgCsvImporter::Configuration.disable_import_initiation_message.call(current_user)
+    NfgCsvImporter.configuration.disable_import_initiation_message.call(current_user)
+  rescue
+    # we may get here if the disable_import_initiation_message is not configured
+    # or if it is not callable, or raises an error when called.
+    nil
   end
   helper_method :disable_import_initiation_message
 
