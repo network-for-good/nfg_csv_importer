@@ -9,10 +9,12 @@ RSpec.describe "nfg_csv_importer/imports/_imports.html.haml", type: :view do
   let(:current_user) { FactoryGirl.create(:user) }
   let(:imported_by) { current_user }
   let(:tested_can_be_viewed_by) { true }
+  let(:disable_import_initiation_message) { nil }
 
   before do
     view.stubs(:current_user).returns(current_user)
     import.stubs(:can_be_viewed_by).with(current_user).returns(tested_can_be_viewed_by)
+    view.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
   end
 
   subject { render partial: 'nfg_csv_importer/imports/import', locals: { import_presenter: import_presenter, import: import, imports_listing_row_column_structure_class: imports_listing_row_column_structure_class } }
@@ -33,6 +35,23 @@ RSpec.describe "nfg_csv_importer/imports/_imports.html.haml", type: :view do
 
       and_it 'displays the number of imported records' do
         expect(subject).to have_selector "[data-describe='amount-of-records-without-errors']", text: import.records_processed
+      end
+    end
+
+    context "and the import is not complete" do
+      let(:import_traits) { [:pending, :is_paypal] }
+      context 'and disable_import_initiation_message is nil' do
+        it 'shows the link to continue the import' do
+          expect(subject).to have_selector("[data-describe='edit-import']")
+        end
+      end
+
+      context 'and disable_import_initiation_message is not nil' do
+        let(:disable_import_initiation_message) { "you can't see it" }
+
+        it 'does not show the link to continue the import' do
+          expect(subject).not_to have_selector("[data-describe='edit-import']")
+        end
       end
     end
 
