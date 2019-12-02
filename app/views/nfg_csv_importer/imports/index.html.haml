@@ -6,7 +6,7 @@
       .container-fluid
         .row
           .col-xs-12.p-x-2.text-white
-            - if disable_import_initiation_message
+            - if disable_import_initiation_message.present?
               -# At times we need to not allow new imports to begin,
               -# such as on Giving Tuesday. The below variable
               -#  comes from the imports control controller method
