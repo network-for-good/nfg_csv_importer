@@ -59,9 +59,9 @@ module NfgCsvImporter
 
       def preview_confirmation_on_valid_step
         return unless import.uploaded_or_calculating_statistics? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
+        import.imported_by = imported_by
         import.queued!
         NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
-        import.update_attribute(:imported_by, imported_by)
         NfgCsvImporter::ProcessImportJob.perform_later(import.id)
       end
 
