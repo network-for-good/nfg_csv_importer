@@ -322,7 +322,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe '#disable_import_initiation_message' do
     before do
-      NfgCsvImporter::Configuration.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
+      NfgCsvImporter.configuration.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
     end
 
     subject { controller.disable_import_initiation_message }
@@ -350,11 +350,5 @@ describe NfgCsvImporter::ImportsController do
         expect(subject).to eq("I am here")
       end
     end
-
-    # context "when the rails cache holds no value for the disable import initiate message" do
-    #   it 'is nil' do
-    #     expect(subject).to be_nil
-    #   end
-    # end
   end
 end
