@@ -20,10 +20,7 @@ describe NfgCsvImporter::DestroyImportJob do
     end
   end
 
-  describe "For the last batch that is processed" do
-    let(:number_of_imported_records) { 2 }
-    let(:batch) { imported_records.map(&:id)}
-
+  shared_examples_for "processing after the last batch" do
     it "sends the notification email" do
       NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
       subject
@@ -34,12 +31,45 @@ describe NfgCsvImporter::DestroyImportJob do
       expect(import.reload.status).to eql("deleted")
     end
 
-    it_behaves_like "destroying the imported record"
-
     it 'enqueues a queued status email' do
       NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
       subject
     end
+  end
+
+  describe "For the last batch that is processed" do
+    let(:number_of_imported_records) { 2 }
+    let(:batch) { imported_records.map(&:id)}
+
+    it_behaves_like "processing after the last batch"
+
+    it_behaves_like "destroying the imported record"
+
+    context 'when there is a record that was created' do
+      context 'when there is a record that cannot be destroyed' do
+        let!(:non_deletable_user) { create(:user, email: 'some@example.com') }
+        let!(:non_deletable_record) { create(:imported_record, importable: non_deletable_user, import: import, imported_for: entity) }
+        let(:batch) { imported_records.map(&:id) << non_deletable_record.id }
+
+        before do
+          User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true)
+        end
+
+        it_behaves_like "processing after the last batch"
+      end
+    end
+
+    context 'when there is a record that was updated' do
+      context 'when there is a record that cannot be destroyed' do
+        let!(:updated_user) { create(:user, email: 'some@example.com') }
+        let!(:updated_record) { create(:imported_record, importable: updated_user, action: 'updated', import: import, imported_for: entity) }
+        let(:batch) { imported_records.map(&:id) << updated_record.id }
+
+        it_behaves_like "processing after the last batch"
+      end
+    end
+
+
   end
 
   describe "For previous batches" do
