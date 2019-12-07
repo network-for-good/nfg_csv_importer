@@ -51,9 +51,7 @@ describe NfgCsvImporter::DestroyImportJob do
         let!(:non_deletable_record) { create(:imported_record, importable: non_deletable_user, import: import, imported_for: entity) }
         let(:batch) { imported_records.map(&:id) << non_deletable_record.id }
 
-        before do
-          User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true)
-        end
+        before { User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true) }
 
         it_behaves_like "processing after the last batch"
       end
