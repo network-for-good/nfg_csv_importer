@@ -12,7 +12,6 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   scope :by_transaction_id,lambda { |transaction_id| includes(:importable).where(transaction_id:transaction_id)}
   scope :created, -> { where(action: 'create') }
-  scope :non_deletable, -> { where(action: NON_DELETABLE_ACTION) }
 
   NON_DELETABLE_ACTION = 'non_deletable'
 
