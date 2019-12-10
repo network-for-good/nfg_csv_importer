@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 0cc27ab49dedd3cc53d4b22a04503b6daceffa6b
+  revision: a96737a5659dee0a5bd34e39363757b117725611
   branch: feature/PSTWO-14325_upgrade_browser_gem
   specs:
-    nfg_ui (0.9.26)
+    nfg_ui (0.10)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
