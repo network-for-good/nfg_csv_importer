@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: a530b3e777f5b254187884c49a7ecd1e9c654365
+  revision: 0cc27ab49dedd3cc53d4b22a04503b6daceffa6b
   branch: feature/PSTWO-14325_upgrade_browser_gem
   specs:
     nfg_ui (0.9.26)
