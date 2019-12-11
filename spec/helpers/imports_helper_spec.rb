@@ -15,16 +15,26 @@ describe NfgCsvImporter::ImportsHelper do
 
     it { expect(subject).not_to be }
 
-    context "when the device is mobile" do
-      before { Browser.any_instance.stubs(:mobile?).returns(true) }
+    describe 'touch devices' do
+      let(:browser) { Browser.new('some-agent') }
+      let(:is_tablet) { false }
+      let(:is_mobile) { false }
 
-      it { expect(subject).to be }
-    end
+      before do
+        helper.stubs(:browser).returns(browser)
+        browser.stubs(:mobile?).returns(is_mobile)
+        browser.stubs(:tablet?).returns(is_tablet)
+      end
 
-    context "when the device is tablet" do
-      before { Browser.any_instance.stubs(:tablet?).returns(true) }
+      context "when the device is mobile" do
+        let(:is_mobile) { true }
+        it { expect(subject).to be }
+      end
 
-      it { expect(subject).to be }
+      context "when the device is tablet" do
+        let(:is_tablet) { true }
+        it { expect(subject).to be }
+      end
     end
   end
 
