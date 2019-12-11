@@ -11,7 +11,6 @@ gemspec
 # your gem to rubygems.org.
 
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'rails_5'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'feature/PSTWO-14325_upgrade_browser_gem'
 gem 'reform-rails', '~> 0.1.7'
 
 group :development do
