@@ -9,6 +9,9 @@ require "font-awesome-rails"
 require "browser"
 
 module NfgCsvImporter
+  require "browser/aliases"
+  Browser::Base.include(Browser::Aliases)
+
   module ApplicationHelper
     def method_missing(method, *args, &block)
       if (method.to_s.end_with?('_path') || method.to_s.end_with?('_url')) && main_app.respond_to?(method)
