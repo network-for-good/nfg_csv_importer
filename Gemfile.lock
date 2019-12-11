@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: a96737a5659dee0a5bd34e39363757b117725611
+  revision: 3489c9bda1553cada279751f1c3be477d89b5ce0
   branch: feature/PSTWO-14325_upgrade_browser_gem
   specs:
     nfg_ui (0.10)
@@ -125,7 +125,7 @@ GEM
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
     browser (2.7.1)
-    builder (3.2.3)
+    builder (3.2.4)
     byebug (9.0.6)
     capybara (2.18.0)
       addressable
