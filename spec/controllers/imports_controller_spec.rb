@@ -111,7 +111,6 @@ describe NfgCsvImporter::ImportsController do
 
     before do
       NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
-      NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
       session[:onboarding_session_id] = session_id
       session[:onboarding_import_data_import_id] = import_id
@@ -140,6 +139,15 @@ describe NfgCsvImporter::ImportsController do
       subject
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
+    end
+
+    context 'when there is a non deletable record before the last batch' do
+      before { User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true) }
+
+      it "sets the import's status to deleting" do
+        subject
+        expect(import.reload.status).to eql("deleting")
+      end
     end
 
     context 'when import is being deleted by the user who created it' do
