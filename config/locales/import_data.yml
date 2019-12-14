@@ -6,6 +6,7 @@ en:
           back: 'Prev'
           submit: 'Next'
       import_data:
+        invalid_step_error: "Oops! We ran into an unexpected problem. Use the edit button(s) below to continue an import or start a new one by clicking \"Begin Your Import\" above."
         invalid_headers: 'Error validating the headers for the import'
         file_extension: "The %{str_1} must be of %{valid_files} %{str_2}."
         title_bar:

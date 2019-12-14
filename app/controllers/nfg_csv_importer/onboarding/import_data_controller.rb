@@ -9,6 +9,12 @@ module NfgCsvImporter
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
+      rescue_from Wicked::Wizard::InvalidStepError do |e|
+        reset_onboarding_session
+        flash[:error] = I18n.t('nfg_csv_importer.onboarding.import_data.invalid_step_error')
+        redirect_to imports_path
+      end
+
       # we do this so we can access the list of steps from outside the onboarder
       def self.step_list
         %i[file_origination_type_selection upload_preprocessing import_type overview upload_post_processing field_mapping preview_confirmation finish]
