@@ -17,7 +17,11 @@ describe "Importing your own spreadsheet", js: true do
 
     and_by 'exiting' do
       click_link('Exit')
+      sleep 10
     end
+
+    page.go_back
+    expect(page).to have_text I18n.t('nfg_csv_importer.onboarding.import_data.invalid_step_error')
 
     and_by 'clicking on edit while the import is still pending' do
       click_link ('Edit')

@@ -150,33 +150,22 @@ describe NfgCsvImporter::ImportsController do
       end
     end
 
-    context 'when import is being deleted by the user who created it' do
-      context 'when the session import id is same as the import id' do
-        it 'resets user session id' do
-          expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
-        end
-
-        it 'resets user session onboarding_import_data_import_id' do
-          expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
-        end
+    context 'when the session import id is same as the import id' do
+      it 'resets user session id' do
+        expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
       end
 
-      context 'when the session import id is not same as the import id' do
-        let(:import_id) { '2343' }
-
-        it 'does not reset user session id' do
-          expect{subject}.to_not change { session[:onboarding_session_id] }
-        end
-
-        it 'does not reset user session onboarding_import_data_import_id' do
-          expect{subject}.to_not change { session[:onboarding_import_data_import_id] }
-        end
+      it 'resets user session onboarding_import_data_import_id' do
+        expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
       end
     end
 
-    context 'when import is being deleted by the user who did not create it' do
-      let(:another_user) { create(:user) }
-      let(:import) { create(:import, imported_for: entity, imported_by: another_user, status: 'complete') }
+    it 'resets user session onboarding_import_data_import_id' do
+      expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+    end
+
+    context 'when the session import id is not same as the import id' do
+      let(:import_id) { '2343' }
 
       it 'does not reset user session id' do
         expect{subject}.to_not change { session[:onboarding_session_id] }
