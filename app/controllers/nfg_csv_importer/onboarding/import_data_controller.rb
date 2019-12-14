@@ -9,6 +9,8 @@ module NfgCsvImporter
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
+      # This can happen if you're in the onboarder, click edit, then click the browser
+      # back button from the import list.
       rescue_from Wicked::Wizard::InvalidStepError do |e|
         reset_onboarding_session
         flash[:error] = I18n.t('nfg_csv_importer.onboarding.import_data.invalid_step_error')
