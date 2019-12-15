@@ -17,7 +17,6 @@ describe "Importing your own spreadsheet", js: true do
 
     and_by 'exiting' do
       click_link('Exit')
-      sleep 10
     end
 
     and_by 'clicking on edit while the import is still pending' do
