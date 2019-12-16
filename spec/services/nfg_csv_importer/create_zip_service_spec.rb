@@ -6,6 +6,7 @@ RSpec.describe NfgCsvImporter::CreateZipService do
   let(:user) { create(:user) }
   let(:model) { import }
   let(:attr) { 'pre_processing_files' }
+  let(:filename) { 'paypal_sample_file_1.xlsx' }
 
   describe '#call' do
     let(:folder) { "tmp/archive_#{user.id}"}
@@ -22,11 +23,16 @@ RSpec.describe NfgCsvImporter::CreateZipService do
       end
 
       let!(:import) { create(:import, :with_pre_processing_files) }
+      let(:zip_file) { "#{folder}/#{import.class.name}_#{import.id}.zip" }
 
       it 'creates a zip file' do
         expect{ subject }.to change {
-          File.file?("#{folder}/#{import.class.name}_#{import.id}.zip")
+          File.file?(zip_file)
         }.from(false).to(true)
+
+        # open zip file and check if it contains the right file name
+        names = Zip::File.open(zip_file) { |zip| zip.entries.map(&:name) }
+        expect(names).to eq([filename])
       end
     end
 
