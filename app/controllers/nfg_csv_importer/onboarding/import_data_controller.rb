@@ -178,12 +178,16 @@ module NfgCsvImporter
         # we have to find the onboarding session first from the user session, if we can't find it then we need to look at the params
         # if still can't find it then we create a new onboarding session
         onboarding_sess = nil
-        onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
-        import = onboarding_sess&.owner
+        import = nil
 
-        if onboarding_sess.blank? && params[:import_id]
+        if params[:import_id].present?
           import = get_import
           onboarding_sess = import&.onboarding_session
+        end
+
+        if onboarding_sess.blank? && session[:onboarding_session_id].present?
+          onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id])
+          import = onboarding_sess&.owner
         end
 
         # We do not want to get onboarder session for imports to be deleted
