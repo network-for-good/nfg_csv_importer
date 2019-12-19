@@ -185,7 +185,7 @@ module NfgCsvImporter
           onboarding_sess = import&.onboarding_session
         end
 
-        if onboarding_sess.blank? && session[:onboarding_session_id].present?
+        if import.nil? && session[:onboarding_session_id].present?
           onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id])
           import = onboarding_sess&.owner
         end
