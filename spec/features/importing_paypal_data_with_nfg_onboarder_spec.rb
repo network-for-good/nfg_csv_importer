@@ -122,4 +122,35 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       expect(page).to have_content I18n.t('nfg_csv_importer.imports.show.imported_by')
     end
   end
+
+  context 'when creating two simultaneous imports' do
+    it 'succesfully shifts to the right import when editing' do
+      visiting_till_the_preview_confirmation_page
+
+      and_by 'visiting the imports index page' do
+        click_link "Exit"
+      end
+
+      and_by 'opening a new tab and switching to it' do
+        open_new_window
+        switch_to_window windows.last
+      end
+
+      and_by 'starting a new import on the new tab' do
+        visiting_till_the_file_origination_type_selection_page
+      end
+
+      and_by 'switching to the first tab with index page again' do
+        switch_to_window windows.first
+      end
+
+      and_by 'clicking the edit button of the first import' do
+        click_link "Edit"
+      end
+
+      and_it 'takes the user to the preview_confirmation page' do
+        expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.preview_confirmation"
+      end
+    end
+  end
 end
