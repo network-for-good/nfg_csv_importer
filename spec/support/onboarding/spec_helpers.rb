@@ -33,17 +33,7 @@ def visiting_till_the_preview_confirmation_page
 end
 
 def visiting_till_the_upload_preprocessing_page
-  by 'visiting the index page' do
-    visit nfg_csv_importer.imports_path
-  end
-
-  and_by 'clicking the get started link' do
-    page.find("[data-describe='import-data-onboarder-cta']").click
-  end
-
-  and_it 'takes the user to the onboarder at the first step - file origination type selection' do
-    expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.file_origination_type_selection"
-  end
+  visiting_till_the_file_origination_type_selection_page
 
   and_by 'selecting a file origination type' do
     page.find("label[for='nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_#{file_origination_type}']").click
@@ -55,6 +45,20 @@ def visiting_till_the_upload_preprocessing_page
 
   and_it 'takes the user to the upload_preprocessing step' do
     expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing.#{file_origination_type}"
+  end
+end
+
+def visiting_till_the_file_origination_type_selection_page
+  by 'visiting the index page' do
+    visit nfg_csv_importer.imports_path
+  end
+
+  and_by 'clicking the get started link' do
+    page.find("[data-describe='import-data-onboarder-cta']").click
+  end
+
+  and_it 'takes the user to the onboarder at the first step - file origination type selection' do
+    expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.file_origination_type_selection"
   end
 end
 

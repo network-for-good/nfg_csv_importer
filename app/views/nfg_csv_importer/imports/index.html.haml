@@ -16,7 +16,7 @@
               %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
               - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
               = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
-  .container-fluid
+  .container-fluid.p-t-base-half
     = render(partial: 'shared/flash_messages') rescue nil
     .row
       .col-xs-12

@@ -9,6 +9,14 @@ module NfgCsvImporter
 
       layout 'nfg_csv_importer/layouts/onboarding/import_data/layout'
 
+      # This can happen if you're in the onboarder, click edit, then click the browser
+      # back button from the import list.
+      rescue_from Wicked::Wizard::InvalidStepError do |e|
+        reset_onboarding_session
+        flash[:error] = I18n.t('nfg_csv_importer.onboarding.import_data.invalid_step_error')
+        redirect_to imports_path
+      end
+
       # we do this so we can access the list of steps from outside the onboarder
       def self.step_list
         %i[file_origination_type_selection upload_preprocessing import_type overview upload_post_processing field_mapping preview_confirmation finish]
@@ -178,12 +186,16 @@ module NfgCsvImporter
         # we have to find the onboarding session first from the user session, if we can't find it then we need to look at the params
         # if still can't find it then we create a new onboarding session
         onboarding_sess = nil
-        onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id]) if session[:onboarding_session_id]
-        import = onboarding_sess&.owner
+        import = nil
 
-        if onboarding_sess.blank? && params[:import_id]
+        if params[:import_id].present?
           import = get_import
           onboarding_sess = import&.onboarding_session
+        end
+
+        if import.nil? && session[:onboarding_session_id].present?
+          onboarding_sess = ::Onboarding::Session.find_by(id: session[:onboarding_session_id])
+          import = onboarding_sess&.owner
         end
 
         # We do not want to get onboarder session for imports to be deleted

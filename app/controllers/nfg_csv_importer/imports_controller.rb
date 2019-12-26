@@ -96,10 +96,10 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
         NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
       end
-      reset_onboarder_session_variables if @import.imported_by&.id == current_user.id && session[:onboarding_import_data_import_id] == @import.id
       flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     end
 
+    reset_onboarder_session_variables if session[:onboarding_import_data_import_id].to_i == @import.id
     redirect_to imports_path
   end
 
