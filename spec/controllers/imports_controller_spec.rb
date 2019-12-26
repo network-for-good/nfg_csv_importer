@@ -111,7 +111,6 @@ describe NfgCsvImporter::ImportsController do
 
     before do
       NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
-      NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
       session[:onboarding_session_id] = session_id
       session[:onboarding_import_data_import_id] = import_id
@@ -142,9 +141,24 @@ describe NfgCsvImporter::ImportsController do
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
     end
 
-    context 'when the session import id is same as the import id' do
-      it 'resets user session id' do
-        expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+    context 'when there is a non deletable record before the last batch' do
+      before { User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true) }
+
+      it "sets the import's status to deleting" do
+        subject
+        expect(import.reload.status).to eql("deleting")
+      end
+    end
+
+    context 'when import is being deleted by the user who created it' do
+      context 'when the session import id is same as the import id' do
+        it 'resets user session id' do
+          expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+        end
+
+        it 'resets user session onboarding_import_data_import_id' do
+          expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+        end
       end
 
       it 'resets user session onboarding_import_data_import_id' do

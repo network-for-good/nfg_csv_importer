@@ -18,6 +18,8 @@ describe NfgCsvImporter::ImportedRecord do
       imported_record.destroy
       expect(imported_record.destroyed?).to be_truthy
     end
+
+    it { is_expected.to be_truthy }
   end
 
   describe "destroying imported records" do
@@ -44,6 +46,10 @@ describe NfgCsvImporter::ImportedRecord do
       it "does not delete itself" do
         imported_record.destroy_importable!
         expect(imported_record.deleted?).to be_falsey
+      end
+
+      it 'should return false' do
+        expect(imported_record.destroy_importable!).to be_falsey
       end
     end
 

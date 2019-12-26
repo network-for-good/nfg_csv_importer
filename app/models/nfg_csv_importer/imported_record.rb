@@ -13,6 +13,8 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   scope :by_transaction_id,lambda { |transaction_id| includes(:importable).where(transaction_id:transaction_id)}
   scope :created, -> { where(action: 'create') }
 
+  NON_DELETABLE_ACTION = 'non_deletable'
+
   def self.batch_size
     500
   end
@@ -30,7 +32,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
         else
           # If the importable can't be destroyed, log it and return.
           log_importable_to(:undestroyable)
-          return
+          return false
         end
       else
         # If the importable doesn't respond to :can_be_destroyed?, then we'll
@@ -38,6 +40,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
         destroy_imported_record
       end
     end
+    true
   end
 
   def created?
