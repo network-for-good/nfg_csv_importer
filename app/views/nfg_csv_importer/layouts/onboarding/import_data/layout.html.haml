@@ -9,6 +9,8 @@
     = javascript_include_tag "nfg_csv_importer/onboarding/application", "data-turbolinks-track" => "reload"
     = csrf_meta_tags
   %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:file_origination_type).try(:type_sym)}" }
+    -# Allow host app to supply a partial for opening the page.
+    = render(partial: 'shared/after_opening_body_alert') rescue nil
     = yield :after_opening_body
     = yield
     = yield :before_closing_body
