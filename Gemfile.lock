@@ -10,25 +10,6 @@ GIT
       reform
       wicked
 
-GIT
-  remote: https://github.com/network-for-good/nfg_ui
-  revision: b57c48febc61dc881185bff96acc8b646331faf7
-  branch: feature/DM-6369_TURBOLINKS_introduce_conversion_tracker_for_nfg_ui_conversion
-  specs:
-    nfg_ui (0.10.5)
-      autoprefixer-rails (= 9.4.9)
-      bootstrap (= 4.3.1)
-      browser (~> 2.7.1)
-      coffee-script (~> 2.4)
-      font-awesome-rails (~> 4.7)
-      inky-rb (~> 1.3.7)
-      jquery-rails (~> 4.3)
-      momentjs-rails (~> 2.11, >= 2.11.1)
-      nokogiri (>= 1.10.4)
-      rails (>= 4.2.0)
-      sass-rails (~> 5.0)
-      select2-rails (~> 4.0)
-
 PATH
   remote: .
   specs:
@@ -39,6 +20,7 @@ PATH
       haml
       jquery-rails
       nfg_onboarder (~> 0.0.3)
+      nfg_ui (~> 0.10)
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 5.0)
       reform-rails (~> 0.1.7)
@@ -212,7 +194,7 @@ GEM
       mimemagic (~> 0.3.2)
     metaclass (0.0.4)
     method_source (0.8.2)
-    mimemagic (0.3.3)
+    mimemagic (0.3.4)
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -221,6 +203,19 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
+    nfg_ui (0.10.5)
+      autoprefixer-rails (= 9.4.9)
+      bootstrap (= 4.3.1)
+      browser (~> 2.7.1)
+      coffee-script (~> 2.4)
+      font-awesome-rails (~> 4.7)
+      inky-rb (~> 1.3.7)
+      jquery-rails (~> 4.3)
+      momentjs-rails (~> 2.11, >= 2.11.1)
+      nokogiri (>= 1.10.4)
+      rails (>= 4.2.0)
+      sass-rails (~> 5.0)
+      select2-rails (~> 4.0)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -241,7 +236,7 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     puma (3.11.4)
-    rack (2.1.1)
+    rack (2.1.2)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.1)
@@ -395,7 +390,6 @@ DEPENDENCIES
   factory_girl_rails
   nfg_csv_importer!
   nfg_onboarder!
-  nfg_ui!
   pry
   pry-byebug
   puma
