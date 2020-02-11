@@ -16,13 +16,13 @@ describe NfgCsvImporter::ImportsHelper do
     it { expect(subject).not_to be }
 
     context "when the device is mobile" do
-      before { Browser.any_instance.stubs(:mobile?).returns(true) }
+      before { Browser::Device.any_instance.stubs(:mobile?).returns(true) }
 
       it { expect(subject).to be }
     end
 
     context "when the device is tablet" do
-      before { Browser.any_instance.stubs(:tablet?).returns(true) }
+      before { Browser::Device.any_instance.stubs(:tablet?).returns(true) }
 
       it { expect(subject).to be }
     end
