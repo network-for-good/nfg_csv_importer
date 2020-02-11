@@ -9,3 +9,5 @@ spec/test_app/.sass-cache
 vendor/bundle
 spec/test_app/public/uploads
 .solano*
+.idea/
+spec/test_app/config/api-keys.yml
