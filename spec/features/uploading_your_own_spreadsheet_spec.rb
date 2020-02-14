@@ -7,6 +7,8 @@ describe "Importing your own spreadsheet", js: true do
   let(:admin) { create(:user) }
 
   let(:path_to_file) { File.expand_path('spec/fixtures/subscribers.csv') }
+  let(:path_to_new_file) { File.expand_path('spec/fixtures/subscribers_copy.csv') }
+  let(:expected_user_count) { 2 }
 
   before do
     visit nfg_csv_importer.imports_path
@@ -29,7 +31,7 @@ describe "Importing your own spreadsheet", js: true do
 
     import = NfgCsvImporter::Import.last
 
-    navigating_from_overview_to_finish(import: import)
+    navigating_from_overview_to_finish(import: import, expected_user_count: expected_user_count)
 
     and_by "finishing the import process by leaving the onboarder" do
       # finish
@@ -53,11 +55,52 @@ describe "Importing your own spreadsheet", js: true do
     end
   end
 
+  context 'when file is re-uploaded and file name changes' do
+    let(:expected_user_count) { 3 } # new file has all valid records
+
+    it 'Walks the admin through uploading/mapping/importing their own spreadsheet' do
+      navigating_till_user_import_type
+      expect(page).to have_content(I18n.t('nfg_csv_importer.onboarding.import_data.overview.header.page'))
+
+      import = NfgCsvImporter::Import.last
+
+      navigating_from_overview_to_finish(import: import, expected_user_count: expected_user_count) do
+        and_by 'clicking the previous button' do
+          click_link "Prev"
+        end
+
+        and_by 'selecting a new file' do
+          # upload_post_processing
+          attach_file 'nfg_csv_importer_onboarding_import_data_upload_post_processing_import_file', path_to_new_file, visible: false
+          click_next_button_for('upload_post_processing')
+        end
+      end
+
+      and_by "finishing the import process by leaving the onboarder" do
+        # finish
+        expect(page).to have_text "You've finished this import"
+        click_next_button_for('finish')
+        # back to the import list
+        expect(page.current_path).to eq '/imports/'
+      end
+
+      and_by 'visiting the show page' do
+        page.find("#import_#{import.id} [data-describe='import-details']").click
+      end
+
+      and_it 'shows the correct file name' do
+        within "[data-describe='user-generated-import-file']" do
+          expect(page).to have_content File.basename(path_to_new_file)
+        end
+      end
+    end
+  end
+
   context 'when the import is marked as deleting' do
     it 'it takes the user to a new import state from the index page' do
       navigating_till_user_import_type
       import = NfgCsvImporter::Import.last
-      navigating_from_overview_to_finish(import: import)
+      navigating_from_overview_to_finish(import: import, expected_user_count: expected_user_count)
 
       and_by "finishing the import process by leaving the onboarder using direct page refresh" do
         # finish
