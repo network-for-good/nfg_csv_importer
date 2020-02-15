@@ -1,5 +1,4 @@
 class ImportFileUploader < CarrierWave::Uploader::Base
-  before :cache, :update_filename_if_changed
   before :cache, :save_original_filename
 
   def store_dir
@@ -23,11 +22,7 @@ class ImportFileUploader < CarrierWave::Uploader::Base
 
   private
 
-  def update_filename_if_changed(file)
-    model.import_file_name = file.filename if model.import_file_name.present? && model.import_file_name != file.filename
-  end
-
   def save_original_filename(file)
-    model.import_file_name ||= file.original_filename if file.respond_to?(:original_filename)
+    model.import_file_name = file.original_filename if file.respond_to?(:original_filename)
   end
 end
