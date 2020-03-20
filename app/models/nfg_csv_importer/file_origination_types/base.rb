@@ -103,6 +103,12 @@ module NfgCsvImporter
         def display_mappings
           true
         end
+
+        def can_be_viewed_by?(user)
+          # this could get overridden by a child class if
+          # that child needs to control what users can access that file origination type.
+          true
+        end
       end
     end
   end
