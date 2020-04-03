@@ -12,6 +12,7 @@ gemspec
 
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'rails_5'
 gem 'reform-rails', '~> 0.1.7'
+gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'dependabot/bundler/actionview-5.2.4.2'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better
