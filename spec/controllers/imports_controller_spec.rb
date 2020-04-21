@@ -150,18 +150,20 @@ describe NfgCsvImporter::ImportsController do
       end
     end
 
-    context 'when the session import id is same as the import id' do
-      it 'resets user session id' do
-        expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+    context 'when import is being deleted by the user who created it' do
+      context 'when the session import id is same as the import id' do
+        it 'resets user session id' do
+          expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+        end
+
+        it 'resets user session onboarding_import_data_import_id' do
+          expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+        end
       end
 
       it 'resets user session onboarding_import_data_import_id' do
         expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
       end
-    end
-
-    it 'resets user session onboarding_import_data_import_id' do
-      expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
     end
 
     context 'when the session import id is not same as the import id' do

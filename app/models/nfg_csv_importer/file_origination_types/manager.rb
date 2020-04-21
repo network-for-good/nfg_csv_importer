@@ -46,6 +46,10 @@ module NfgCsvImporter
         types.select { |t| t.type_sym == type_name.try(:to_sym) }.first
       end
 
+      def types_available_for(user:)
+        types.select { |type| type.type_class.can_be_viewed_by?(user) }
+      end
+
       private
 
       def require_origination_files

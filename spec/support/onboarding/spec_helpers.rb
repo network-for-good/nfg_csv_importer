@@ -33,17 +33,7 @@ def visiting_till_the_preview_confirmation_page
 end
 
 def visiting_till_the_upload_preprocessing_page
-  by 'visiting the index page' do
-    visit nfg_csv_importer.imports_path
-  end
-
-  and_by 'clicking the get started link' do
-    page.find("[data-describe='import-data-onboarder-cta']").click
-  end
-
-  and_it 'takes the user to the onboarder at the first step - file origination type selection' do
-    expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.file_origination_type_selection"
-  end
+  visiting_till_the_file_origination_type_selection_page
 
   and_by 'selecting a file origination type' do
     page.find("label[for='nfg_csv_importer_onboarding_import_data_file_origination_type_selection_file_origination_type_#{file_origination_type}']").click
@@ -55,6 +45,20 @@ def visiting_till_the_upload_preprocessing_page
 
   and_it 'takes the user to the upload_preprocessing step' do
     expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.upload_preprocessing.#{file_origination_type}"
+  end
+end
+
+def visiting_till_the_file_origination_type_selection_page
+  by 'visiting the index page' do
+    visit nfg_csv_importer.imports_path
+  end
+
+  and_by 'clicking the get started link' do
+    page.find("[data-describe='import-data-onboarder-cta']").click
+  end
+
+  and_it 'takes the user to the onboarder at the first step - file origination type selection' do
+    expect(page).to have_css "body.nfg_csv_importer-onboarding-import_data.file_origination_type_selection"
   end
 end
 
@@ -120,7 +124,7 @@ def navigating_till_user_import_type
   end
 end
 
-def navigating_from_overview_to_finish(import:)
+def navigating_from_overview_to_finish(import:, expected_user_count:)
   and_by 'reviewing the import overview page' do
     click_next_button_for('overview')
   end
@@ -130,6 +134,8 @@ def navigating_from_overview_to_finish(import:)
     attach_file 'nfg_csv_importer_onboarding_import_data_upload_post_processing_import_file', path_to_file, visible: false
     click_next_button_for('upload_post_processing')
   end
+
+  yield if block_given? # for going back and selecting a new file
 
   and_by 'mapping the fields' do
     # field_mapping
@@ -164,7 +170,7 @@ def navigating_from_overview_to_finish(import:)
         # the import is running, we just need to wait until it completes
         sleep 0.05
       end
-    end.to change(User, :count).by(2)
+    end.to change(User, :count).by(expected_user_count)
 
     # and_it 'shows the column mapping conversion table' do
     #   expect(page).to have_css "[data-describe='column-mappings']"

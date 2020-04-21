@@ -140,6 +140,7 @@ describe "Running through the full import process", js: true do
       expect(page).to have_content("NEW RECORDS CREATED\n3")
       expect(page).to have_content("PROCESSED ROWS\n6")
       expect(page).to have_content("ERRORS WITHIN OUR DATA\n3")
+      expect(page).to_not have_content "import_error_file.csv"
       expect(page).to have_content("Error File")
       expect(page).to have_link("Download")
     end

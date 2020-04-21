@@ -8,22 +8,26 @@
       .dropzone-target.mb-3
         .dz-default.py-4.text-center
           = ui.nfg :icon, 'cloud-upload 3x', :primary
-          = ui.nfg :typeface, heading: 'Drag and drop your file here.', class: 'mt-2'
+          = ui.nfg :typeface, heading: 'Drag and drop your files here.', class: 'mt-2'
           = ui.nfg :typeface, :body, class: 'mb-0' do
+            Upload all the files you wish to import at one time.
+            %br/
             If you prefer to search your computer,
             %a.dz_file_browser_link{ href: 'javascript:;' }
               click here
             to browse.
-
         -# The empty state shows after a file is present on the uploader
         -# It is hidden, otherwise.
         -# See toggleEmptyStateFileBrowser in NfgCsvImporter.DragdropUpload
         -# javascripts/nfg_csv_importer/onboarding/dragdrop_upload.js.coffee
         .dz_active_empty_state.d-none.text-center
           = ui.nfg :typeface, :caption, :muted, class: 'mt-4' do
-            Drag and drop your file or
+            Have more files?
+            %br/
+            Drag and drop your files or
             %a.dz_file_browser_link{ href: 'javascript:;' }
-              click to browse
+              click here
+            to browse.
 
       - if file_origination_type.collect_note_with_pre_processing_files
         = ui.nfg :form_group, class: 'mb-3' do

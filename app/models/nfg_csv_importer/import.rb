@@ -23,7 +23,7 @@ module NfgCsvImporter
     serialize :statistics, JSON
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending]
-    mount_uploader :import_file, ImportFileUploader
+    mount_uploader :import_file, ImportValidFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
     has_many_attached :pre_processing_files

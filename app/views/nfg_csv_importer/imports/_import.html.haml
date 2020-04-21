@@ -4,7 +4,7 @@
 - imports_listing_row_column_structure_class = "" if local_assigns[:imports_listing_row_column_structure_class].nil?
 
 - if import.can_be_viewed_by(current_user)
-  .slat{ id: dom_id(import), data: { id: import.id, describe: 'import-slat', import_type: import&.import_type } }
+  .slat{ id: dom_id(import), data: { id: import.id, describe: 'import-slat', import_type: import&.import_type, status: import.status } }
     .row
       %div{ class: 'col-md-3 m-b-half-down-sm', id: "#{dom_id(import)}_name" }
         %h5{ data: { describe: 'imported-by-name' } }= import.imported_by_name
