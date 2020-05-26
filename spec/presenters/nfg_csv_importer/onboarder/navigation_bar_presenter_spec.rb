@@ -44,6 +44,7 @@ describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
     before { tested_import.stubs(:ready_to_import?).returns(ready_to_import) }
 
     context 'when step is not :field_mapping' do
+      let(:tested_step) { :not_field_mapping }
       it 'does not supply the :disabled trait' do
         expect(subject).to eq [:submit]
         expect(subject).not_to include :disabled
@@ -52,9 +53,11 @@ describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
 
     context 'when step is :field_mapping' do
       let(:tested_step) { :field_mapping }
+
       context 'and when import is ready to import' do
         let(:ready_to_import) { true }
-        it 'does not supplye the :disabled trait' do
+
+        it 'does not supply the :disabled trait' do
           expect(subject).to eq [:submit]
           expect(subject).not_to include :disabled
         end
@@ -62,7 +65,7 @@ describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
 
       context 'and when import is not ready to import' do
         let(:ready_to_import) { false }
-        it 'does not supply the :disabled trait' do
+        it 'supplies the :disabled trait' do
           expect(subject).to eq [:submit, :disabled]
         end
       end
