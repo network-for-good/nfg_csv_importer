@@ -4,18 +4,27 @@
 - back_button_text = local_assigns[:back_button_text]
 - submit_button_text = local_assigns[:submit_button_text]
 
-.p-3.bg-white.border-bottom
+.builder-nav
   .row.align-items-center.justify-content-between
-    .col-12.col-lg-8.py-1.mx-auto.order-lg-2
+    .col-6.col-lg.d-none.d-lg-block
+      = ui.nfg :button, :lg, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'caret-left', class: 'flex-fill', disable_with: ui.nfg(:icon, :loader), render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step) or at_point_of_no_return?)
+    .col-12.col-lg-8.mx-auto.pt-lg-1
       = ui.nfg :steps, render_if: navigation_bar_presenter.show_nav? do
         - controller.wizard_steps.each_with_index do |step, i|
           - i += 1
           - next unless navigation_bar_presenter.show_step?(step)
           = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: navigation_bar_presenter.href(step, path: wizard_path(step)), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
             = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
-    .col-6.col-lg.pt-2.pt-lg-0.order-lg-1
-      = ui.nfg :button, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'arrow-left', disable_with: ui.nfg(:icon, :loader), render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step) or at_point_of_no_return?)
-    .col-6.col-lg.pt-2.pt-lg-0.text-right.order-lg-3
+    .col-6.col-lg.text-right.d-none.d-lg-block
       - traits = [:submit]
       - traits << :disabled if step.to_sym == :field_mapping && !import.ready_to_import?
-      = ui.nfg :button, *traits, body: submit_button_text.html_safe, icon: 'arrow-right', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
+      = ui.nfg :button, :lg, *traits, body: submit_button_text.html_safe, icon: 'caret-right', class: 'flex-fill', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
+
+.builder-nav-sm
+  .row
+    .col
+      = ui.nfg :button, :lg, :block, :secondary, :outlined, href: previous_wizard_path, body: back_button_text.html_safe, left_icon: 'caret-left', class: 'flex-fill', disable_with: ui.nfg(:icon, :loader), render_unless: (first_step or controller.single_use_steps.include?(controller.previous_step) or at_point_of_no_return?)
+    .col
+      - traits = [:submit]
+      - traits << :disabled if step.to_sym == :field_mapping && !import.ready_to_import?
+      = ui.nfg :button, :lg, :block, *traits, body: submit_button_text.html_safe, icon: 'caret-right', class: 'flex-fill', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
