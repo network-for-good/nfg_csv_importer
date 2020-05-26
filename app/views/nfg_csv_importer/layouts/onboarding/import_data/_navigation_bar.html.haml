@@ -16,9 +16,7 @@
           = ui.nfg :step, navigation_bar_presenter.step_status(step), step: i, href: navigation_bar_presenter.href(step, path: wizard_path(step)), describe: "#{step}-step", icon: navigation_bar_presenter.step_icon(step) do
             = t(step, scope: locale_namespace + [:step_navigations], default: step.to_s.humanize)
     .col-6.col-lg.text-right.d-none.d-lg-block
-      - traits = [:submit]
-      - traits << :disabled if step.to_sym == :field_mapping && !import.ready_to_import?
-      = ui.nfg :button, :lg, *traits, body: submit_button_text.html_safe, icon: 'caret-right', class: 'flex-fill', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
+      = ui.nfg :button, :lg, *next_button_traits(step: step, import: import), body: submit_button_text.html_safe, icon: 'caret-right', class: 'flex-fill', confirm: next_step_confirmation, disable_with: ui.nfg(:icon, :loader)
 
 .builder-nav-sm
   .row
