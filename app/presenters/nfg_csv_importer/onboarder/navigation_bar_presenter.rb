@@ -35,10 +35,10 @@ module NfgCsvImporter
       end
 
       def next_button_traits(step:, import:)
-        traits = [:submit]
-        traits << :disabled if step.to_sym == :field_mapping && !import.ready_to_import?
-
-        traits
+        [
+          :submit,
+          (:disabled if step.to_sym == :field_mapping && !import.ready_to_import?)
+        ].reject(&:nil?)
       end
 
       def points_of_no_return
