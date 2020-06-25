@@ -38,7 +38,7 @@ module NfgCsvImporter
         [
           :submit,
           (:disabled if step.to_sym == :field_mapping && !import.ready_to_import?)
-        ].reject(&:nil?)
+        ].compact
       end
 
       def points_of_no_return
