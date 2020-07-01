@@ -34,6 +34,13 @@ module NfgCsvImporter
         active_step.to_sym != first_step
       end
 
+      def next_button_traits(step:, import:)
+        [
+          :submit,
+          (:disabled if step.to_sym == :field_mapping && !import.ready_to_import?)
+        ].compact
+      end
+
       def points_of_no_return
         @points_of_no_return ||= h.controller.send(:points_of_no_return)
       end
