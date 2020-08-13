@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 2f2f78aab13f5e2871ad8e4e08e1a16c0b959141
-  branch: feature/DM-7234_consolidate_nfg_ui_css_to_use_core_styles_ahead_of_new_marketing_site
+  revision: b1f0cecf46f29a7474d5951a140eb89c266eaadd
+  branch: master
   specs:
-    nfg_ui (0.10.15)
+    nfg_ui (0.10.15.1)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -151,7 +151,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     crass (1.0.6)
     css_parser (1.7.1)
       addressable
@@ -178,7 +178,7 @@ GEM
     factory_girl_rails (4.6.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
-    ffi (1.12.2)
+    ffi (1.13.1)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
     foundation_emails (2.2.1.0)
@@ -188,7 +188,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     htmlentities (4.3.4)
-    i18n (1.8.2)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     image_processing (1.11.0)
       mini_magick (>= 4.9.5, < 5)
@@ -203,7 +203,7 @@ GEM
       thor (>= 0.14, < 2.0)
     launchy (2.4.3)
       addressable (~> 2.3)
-    loofah (2.5.0)
+    loofah (2.6.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -222,7 +222,7 @@ GEM
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     nio4r (2.5.2)
-    nokogiri (1.10.9)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     popper_js (1.16.0)
     premailer (1.12.1)
@@ -241,7 +241,7 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     puma (3.11.4)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.4.3)
@@ -365,16 +365,16 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
     temple (0.8.1)
-    thor (0.20.3)
+    thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     uber (0.1.0)
     websocket (1.2.4)
-    websocket-driver (0.7.2)
+    websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     wicked (1.3.3)
       railties (>= 3.0.7)
     xpath (2.1.0)
