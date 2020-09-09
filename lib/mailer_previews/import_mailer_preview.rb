@@ -47,7 +47,7 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
   end
 
   def import(errors: false, file_origination_type: 'paypal')
-    error_file = errors ? File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.xls") : nil
+    error_file = errors ? File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/errors.csv") : nil
     number_of_records_with_errors = error_file ? 1 : nil
     import_file = File.open("#{NfgCsvImporter::Engine.root}/spec/fixtures/paypal_processed_file.csv")
     records_processed = @status == NfgCsvImporter::Import::COMPLETED_STATUS ? 39 : nil
