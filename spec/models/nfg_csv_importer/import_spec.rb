@@ -337,7 +337,10 @@ describe NfgCsvImporter::Import do
   end
 
   describe "maybe_append_to_existing_errors" do
-    let(:errors_csv) { "email\tfirst_name\tlast_name\tErrors\npavan@gmail.com\tArnold\tGilbert\tEmail is invalid\n" }
+    let(:errors_csv) { "email,first_name,last_name,Errors\npavan@gmail.com,Arnold,Gilbèrt,Email is invalid\n" }
+    # here we force a non-standard encoding to verify that combining the previous errors that are in the error_file with the new errors
+    # won't cause an encoding compatibility issue.
+    let(:previous_errors) { "email,first_name,last_name,Errors\najporterfield@gmail,Andrew,Porterfield,Email is invalid\n".force_encoding("US-ASCII") }
     let(:subject) { import.maybe_append_to_existing_errors(errors_csv) }
 
     context 'when error_file is blank' do
@@ -347,10 +350,11 @@ describe NfgCsvImporter::Import do
     end
 
     context 'when error_file is present' do
-      let(:error_file) { File.open("spec/fixtures/errors.xls") }
+      let(:error_file) { File.open("spec/fixtures/errors.csv") }
 
       it 'appends to existing errors_csv' do
-        csv = CSV.parse(subject, col_sep: "\t")
+        import.stubs(:error_file).returns(stub(read: previous_errors))
+        csv = CSV.parse(subject)
         expect(csv.size).to eq 3
         expect(subject).to include 'pavan@gmail.com' # new errors
         expect(subject).to include 'ajporterfield@gmail' # existing errors

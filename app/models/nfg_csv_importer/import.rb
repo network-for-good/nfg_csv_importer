@@ -112,14 +112,18 @@ module NfgCsvImporter
     end
 
     def maybe_append_to_existing_errors(errors_csv)
-      if error_file.present?
-        errors_csv = CSV.generate do |csv|
-          CSV.parse(error_file.read) { |row| csv << row }
-          CSV.parse(errors_csv, headers: true) { |row| csv << row }
+      return errors_csv unless error_file.present?
+
+      _errors_csv = CSV.generate(encoding: "UTF-8") do |csv|
+        CSV.parse(error_file.read) do |row|
+          csv << row
+        end
+        CSV.parse(errors_csv, headers: true) do |row|
+          csv << row
         end
       end
 
-      errors_csv
+      _errors_csv
     end
 
     def process!
