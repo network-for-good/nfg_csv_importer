@@ -12,7 +12,7 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: ea5a4f3351e445f22a3a4db87d43e0ad30df43c4
+  revision: 9c12ca524ceeb0ef989c521615a7ceb5f229c5f9
   branch: feature/update_to_ruby_2_5_8
   specs:
     nfg_ui (0.11.2)
