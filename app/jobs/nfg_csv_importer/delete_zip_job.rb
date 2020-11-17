@@ -3,7 +3,7 @@ require 'sidekiq'
 module NfgCsvImporter
   class DeleteZipJob
     include Sidekiq::Worker
-    sidekiq_options queue: :low_priority
+    sidekiq_options queue: (NfgCsvImporter.configuration.default_queue_name || :default)
 
     def perform(tmp_user_folder, guard_minutes = 10)
       return unless Dir.exists?(tmp_user_folder)
