@@ -9,6 +9,7 @@ require 'database_cleaner'
 require 'rails-controller-testing'
 require 'capybara-screenshot/rspec'
 require 'action_dispatch/testing/test_process'
+require 'sidekiq/testing'
 require 'byebug'
 
 Rails.backtrace_cleaner.remove_silencers!
@@ -42,6 +43,7 @@ RSpec.configure do |config|
 
  config.before(:suite) do
    DatabaseCleaner.strategy = :truncation
+   Sidekiq::Testing.inline!
  end
 
  config.before(:each, js: true) do

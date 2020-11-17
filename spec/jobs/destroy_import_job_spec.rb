@@ -7,7 +7,7 @@ describe NfgCsvImporter::DestroyImportJob do
   let(:import) { create(:import, imported_by: user, imported_for: entity) }
   let!(:imported_records) { create_list(:imported_record, number_of_imported_records, import: import, imported_for: entity) }
 
-  subject { Sidekiq::Testing.inline! { described_class.perform_async(batch, import.id) } }
+  subject { described_class.perform_async(batch, import.id) }
 
   before { NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2) }
 
