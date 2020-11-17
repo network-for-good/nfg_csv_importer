@@ -1,6 +1,9 @@
+require 'sidekiq'
+
 module NfgCsvImporter
-  class DeleteZipJob < ActiveJob::Base
-    queue_as :low_priority
+  class DeleteZipJob
+    include Sidekiq::Worker
+    sidekiq_options queue: :low_priority
 
     def perform(tmp_user_folder, guard_minutes = 10)
       return unless Dir.exists?(tmp_user_folder)

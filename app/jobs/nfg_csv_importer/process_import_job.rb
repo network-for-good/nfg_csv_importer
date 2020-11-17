@@ -1,6 +1,10 @@
+require 'sidekiq'
+
 module NfgCsvImporter
-  class ProcessImportJob < ActiveJob::Base
-    queue_as :imports
+  class ProcessImportJob
+    include Sidekiq::Worker
+
+    sidekiq_options queue: :imports, retry: false
 
     def perform(import_id, starting_row = 2)
       import = NfgCsvImporter::Import.find(import_id)
@@ -15,7 +19,7 @@ module NfgCsvImporter
 
       if import_service.run_time_limit_reached?
         Rails.logger.info "ProcessImportJob #{import_id}: reached run time limit of #{NfgCsvImporter.configuration.max_run_time} at row #{import_service.current_row}"
-        NfgCsvImporter::ProcessImportJob.perform_later(import_id, import_service.current_row)
+        NfgCsvImporter::ProcessImportJob.perform_async(import_id, import_service.current_row)
       else
         import.complete!
         import.update(processing_finished_at: Time.zone.now)
