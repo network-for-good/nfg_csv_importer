@@ -9,8 +9,11 @@ module NfgCsvImporter
     def perform(import_id, starting_row = 2)
       import = NfgCsvImporter::Import.find(import_id)
       import.processing!
-      NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
-      import.update(processing_started_at: Time.zone.now)
+
+      if starting_row == 2
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
+        import.update(processing_started_at: Time.zone.now)
+      end
 
       import_service = import.service
       import_service.starting_row = starting_row

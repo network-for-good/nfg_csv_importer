@@ -19,16 +19,40 @@ describe NfgCsvImporter::ProcessImportJob do
     expect{ subject }.to change{ import.reload.number_of_records }
   end
 
-  it "should update the processing_started_at" do
-    expect{ subject }.to change{ import.reload.processing_started_at }
+  describe "updating the processing_started_at timestamp" do
+    context "When the job is enqueued the first time" do
+      it "should update the processing_started_at" do
+        expect{ subject }.to change{ import.reload.processing_started_at }
+      end
+    end
+
+    context "When the job is enqueued subsequent times" do
+      subject { process_import_job.perform(import.id, 3) }
+      it "does not update the timestsamp" do
+        expect { subject }.not_to change { import.reload.processing_started_at }
+      end
+    end
   end
 
-  it "should send the mail to admin with imported result" do
-    NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
-    # one is expected for processing, and another is for completed
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
-    subject
+  describe "sending the notification email" do
+    context "The first time the job is placed on the queue" do
+      it "should send the mail to admin with imported result" do
+        NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
+        # one is expected for processing, and another is for completed
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
+        subject
+      end
+    end
+
+    context "When the job is enqueued subsequent times" do
+      subject { process_import_job.perform(import.id, 3) }
+
+      it "does not send the notification email" do
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
+        subject
+      end
+    end
   end
 
   it { expect { subject }.to change { import.reload.status }.from(nil).to("complete") }
