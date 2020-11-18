@@ -14,8 +14,12 @@ module NfgCsvImporter
       if import.records_processed.blank?
         NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
         import.update(processing_started_at: Time.zone.now)
+        # the import_service will set this value by default, but we're doing
+        # it here for clarity.
         import_service.starting_row = 2
       else
+        # If this import has a processed_records, we start processing from
+        # the value of that field + 1, which is the next row.
         import_service.starting_row = import.records_processed + 1
       end
 
