@@ -27,7 +27,7 @@ describe NfgCsvImporter::ProcessImportJob do
     end
 
     context "When the job is enqueued subsequent times" do
-      subject { process_import_job.perform(import.id, 3) }
+      before { import.update(records_processed: 3) }
       it "does not update the timestsamp" do
         expect { subject }.not_to change { import.reload.processing_started_at }
       end
@@ -46,7 +46,7 @@ describe NfgCsvImporter::ProcessImportJob do
     end
 
     context "When the job is enqueued subsequent times" do
-      subject { process_import_job.perform(import.id, 3) }
+      before { import.update(records_processed: 3) }
 
       it "does not send the notification email" do
         NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
@@ -86,7 +86,10 @@ describe NfgCsvImporter::ProcessImportJob do
     expect { subject }.to change { User.count }.by(2)
   end
 
-  it 'allows you to start at a specific row in the file' do
-    expect { process_import_job.perform(import.id, 3) }.to change { User.count }.by(1)
+  describe "resuming from the last processed row" do
+    before { import.update(records_processed: 2) }
+    it 'allows you to restart at the next row' do
+      expect { process_import_job.perform(import.id) }.to change { User.count }.by(1)
+    end
   end
 end
