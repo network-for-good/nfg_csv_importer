@@ -19,6 +19,40 @@ describe NfgCsvImporter::ProcessImportJob do
     expect{ subject }.to change{ import.reload.number_of_records }
   end
 
+  describe "if the job is run again after the import is finished" do
+    let(:processing_finished_at) { nil }
+
+    before do
+      import.update(
+        status: 'processing',
+        number_of_records: 4,
+        records_processed: 4,
+        processing_finished_at: processing_finished_at
+      )
+      NfgCsvImporter::Import.stubs(:find).returns(import)
+    end
+
+    it "does not try to finish processing the import" do
+      NfgCsvImporter::ImportService.any_instance.expects(:import).never
+      subject
+    end
+
+    context "when processing_finished_at has a timestamp" do
+      let(:processing_finished_at) { DateTime.now }
+      it "does not complete the import" do
+        import.expects(:complete!).never
+        subject
+      end
+    end
+
+    context "when processing_finished_at is blank" do
+      it "completes the import" do
+        import.expects(:complete!).once
+        subject
+      end
+    end
+  end
+
   describe "updating the processing_started_at timestamp" do
     context "When the job is enqueued the first time" do
       it "should update the processing_started_at" do
@@ -61,6 +95,7 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it "should set status to processing" do
     NfgCsvImporter::Import.stubs(:find).returns(import)
+    import.stubs(:processing?).returns(false)
     import.reload.expects(:processing!).returns(import.update(status: 'processing'))
     subject
   end
