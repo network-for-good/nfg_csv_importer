@@ -26,7 +26,7 @@ describe NfgCsvImporter::ProcessImportJob do
       import.update(
         status: 'processing',
         number_of_records: 4,
-        records_processed: 4,
+        records_processed: 5,
         processing_finished_at: processing_finished_at
       )
       NfgCsvImporter::Import.stubs(:find).returns(import)
@@ -37,19 +37,9 @@ describe NfgCsvImporter::ProcessImportJob do
       subject
     end
 
-    context "when processing_finished_at has a timestamp" do
-      let(:processing_finished_at) { DateTime.now }
-      it "does not complete the import" do
-        import.expects(:complete!).never
-        subject
-      end
-    end
-
-    context "when processing_finished_at is blank" do
-      it "completes the import" do
-        import.expects(:complete!).once
-        subject
-      end
+    it "completes the import" do
+      import.expects(:complete!).once
+      subject
     end
   end
 

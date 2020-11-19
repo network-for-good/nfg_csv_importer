@@ -5,15 +5,15 @@ module NfgCsvImporter
     include Sidekiq::Worker
     attr_accessor :import
 
-    sidekiq_options queue: (NfgCsvImporter.configuration.high_priority_queue_name || :high_priority), retry: false
+    sidekiq_options queue: (NfgCsvImporter.configuration.high_priority_queue_name || :high_priority)
 
     def perform(import_id)
       self.import = NfgCsvImporter::Import.find(import_id)
 
       # We only want to do this check if the import is being processed. Otherwise,
       # both field values will be nil.
-      if import.processing? && import.records_processed >= import.number_of_records
-        import_complete! if import.processing_finished_at.blank?
+      if import.processing? && import.records_processed > import.number_of_records
+        import_complete!
         return
       end
 
