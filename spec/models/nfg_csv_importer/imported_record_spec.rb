@@ -54,9 +54,18 @@ describe NfgCsvImporter::ImportedRecord do
     end
 
     context "when the importable no longer exists" do
-      it "does not raise an exception" do
+      before do
         importable.destroy
+      end
+
+      it "does not raise an exception" do
         expect { imported_record.reload.destroy_importable! }.not_to raise_exception
+      end
+
+      it "sets deleted attribute to 'true'" do
+        # resolves https://jira.networkforgood.org/browse/DM-7619
+        imported_record.reload.destroy_importable!
+        expect(imported_record).to be_deleted
       end
     end
 
