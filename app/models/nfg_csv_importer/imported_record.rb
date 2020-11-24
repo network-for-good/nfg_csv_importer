@@ -39,7 +39,12 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
         # we can delete it.
         destroy_imported_record
       end
+    else
+      # the importable record may have already been manually deleted, in which case we just need to
+      # update this object's state reflect the fact of the deletion; see https://jira.networkforgood.org/browse/DM-7619
+      self.update(deleted: true)
     end
+
     true
   end
 
