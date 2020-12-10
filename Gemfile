@@ -10,8 +10,6 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'rails_5'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'feature/DM-7727_email_gallery_draft_composition'
-
 gem 'reform-rails', '~> 0.1.7'
 
 group :development do
