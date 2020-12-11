@@ -70,24 +70,4 @@ shared_examples_for "validate import file" do
       expect(import_file_validateable_host.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
     end
   end
-
-  context 'when number of rows is greater than the maximum number of rows allowed' do
-    before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 2 }
-    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
-
-    it "should add errors to base" do
-      subject
-      expect(import_file_validateable_host.errors.messages[:base].first).to eq I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows', num_rows: 2)
-    end
-  end
-
-  context 'when number of rows is less than the maximum number of rows allowed' do
-    before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 10 }
-    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
-
-    it "should add errors to base" do
-      subject
-      expect(import_file_validateable_host.errors.messages[:base].first).to be_nil
-    end
-  end
 end
