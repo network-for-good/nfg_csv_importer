@@ -14,6 +14,7 @@ module NfgCsvImporter
         validates :import_file, presence: true
         validate :import_validation
         validate :import_file_extension_validation
+        validate :validate_max_number_of_rows_allowed
 
         def imported_by
           model.imported_by

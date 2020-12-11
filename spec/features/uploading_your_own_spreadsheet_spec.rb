@@ -124,4 +124,28 @@ describe "Importing your own spreadsheet", js: true do
       end
     end
   end
+
+  context 'when the file has more rows than allowed' do
+    before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 2 }
+    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
+
+    it 'Walks the admin through uploading/mapping/importing their own spreadsheet' do
+      navigating_till_user_import_type
+
+      and_by 'reviewing the import overview page' do
+        click_next_button_for('overview')
+      end
+
+      and_by 'uploading the post procesing import files' do
+        # upload_post_processing
+        attach_file 'nfg_csv_importer_onboarding_import_data_upload_post_processing_import_file', path_to_file, visible: false
+        click_next_button_for('upload_post_processing')
+      end
+
+      and_it 'should list the max number of rows allowed error' do
+        expect(page).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows',
+                                            num_rows: NfgCsvImporter.configuration.max_number_of_rows_allowed)
+      end
+    end
+  end
 end
