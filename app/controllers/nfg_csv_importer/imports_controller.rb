@@ -94,7 +94,7 @@ class NfgCsvImporter::ImportsController < NfgCsvImporter::ApplicationController
       number_of_records = @import.imported_records.size
       @import.update_attribute(:status, NfgCsvImporter::Import.statuses[:deleting])
       @import.imported_records.find_in_batches(batch_size: NfgCsvImporter::ImportedRecord.batch_size) do |batch|
-        NfgCsvImporter::DestroyImportJob.perform_later(batch.map(&:id), @import.id)
+        NfgCsvImporter::DestroyImportJob.perform_async(batch.map(&:id), @import.id)
       end
       flash[:success] = t(:success, number_of_records: number_of_records, scope: [:import, :destroy])
     end

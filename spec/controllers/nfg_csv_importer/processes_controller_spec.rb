@@ -14,7 +14,7 @@ describe NfgCsvImporter::ProcessesController do
     context "when the import is valid" do
       it 'enqueues a queued status email' do
         NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
-        NfgCsvImporter::ProcessImportJob.expects(:perform_later)
+        NfgCsvImporter::ProcessImportJob.expects(:perform_async)
         subject
       end
     end

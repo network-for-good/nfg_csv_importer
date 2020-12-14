@@ -10,14 +10,13 @@ RSpec.describe NfgCsvImporter::CreateZipService do
 
   describe '#call' do
     let(:folder) { "tmp/archive_#{user.id}"}
-    let(:delete_job) { mock('delete_zip_job', perform_later: nil) }
     subject { create_zip_service.call }
 
     after { FileUtils.remove_dir(folder) if Dir.exists?(folder) }
 
     context 'when pre_processing_files exist' do
       before do
-        NfgCsvImporter::DeleteZipJob.stubs(:set).returns(delete_job)
+        NfgCsvImporter::DeleteZipJob.stubs(:perform_in)
         ActiveStorage::Attachment.any_instance.expects(:service_url).returns('some-url')
         Object.any_instance.expects(:open).returns(File.open("spec/fixtures/individual_donation.csv")).twice
       end

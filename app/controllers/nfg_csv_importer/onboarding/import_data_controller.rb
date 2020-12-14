@@ -55,7 +55,7 @@ module NfgCsvImporter
       def preview_confirmation_on_before_show
         return unless import.present? && !import.calculating_statistics?
 
-        NfgCsvImporter::CalculateImportStatisticsJob.perform_later(import.id)
+        NfgCsvImporter::CalculateImportStatisticsJob.perform_async(import.id)
         import.update_column(:status, NfgCsvImporter::Import::CALCULATING_STATISTICS_STATUS)
       end
 
@@ -70,7 +70,7 @@ module NfgCsvImporter
         import.imported_by = imported_by
         import.queued!
         NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
-        NfgCsvImporter::ProcessImportJob.perform_later(import.id)
+        NfgCsvImporter::ProcessImportJob.perform_async(import.id)
       end
 
       def upload_post_processing_on_valid_step

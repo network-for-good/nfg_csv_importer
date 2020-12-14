@@ -22,7 +22,7 @@ module NfgCsvImporter
           store_documents_in_tmp_user_folder(document, tmp_model_folder, filename)
         end
         create_zip_from_tmp_user_folder(tmp_model_folder)
-        NfgCsvImporter::DeleteZipJob.set(wait: 60.minutes).perform_later(tmp_user_folder)
+        NfgCsvImporter::DeleteZipJob.perform_in(60.minutes, tmp_user_folder)
         return "#{tmp_model_folder}.zip"
       end
       nil

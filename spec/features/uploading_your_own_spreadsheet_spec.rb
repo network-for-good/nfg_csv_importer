@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sidekiq/testing'
 
 describe "Importing your own spreadsheet", js: true do
   let(:file_origination_type) { 'self_import_csv_xls' }

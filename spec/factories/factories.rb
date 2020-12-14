@@ -6,7 +6,7 @@ FactoryGirl.define do
     imported_for { create(:entity) }
     transaction_id "UNIQUE_ID"
     association :imported_by, factory: :user
-    importable { create(:user) }
+    importable { create(:user, entity: imported_for) }
   end
 
   factory :import, class: NfgCsvImporter::Import do
