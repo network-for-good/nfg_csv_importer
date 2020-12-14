@@ -13,7 +13,7 @@ module NfgCsvImporter
     delegate :class_name, :required_columns, :optional_columns, :column_descriptions,
              :description, :field_aliases, :column_validation_rules,
              :fields_that_allow_multiple_mappings, :can_be_viewed_by,
-             :can_be_deleted_by?, :statistics_and_detail_generator, :to => :import_definition
+             :can_be_deleted_by?, :statistics_and_detail_generator, :can_bypass_max_row_limit?, :to => :import_definition
 
     delegate :fields_mapping, to: :import_record
 

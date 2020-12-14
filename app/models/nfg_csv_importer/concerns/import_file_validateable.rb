@@ -55,22 +55,6 @@ module NfgCsvImporter
                str_2: multiple ? 'formats' : 'format')
       end
 
-      def validate_max_number_of_rows_allowed
-        return unless import_file && NfgCsvImporter.configuration.max_number_of_rows_allowed.present?
-
-        line_count = `wc -l "#{import_file.path}"`.strip.split(' ')[0].to_i
-
-        if line_count > NfgCsvImporter.configuration.max_number_of_rows_allowed
-          errors.add :base, I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows',
-                                   num_rows: NfgCsvImporter.configuration.max_number_of_rows_allowed)
-        end
-      rescue StandardError => e
-        # This shouldn't fail but just in case it does, log an error
-        # and return nil so it doesn't block the import
-        Rails.logger.error e.message
-        nil
-      end
-
       private
 
       def validate_empty_columns

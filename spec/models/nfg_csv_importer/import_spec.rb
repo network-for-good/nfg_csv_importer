@@ -56,6 +56,7 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_viewed_by).to(:service)}
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
+  it { should delegate_method(:can_bypass_max_row_limit).to(:service)}
 
   describe '#file_origination_type' do
     subject { import.file_origination_type }
