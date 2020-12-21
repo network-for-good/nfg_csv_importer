@@ -22,6 +22,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   def destroy_importable!
     self.destroy_stats = {}
 
+    # don't bother doing anything if there's no importable
     if self.importable.present?
       # This is an importable instance method where we can supply criteria
       # to block deletion. The DM user model has this method.
@@ -38,12 +39,7 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
         # we can delete it.
         destroy_imported_record
       end
-    else
-      # the importable record may have already been manually deleted, in which case we just need to
-      # update this object's state reflect the fact of the deletion; see https://jira.networkforgood.org/browse/DM-7619
-      self.update(deleted: true)
     end
-
     true
   end
 
