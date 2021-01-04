@@ -11,7 +11,7 @@ gemspec
 # your gem to rubygems.org.
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder.git', branch: 'rails_5'
 gem 'reform-rails', '~> 0.1.7'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'feature/DM-7866_Admin_Delete_functionality_accessible_for_sys_user'
+gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'dependabot/bundler/nokogiri-1.11.0'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better

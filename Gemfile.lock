@@ -12,10 +12,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 734c0933c9a8190fd9b4a994c6b67980555c7a25
-  branch: feature/DM-7866_Admin_Delete_functionality_accessible_for_sys_user
+  revision: 377efc1870ec6305b255f92bba29cbd95f4fa824
+  branch: dependabot/bundler/nokogiri-1.11.0
   specs:
-    nfg_ui (0.11.10)
+    nfg_ui (0.11.11)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
