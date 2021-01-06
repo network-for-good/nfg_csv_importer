@@ -56,7 +56,7 @@ module NfgCsvImporter
     # Follows same pattern as can_be_viewed_by - passes user to a proc and lets
     # the parent app decide.
     def can_bypass_max_row_limit?(user)
-      return false if can_bypass_max_row_limit_rule.nil?
+      return false if can_bypass_max_row_limit_rule.blank?
       return !!can_bypass_max_row_limit_rule unless can_bypass_max_row_limit_rule.respond_to?(:call)
 
       can_bypass_max_row_limit_rule.call(user)

@@ -38,7 +38,7 @@ module NfgCsvImporter
           return if service.can_bypass_max_row_limit?(imported_by)
           return unless import_file && NfgCsvImporter.configuration.max_number_of_rows_allowed.present?
 
-          if service&.no_of_records.to_i > NfgCsvImporter.configuration.max_number_of_rows_allowed
+          if service.no_of_records.to_i > NfgCsvImporter.configuration.max_number_of_rows_allowed
             errors.add :base, I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows',
                                      num_rows: NfgCsvImporter.configuration.max_number_of_rows_allowed)
           end
