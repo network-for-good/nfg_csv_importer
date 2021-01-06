@@ -2,6 +2,7 @@ shared_examples_for "validate import file" do
   before(:each) do
     csv_data = mock
     csv_data.stubs(:row).with(1).returns(header_data)
+    csv_data.stubs(:last_row).returns(10)
     NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
   end
 
