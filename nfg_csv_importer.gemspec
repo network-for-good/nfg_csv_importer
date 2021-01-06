@@ -55,6 +55,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "ejs"
   s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency "sidekiq"
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "puma"
 end

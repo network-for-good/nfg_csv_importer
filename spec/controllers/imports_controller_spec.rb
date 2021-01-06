@@ -39,7 +39,10 @@ describe NfgCsvImporter::ImportsController do
     controller.stubs(:current_user).returns(user)
     controller.stubs(:entity).returns(entity)
     NfgCsvImporter::Import.any_instance.stubs(:can_be_viewed_by).with(user).returns(can_be_viewed_by)
+    Sidekiq::Testing.disable!
   end
+
+  after { Sidekiq::Testing.inline! }
 
   render_views
 
@@ -121,7 +124,7 @@ describe NfgCsvImporter::ImportsController do
     it_behaves_like "an action that requires authorization"
 
     it "adds the job to the queue" do
-      NfgCsvImporter::DestroyImportJob.expects(:perform_later).twice
+      NfgCsvImporter::DestroyImportJob.expects(:perform_async).twice
       subject
     end
 

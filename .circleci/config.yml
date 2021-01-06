@@ -10,6 +10,7 @@ jobs:
        - image: circleci/ruby:2.5.8-node-browsers
          environment:
            RAILS_ENV: test
+       - image: circleci/redis:4
 
     working_directory: ~/repo
 
@@ -36,6 +37,7 @@ jobs:
 
       # Database setup
       - run: cp spec/test_app/config/api-keys.yml.example spec/test_app/config/api-keys.yml
+      - run: cp spec/test_app/config/redis.yml-example spec/test_app/config/redis.yml
       - run: cd spec/test_app && bundle exec rake db:create db:migrate db:schema:load
 
       - run:

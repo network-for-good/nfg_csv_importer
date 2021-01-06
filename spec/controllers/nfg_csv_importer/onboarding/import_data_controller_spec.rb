@@ -36,7 +36,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
 
     context 'when the step is preview confirmation' do
       before do
-        NfgCsvImporter::ProcessImportJob.expects(:perform_later)
+        NfgCsvImporter::ProcessImportJob.expects(:perform_async)
         NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
       end
 

@@ -1,6 +1,10 @@
+require 'sidekiq'
+
 module NfgCsvImporter
-  class DestroyImportJob < ActiveJob::Base
-    queue_as :import_deletions
+  class DestroyImportJob
+    include Sidekiq::Worker
+
+    sidekiq_options queue: (NfgCsvImporter.configuration.default_queue_name || :default)
 
     def perform(*args)
       batch = args.first
