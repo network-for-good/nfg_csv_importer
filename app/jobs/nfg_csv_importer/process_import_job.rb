@@ -21,15 +21,16 @@ module NfgCsvImporter
       import_service = import.service
 
       if import.records_processed.blank?
-        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_later
         import.update(processing_started_at: Time.zone.now)
         # the import_service will set this value by default, but we're doing
         # it here for clarity.
         import_service.starting_row = 2
       else
         # If this import has a processed_records value, we start processing from
-        # the value of that field + 1, which is the next row.
-        import_service.starting_row = import.records_processed + 1
+        # the value of that field + 2, which is the next row (taking into account
+        # the header row).
+        import_service.starting_row = import.records_processed + 2
       end
 
       errors_csv = import_service.import
@@ -48,7 +49,7 @@ module NfgCsvImporter
     def import_complete!
       import.complete!
       import.update(processing_finished_at: Time.zone.now)
-      NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
+      NfgCsvImporter::ImportMailer.send_import_result(import).deliver_later
       Rails.logger.info "ProcessImportJob #{import.id}: completed import"
     end
   end
