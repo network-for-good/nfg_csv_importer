@@ -63,8 +63,8 @@ describe NfgCsvImporter::ProcessImportJob do
       it "should send the mail to admin with imported result" do
         NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
         # one is expected for processing, and another is for completed
-        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
-        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_later: true))
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_later: true))
         subject
       end
     end
@@ -73,7 +73,7 @@ describe NfgCsvImporter::ProcessImportJob do
       before { import.update(records_processed: 3) }
 
       it "does not send the notification email" do
-        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_now: true))
+        NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).returns(mock("mailer", deliver_later: true))
         subject
       end
     end
@@ -92,8 +92,8 @@ describe NfgCsvImporter::ProcessImportJob do
 
   it 'enqueues an email' do
     # it is expected twice one for processing, and one for complete
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
-    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_now: nil))
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_later: nil))
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('import_result', deliver_later: nil))
     subject
   end
 
@@ -112,7 +112,7 @@ describe NfgCsvImporter::ProcessImportJob do
   end
 
   describe "resuming from the last processed row" do
-    before { import.update(records_processed: 2) }
+    before { import.update(records_processed: 1) }
     it 'allows you to restart at the next row' do
       expect { process_import_job.perform(import.id) }.to change { User.count }.by(1)
     end
