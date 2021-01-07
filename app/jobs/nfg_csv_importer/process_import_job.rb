@@ -14,6 +14,7 @@ module NfgCsvImporter
       # both field values will be nil.
       if import.processing? && import.records_processed > import.number_of_records
         import_complete!
+        Rails.logger.info("ProcessImportJob #{import_id}: attempted to begin processing, but import was already completed.")
         return
       end
 
@@ -26,11 +27,14 @@ module NfgCsvImporter
         # the import_service will set this value by default, but we're doing
         # it here for clarity.
         import_service.starting_row = 2
+        Rails.logger.info("ProcessImportJob #{import_id}: beginning to process import" )
       else
         # If this import has a processed_records value, we start processing from
         # the value of that field + 2, which is the next row (taking into account
         # the header row).
-        import_service.starting_row = import.records_processed + 2
+        starting_row = import.records_processed + 2
+        import_service.starting_row = starting_row
+        Rails.logger.info("ProcessImportJob #{import_id}: resuming import from row #{starting_row}")
       end
 
       errors_csv = import_service.import
