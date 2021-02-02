@@ -7,6 +7,7 @@ en:
           submit: 'Next'
       import_data:
         invalid_step_error: "Oops! We ran into an unexpected problem. Use the edit button(s) below to continue an import or start a new one by clicking \"Begin Your Import\" above."
+        invalid_number_of_rows: "Oops, it looks like you have more than %{num_rows} rows in your import file. To ensure your import processes quickly, please upload files with less than %{num_rows} rows or go back to the first step and choose 'Send us your files' and Network for Good will assist you with your import!"
         invalid_headers: 'Error validating the headers for the import'
         file_extension: "The %{str_1} must be of %{valid_files} %{str_2}."
         title_bar:

@@ -19,6 +19,7 @@
       config.reply_to_address = Rails.configuration.default_from_address
       config.additional_file_origination_types = [:constant_contact, :sales_force, :kindful]
       config.disable_import_initiation_message = ->(user) { user.can_import? ? nil : "You do not have permission to initiate an import" }
+      config.max_number_of_rows_allowed = 50000
     end
     ````
 

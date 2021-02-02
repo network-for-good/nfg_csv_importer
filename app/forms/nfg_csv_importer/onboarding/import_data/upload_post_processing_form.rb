@@ -14,6 +14,7 @@ module NfgCsvImporter
         validates :import_file, presence: true
         validate :import_validation
         validate :import_file_extension_validation
+        validate :validate_max_number_of_rows_allowed
 
         def imported_by
           model.imported_by
@@ -29,6 +30,23 @@ module NfgCsvImporter
 
         def time_zone
           model.time_zone
+        end
+
+        private
+
+        def validate_max_number_of_rows_allowed
+          return if service.can_bypass_max_row_limit?(imported_by)
+          return unless import_file && NfgCsvImporter.configuration.max_number_of_rows_allowed.present?
+
+          if service.no_of_records.to_i > NfgCsvImporter.configuration.max_number_of_rows_allowed
+            errors.add :base, I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows',
+                                     num_rows: NfgCsvImporter.configuration.max_number_of_rows_allowed)
+          end
+        rescue StandardError => e
+          # This shouldn't fail but just in case it does, log an error
+          # and return nil so it doesn't block the import
+          Rails.logger.error e.message
+          nil
         end
       end
     end

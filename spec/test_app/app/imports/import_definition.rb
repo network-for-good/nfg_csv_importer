@@ -33,7 +33,8 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
           'college_degree' => "Notes are displayed on the contact's profile"
         },
       description: %Q{Allows you to import subscribers.},
-      can_be_deleted_by: -> (user) { user.last_name != "Jones" }
+      can_be_deleted_by: -> (user) { user.last_name != "Jones" },
+      can_bypass_max_row_limit: -> (user) { user.last_name == "Jones" }
     }
   end
 
@@ -67,7 +68,8 @@ class ImportDefinition < NfgCsvImporter::ImportDefinition
           'college_degree' => "Where they went to college"
         },
       description: %Q{Allows you to import subscribers.},
-      can_be_deleted_by: -> (user) { user.last_name != "Jones" }
+      can_be_deleted_by: -> (user) { user.last_name != "Jones" },
+      can_bypass_max_row_limit: -> (user) { user.last_name != "Jones" }
     }
   end
 

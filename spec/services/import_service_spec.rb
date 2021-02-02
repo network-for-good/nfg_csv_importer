@@ -57,6 +57,7 @@ describe NfgCsvImporter::ImportService do
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:import_definition)}
   it { should delegate_method(:can_be_viewed_by).to(:import_definition)}
   it { should delegate_method(:statistics_and_detail_generator).to(:import_definition)}
+  it { should delegate_method(:can_bypass_max_row_limit?).to(:import_definition)}
 
   describe "subscriber" do
     let!(:csv_data) { mock }
