@@ -335,10 +335,17 @@ module NfgCsvImporter
 
     def new_model
       new_model = model.new
+
       # assign values for the mountable's imported for and imported by if the import model responds to them
-      new_model.send("#{NfgCsvImporter.configuration.imported_for_field}=", imported_for.id) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_for_field)
-      new_model.send("#{NfgCsvImporter.configuration.imported_for_class.downcase}=", imported_for) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_for_class.downcase)
-      new_model.send("#{NfgCsvImporter.configuration.imported_by_class.downcase}=", imported_by) if new_model.has_attribute?(NfgCsvImporter.configuration.imported_by_class.downcase)
+      new_model.try("#{NfgCsvImporter.configuration.imported_for_field}=", imported_for.id)
+      new_model.try("#{NfgCsvImporter.configuration.imported_for_class.downcase}=", imported_for)
+      new_model.try("#{NfgCsvImporter.configuration.imported_by_class.downcase}=", imported_by)
+      
+      # setting import_definition here saves us from having to make db calls
+      # to lookup custom fields and groups in Donor Management for every row
+      # of a donation/contact import
+      new_model.try(:import_definition=, import_definition)
+
       new_model
     end
 
