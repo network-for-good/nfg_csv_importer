@@ -45,6 +45,9 @@ module NfgCsvImporter
     validate :import_validation, on: [:create], if: :run_validations?
     validate :import_file_extension_validation, on: [:create], if: :run_validations?
 
+    after_update :maybe_send_import_status_email
+    before_update :populate_processing_finished_at, if: ->(r) { r.complete? }
+
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
     def self.ignore_column_value
@@ -246,6 +249,16 @@ module NfgCsvImporter
         # file origination type, otherwise, we defer to the file origination
         # type
         (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
+    end
+
+    def maybe_send_import_status_email
+      if (processing? && records_processed.blank? && processing_started_at.present?) || (complete? && processing_finished_at.present?)
+        NfgCsvImporter::ImportMailer.send_import_result(self).deliver_later
+      end
+    end
+
+    def populate_processing_finished_at
+      self.processing_finished_at = Time.zone.now
     end
   end
 
