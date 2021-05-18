@@ -22,19 +22,21 @@ module NfgCsvImporter
           if import.records_processed > import.number_of_records
             log "import was already completed with processing status. Marking import complete."
             import.complete!
+          else
+            log "import is already processing. Quitting."
           end
           # If the import has a status of :processing, that means a job is already working on it
           # and we should quit.
-          return
+          exit
 
         elsif import.complete?
           # If the import has a status of complete, we run the callbacks just to be safe.
           log "import was already marked complete."
-          return
+          exit
 
-        elsif import.calculating_statistics?
+        else
           log "THIS SHOULD NEVER HAPPEN"
-          return
+          exit
         end
       end
 
