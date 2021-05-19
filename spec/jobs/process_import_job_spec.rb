@@ -114,10 +114,7 @@ describe NfgCsvImporter::ProcessImportJob do
     context "The first time the job is placed on the queue" do
       let(:records_processed) { nil }
 
-      before do
-        NfgCsvImporter::ImportService.any_instance.stubs(:import).returns(nil)
-        process_import_job.perform(import.id)
-      end
+      before { process_import_job.perform(import.id) }
 
       it { should contain_exactly(processing_email_subject, complete_email_subject) }
     end

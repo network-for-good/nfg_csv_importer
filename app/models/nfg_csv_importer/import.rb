@@ -45,8 +45,6 @@ module NfgCsvImporter
     validate :import_validation, on: [:create], if: :run_validations?
     validate :import_file_extension_validation, on: [:create], if: :run_validations?
 
-    after_update :send_status_processing_email, if: ->(r) { r.processing_started_at_changed? }
-    after_update :send_status_complete_email, if: ->(r) { r.processing_finished_at_changed? }
     before_update :populate_processing_finished_at, if: ->(r) { r.complete? }
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
@@ -251,12 +249,6 @@ module NfgCsvImporter
         # type
         (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
     end
-
-    def send_status_processing_email
-      NfgCsvImporter::ImportMailer.send_import_result(self).deliver_later
-    end
-
-    alias_method :send_status_complete_email, :send_status_processing_email
 
     def populate_processing_finished_at
       self.processing_finished_at = Time.zone.now

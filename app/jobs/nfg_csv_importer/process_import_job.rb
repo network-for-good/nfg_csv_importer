@@ -46,6 +46,7 @@ module NfgCsvImporter
       if import.records_processed.blank?
         log "beginning initial processing"
         import.update(processing_started_at: Time.zone.now)
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_later
         # the import_service will set this value by default, but we're doing
         # it here for clarity.
         import_service.starting_row = 2
@@ -71,6 +72,7 @@ module NfgCsvImporter
         NfgCsvImporter::ProcessImportJob.perform_async(import_id)
       else
         import.lock!.complete!
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_later
         log "completed import"
       end
     end
