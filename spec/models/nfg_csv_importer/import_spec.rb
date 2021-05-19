@@ -669,7 +669,7 @@ describe NfgCsvImporter::Import do
     end
   end
 
-  describe "maybe_send_import_status_email callback" do
+  describe "send_status_email callbacks" do
     let(:mailer) { mock("mailer", deliver_later: true) }
 
     context "with a status of processing, with nil records_processed, with a value in processing_started_at" do
@@ -693,14 +693,6 @@ describe NfgCsvImporter::Import do
 
       subject { import.queued! }
       it_behaves_like "not sending the import status email"
-    end
-
-    context "with processing status, with nil records_processed, with a value in processing_started_at" do
-      let(:processing_started_at) { 5.minutes.ago }
-      let(:records_processed) { nil }
-
-      subject { import.processing! }
-      it_behaves_like "sending the import status email"
     end
   end
 

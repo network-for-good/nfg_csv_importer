@@ -40,7 +40,7 @@ module NfgCsvImporter
         end
       end
 
-      # We will only get here if the import has a status of queued
+      # We will only get here if the import originally had a status of queued
       import_service = import.service
 
       if import.records_processed.blank?
@@ -61,7 +61,10 @@ module NfgCsvImporter
       errors_csv = import_service.import
       import.set_upload_error_file(errors_csv) if errors_csv.present?
 
-      if import_service.run_time_limit_reached?
+      if import.killed?
+        log "import was killed"
+        exit
+      elsif import_service.run_time_limit_reached?
         # We set the import status back to queued here so that the new job will be able to process it.
         import.lock!.queued!
         log "reached run time limit of #{NfgCsvImporter.configuration.max_run_time} at row #{import_service.current_row}"
