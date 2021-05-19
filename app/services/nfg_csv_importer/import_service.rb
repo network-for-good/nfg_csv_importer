@@ -142,7 +142,7 @@ module NfgCsvImporter
       (starting_row..spreadsheet.last_row).map do |i|
         self.current_row = i
         break if run_time_limit_reached?
-        break if import_record.killed?
+        break if import_record.reload.killed?
         row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
         row = strip_data(row)
         set_zone_for_date_fields(row)

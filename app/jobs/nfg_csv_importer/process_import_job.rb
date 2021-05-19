@@ -27,16 +27,16 @@ module NfgCsvImporter
           end
           # If the import has a status of :processing, that means a job is already working on it
           # and we should quit.
-          exit
+          return
 
         elsif import.complete?
           # If the import has a status of complete, we run the callbacks just to be safe.
           log "import was already marked complete."
-          exit
+          return
 
         else
           log "THIS SHOULD NEVER HAPPEN"
-          exit
+          return
         end
       end
 
@@ -63,7 +63,7 @@ module NfgCsvImporter
 
       if import.killed?
         log "import was killed"
-        exit
+        return
       elsif import_service.run_time_limit_reached?
         # We set the import status back to queued here so that the new job will be able to process it.
         import.lock!.queued!
