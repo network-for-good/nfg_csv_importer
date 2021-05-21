@@ -1,4 +1,19 @@
 require 'rails_helper'
+
+shared_examples_for "not sending the import status email" do
+  it "does not send the email" do
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).never
+    subject
+  end
+end
+
+shared_examples_for "sending the import status email" do
+  it "sends the email" do
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).once.returns(mailer)
+    subject
+  end
+end
+
 describe NfgCsvImporter::Import do
 
   let(:entity) { create(:entity) }
@@ -9,16 +24,34 @@ describe NfgCsvImporter::Import do
     File.open("spec/fixtures#{file_name}")
   end
 
+  let(:processing_status) { NfgCsvImporter::Import::PROCESSING_STATUS.to_s }
+  let(:queued_status) { NfgCsvImporter::Import::QUEUED_STATUS.to_s }
+  let(:completed_status) { NfgCsvImporter::Import::COMPLETED_STATUS.to_s }
+  let(:records_processed) { nil }
+
   let(:header_data) { ["email" ,"first_name","last_name"] }
   let(:file_name) { "/subscribers.csv" }
   let(:admin) {  create(:user) }
   let(:error_file) { nil }
   let(:status) { :uploaded }
+  let(:processing_started_at) { nil }
+  let(:processing_finished_at) { nil }
   let(:fields_mapping) { nil }
   let(:import) do
-    FactoryGirl.create(:import, :with_pre_processing_files, imported_for: entity, import_type: import_type, imported_by: admin,
-                      import_file: file, error_file: error_file, status: status, statistics: stats,
-                      file_origination_type: file_origination_type_name, fields_mapping: fields_mapping)
+    FactoryGirl.create(:import, :with_pre_processing_files,
+      imported_for: entity,
+      import_type: import_type,
+      imported_by: admin,
+      import_file: file,
+      error_file: error_file,
+      status: status,
+      processing_started_at: processing_started_at,
+      processing_finished_at: processing_finished_at,
+      records_processed: records_processed,
+      statistics: stats,
+      file_origination_type: file_origination_type_name,
+      fields_mapping: fields_mapping
+    )
   end
   let(:default_file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
   let(:file_origination_type_name) { default_file_origination_type }
@@ -216,9 +249,7 @@ describe NfgCsvImporter::Import do
     subject { import.column_stats }
 
     it "should return a count of all of the columns" do
-      expect(subject[:column_count]).to eq(4)
-    end
-
+      expect(subject[:column_count]).to eq(4) end
     it "should return the number of unmapped columns" do
       expect(subject[:unmapped_column_count]).to eq(1)
     end
@@ -635,6 +666,18 @@ describe NfgCsvImporter::Import do
 
     it 'changes the status to pending' do
       expect{ subject }.to change { import.reload.status }.from(status.to_s).to('pending')
+    end
+  end
+
+  describe "populate_processing_finishsed_at callback" do
+    context "with a status of complete" do
+      it { expect { import.complete! }.to change { import.processing_finished_at } }
+    end
+
+    NfgCsvImporter::Import.statuses.keys.reject { |s| s == "complete" }.each do |s|
+      context "with a status of #{s}" do
+        it { expect { import.send("#{s}!") }.not_to change { import.processing_finished_at } }
+      end
     end
   end
 end
