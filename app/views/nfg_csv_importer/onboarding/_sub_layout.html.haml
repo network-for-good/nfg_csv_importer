@@ -19,22 +19,20 @@
 
   .builder-container
     - if framed
-      .container.py-4
+      .container.py-4.py-lg-5
         .row
-          .col.col-lg-8.mx-auto
+          .col-11.col-lg-10.col-xl-8.mx-auto
             = ui.nfg :alert, :danger, body: flash[:error], render_if: flash[:error].present?
             = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle', render_if: f.object.errors.any?
-
-            = ui.nfg :tile do
-              = ui.nfg :typeface, heading: header_message.html_safe, class: 'mb-2', render_if: header_message.present?
-              = ui.nfg :typeface, :muted, body: header_page.html_safe, render_if: header_page.present?
-              = yield f
+            = ui.nfg :typeface, heading: header_message.html_safe, class: 'mb-2', render_if: header_message.present?
+            = ui.nfg :typeface, :muted, body: header_page.html_safe, render_if: header_page.present?
+            = yield f
 
     - else
       - if f.object.errors.any?
         .container.pt-3
           .row
-            .col.col-lg-8.mx-auto
+            .col-11.col-lg-10.col-xl-8.mx-auto
               = ui.nfg :alert, :danger, body: f.object.errors.full_messages.join('<br/>').html_safe, icon: 'exclamation-circle'
 
       = yield f
