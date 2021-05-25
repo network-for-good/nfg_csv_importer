@@ -22,7 +22,7 @@ module NfgCsvImporter
     serialize :fields_mapping
     serialize :statistics, JSON
 
-    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending, :killed]
     mount_uploader :import_file, ImportValidFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
@@ -44,6 +44,8 @@ module NfgCsvImporter
     # the import file.
     validate :import_validation, on: [:create], if: :run_validations?
     validate :import_file_extension_validation, on: [:create], if: :run_validations?
+
+    before_update :populate_processing_finished_at, if: ->(r) { r.complete? }
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
 
@@ -246,6 +248,10 @@ module NfgCsvImporter
         # file origination type, otherwise, we defer to the file origination
         # type
         (file_origination_type.nil? || file_origination_type&.requires_post_processing_file)
+    end
+
+    def populate_processing_finished_at
+      self.processing_finished_at = Time.zone.now
     end
   end
 
