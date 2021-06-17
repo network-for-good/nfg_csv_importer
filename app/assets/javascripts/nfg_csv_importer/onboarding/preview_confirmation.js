@@ -1,7 +1,7 @@
-function retrieve_statistics(import_id) {
+function retrieve_statistics(import_id, url) {
   var numTimes = 0;
   $.ajax({
-    url: "/imports/" + import_id + "/statistics",
+    url: url || "/imports/" + import_id + "/statistics",
     success: function(data) {
       document.location.reload()
     },
