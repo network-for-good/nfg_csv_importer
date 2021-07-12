@@ -62,13 +62,6 @@ module NfgCsvImporter
       errors_csv = import_service.import
       import.set_upload_error_file(errors_csv) if errors_csv.present?
 
-      if $shutdown_pending
-        log "shutdown pending"
-        # If the thread is shutting down, we change the status back to queued so
-        # that the job will be picked up again
-        import.queued!
-      end
-
       if import.killed?
         log "import was killed"
         return
