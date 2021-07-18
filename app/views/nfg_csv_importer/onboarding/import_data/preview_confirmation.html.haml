@@ -22,5 +22,6 @@
 /* Strictly check if it is not true as statistics_present returns ruby's stringified true */
 :javascript
   if("#{statistics_present}" != 'true'){
-    retrieve_statistics("#{import_id}")
+    statistics_url = "#{import_import_statistics_path(import_id: import_id)}"
+    retrieve_statistics("#{import_id}", statistics_url)
   }
