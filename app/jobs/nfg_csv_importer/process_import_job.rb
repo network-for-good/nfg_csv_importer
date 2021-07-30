@@ -61,8 +61,9 @@ module NfgCsvImporter
 
       errors_csv = import_service.import
       import.set_upload_error_file(errors_csv) if errors_csv.present?
+
       if $shutdown_pending
-        import.queued!
+        import.lock!.queued!
         log "Shutdown detected, so quitting gracefully"
         raise Sidekiq::Shutdown
       end
