@@ -61,6 +61,11 @@ module NfgCsvImporter
 
       errors_csv = import_service.import
       import.set_upload_error_file(errors_csv) if errors_csv.present?
+      if $shutdown_pending
+        import.queued!
+        log "Shutdown detected, so quitting gracefully"
+        raise Sidekiq::Shutdown
+      end
 
       if import.killed?
         log "import was killed"
@@ -84,7 +89,7 @@ module NfgCsvImporter
       if ENV['SPEC_DEBUG'].present?
         p msg
       else
-        Rails.logger.info msg
+        Sidekiq.logger.info msg
       end
     end
   end
