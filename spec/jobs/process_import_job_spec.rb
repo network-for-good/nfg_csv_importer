@@ -91,6 +91,16 @@ describe NfgCsvImporter::ProcessImportJob do
     end
   end
 
+  describe "handling Sidekiq worker restarts" do
+    before { $shutdown_pending = true }
+    after { $shutdown_pending = nil }
+
+    it "raises Sidekiq::Shutdown and sets the import status back to queued" do
+      expect { subject }.to raise_error(Sidekiq::Shutdown)
+      expect(import.reload.status).to eql NfgCsvImporter::Import::QUEUED_STATUS.to_s
+    end
+  end
+
   describe "updating the processing_started_at timestamp" do
     context "When the job is enqueued the first time" do
       let(:records_processed) { nil }

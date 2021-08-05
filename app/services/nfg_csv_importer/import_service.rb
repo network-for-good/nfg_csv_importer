@@ -143,6 +143,7 @@ module NfgCsvImporter
         self.current_row = i
         break if run_time_limit_reached?
         break if import_record.reload.killed?
+        break if $shutdown_pending # This happens when the Sidekiq worker is terminated or restarted
         row = convert_row_to_hash_with_field_mappings_as_keys_and_ignored_columns_removed(i)
         row = strip_data(row)
         set_zone_for_date_fields(row)
