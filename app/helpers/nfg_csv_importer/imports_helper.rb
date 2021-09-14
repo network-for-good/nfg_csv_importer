@@ -43,8 +43,8 @@ module NfgCsvImporter
         import_status_class += " text-danger"
       end
 
-      content_tag :strong, class: "m-r-quarter #{import_status_class}", data: { describe: 'import-status-link' } do
-        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize, class: import_status_class
+      content_tag :strong, class: "m-r-quarter mr-1 #{import_status_class}", data: { describe: 'import-status-link' } do
+        fa_icon import_status_icon, text: I18n.t("nfg_csv_importer.imports.index.status.#{import.status}", default: import.status).titleize, class: "mr-1 #{import_status_class}"
       end
     end
 

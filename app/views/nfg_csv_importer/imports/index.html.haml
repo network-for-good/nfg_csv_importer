@@ -1,56 +1,44 @@
 .importer-gem{ data: { view_wrapper: 'importer-gem' } }
 
   -# Legacy
-  .container-fluid.container-flush
-    .jumbotron.jumbotron-fluid.jumbotron-clouds-gray.bg-info.p-t-base-half
-      .container-fluid
+  = ui.nfg :jumbotron, class: 'bg-info jumbotron-clouds-white text-white text-center shadow-sm' do
+    - if disable_import_initiation_message.present?
+      -# At times we need to not allow new imports to begin,
+      -# such as on Giving Tuesday. The below variable
+      -#  comes from the imports control controller method
+      = disable_import_initiation_message.html_safe
+    - else
+      %h3= t('.jumbotron.headline').html_safe
+      = ui.nfg :typeface, body: t('.jumbotron.sub_headline'), class: 'mt-2 lead'
+      - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
+      = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
+
+  = render(partial: 'shared/flash_messages') rescue nil
+  = ui.nfg :tile, class: 'mt-3' do
+    - if @imports.empty?
+      .p-3.w-100.text-center{ data: { describe: 'imports-empty-state' } }
         .row
-          .col-xs-12.p-x-2.text-white
-            - if disable_import_initiation_message.present?
-              -# At times we need to not allow new imports to begin,
-              -# such as on Giving Tuesday. The below variable
-              -#  comes from the imports control controller method
-              = disable_import_initiation_message.html_safe
-            - else
-              %h1.text-xs-center= t('.jumbotron.headline').html_safe
-              %p.text-xs-center.m-b-base= t('.jumbotron.sub_headline')
-              - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
-              = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
-  .container-fluid.p-t-base-half
-    = render(partial: 'shared/flash_messages') rescue nil
-    .row
-      .col-xs-12
-        .container-division
-          .row
-            - if @imports.empty?
-              .col-xs-12{ data: { describe: 'imports-empty-state' } }
-                .jumbotron
-                  %h4.display-3.m-b-half= fa_icon 'cloud-upload', class: 'text-light'
-                  %h2.h1 Add your first import!
-                  %p.m-t-quarter You're only a few steps away from importing data into your account.
-            - else
-              .col-xs-12.slats#imports_listing
-                .slat-header.hidden-sm-down
-                  .row.display-flex.flex-align-items-center
-                    %div{ class: "col-md-3 m-b-half-down-sm" }
-                      %h4.display-4= t(".headings.imported_by_name")
-                    %div{ class: "col-md-3 m-b-half-down-sm" }
-                      %h4.display-4= t(".headings.data")
-                    %div{ class: "col-md-2 m-b-half-down-sm" }
-                      %h4.display-4= t(".headings.contacts")
-                    %div{ class: "col-md-2 m-b-half-down-sm" }
-                      %h4.display-4= t(".headings.errors")
-                    %div{ class: "col-md-2 m-b-half-down-sm" }
+          .col.col-md-10.col-lg-6.mx-auto
+            = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/empty_imports_lg.png', alt: 'illustration_alt'
+            = ui.nfg :typeface, heading: 'Add your first import!', class: 'mt-3 mb-2'
+            = ui.nfg :typeface, :muted, body: "You're only a few steps away from importing data into your account.", class: 'mb-0'
+    - else
+      = ui.nfg :slats, id: 'imports_listing' do
+        = ui.nfg :slat_header do
+          = ui.nfg :slat do
+            = ui.nfg :slat_body do
+              = ui.nfg :slat_item, slat_header: t(".headings.imported_by_name")
+              = ui.nfg :slat_item, :md, slat_header: t(".headings.data")
+              = ui.nfg :slat_item, slat_header: t(".headings.contacts")
+              = ui.nfg :slat_item, slat_header: t(".headings.errors")
 
-                .slat-list
-                  - @imports.each_with_index do |import, i|
-                    - import_presenter = NfgCsvImporter::ImportPresenter.new(import, self)
-                    = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, import_presenter: import_presenter }
+        - @imports.each_with_index do |import, i|
+          - import_presenter = NfgCsvImporter::ImportPresenter.new(import, self)
+          = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, import_presenter: import_presenter }
 
-          - if @imports.present? && (defined?(WillPaginate) || defined?(Kaminari))
-            .row.m-t-base{ data: { describe: 'pagination' } }
-              .col-xs-12
-                - if defined?(WillPaginate)
-                  = will_paginate @imports
-                - elsif defined?(Kaminari)
-                  = paginate @imports
+    - if @imports.present? && (defined?(WillPaginate) || defined?(Kaminari))
+      .mt-3{ data: { describe: 'pagination' } }
+        - if defined?(WillPaginate)
+          = will_paginate @imports
+        - elsif defined?(Kaminari)
+          = paginate @imports

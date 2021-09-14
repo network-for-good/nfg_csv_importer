@@ -5,13 +5,11 @@
 - content_class = "" if local_assigns[:content_class].nil?
 - color = "text-primary" if local_assigns[:color].nil?
 
-%div{ class: "card card-block card-icon-column text-xs-center" }
-  = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter #{color}"
-  %h4{ class: "display-4 #{heading_class}" }
-    = heading
+= ui.nfg :card, class: 'card-icon-column' do
+  = fa_stacked_icon "#{icon} inverse fw", base: "circle", class: "fa-lg m-b-quarter mb-1 #{color}"
   - if content.present?
-    %p.m-t-quarter{ class: content_class }
-      = content
+    = ui.nfg :typeface, heading: content, class: "h2 #{content_class}"
   - else
     = yield
+  = ui.nfg :typeface, :muted, body: heading, class: "mb-0 #{heading_class}"
 
