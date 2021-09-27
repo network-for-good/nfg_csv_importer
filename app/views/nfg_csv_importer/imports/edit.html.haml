@@ -67,10 +67,10 @@
                     .col-xl-10.offset-xl-1.col-xs-12
                       .row
                         .col-md-6.col-xs-12
-                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], heading_class: 'text-white font-size-lg', content: "Columns to be Imported", color: "" }
+                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content_class: 'card-text line-height-normal', content: "Columns to be Imported", color: "" }
 
                         .col-md-6.col-xs-12
-                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], heading_class: 'text-white font-size-lg', color: "" } do
+                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], content_class: 'text-white font-size-lg', color: "" } do
                             %p.card-text.line-height-normal
                               Automatically Mapped Columns
                               %br

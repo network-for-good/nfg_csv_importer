@@ -117,7 +117,9 @@ describe "Importing your own spreadsheet", js: true do
       end
 
       and_by 'deleting the import' do
-        page.find("[data-describe='import_dropdown-#{import.id}']").click
+        within "[data-describe='import_dropdown-#{import.id}']" do
+          find('.dropdown-toggle').click
+        end
         click_link I18n.t('nfg_csv_importer.imports.index.links.delete_import')
         page.driver.browser.switch_to.alert.accept
         expect(page).to have_content I18n.t('nfg_csv_importer.imports.index.status.deleted')
