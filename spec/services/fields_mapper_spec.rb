@@ -90,7 +90,18 @@ describe NfgCsvImporter::FieldsMapper do
         it "should return nil" do
           expect(subject).to eq(nil)
         end
+      end
 
+      context 'and the alias has a special character significant for a regular expression' do
+        let(:column_name) { "donor first name" }
+
+        let(:field_aliases) do
+          { "first_name" => "first (+)"}
+        end
+
+        it "does not cause a Regexp error" do
+          expect { subject }.not_to raise_error
+        end
       end
     end
 

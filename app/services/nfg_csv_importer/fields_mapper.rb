@@ -40,10 +40,16 @@ module NfgCsvImporter
       # name as the key and an array of aliases as the value
       # i.e. "first_name" => ["first", "donor first name", "contact first name"]
       field = nil
+
       aliases_for_mapping.each do |f, alias_values|
-        field_regex = alias_values.respond_to?(:join) ? alias_values.join('|') : alias_values
+        alias_values = Array(alias_values)
+        alias_values.map! { |v| Regexp.escape(v) } # handles field names with special characters
+
+        field_regex = alias_values.join('|')
+
         break field = f if header_column.match(/#{ field_regex }/i)
       end
+
       field
     end
 
