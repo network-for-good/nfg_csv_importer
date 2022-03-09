@@ -1,4 +1,4 @@
-- language_scope = [:imports, :new]
+- language_scope = [:nfg_csv_importer, :imports, :new]
 
 .importer-gem{ data: { view_wrapper: "importer-gem" } }
   / TODO: Setup alert for this
@@ -22,17 +22,17 @@
         .col-md-10.offset-md-1.col-xs-12
           .row.text-xs-center
             .col-md-4.col-xs-12
-              = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", content_class: "small", heading: "Step 1" } do
+              = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "cloud-upload inverse", heading_class: "text-primary", heading: "Step 1" } do
                 Format your spreadsheet.
                 %br
                 = link_to 'Download our template', NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: @import_type)
                 to get your information organized.
 
             .col-md-4.col-xs-12
-              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", content_class: "small", heading: "Step 2", content: "Upload your formatted spreadsheet." }
+              = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading_class: "text-primary", heading: "Step 2", content: "Upload your formatted spreadsheet." }
 
             .col-md-4.col-xs-12
-              = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", content_class: "small", heading: "Step 3" } do
+              = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "thumbs-o-up inverse", heading_class: "text-primary", heading: "Step 3" } do
                 Map your spreadsheet's column headers to fields in your system.
                 %br
                 Review the mapping, then approve.

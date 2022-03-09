@@ -60,6 +60,7 @@ h1, h2, h3, h4, h5, h6,
 
 p{
   font-size: $font-size-p;
+  margin-bottom: 0;
   &.small, small { font-size: 12px; }
 
   &.lead,
@@ -95,7 +96,7 @@ h1.display-1,
 }
 
 .text-muted{
-  color: $text-muted;
+  color: $text-muted !important;
 }
 
 a.text-glow{
@@ -125,10 +126,10 @@ a.text-glow{
   }
 }
 
-h2{
-    font-size: 24px;
-    font-weight: $font-weight-light;
-  }
+// h2{
+//     font-size: 24px;
+//     font-weight: $font-weight-light;
+//   }
 
 hr {
   margin-top: $spacer-y;

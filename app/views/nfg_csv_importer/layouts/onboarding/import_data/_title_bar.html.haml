@@ -1,0 +1,17 @@
+- show_exit_button = true if local_assigns[:show_exit_button].nil?
+- title_bar_presenter = NfgCsvImporter::Onboarder::TitleBarPresenter.new(onboarding_session, self)
+
+.builder-header
+  .row.align-items-center.justify-content-between
+    .col
+      = ui.nfg :typeface, :muted, caption: title_bar_presenter.title_bar_caption, class: 'mb-0', describe: 'onboarder-caption'
+      = ui.nfg :typeface, :white, heading: file_origination_type&.name, render_if: file_origination_type.present?
+
+    - if show_exit_button
+      .col-auto
+
+        - if first_step
+          = ui.nfg :button, :link, href: nfg_csv_importer.imports_path, body: t('nfg_csv_importer.onboarding.import_data.title_bar.buttons.exit'), class: 'my-1 text-light'
+
+        - else
+          = ui.nfg :button, :link, href: nfg_csv_importer.reset_onboarder_session_imports_path, id: 'save_and_exit', body: t('nfg_csv_importer.onboarding.import_data.title_bar.buttons.exit'), class: 'my-1 text-light'

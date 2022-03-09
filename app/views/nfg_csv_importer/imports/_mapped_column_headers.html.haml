@@ -1,0 +1,34 @@
+- import = local_assigns[:import]
+- max_height = '300' if local_assigns[:max_height].nil?
+
+.expandable{ data: { max_height: max_height.to_s } }
+  .row
+    .col-5
+      = ui.nfg :typeface, subheading: 'Spreadsheet Column Header', class: 'display-4'
+    .col-2
+      = ui.nfg :typeface, subheading: '&nbsp;'.html_safe, class: 'display-4'
+    .col-5
+      = ui.nfg :typeface, subheading: 'Field in system', class: 'display-4'
+
+  - import.mapped_fields.select { |mf| !mf.ignored? }.each do |mapped_column|
+    .row.mt-1{ data: { describe: 'mapped-column-header' } }
+      .col-5
+        = ui.nfg :icon, "check", :success, class: 'mr-1'
+        %strong{ data: { describe: 'original-column-header' } }= mapped_column.name
+      .col-2
+        = ui.nfg :icon, "long-arrow-right", :muted
+      .col-12.col-md-5{ data: { describe: 'new-column-header' } }
+        = import_column_display_name(import.import_type, mapped_column.mapped_to)
+
+  - if import.column_stats[:ignored_column_count] > 0
+    %hr
+    .div{ data: { describe: 'ignored-columns' } }
+      = ui.nfg :typeface, :subheading do
+        = import.column_stats[:ignored_column_count]
+        Ignored Columns
+
+      - import.mapped_fields.select { |mf| mf.ignored? }.each do |ignored_column|
+        .mt-1{ data: { describe: 'ignored-column-header' } }
+          = ui.nfg :icon, "close", :danger, class: 'mr-1'
+          %span.text-muted
+            = ignored_column.name

@@ -7,9 +7,10 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-       - image: circleci/ruby:2.3.7-node-browsers
+       - image: circleci/ruby:2.5.8-node-browsers
          environment:
            RAILS_ENV: test
+       - image: circleci/redis:4
 
     working_directory: ~/repo
 
@@ -19,30 +20,40 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          - v3-dependencies-{{ checksum "Gemfile.lock" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - v3-dependencies-
 
       - run:
           name: install dependencies
           command: |
+            gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          key: v3-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
+      - run: cp spec/test_app/config/api-keys.yml.example spec/test_app/config/api-keys.yml
+      - run: cp spec/test_app/config/redis.yml-example spec/test_app/config/redis.yml
       - run: cd spec/test_app && bundle exec rake db:create db:migrate db:schema:load
+
+      - run:
+          name: flakey specs
+          command: |
+            mkdir /tmp/test-results
+            bundle exec rspec --tag "flakey" \
+                              --format documentation \
+                              --format RspecJunitFormatter \
+                              --out /tmp/test-results/rspec.xml
 
       # run tests!
       - run:
           name: run tests
           command: |
-            mkdir /tmp/test-results
-
-            bundle exec rspec --format progress \
+            bundle exec rspec --tag "~flakey" --tag "~exclude_from_circle" --format progress \
                             --format RspecJunitFormatter \
                             --out /tmp/test-results/rspec.xml
 

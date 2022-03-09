@@ -1,9 +1,73 @@
 require 'rails_helper'
 
+shared_examples_for "not sending the import status email" do
+  it "does not send the email" do
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).never
+    subject
+  end
+end
+
+shared_examples_for "sending the import status email" do
+  it "sends the email" do
+    NfgCsvImporter::ImportMailer.expects(:send_import_result).with(import).once.returns(mailer)
+    subject
+  end
+end
+
 describe NfgCsvImporter::Import do
+
+  let(:entity) { create(:entity) }
+  let(:import_type) { "users" }
+  let(:file_type) { 'csv' }
+
+  let(:file) do
+    File.open("spec/fixtures#{file_name}")
+  end
+
+  let(:processing_status) { NfgCsvImporter::Import::PROCESSING_STATUS.to_s }
+  let(:queued_status) { NfgCsvImporter::Import::QUEUED_STATUS.to_s }
+  let(:completed_status) { NfgCsvImporter::Import::COMPLETED_STATUS.to_s }
+  let(:records_processed) { nil }
+
+  let(:header_data) { ["email" ,"first_name","last_name"] }
+  let(:file_name) { "/subscribers.csv" }
+  let(:admin) {  create(:user) }
+  let(:error_file) { nil }
+  let(:status) { :uploaded }
+  let(:processing_started_at) { nil }
+  let(:processing_finished_at) { nil }
+  let(:fields_mapping) { nil }
+  let(:import) do
+    FactoryGirl.create(:import, :with_pre_processing_files,
+      imported_for: entity,
+      import_type: import_type,
+      imported_by: admin,
+      import_file: file,
+      error_file: error_file,
+      status: status,
+      processing_started_at: processing_started_at,
+      processing_finished_at: processing_finished_at,
+      records_processed: records_processed,
+      statistics: stats,
+      file_origination_type: file_origination_type_name,
+      fields_mapping: fields_mapping
+    )
+  end
+  let(:default_file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM }
+  let(:file_origination_type_name) { default_file_origination_type }
+
+  let(:stats) do
+    {
+      "total_amount"=> '10.00'
+    }
+  end
+
+  # we use this so both the import file, and the onboarder UploadPostProcessingForm can have
+  # the shared validations run against it.
+  let(:import_file_validateable_host) { import }
+
   it { should validate_presence_of(:imported_by_id) }
   it { should validate_presence_of(:imported_for_id) }
-  it { should validate_presence_of(:import_type)}
   it { should belong_to(:imported_for) }
   it { should belong_to(:imported_by) }
   it { should delegate_method(:description).to(:service)}
@@ -26,93 +90,80 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
-  context "when file is nil" do
-    let(:file) { nil }
+  describe '#file_origination_type' do
+    subject { import.file_origination_type }
 
-    it { should validate_presence_of(:import_file) }
+    context 'when the file_origination_type has not been set' do
+      let(:file_origination_type_name) { nil }
+
+      it 'should be nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when it has been set" do
+      let(:file_origination_type_name) { default_file_origination_type }
+
+      it 'should return a FileOriginationType object with the matching the file_origination_type value' do
+        expect(subject).to be_an_instance_of(NfgCsvImporter::FileOriginationTypes::FileOriginationType)
+      end
+    end
   end
 
-  let(:entity) { create(:entity) }
-  let(:import_type) { "users" }
-  let(:file_type) { 'csv' }
+  describe 'validating the import type and import file' do
+    subject { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+                      import_file: file, error_file: error_file, status: status, statistics: stats,
+                      file_origination_type: file_origination_type_name) }
 
-  let(:file) do
-    File.open("spec/fixtures#{file_name}")
+    context 'when the imports file origination type is nil'  do
+      let(:file_origination_type_name) { nil }
+
+      # this is to keep it consistent with imports prior to the role out of
+      # file origination types
+      it { is_expected.to validate_presence_of(:import_type) }
+      it { is_expected.to validate_presence_of(:import_file) }
+    end
+
+    context 'when the import has a file origination type' do
+      before do
+        NfgCsvImporter::FileOriginationTypes::FileOriginationType.any_instance.stubs(:requires_post_processing_file).returns(requires_post_processing_file)
+      end
+
+      context "when the import's file origination type does not require a post processing file" do
+        let(:requires_post_processing_file) { false }
+
+        it { is_expected.not_to validate_presence_of(:import_type)}
+        it { is_expected.not_to validate_presence_of(:import_file) }
+      end
+
+      context "when the import's file origination type requires a post processing file" do
+        let(:requires_post_processing_file) { true }
+
+        it { is_expected.to validate_presence_of(:import_type) }
+        it { is_expected.to validate_presence_of(:import_file) }
+      end
+    end
   end
 
-  let(:header_data) { ["email" ,"first_name","last_name"] }
-  let(:file_name) { "/subscribers.csv" }
-  let(:admin) {  create(:user) }
-  let(:error_file) { nil }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, import_file: file, error_file: error_file) }
+  context "when the import file has a status other than pending" do
+    let(:import) do
+      # since we are testing validation, we have to build
+      # because we can't create invalid records
+      FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+                        import_file: file, error_file: error_file, status: status, statistics: stats)
+    end
+    subject { import_file_validateable_host.valid? }
+
+    it_behaves_like 'validate import file'
+  end
+
+  describe '#pre_processing_files' do
+    subject { import.pre_processing_files }
+
+    it { is_expected.to be_an_instance_of(ActiveStorage::Attached::Many) }
+  end
 
   it { expect(import.save).to be }
-
-  describe "#valid?" do
-
-    before(:each) do
-      csv_data = mock
-      csv_data.stubs(:row).with(1).returns(header_data)
-      NfgCsvImporter::ImportService.any_instance.stubs(:open_spreadsheet).returns(csv_data)
-    end
-
-    subject { import.valid? }
-
-    it { expect(subject).to be }
-
-    context "validate when there is no file" do
-      let(:file) { nil }
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-      end
-    end
-
-    context "with invalid file extensions" do
-      let(:file) { '/icon.jpg'}
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["Import File can't be blank, Please Upload a File"])
-      end
-    end
-
-    context "when the file contains an empty header" do
-      let(:header_data) { ["first_name", "email", "", "last_name"] }
-      it { should_not be }
-      it " should add an error to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["At least one empty column header was detected. Please ensure that all column headers contain a value." ])
-      end
-    end
-
-    context 'when the file contains duplicate headers' do
-      let(:header_data) { ["first_name", "email", "first_name", "email", "last_name"] }
-
-      it { expect(subject).not_to be }
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["The column headers contain duplicate values. Either modify the headers or delete a duplicate column. The duplicates are: 'first_name' on columns A & C; 'email' on columns B & D"])
-      end
-    end
-
-    context "when there's an error reading the file" do
-      before do
-        import.stubs(:duplicated_headers).raises(StandardError)
-      end
-
-      it "should add errors to base" do
-        subject
-        expect(import.errors.messages[:base]).to eq(["We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."])
-      end
-    end
-  end
 
   describe "#service" do
     subject { import.service }
@@ -198,9 +249,7 @@ describe NfgCsvImporter::Import do
     subject { import.column_stats }
 
     it "should return a count of all of the columns" do
-      expect(subject[:column_count]).to eq(4)
-    end
-
+      expect(subject[:column_count]).to eq(4) end
     it "should return the number of unmapped columns" do
       expect(subject[:unmapped_column_count]).to eq(1)
     end
@@ -319,7 +368,10 @@ describe NfgCsvImporter::Import do
   end
 
   describe "maybe_append_to_existing_errors" do
-    let(:errors_csv) { "email\tfirst_name\tlast_name\tErrors\npavan@gmail.com\tArnold\tGilbert\tEmail is invalid\n" }
+    let(:errors_csv) { "email,first_name,last_name,Errors\npavan@gmail.com,Arnold,Gilbèrt,Email is invalid\n" }
+    # here we force a non-standard encoding to verify that combining the previous errors that are in the error_file with the new errors
+    # won't cause an encoding compatibility issue.
+    let(:previous_errors) { "email,first_name,last_name,Errors\najporterfield@gmail,Andrew,Porterfield,Email is invalid\n".force_encoding("US-ASCII") }
     let(:subject) { import.maybe_append_to_existing_errors(errors_csv) }
 
     context 'when error_file is blank' do
@@ -329,10 +381,11 @@ describe NfgCsvImporter::Import do
     end
 
     context 'when error_file is present' do
-      let(:error_file) { File.open("spec/fixtures/errors.xls") }
+      let(:error_file) { File.open("spec/fixtures/errors.csv") }
 
       it 'appends to existing errors_csv' do
-        csv = CSV.parse(subject, col_sep: "\t")
+        import.stubs(:error_file).returns(stub(read: previous_errors))
+        csv = CSV.parse(subject)
         expect(csv.size).to eq 3
         expect(subject).to include 'pavan@gmail.com' # new errors
         expect(subject).to include 'ajporterfield@gmail' # existing errors
@@ -484,6 +537,146 @@ describe NfgCsvImporter::Import do
         it 'returns false' do
           expect(subject).to eq false
         end
+      end
+    end
+  end
+
+  describe '#statistics_and_examples' do
+    let(:update_stats) { true }
+
+    subject { import.statistics_and_examples(update_stats: update_stats) }
+
+    shared_examples_for 'generating new stats' do
+      let(:response) { { 'some' => 'response' } }
+
+      before do
+        NfgCsvImporter::ImportService.any_instance.expects(:generate_stats_and_examples).returns(response)
+      end
+
+      it 'updates statistics with the generated stats' do
+        expect{ subject }.to change { import.reload&.statistics }.from(stats).to(response)
+      end
+
+      it { is_expected.to eq response }
+    end
+
+    context 'when update_stats is true' do
+      context 'when stats are already present' do
+        it_behaves_like 'generating new stats'
+      end
+
+      context 'when stats are not already present' do
+        let(:stats) { nil }
+
+        it_behaves_like 'generating new stats'
+      end
+    end
+
+    context 'when update_stats is false' do
+      let(:update_stats) { false }
+
+      context 'when stats are already present' do
+        it { is_expected.to eq stats }
+
+        it 'does not update import statistics' do
+          expect { subject }.to_not change { import.reload.statistics }
+        end
+      end
+
+      context 'when stats are not already present' do
+        let(:stats) { nil }
+
+        it_behaves_like 'generating new stats'
+      end
+    end
+
+  end
+
+  describe '#default_onboarder' do
+    subject { import.default_onboarder }
+
+    it { is_expected.to eq "import_data_onboarder"}
+  end
+
+  describe '#send_to_nfg?' do
+    subject { import.send_to_nfg? }
+
+    context 'when file origination type name is send_to_nfg' do
+      let(:file_origination_type_name) { 'send_to_nfg' }
+      it 'returns true' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'when file origination type name is not send_to_nfg' do
+      let(:file_origination_type_name) { 'send_to_abc' }
+      it 'returns true' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
+
+  describe '#pending_or_uploaded_or_calculating_statistics?' do
+    subject { import.pending_or_uploaded_or_calculating_statistics? }
+
+    context 'when the import is uploaded' do
+      let(:status) { 'uploaded' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is pending' do
+      let(:status) { 'pending' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is calculating_statistics' do
+      let(:status) { 'calculating_statistics' }
+
+      it { is_expected.to eq true }
+    end
+
+    context 'when the import is neither pending nor uploaded' do
+      let(:status) { 'defined' }
+
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe "reset_attributes_on_file_origination_type_change" do
+    subject { import.reset_attributes_on_file_origination_type_change }
+
+    let(:fields_mapping) { { 'some' => 'mapping' } }
+
+    it 'should delete fields mapping' do
+      expect{ subject }.to change { import.reload.fields_mapping }.from(fields_mapping).to(nil)
+    end
+
+    it 'should remove import_file' do
+      expect { subject }.to change { import.reload.import_file.file.present? }.from(true).to(false)
+    end
+
+    it 'should purge pre processing files' do
+      import.pre_processing_files.each do |file|
+        file.expects(:purge)
+      end
+      subject
+    end
+
+    it 'changes the status to pending' do
+      expect{ subject }.to change { import.reload.status }.from(status.to_s).to('pending')
+    end
+  end
+
+  describe "populate_processing_finishsed_at callback" do
+    context "with a status of complete" do
+      it { expect { import.complete! }.to change { import.processing_finished_at } }
+    end
+
+    NfgCsvImporter::Import.statuses.keys.reject { |s| s == "complete" }.each do |s|
+      context "with a status of #{s}" do
+        it { expect { import.send("#{s}!") }.not_to change { import.processing_finished_at } }
       end
     end
   end

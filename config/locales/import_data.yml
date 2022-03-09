@@ -1,0 +1,152 @@
+en:
+  nfg_csv_importer:
+    onboarding:
+      defaults:
+        button: &default_buttons
+          back: 'Prev'
+          submit: 'Next'
+      import_data:
+        invalid_step_error: "Oops! We ran into an unexpected problem. Use the edit button(s) below to continue an import or start a new one by clicking \"Begin Your Import\" above."
+        invalid_number_of_rows: "Oops, it looks like you have more than %{num_rows} rows in your import file. To ensure your import processes quickly, please upload files with less than %{num_rows} rows or go back to the first step and choose 'Send us your files' and Network for Good will assist you with your import!"
+        invalid_headers: 'Error validating the headers for the import'
+        file_extension: "The %{str_1} must be of %{valid_files} %{str_2}."
+        title_bar:
+          caption: "Import Your Data"
+          buttons:
+            save_and_exit: 'Save & Exit'
+            exit: 'Exit'
+        file_origination_type_selection:
+          header:
+            message: 'How would you like to proceed with your import?'
+            form: ''
+            page:
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        finish:
+          header:
+            message: ''
+            form: ''
+            page:
+          button:
+            back: 'Prev'
+            submit: 'Exit'
+            view_all: 'View All Imports'
+            details: 'View Import Results'
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        preview_confirmation:
+          header:
+            message: "Preview what your data will look like"
+            form: ''
+            page: "We've taken a row with from your %{file_origination_type} spreadsheet and created a snapshot of what your data will look like"
+            summary: 'Overall Preview Summary'
+          button:
+            <<: *default_buttons
+            approve: 'Approve & Import'
+            submit: 'Approve & Import'
+          confirm:
+            begin_import: 'Please confirm you are ready to begin importing your data by clicking the "OK" button.'
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+          body:
+            summary: "These are a snapshot of the collected info we’ve uncovered after scanning your file. Keep in mind, this data has not yet been 'scrubbed' and may include rows with duplicate data, invalid information, or missing information, etc."
+          stats:
+            donation:
+              heading: Donations snapshot
+              total: 'Total Est. Donations'
+            user:
+              heading: Contacts snapshot
+              total: 'Total Est. Contacts'
+          tooltips:
+            preview_card_data_not_present: "This information was not available on the sampled spreadsheet row"
+        field_mapping:
+          header:
+            message: ''
+            form: ''
+            page:
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        upload_post_processing:
+          header:
+            message: "Let's upload your spreadsheet!"
+            form: ''
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+          body:
+            import_template_id: "Have you imported this information before? If you have, you can select a previous imported file and apply the same mapping rules you did there. You can further adjust column headers on the next step."
+        import_type:
+          header:
+            message: 'What type of data are you importing?'
+            form: ''
+            page: "This choice will determine how your data is interpretted when it's being imported."
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+        upload_preprocessing:
+          header:
+            message: "Let's upload your files from %{file_origination_type}"
+            form: ''
+            page: "When you download your files from %{file_origination_type}, %{description_of_files}. Add them below."
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+          labels:
+            note: Please provide any additional notes or instructions that our team should know prior to importing this information
+          help_text:
+            note: ''
+        overview:
+          header:
+            message: "Let's take a moment to ensure your file is ready to import. Once it is, click \"Next\" to upload your file."
+            form: ''
+            page: 'There are a few things you can do setup your spreadsheet for success so your data is properly imported. Read through the requirements and column headers below, and download a template if you need it.'
+          button:
+            <<: *default_buttons
+          label:
+          placeholder:
+          hint:
+          guidance:
+            modal:
+          headings:
+            requirements: "Spreadsheet requirements for importing %{import_type}"
+            required_column_headers: "Required column headers"
+            optional_column_headers: "Optional column headers"
+          links:
+            expand_column_headers: 'Expand optional columns'
+        step_navigations:
+          file_origination_type_selection: "Data Source"
+          overview: "Spreadsheet Setup"
+          upload_preprocessing: "Upload"
+          import_type: "Import Type"
+          upload_post_processing: "Upload"
+          field_mapping: "Mapping"
+          preview_confirmation: "Preview"
+          finish: "Finished!"

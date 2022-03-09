@@ -1,99 +1,136 @@
-= flash[:error]
-.importer-gem{ data: { view_wrapper: "importer-gem" } }
-  .container-fluid.container-flush
-    .jumbotron.jumbotron-fluid.jumbotron-clouds
-      - if params["redirected_from_review"]
-        %h1.display-1
-          %strong
-            Well done!
-          You’re all set, we’ve got it from here
+- import_presenter = NfgCsvImporter::ImportPresenter.new(@import, self)
 
-      - else
-        %h1.display-1
+.importer-gem{ data: { view_wrapper: "importer-gem" } }
+  %div{ id: dom_id(@import), data: { describe: 'import-show-page' } }
+    = ui.nfg :page_header, title: "#{import_presenter.file_origination_type_name} Import", icon: 'cloud-upload', full_width: true, sticky: false do
+      = ui.nfg :button, :link, href: nfg_csv_importer.imports_path, body: 'All Imports', class: 'mr-2', describe: 'page-header-back-button'
+      = ui.nfg :button_group, render_if: @import.can_be_deleted?(current_user) do
+        = ui.nfg :button, (:lg unless browser.mobile?), :danger, href: import_path(@import), body: t(".buttons.delete"), icon: 'trash-o', method: :delete, data: { confirm: import_delete_confirmation(@import) }
+
+  = ui.nfg :tile, class: 'mt-3' do
+    = flash[:error]
+    = render('shared/flash_messages') rescue nil
+
+    - if params["redirected_from_review"]
+      = ui.nfg :alert, :success, heading: 'Well done!', body: "You're all set, we've got it from here.", dismissible: false
+
+    - elsif @import.import_type.present? && @import.import_file.present?
+      = ui.nfg :alert, :success, dismissible: false do
+        = ui.nfg :typeface, :heading do
           Your
           %strong
             = @import.import_type.pluralize.humanize.downcase
           are
           %strong
-            = t("status.#{@import.status}", default: @import.status, scope: [:imports, :show])
-        .p-t-1
-          This data was imported by
+            = "#{t("status.#{@import.status}", default: @import.status, scope: [:nfg_csv_importer, :imports, :show])}."
+        = ui.nfg :typeface, :body, class: 'mb-0' do
+          = t('.imported_by')
           %strong
-            = @import.imported_by_name
+            = "#{@import.imported_by_name}."
 
-    = render('shared/flash_messages') rescue nil
-
-  .container-fluid.container-flush.bg-white
     - if params["redirected_from_review"]
-      .row.text-xs-center
-        .col-xs-12
-          %h2.text-blue.m-b-0
-            Your import is
-            %strong
-              = t("status.#{ @import.status }", default: @import.status)
-          %p.font-size-16
-            %em
-              We'll email you when your import is done and in the system.
+      = ui.nfg :alert, :info, dismissible: false do
+        = ui.nfg :typeface, :heading do
+          Your import is
+          %strong
+            = t("status.#{ @import.status }", default: @import.status)
+        = ui.nfg :typeface, body: "We'll email you when your import is done and in the system.", class: 'mb-0'
 
-    .row.p-b-3
-      .col-md-3
-        - unless @import.complete?
-          - heading = "Estimated time remaining"
-          - content = @import.time_remaining_message
-        - else
-          - heading = "Import completed on"
-          - content = @import.processing_finished_at.to_s(:month_day_yyyy_at_time)
+    - if @import.import_type.present? && @import.import_file.present?
+      .row
+        .col-6.col-md-3.mb-3
+          - unless @import.complete?
+            - content = "Estimated time remaining"
+            - heading = @import.time_remaining_message
+          - else
+            - content = "Import completed on"
+            - heading = @import.processing_finished_at.try(:to_s, :month_day_yyyy_at_time)
 
-        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "clock-o", heading: heading, content: content }
 
-      .col-md-3
-        - unless @import.complete?
-          - heading = "Importing"
-          - content = "#{@import.number_of_records} records"
-        - else
-          - heading = "New records created"
-          - content = @import.imported_records.count
+        .col-6.col-md-3.mb-3
+          - unless @import.complete?
+            - content = "Records importing"
+            - heading = @import.number_of_records.to_i
+          - else
+            - content = "New records created"
+            - heading = @import.imported_records.count
 
-        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "table", heading: heading, content: content }
 
-      .col-md-3
-        - heading = "Processed rows"
-        - content = @import.records_processed.to_i
+        .col-6.col-md-3.mb-3
+          - content = "Processed rows"
+          - heading = @import.records_processed.to_i
 
-        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", heading_class: "small text-muted", content_class: "lead", heading: heading, content: content }
+          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "navicon", heading: heading, content: content }
 
-      .col-md-3.red
-        - content_class = "lead m-b-0"
-        - heading = "Errors within your data"
+        .col-6.col-md-3.mb-3
+          - content = "Errors within our data"
 
-        - if @import.number_of_records_with_errors.to_i > 0
-          - icon = "exclamation"
-          - color = "text-danger"
-          - content_class += " text-danger"
-          - content = @import.number_of_records_with_errors
+          - if @import.number_of_records_with_errors.to_i > 0
+            - icon = "exclamation"
+            - color = "text-danger"
+            - heading_class = " text-danger"
+            - heading = @import.number_of_records_with_errors
 
-        - else
-          - icon = "check"
-          - color = "text-success"
-          - content = "0"
-          - content_class += " text-success"
+          - else
+            - icon = "check"
+            - color = "text-success"
+            - heading = "0"
+            - heading_class = " text-success"
 
-        = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: "small text-muted", content_class: content_class, heading: heading, content: content, color: color }
+          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: icon, heading_class: heading_class, heading: heading, content: content, color: color }
 
-        - if @import.number_of_records_with_errors.to_i > 0 && @import.complete?
-          %p.small.text-xs-center.red
-            = link_to @import.error_file.url do
-              = fa_icon "paperclip", text: "Error file"
+    - if @import.send_to_nfg?
+      .text-center.mt-3.mb-3
+        = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/empty_imports_lg.png'
+        = ui.nfg :typeface, heading: 'We have successfully received your files.', class: 'mt-2'
 
-    - if @import.can_be_deleted?(current_user)
-      .row.p-b-1
-        .col-xs-12
-          %p.text-xs-center
-            = link_to import_path(@import), method: :delete, data: { confirm: import_delete_confirmation(@import) }, class: 'btn btn-link' do
-              = fa_icon 'trash', text: 'Delete Import'
+    - if @import.file_origination_type.collect_note_with_pre_processing_files
+      #note
+        = ui.nfg :typeface, heading: 'Your notes'
+        = ui.nfg :typeface, body: simple_format(import_presenter.import_note)
 
-    .row.p-b-3
-      .col-xs-12.text-xs-center
-        %strong
-          = link_to imports_path, class: "btn btn-link text-uppercase" do
-            = fa_icon "chevron-left", text: "Back to Imports"
+    - if import_presenter.show_files?
+      #files.mt-3
+        .row
+          .col
+            = ui.nfg :typeface, heading: 'Files'
+          - if @import.pre_processing_files&.any?
+            .col-auto
+              = ui.nfg :button, :secondary, :sm, href: import_download_attachments_path(@import), body: I18n.t('nfg_csv_importer.imports.show.body.download_all'), icon: 'download', describe: 'download-all', method: :post, download: true
+
+        = ui.nfg :slats, slat_actions: :lg, class: 'mt-2' do
+
+          - if @import.import_type? && @import.number_of_records_with_errors.to_i > 0 && @import.complete?
+            = ui.nfg :slat do
+              = ui.nfg :slat_body do
+                = ui.nfg :slat_item, body: 'Error File', class: 'text-danger'
+              = ui.nfg :slat_actions, :danger, button: true, menu: false, body: 'Download', href: @import.error_file.url, describe: 'download-error-file'
+
+          - if @import.import_file.present?
+            = ui.nfg :slat do
+              = ui.nfg :slat_body do
+                = ui.nfg :slat_item do
+                  - if @import.pre_processing_files&.any?
+                    = ui.nfg :typeface, body: ui.nfg(:icon, 'info-circle', :info, text: 'System generated spreadsheet', tooltip: 'This file was automatically generated by the system based on the file(s) you uploaded.'), describe: 'system-generated-import-file'
+                  - else
+                    = ui.nfg :typeface, class: 'text-wordwrap', body: @import.import_file_name, describe: 'user-generated-import-file'
+              = ui.nfg :slat_actions, button: true, menu: false, body: 'Download', href: @import.import_file.url
+
+          - if @import.pre_processing_files&.any?
+            - @import.pre_processing_files&.each do |file|
+              = ui.nfg :slat do
+                = ui.nfg :slat_body do
+                  = ui.nfg :slat_item, body: file.filename&.to_s
+                = ui.nfg :slat_actions, button: true, menu: false, body: 'Download', href: rails_blob_path(file, disposition: "attachment"), describe: 'download-pre-processing'
+
+  - if @import.file_origination_type.display_mappings
+    = ui.nfg :tile, describe: 'column-mappings' do
+      = ui.nfg :typeface, :heading, class: 'mb-3' do
+        = @import.column_stats[:mapped_column_count]
+        of
+        = @import.column_stats[:column_count]
+        column were mapped:
+      = render 'nfg_csv_importer/imports/mapped_column_headers', import: @import, max_height: 100
+

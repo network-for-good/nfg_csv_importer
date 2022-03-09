@@ -14,7 +14,7 @@ describe "mapping column headers", js: true do
       within "[data-column-name='\[ignore_me\]']" do
         expect do
           find('label.c-checkbox').click
-          sleep 1
+          find('.card.card-ignored', wait: 5)
         end.to change { import.reload.fields_mapping['[ignore_me]'] }.from(nil).to('ignore_column')
       end
 
@@ -22,7 +22,7 @@ describe "mapping column headers", js: true do
         click_link 'Edit Column'
         expect do
           select 'Full Name', from: 'import_fields_mapping_W2ZpcnN0X25hbWVd_'
-          sleep 1
+          sleep 3
         end.to change { import.reload.fields_mapping['[first_name]'] }.from('first_name').to('full_name')
       end
     end

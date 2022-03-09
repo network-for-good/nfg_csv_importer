@@ -1,0 +1,14 @@
+- onboarder_presenter = local_assigns[:onboarder_presenter]
+- import = local_assigns[:import]
+- field = local_assigns[:field]
+
+- description = import.column_descriptions[field]
+
+.list-group-item
+  .row
+    .col.text-break
+      = ui.nfg :typeface, title: onboarder_presenter.import_column_display_name(import.import_type, field)
+    .col-auto
+      = ui.nfg :icon, 'long-arrow-right'
+    .col
+      = description.present? ? description : t("nfg_csv_importer.imports.new.content.no_description").html_safe

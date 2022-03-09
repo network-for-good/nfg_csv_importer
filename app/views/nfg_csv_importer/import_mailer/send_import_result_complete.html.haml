@@ -1,0 +1,40 @@
+- if @import_mailer_presenter.errors?
+  = render partial: 'nfg_csv_importer/import_mailer/send_import_result/steps', locals: { import_mailer_presenter: @import_mailer_presenter }
+- else
+  = image_tag 'nfg_csv_importer/illustrations/finish_success.png', class: 'text-center', height: '240', id: 'finish_success_image'
+
+%spacer{ size: spacer(:triple) }
+
+%row
+  %columns
+    %p#hello= t "headings.hello", scope: @locales_scope, first_name: @recipient.first_name
+    %p#introduction= t "body.introduction.#{@import.status}", scope: @locales_scope
+    %p#what_to_expect= t "body.what_to_expect.#{@import.status}", scope: @locales_scope
+
+    %spacer{ size: spacer(:double) }
+
+    %h5#number_of_records
+      There were
+      = @import.number_of_records
+      records added.
+      - if @import_mailer_presenter.errors?
+        %span#error_records_count_of_total.text-alert
+          = pluralize(@import.number_of_records_with_errors.to_i, 'record')
+          had errors.
+
+    - if @import_mailer_presenter.errors?
+      %spacer{ size: spacer(:base) }
+      = render layout: 'nfg_ui/email/alert', locals: { theme_color: :warning } do
+        %p= t 'alert.error', scope: @locales_scope
+        %p
+          You can download the error file
+          = link_to 'by clicking here.', import_url(@import, @url_options), id: 'error_link'
+
+    %spacer{ size: spacer(:base) }
+    = render partial: 'nfg_ui/email/button', locals: { url: import_url(@import, @url_options), text: t('buttons.visit_show_page', scope: @locales_scope), theme_color: theme_color(:primary) }
+
+    %spacer{ size: spacer(:base) }
+    %p
+      Do good. Feel Good.
+      %br/
+      = '- Network for Good'

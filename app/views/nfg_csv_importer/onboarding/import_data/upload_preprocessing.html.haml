@@ -1,0 +1,55 @@
+- i18n_scope = [:nfg_csv_importer, :onboarding, :import_data, step]
+
+= render layout: 'nfg_csv_importer/onboarding/sub_layout', locals: { header_message: onboarder_presenter.header_message_text, header_page: onboarder_presenter.header_page_text, header_form: t('.header.form'), guidance: t('.guidance.modal', default: '')} do |f|
+
+  .row
+    .col-12#pre_processing_files_upload{ data: { delete_url: delete_attachment_path(id: 'dummy')}}
+      = f.file_field :pre_processing_files, multiple: true, data: { 'direct-upload-url' => rails_direct_uploads_url }
+      .dropzone-target.mb-3
+        .dz-default.py-4.text-center
+          = ui.nfg :icon, 'cloud-upload 3x', :primary
+          = ui.nfg :typeface, heading: 'Drag and drop your files here.', class: 'mt-2'
+          = ui.nfg :typeface, :body, class: 'mb-0' do
+            Upload all the files you wish to import at one time.
+            %br/
+            If you prefer to search your computer,
+            %a.dz_file_browser_link{ href: 'javascript:;' }
+              click here
+            to browse.
+        -# The empty state shows after a file is present on the uploader
+        -# It is hidden, otherwise.
+        -# See toggleEmptyStateFileBrowser in NfgCsvImporter.DragdropUpload
+        -# javascripts/nfg_csv_importer/onboarding/dragdrop_upload.js.coffee
+        .dz_active_empty_state.d-none.text-center
+          = ui.nfg :typeface, :caption, :muted, class: 'mt-4' do
+            Have more files?
+            %br/
+            Drag and drop your files or
+            %a.dz_file_browser_link{ href: 'javascript:;' }
+              click here
+            to browse.
+
+      - if file_origination_type.collect_note_with_pre_processing_files
+        = ui.nfg :form_group, class: 'mb-3' do
+          %label{ for: "nfg_csv_importer_onboarding_import_data_upload_preprocessing_note" }
+            = t('labels.note', scope: i18n_scope)
+          = f.text_area :note, class: 'form-control'
+          - if t('help_text.note', scope: i18n_scope).present?
+            = ui.nfg :typeface, :muted, body: t('help_text.note', scope: i18n_scope), class: 'mb-0'
+
+      - # if object has errors then file is a string with no signed_id method
+      - unless f.object.pre_processing_files.empty? || f.object.errors[:pre_processing_files].any?
+        #stored_files
+          - f.object.pre_processing_files.each do |file|
+            - if file.respond_to? (:signed_id)
+              - if f.object.errors[:pre_processing_files].any?
+                = f.hidden_field :pre_processing_files, multiple: true, value: file.signed_id
+              %span.pre_processing_file{ data: { value: file.signed_id, name: file.try(:blob).try(:filename), size: file.try(:blob).try(:byte_size)} }
+
+  -# Optionally provide a message below the uploader, for example: "Need help with this import? Visit this artcle"
+  = render "nfg_csv_importer/onboarding/import_data/upload_preprocessing/below_file_attachment_#{file_origination_type.type_sym}" rescue nil
+
+-# The following gets rendered by DropZone for each file that is dropped/added
+= render partial: 'nfg_csv_importer/onboarding/import_data/upload_preprocessing/dropzone_row'
+
+= provide :after_opening_body, onboarder_presenter.render_google_tag_manager

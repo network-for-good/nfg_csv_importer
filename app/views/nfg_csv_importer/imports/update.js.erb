@@ -30,3 +30,10 @@ if (!('ontouchstart' in window)) {
     container: 'body'
   });
 }
+
+// Check if we're iframed
+if (self !== top) {
+  // If so, we need to toggled the disabled attr on the submit button based
+  // so that it corresponds with @import.ready_to_import?
+  $(parent.document).find('form#onboarding_main_form button[type="submit"]').attr('disabled', <%= !@import.ready_to_import? %>);
+}

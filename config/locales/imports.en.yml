@@ -1,0 +1,89 @@
+en:
+  nfg_csv_importer:
+    imports:
+      confirmations:
+        delete: 'Are you sure you want to remove this import along with all %{number_of_records} of its created records?'
+        delete_without_records: 'Are you sure you want to remove this import?'
+        column_mapping: "We just saved you some time by evaluating your column headers and <strong>matched</strong> some columns for you:"
+      index:
+        buttons:
+          begin: 'Begin Your Import'
+          continue: 'Continue Your Import'
+        jumbotron:
+          headline: "Ready to start a <b>new</b> import?"
+          sub_headline: "Just click the big button below and we'll walk you through the process of importing your contacts and donations."
+          import_types: "Import %{import_type}"
+        headings:
+          past_imports: "Past Imports"
+          imported_by_name: "Admin"
+          contacts: "Records"
+          data: "Data"
+          errors: "Errors"
+          donations: "Donations"
+          status: "Import Status"
+        content:
+          no_imports: "There are no imports"
+        links:
+          begin_import: "Begin Import"
+          error_file: "Error File"
+          edit_import: "Edit"
+          download: "Download"
+          delete_import: "Delete"
+          begin_import: "Begin Import"
+          start: "Start Import"
+          details: "Details"
+        tooltips:
+          error_file: "Available once processing is complete"
+          edit_import: "Once an import has been submitted, it's no longer editable"
+        status:
+          uploaded: "In-process"
+          deleted: "Deleted"
+        confirmations:
+          delete: "Are you sure want to delete this import?"
+      new:
+        jumbotron:
+          headline: "Let's import <strong>%{import_type}!</strong>"
+          sub_headline: "We'll walk through this together!"
+        headings:
+          prepare: "Setting up for <strong>success</strong>"
+          required_headers: "Required Column Headers"
+          optional_headers: "Optional Column Headers"
+          upload: "Upload your spreadsheet"
+        content:
+          prepare: "There are a few things you can do to help simplify this process and ensure that your data is properly imported. Also, consider starting from our"
+          requirements: "<em>Here are the requirements that your file will need to meet before it can be imported:</em>"
+          no_description: "<span style='opacity:.4;'>No additional details</span>"
+          file_types: "Be sure your spreadsheet is saved as %{acceptable_file_types} before uploading."
+        links:
+          ready_upload: "Ready? Upload Your File"
+          scroll_down: "Scroll down to learn more"
+          file: "Download Template (CSV)"
+          expand_column_headers: "Expand the full list of column headers"
+        tooltips:
+          coming_soon: "Coming Soon!"
+        form:
+          form_controls:
+            file: "Choose your file..."
+            selects:
+              prompt:
+                import_template_id: "Do not apply a mapping from a previous import"
+          labels:
+            import_template_id: "Want to apply mapping from a previous import?"
+          help_text:
+            import_template_id_show_hide: "Additional Info"
+            import_template_id: "If you select a previous import from the drop down below, we will apply the column mapping associated with that import to this new import. This is useful in a scenario where you’re importing data from a source you use over and over again like accounting software. You will still be able to adjust your mappings for this new import."
+          buttons:
+            upload: "Upload & Continue"
+            disable_with:
+              upload: "Preparing column mapping..."
+      show:
+        headings:
+          overview: "Data import status overview"
+        body:
+          introduction: "Now that we've imported your data, here are the actual, final details for what was imported."
+          download_all: 'Download All Submitted Files'
+        status:
+          complete: "imported"
+          deleting: "queued for deletion"
+          uploaded: "processing"
+        imported_by: 'This data was imported by'

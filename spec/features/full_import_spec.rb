@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 describe "Running through the full import process", js: true do
+  # this uses the old import forms, not the new import onboarder
+  # we are keeping this around and working until we have fully tested
+  # the import onboarder and it has been in use for a while
+
   let!(:entity) { Entity.create(subdomain: "test") }
-  let(:upload_button_name) { I18n.t("imports.new.form.buttons.upload") }
+  let(:upload_button_name) { I18n.t("nfg_csv_importer.imports.new.form.buttons.upload") }
 
   describe "from the new import page" do
     let(:new_import_path) { nfg_csv_importer.new_import_path(import_type: 'users') }
@@ -14,7 +18,7 @@ describe "Running through the full import process", js: true do
     it "should be able to import users" do
       visit new_import_path
       # should have download template link
-      expect(page).to have_link(I18n.t("links.file", scope: [:imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
+      expect(page).to have_link(I18n.t("links.file", scope: [:nfg_csv_importer, :imports, :new]), href: NfgCsvImporter::Engine.routes.url_helpers.template_imports_path(import_type: 'users'))
       # upload and continue button should be disabled prior to adding file
       expect(page).to have_button(upload_button_name, disabled: true)
       attach_file("import_import_file", File.expand_path("spec/fixtures/users_for_full_import_spec.xls"))
@@ -28,7 +32,10 @@ describe "Running through the full import process", js: true do
         expect(page).to have_content("3\nAutomatically Mapped Columns")
       end
 
+      expect(page.find('.modal-open')).to be
       find("button.close").click
+      sleep 1
+
       new_import = NfgCsvImporter::Import.last
       expect(current_path).to eq(nfg_csv_importer.edit_import_path(new_import))
       within("#importer_header_stats") do
@@ -41,12 +48,17 @@ describe "Running through the full import process", js: true do
 
       # click to ignore the unmapped column
       within("div[data-column-name='other'] .card-header-interactions") do
-        find("label").click
+        page.find("label").click
       end
 
+      # Confirm the css change is complete before checking
+      # that the language is present.
+      sleep 1
+      expect(page.find('#card_header_other .label-danger')).to be
+
       within("#importer_header_stats") do
-        expect(page).to have_content("1\nIGNORED COLUMNS")
-        expect(page).to have_content("0\nUNMAPPED COLUMNS")
+        expect(page).to have_content("1 IGNORED COLUMNS")
+        expect(page).to have_content("0 UNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
       within("div[data-column-name='other']") do
@@ -118,64 +130,77 @@ describe "Running through the full import process", js: true do
         sleep 1
       end.to change(User, :count).by(3)
 
+      page.driver.browser.navigate.refresh
       expect(current_path).to eq(nfg_csv_importer.import_path(new_import))
 
       expect(User.find_by(email: "tim@farlow.com")).to be
 
       expect(page).to have_content("Your import is complete")
 
-      expect(page).to have_content("New records created\n3")
-      expect(page).to have_content("Processed rows\n6")
-      expect(page).to have_content("Errors within your data\n3")
-      expect(page).to have_link("Error file")
+      expect(page).to have_content("3\nNew records created")
+      expect(page).to have_content("6\nProcessed rows")
+      expect(page).to have_content("3\nErrors within our data")
+      expect(page).to_not have_content "import_error_file.csv"
+      expect(page).to have_content("Error File")
+      expect(page).to have_link("Download")
     end
   end
 
   describe "imports index page" do
     let(:file) { File.open('spec/fixtures/users_for_full_import_spec.xls')}
     let(:donation_file) { File.open('spec/fixtures/donations.xlsx')}
+    let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Jones") }
+    let!(:import) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
+    let!(:import2) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded") }
+    let!(:import3) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
+    let!(:donation_import) { FactoryGirl.create(:import, import_type: "donation", imported_by: user_1, updated_at: 8.minutes.ago, import_file: donation_file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
 
     before do
-      FactoryGirl.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded")
-      FactoryGirl.create(:import, imported_by: user_1, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
-      @import = FactoryGirl.create(:import, imported_by: user_1, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
-      @donation_import = FactoryGirl.create(:import, import_type: "donation", imported_by: user_1, updated_at: 8.minutes.ago, import_file: donation_file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago)
-      visit imports_path
-      sleep 1
+      visit nfg_csv_importer.imports_path
+
+      # ensure we're on the page before the test runs.
+      # This is a flakey path for capybara for some reason.
+      expect(page.find("[data-view-wrapper='importer-gem']", wait: 5)).to be
     end
 
-    context "when the user is allowed to see all of the files" do
-      # the import definition for the donation import excludes users with "Smith" as the last name
-      let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Jones") }
+    describe 'showing the correct import slats' do
+      let(:imports_created_by_user_1) { NfgCsvImporter::Import.where(imported_by: user_1) }
 
-      it "should display all the imports sorted in recent order" do
-        expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(8) # 2 for each import
-        within("#import_#{ @import.id }_name h5") do
-         expect(page).to have_content(user_1.name)
+      context "when the user is allowed to see all of the files" do
+        # the import definition for the donation import excludes users with "Smith" as the last name
+        it "should display all the imports" do
+          and_it 'shows all of the imports to the user' do
+            expect(page).to have_css "[data-describe='import-slat']", count: imports_created_by_user_1.size
+            expect(page).to have_selector "[data-describe='imported-by-name']", text: user_1.name, count: imports_created_by_user_1.size
+
+            and_it 'shows the import the user is allowed to uniquely see' do
+              expect(page).to have_css "[data-import-type='donation']"
+            end
+          end
+
+          and_it 'accurately links you to the imports show page' do
+            within "#import_#{import.id}" do
+              click_link 'Details'
+            end
+
+            expect(page).to have_css "#import_#{import.id}[data-describe='import-show-page']"
+          end
         end
-
-        within("#import_#{ @donation_import.id }_name h5") do
-         expect(page).to have_content(user_1.name)
-        end
-
-        expect(page).to have_content("donations.xlsx")
-
-        # clicking status will take the user to the show page
-        within("#import_#{ @import.id }") do
-          click_link @import.status.titleize
-        end
-        expect(current_path).to eq(nfg_csv_importer.import_path(@import))
       end
-    end
 
-    context "when the user is NOT allowed to see certain files" do
-      # the import definition for the donation import excludes users with "Smith" as the last name
-      let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Smith") }
+      context "when the user is NOT allowed to see certain files" do
+        let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Smith") }
 
-      it "should display all the imports sorted in recent order" do
-        expect(page.all("#imports_listing div div.row div div.row div h5.m-b-quarter").length).to eq(6) # 2 for each import
-        expect(page).not_to have_css("#import_#{ @donation_import.id }")
-        expect(page).not_to have_content("donation.xlsx")
+        # the import definition for the donation import excludes users with "Smith" as the last name
+        it "should display all the imports sorted in recent order" do
+          expect(page).to have_css "#imports_listing [data-describe='import-slat']", count: 3
+
+          expect(page).not_to have_css("#import_#{ donation_import.id }")
+
+          and_it 'does not show the import type that the user is not allowed to see' do
+            expect(page).not_to have_css "[data-import-type='donation']"
+          end
+        end
       end
     end
   end
@@ -183,7 +208,7 @@ end
 
 def submit_import_subscribers_file
   with_resque { submit_import_file_form }
-  expect(page).to have_content(I18n.t(:notice, scope: [:import, :create]))
+  expect(page).to have_content(I18n.t(:notice, scope: [:nfg_csv_importer, :import, :create]))
   expect(current_path).to eq(nfg_csv_importer.import_path(NfgCsvImporter::Import.last))
 end
 

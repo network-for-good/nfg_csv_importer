@@ -1,10 +1,19 @@
+ENV['RAILS_ENV'] ||= 'test'
+
 require File.expand_path("../test_app/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'rspec/rails/mocha'
 require 'factory_girl_rails'
 require 'shoulda/matchers'
 require 'database_cleaner'
+require 'rails-controller-testing'
+require 'capybara-screenshot/rspec'
+require 'action_dispatch/testing/test_process'
+require 'sidekiq/testing'
+require 'byebug'
+
 Rails.backtrace_cleaner.remove_silencers!
+Rails::Controller::Testing.install
 ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 
 #
@@ -24,10 +33,17 @@ RSpec.configure do |config|
   config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
 
+  # Traditional feature specs.
+  config.include_context 'default_url_options', js: true, type: :feature
+
+  # New fangled system tests.
+  config.include_context 'default_url_options', type: :system
+
  config.include SeleniumHelper, :type => :feature
 
  config.before(:suite) do
    DatabaseCleaner.strategy = :truncation
+   Sidekiq::Testing.inline!
  end
 
  config.before(:each, js: true) do
@@ -43,6 +59,21 @@ Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec
     with.library :rails
+  end
+end
+
+# Capybara Screenshot Dimensions
+Capybara::Screenshot.webkit_options = { width: 1440, height: 768 }
+
+Capybara.default_max_wait_time = 5
+
+# Keep only the screenshots generated from the last failing test suite
+Capybara::Screenshot.prune_strategy = :keep_last_run
+
+if ENV['CIRCLECI'] == 'true'
+  Capybara.save_path = "/tmp/test-results/"
+  Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
+    "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
   end
 end
 

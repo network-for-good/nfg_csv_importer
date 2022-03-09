@@ -1,5 +1,5 @@
 # This migration comes from nfg_csv_importer (originally 20160205151104)
-class CreateNfgCsvImporterImports < ActiveRecord::Migration
+class CreateNfgCsvImporterImports < ActiveRecord::Migration[4.2]
   def change
     create_table :nfg_csv_importer_imports do |t|
       t.string   "import_type"

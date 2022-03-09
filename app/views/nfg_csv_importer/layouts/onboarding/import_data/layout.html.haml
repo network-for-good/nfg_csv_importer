@@ -1,0 +1,16 @@
+!!!
+%html{:xmlns => "http://www.w3.org/1999/xhtml"}
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "Content-Type"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    = render partial: 'nfg_ui/app_icons/icons'
+    %title Data Import
+    = stylesheet_link_tag "nfg_csv_importer/onboarding/application"
+    = javascript_include_tag "nfg_csv_importer/onboarding/application", "data-turbolinks-track" => "reload"
+    = csrf_meta_tags
+  %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:file_origination_type).try(:type_sym)} builder-layout" }
+    -# Allow host app to supply a partial for opening the page.
+    = render(partial: 'shared/after_opening_body_alert') rescue nil
+    = yield :after_opening_body
+    = yield
+    = yield :before_closing_body

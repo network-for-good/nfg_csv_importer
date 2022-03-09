@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportFileUploader < CarrierWave::Uploader::Base
   before :cache, :save_original_filename
 
@@ -21,7 +23,8 @@ class ImportFileUploader < CarrierWave::Uploader::Base
   end
 
   private
+
   def save_original_filename(file)
-    model.import_file_name ||= file.original_filename if file.respond_to?(:original_filename)
+    # This can be overridden
   end
 end

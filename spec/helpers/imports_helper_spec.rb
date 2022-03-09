@@ -15,16 +15,26 @@ describe NfgCsvImporter::ImportsHelper do
 
     it { expect(subject).not_to be }
 
-    context "when the device is mobile" do
-      before { Browser::Device.any_instance.stubs(:mobile?).returns(true) }
+    describe 'touch devices' do
+      let(:browser) { Browser.new('some-agent') }
+      let(:is_tablet) { false }
+      let(:is_mobile) { false }
 
-      it { expect(subject).to be }
-    end
+      before do
+        helper.stubs(:browser).returns(browser)
+        browser.stubs(:mobile?).returns(is_mobile)
+        browser.stubs(:tablet?).returns(is_tablet)
+      end
 
-    context "when the device is tablet" do
-      before { Browser::Device.any_instance.stubs(:tablet?).returns(true) }
+      context "when the device is mobile" do
+        let(:is_mobile) { true }
+        it { expect(subject).to be }
+      end
 
-      it { expect(subject).to be }
+      context "when the device is tablet" do
+        let(:is_tablet) { true }
+        it { expect(subject).to be }
+      end
     end
   end
 
@@ -61,7 +71,7 @@ describe NfgCsvImporter::ImportsHelper do
       it { expect(subject).to eq "<i class=\"fa fa-minus text-muted\"></i>" }
     end
 
-    it { expect(subject).to eq "<h4>4</h4>" }
+    it { expect(subject).to eq "<h5>4</h5>" }
   end
 
   describe "#number_of_records_with_errors_based_on_import_status" do
@@ -103,7 +113,7 @@ describe NfgCsvImporter::ImportsHelper do
       let(:status) { :uploaded }
 
       it { expect(subject).to match("gear") }
-      it { expect(subject).to match("Review &amp; Mapping") }
+      it { expect(subject).to match("In Process") }
     end
 
     context "when status is :defined" do
@@ -146,6 +156,13 @@ describe NfgCsvImporter::ImportsHelper do
 
       it { expect(subject).to match("trash-o") }
       it { expect(subject).to match("text-danger") }
+    end
+
+    context "when status is :pending" do
+      let(:status) { :pending }
+
+      it { expect(subject).to match("circle-o-notch") }
+      it { expect(subject).to match("text-muted") }
     end
 
   end

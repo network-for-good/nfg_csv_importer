@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", '~> 4.2.0'
+  s.add_dependency "rails", '~> 5.0'
   s.add_dependency "roo", '2.6.0'
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
@@ -33,22 +33,29 @@ Gem::Specification.new do |s|
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 5.0"
-  s.add_dependency "font-awesome-rails", "~> 4.7"
-  s.add_dependency "browser", "~> 2.7.1" # browser/device detection
+  s.add_dependency "nfg_ui", "~> 0.13.0"
+  s.add_dependency "nfg_onboarder", "~> 0.0.3"
+  s.add_dependency "reform-rails", '~> 0.1.7'
+  s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
+  s.add_dependency 'aws-sdk-s3', '~> 1.66'
+  s.add_dependency 'rubyzip', '~> 1.3.0'
+  s.add_dependency 'sassc', '~> 2.0.1'
 
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "rspec-rails", '~> 3.4.0'
+  s.add_development_dependency "sqlite3", '~> 1.3.0'
+  s.add_development_dependency "rails-controller-testing"
+  s.add_development_dependency "rspec-rails", '~> 3.5'
   s.add_development_dependency "rspec_junit_formatter"
   s.add_development_dependency "rspec-rails-mocha"
   s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "capybara"
+  s.add_development_dependency "capybara-screenshot"
+  s.add_development_dependency "shoulda"
   s.add_development_dependency "shoulda-matchers"
   s.add_development_dependency "pry"
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "ejs"
   s.add_development_dependency "selenium-webdriver"
+  s.add_development_dependency "sidekiq"
   s.add_development_dependency "database_cleaner"
-  s.add_development_dependency "bootstrap-sass"
-  s.add_development_dependency "capybara-screenshot"
   s.add_development_dependency "puma"
 end

@@ -1,52 +1,44 @@
-- language_scope = [:imports, :index]
-- count_of_import_types = ImportDefinition.import_types.size
-- import_type_column_structure_classes = "display-flex"
-- import_definitions = user_import_definitions(imported_for: @imported_for, user: current_user, definition_class: ImportDefinition, imported_by: @imported_by)
-- start_button_options = import_definitions.size == 1 ? { href: NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_definitions.keys.first) } : { data: { show_hide_target: "#import_type_row", fade_out: "true" } }
-- if count_of_import_types == 0
-  - import_type_column_structure_classes << " col-md-6 col-xl-1"
-- elsif count_of_import_types > 4
-  - import_type_column_structure_classes << " col-md-6 col-xl-3"
-- else
-  - grid_size_by_dividing_count_of_imports_by_12 = ((12).fdiv(count_of_import_types)).round
-  - import_type_column_structure_classes << " col-md-6 col-xl-#{grid_size_by_dividing_count_of_imports_by_12}"
+.importer-gem{ data: { view_wrapper: 'importer-gem' } }
 
-
-.importer-gem{ data: { view_wrapper: "importer-gem" } }
-  .container-fluid.container-flush.bg-white
-    = render partial: 'nfg_csv_importer/imports/index_header', locals: { language_scope: language_scope, import_definitions: import_definitions, import_type_column_structure_classes: import_type_column_structure_classes, start_button_options: start_button_options }
-
-    = render(partial: 'shared/flash_messages') rescue nil
-
-    - if @imports.empty?
-      .container-fluid.container-flush.bg-white{ data: { set_full_page: "true" } }
-
+  -# Legacy
+  = ui.nfg :jumbotron, class: 'bg-info jumbotron-clouds-white text-white text-center shadow-sm' do
+    - if disable_import_initiation_message.present?
+      -# At times we need to not allow new imports to begin,
+      -# such as on Giving Tuesday. The below variable
+      -#  comes from the imports control controller method
+      = disable_import_initiation_message.html_safe
     - else
-      #imports_listing.row.p-x-3
-        .col-xs-12
-          .row
-            .col-xs-12
-              %h2= t("headings.past_imports", scope: language_scope)
-          .row
-            .col-xs-12
-              .row.row-listing-header.m-b-1
-                - imports_listing_row_column_structure_class = "col-md-2"
+      %h3= t('.jumbotron.headline').html_safe
+      = ui.nfg :typeface, body: t('.jumbotron.sub_headline'), class: 'mt-2 lead'
+      - button_text = session[:onboarding_session_id].nil? ? 'begin' : 'continue'
+      = ui.nfg :button, :secondary, :lg, body: t(".buttons.#{button_text}", name: 'get_started'), href: nfg_csv_importer.onboarding_import_data_path, describe: 'import-data-onboarder-cta', data: { turbolinks: false }
 
-                %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.imported_by_name", scope: language_scope)
-                %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.number_of_records", scope: language_scope)
-                %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.number_of_records_with_errors", scope: language_scope)
-                %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.updated_at", scope: language_scope)
-                %div{ class: imports_listing_row_column_structure_class }
-                  %small= t("headings.status", scope: language_scope)
-                %div{ class: imports_listing_row_column_structure_class }
-              = render partial: "import", collection: @imports, locals: { imports_listing_row_column_structure_class: imports_listing_row_column_structure_class }
-              .row.p-y-1
-                .col-xs-12
-                  - if defined?(WillPaginate)
-                    = will_paginate @imports
-                  - elsif defined?(Kaminari)
-                    = paginate @imports
+  = render(partial: 'shared/flash_messages') rescue nil
+  = ui.nfg :tile, class: 'mt-3' do
+    - if @imports.empty?
+      .p-3.w-100.text-center{ data: { describe: 'imports-empty-state' } }
+        .row
+          .col.col-md-10.col-lg-6.mx-auto
+            = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/empty_imports_lg.png', alt: 'illustration_alt'
+            = ui.nfg :typeface, heading: 'Add your first import!', class: 'mt-3 mb-2'
+            = ui.nfg :typeface, :muted, body: "You're only a few steps away from importing data into your account.", class: 'mb-0'
+    - else
+      = ui.nfg :slats, id: 'imports_listing' do
+        = ui.nfg :slat_header do
+          = ui.nfg :slat do
+            = ui.nfg :slat_body do
+              = ui.nfg :slat_item, slat_header: t(".headings.imported_by_name")
+              = ui.nfg :slat_item, :md, slat_header: t(".headings.data")
+              = ui.nfg :slat_item, slat_header: t(".headings.contacts")
+              = ui.nfg :slat_item, slat_header: t(".headings.errors")
+
+        - @imports.each_with_index do |import, i|
+          - import_presenter = NfgCsvImporter::ImportPresenter.new(import, self)
+          = render partial: 'nfg_csv_importer/imports/import', locals: { import: import, import_presenter: import_presenter }
+
+    - if @imports.present? && (defined?(WillPaginate) || defined?(Kaminari))
+      .mt-3{ data: { describe: 'pagination' } }
+        - if defined?(WillPaginate)
+          = will_paginate @imports
+        - elsif defined?(Kaminari)
+          = paginate @imports

@@ -28,7 +28,7 @@ describe NfgCsvImporter::ImportsController do
   let(:import_type) { 'users' }
   let(:file_name) {"spec/fixtures/subscribers.csv"}
   let(:import) { assigns(:import) }
-  let(:params) { { import_type: import_type, use_route: :nfg_csv_importer } }
+  let(:params) { { params: { import_type: import_type, use_route: :nfg_csv_importer } } }
   let(:file) do
     extend ActionDispatch::TestProcess
     fixture_file_upload(file_name, 'text/csv')
@@ -39,7 +39,10 @@ describe NfgCsvImporter::ImportsController do
     controller.stubs(:current_user).returns(user)
     controller.stubs(:entity).returns(entity)
     NfgCsvImporter::Import.any_instance.stubs(:can_be_viewed_by).with(user).returns(can_be_viewed_by)
+    Sidekiq::Testing.disable!
   end
+
+  after { Sidekiq::Testing.inline! }
 
   render_views
 
@@ -103,14 +106,17 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#destroy" do
-    let!(:import) { create(:import, imported_for: entity, status: 'complete') }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:import) { create(:import, imported_for: entity, imported_by: user, status: 'complete') }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
+    let(:session_id) { '123' }
+    let(:import_id) { import.id }
 
     before do
       NfgCsvImporter::ImportedRecord.stubs(:batch_size).returns(2)
-      NfgCsvImporter::DestroyImportJob.stubs(:perform_later).returns(mock)
       controller.stubs(:entity).returns(entity)
+      session[:onboarding_session_id] = session_id
+      session[:onboarding_import_data_import_id] = import_id
     end
 
     subject { delete :destroy, params }
@@ -118,7 +124,7 @@ describe NfgCsvImporter::ImportsController do
     it_behaves_like "an action that requires authorization"
 
     it "adds the job to the queue" do
-      NfgCsvImporter::DestroyImportJob.expects(:perform_later).twice
+      NfgCsvImporter::DestroyImportJob.expects(:perform_async).twice
       subject
     end
 
@@ -136,6 +142,43 @@ describe NfgCsvImporter::ImportsController do
       subject
       expect(response).to redirect_to imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
+    end
+
+    context 'when there is a non deletable record before the last batch' do
+      before { User.any_instance.stubs(:can_be_destroyed?).returns(false).then.returns(true) }
+
+      it "sets the import's status to deleting" do
+        subject
+        expect(import.reload.status).to eql("deleting")
+      end
+    end
+
+    context 'when import is being deleted by the user who created it' do
+      context 'when the session import id is same as the import id' do
+        it 'resets user session id' do
+          expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+        end
+
+        it 'resets user session onboarding_import_data_import_id' do
+          expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+        end
+      end
+
+      it 'resets user session onboarding_import_data_import_id' do
+        expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+      end
+    end
+
+    context 'when the session import id is not same as the import id' do
+      let(:import_id) { '2343' }
+
+      it 'does not reset user session id' do
+        expect{subject}.to_not change { session[:onboarding_session_id] }
+      end
+
+      it 'does not reset user session onboarding_import_data_import_id' do
+        expect{subject}.to_not change { session[:onboarding_import_data_import_id] }
+      end
     end
 
     context "when the import can't be deleted by the current user" do
@@ -175,7 +218,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#update" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
     subject { patch :update, params}
 
@@ -185,7 +228,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#edit" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
+    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
     subject { get :edit, params}
 
@@ -200,6 +243,114 @@ describe NfgCsvImporter::ImportsController do
       subject
       expect(response.header['Content-Type']).to include 'text/csv'
       expect(response.body).to include('email,first_name,last_name,full_name')
+    end
+  end
+
+  describe "#reset_onboarder_session" do
+    subject { get :reset_onboarder_session, params }
+
+    let(:session_id) { 234 }
+    let(:import_id) { 123 }
+
+    before do
+      session[:onboarding_session_id] = session_id
+      session[:onboarding_import_data_import_id] = import_id
+    end
+
+    it 'redirects to the imports path' do
+      expect(subject).to redirect_to :action => :index
+    end
+
+    it 'resets user session id' do
+      expect{subject}.to change { session[:onboarding_session_id] }.from(session_id).to(nil)
+    end
+
+    it 'resets user session onboarding_import_data_import_id' do
+      expect{subject}.to change { session[:onboarding_import_data_import_id] }.from(import_id).to(nil)
+    end
+  end
+
+  describe '#download_attachments' do
+    let(:params) { { params: { import_id: import.id } } }
+    let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
+
+    subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
+
+    context 'when pre_processing_files exist' do
+      context 'when there is only one pre processing file' do
+        it 'does not create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call).never
+          subject
+        end
+      end
+
+      context 'when there are more than one pre processing files' do
+        let!(:import) { create(:import, :with_multiple_pre_processing_files, imported_for_id: entity.id) }
+
+        it 'calls create zip service' do
+          NfgCsvImporter::CreateZipService.any_instance.expects(:call)
+          subject
+        end
+      end
+
+    end
+
+    context 'when pre_processing_files do not exist' do
+      let(:import) { create(:import, imported_for_id: entity.id) }
+
+      it 'does not send a file in the response' do
+        NfgCsvImporter::ImportsController.any_instance.expects(:send_file).never
+        subject
+      end
+
+      it 'returns status 404' do
+        subject
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context 'when there is an error' do
+      let(:error) { StandardError }
+
+      before { ActiveStorage::Attachment.any_instance.expects(:service_url).raises(error) }
+
+      it 'returns 400' do
+        Rails.logger.expects(:error)
+        subject
+        expect(response.status).to eq(400)
+      end
+    end
+  end
+
+  describe '#disable_import_initiation_message' do
+    before do
+      NfgCsvImporter.configuration.stubs(:disable_import_initiation_message).returns(disable_import_initiation_message)
+    end
+
+    subject { controller.disable_import_initiation_message }
+
+    context "when nothing has been configured for the disable_import_initiation_message configuration" do
+      let(:disable_import_initiation_message) { nil }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context "when disable_import_initiation_message has been configured, but not with a callable object" do
+      let(:disable_import_initiation_message) { 'true' }
+
+      it 'returns nil' do
+        expect(subject).to be_nil
+      end
+    end
+
+    context 'when disable_import_initiation_message is callable' do
+      let(:disable_import_initiation_message) { ->(user) { "I am here" } }
+
+      it 'returns the value returned from the proc' do
+        expect(subject).to eq("I am here")
+      end
     end
   end
 end

@@ -4,12 +4,8 @@
 
 #edit.importer-gem{ data: { unmapped_highlight: 'disabled', view_wrapper: "importer-gem" } }
 
-  = render 'nfg_csv_importer/imports/import_header_file_name', import: @import
-
   = render 'nfg_csv_importer/imports/import_header_stats', import: @import, ready_for_import: ready_for_import
 
-  / Doesn't work yet
-  / - if @errors
   #importer_errors
     = render "nfg_csv_importer/imports/importer_errors", import: @import
 
@@ -30,19 +26,19 @@
       = fa_icon "arrow-circle-right"
 
     .container-importer
-      = form_for @import, html: { id: "fields_mapping" } do
+      = form_for @import, url: import_path(@import, iframe: params[:iframe]), html: { id: "fields_mapping" } do
         .row.row-no-wrap
           - @import.mapped_fields.each_with_index do |mapped_column, index|
             = render "nfg_csv_importer/imports/importer_column", mapped_column: mapped_column, import: @import, index: index
 
         %div{ data: { describe: 'horizontal-scroll-ending-spacer' } }
 
-
-  .container-fluid.container-flush.bg-white
-    .row.p-x-1.p-t-1.p-b-3
-      .col-xs-6
-        = link_to imports_path, class: "btn btn-secondary btn-lg" do
-          = fa_icon "chevron-left fw", text: "Save & Come Back Later"
+  - unless params[:iframe].present?
+    .container-fluid.container-flush.bg-white
+      .row.p-x-1.p-t-1.p-b-3
+        .col-xs-6
+          = link_to imports_path, class: "btn btn-secondary btn-lg" do
+            = fa_icon "chevron-left fw", text: "Save & Come Back Later"
 
   - if @mapped_column_count > 0
     / TODO: Leverage modal partial when ready
@@ -66,15 +62,15 @@
                 .modal-body.m-b-1
                   .row
                     .col-xs-12
-                      %p.lead= t('imports.confirmations.column_mapping').html_safe
+                      %p.lead= t('nfg_csv_importer.imports.confirmations.column_mapping').html_safe
                   .row.m-t-2
                     .col-xl-10.offset-xl-1.col-xs-12
                       .row
                         .col-md-6.col-xs-12
-                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content: "Columns to be Imported", color: "" }
+                          = render partial: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "columns inverse", heading: @import.column_stats[:column_count], content_class: 'card-text line-height-normal', content: "Columns to be Imported", color: "" }
 
                         .col-md-6.col-xs-12
-                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], color: "" } do
+                          = render layout: 'nfg_csv_importer/imports/components/stacked_icon_column', locals: { icon: "exchange inverse", heading: @import.column_stats[:mapped_column_count], content_class: 'text-white font-size-lg', color: "" } do
                             %p.card-text.line-height-normal
                               Automatically Mapped Columns
                               %br

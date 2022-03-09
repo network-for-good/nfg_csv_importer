@@ -1,0 +1,33 @@
+-# The following gets rendered by DropZone for each file that is dropped/added
+#tpl.invisible.d-none
+  .dz-preview.row.align-items-center
+    .col-2
+      -# For now, images are removed. Leaving this comment here
+      -# in the event we decide we want snapshots.
+      -#%img.img.img-fluid{"data-dz-thumbnail" => ""}/
+
+      -# Next steps:
+      -# When / if zip packages get added, we should use javascript
+      -# to check file extension. If .zip, use 'file-archive-o'
+      -# when spreadsheet, use 'file-text-o'
+      = ui.nfg :icon, 'file-text-o 3x', :muted
+    .col-10
+      = ui.nfg :typeface, :body, class: 'mb-0' do
+        %span{"data-dz-name" => ""}
+        %small.text-muted.mr-2
+          (
+          %span{"data-dz-size" => ""}>
+          )
+        %span{ data: { dz_remove_link_container: '' } }
+
+      = ui.nfg :media, class: 'mt-1 align-items-center' do
+        = ui.nfg :media_body do
+          = ui.nfg :progress, :sm do
+            = ui.nfg :progress_bar, progress: 0, data: { dz_uploadprogress: '' }
+        = ui.nfg :media_object do
+          .ml-2
+            .dz-success-mark
+              = ui.nfg :icon, 'check fw', :success
+            .dz-error-mark.d-none
+              = ui.nfg :icon, 'times fw', :danger
+      = ui.nfg :typeface, :danger, body: '', class: 'font-weight-bold', data: { dz_errormessage: '' }
