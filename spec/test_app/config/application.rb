@@ -30,9 +30,9 @@ module TestApp
     config.action_mailer.default_url_options = { host: "example.com" }
 
     config.action_mailer.preview_path = "#{NfgCsvImporter::Engine.root}/lib/mailer_previews"
-    config.action_view.raise_on_missing_translations = true
+    # config.action_view.raise_on_missing_translations = true
 
-    config.active_record.sqlite3.represent_boolean_as_integer = true
+    # config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 end
 

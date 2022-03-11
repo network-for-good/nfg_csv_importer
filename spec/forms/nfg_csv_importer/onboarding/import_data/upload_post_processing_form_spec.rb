@@ -13,7 +13,7 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPostProcessingForm  do
   let(:file_name) { "/subscribers.csv" }
   let(:admin) {  create(:user) }
 
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, status: 'pending') }
+  let(:import) { FactoryBot.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, status: 'pending') }
 
   let(:import_file_validateable_host) { form }
   let(:params) { { import_file: file } }

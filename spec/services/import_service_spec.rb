@@ -38,9 +38,9 @@ describe NfgCsvImporter::ImportService do
   let(:row_data) {["pavan@gmail.com","A Gilbert","William"]}
   let(:header_data) {["email" ,"first_name","last_name"]}
   let(:file_name) {"/subscribers.csv"}
-  let!(:admin) {  FactoryGirl.create(:user)}
+  let!(:admin) {  FactoryBot.create(:user)}
   let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
-  let(:import) { FactoryGirl.build(:import,
+  let(:import) { FactoryBot.build(:import,
                                     id: 1,
                                     import_file: File.open("spec/fixtures#{file_name}"),
                                     fields_mapping: fields_mapping)}
@@ -430,7 +430,7 @@ describe NfgCsvImporter::ImportService do
     end
 
     context "when model object is invalid" do
-      let(:model_obj) { FactoryGirl.build(:user, first_name: '') }
+      let(:model_obj) { FactoryBot.build(:user, first_name: '') }
 
       it "should call increment_counter for import number_of_records_with_errors & records_processed fields" do
         NfgCsvImporter::Import.expects(:increment_counter).with(:records_processed, import.id)

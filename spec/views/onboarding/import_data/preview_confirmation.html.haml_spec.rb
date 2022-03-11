@@ -53,7 +53,7 @@ RSpec.describe 'onboarding/import_data/preview_confirmation.html.haml' do
 
     context 'and when the file origination type does display mappings' do
       let(:display_mappings) { true }
-      let(:import) { FactoryGirl.build(:import, :with_statistics) }
+      let(:import) { FactoryBot.build(:import, :with_statistics) }
       before { view.stubs(:import).returns(import) }
       it { is_expected.to render_template('nfg_csv_importer/imports/_mapped_column_headers') }
     end

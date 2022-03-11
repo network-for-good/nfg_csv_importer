@@ -38,7 +38,7 @@ describe NfgCsvImporter::Import do
   let(:processing_finished_at) { nil }
   let(:fields_mapping) { nil }
   let(:import) do
-    FactoryGirl.create(:import, :with_pre_processing_files,
+    FactoryBot.create(:import, :with_pre_processing_files,
       imported_for: entity,
       import_type: import_type,
       imported_by: admin,
@@ -111,7 +111,7 @@ describe NfgCsvImporter::Import do
   end
 
   describe 'validating the import type and import file' do
-    subject { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+    subject { FactoryBot.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
                       import_file: file, error_file: error_file, status: status, statistics: stats,
                       file_origination_type: file_origination_type_name) }
 
@@ -149,7 +149,7 @@ describe NfgCsvImporter::Import do
     let(:import) do
       # since we are testing validation, we have to build
       # because we can't create invalid records
-      FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
+      FactoryBot.build(:import, imported_for: entity, import_type: import_type, imported_by: admin,
                         import_file: file, error_file: error_file, status: status, statistics: stats)
     end
     subject { import_file_validateable_host.valid? }
@@ -441,7 +441,7 @@ describe NfgCsvImporter::Import do
   end
 
   describe "#time_remaining_message" do
-    let(:import) { FactoryGirl.build(:import,
+    let(:import) { FactoryBot.build(:import,
                                       imported_for: entity,
                                       import_type: import_type,
                                       imported_by: admin,

@@ -39,11 +39,11 @@ class NfgCsvImporter::ImportMailerPreview < ActionMailer::Preview
   private
 
   def recipient
-    @recipient ||= FactoryGirl.create(:user, entity: entity)
+    @recipient ||= FactoryBot.create(:user, entity: entity)
   end
 
   def entity
-    @entity ||= Entity.last || FactoryGirl.create(:entity)
+    @entity ||= Entity.last || FactoryBot.create(:entity)
   end
 
   def import(errors: false, file_origination_type: 'paypal')

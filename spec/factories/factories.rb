@@ -1,10 +1,8 @@
-include ActionDispatch::TestProcess
-
-FactoryGirl.define do
+FactoryBot.define do
   factory :imported_record, class: NfgCsvImporter::ImportedRecord do
-    action "create"
+    action { "create" }
     imported_for { create(:entity) }
-    transaction_id "UNIQUE_ID"
+    transaction_id { "UNIQUE_ID" }
     association :imported_by, factory: :user
     importable { create(:user, entity: imported_for) }
   end
@@ -24,13 +22,13 @@ FactoryGirl.define do
     end
 
     trait :with_pre_processing_files do
-      pre_processing_files { fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx")  }
+      pre_processing_files { [fixture_file_upload("paypal_sample_file.xlsx")]  }
     end
 
     trait :with_multiple_pre_processing_files do
       pre_processing_files do
-        [fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx"),
-        fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx")]
+        [fixture_file_upload("paypal_sample_file.xlsx"),
+        fixture_file_upload("paypal_sample_file.xlsx")]
       end
     end
 
@@ -61,8 +59,8 @@ FactoryGirl.define do
 
     trait :pending do
       status { :pending }
-      import_type nil
-      import_file nil
+      import_type { nil }
+      import_file { nil }
     end
 
     trait :with_statistics do
@@ -79,7 +77,7 @@ FactoryGirl.define do
   #
   # Solution:
   # 1. Generate the session with something like these `let` variables:
-  # let(:onboarding_session) { FactoryGirl.create(:onboarding_session, :"#{current_step}_step") }
+  # let(:onboarding_session) { FactoryBot.create(:onboarding_session, :"#{current_step}_step") }
   # let(:current_step) { 'file_origination_type_selection' }
   #
   # 2. Then stub the controller so that the presenter and session are married:

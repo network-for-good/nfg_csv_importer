@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PayPalPreprocessorService
-  include ActiveStorage::Downloading
 
   def initialize(import)
     self.import = import

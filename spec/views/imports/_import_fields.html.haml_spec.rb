@@ -9,7 +9,7 @@ describe "admin/imports/_import_fields.html.haml" do
   subject { render :partial => 'nfg_csv_importer/imports/import_fields', :locals => { header: 'Test header', fields: fields } }
 
   let(:entity) { create(:entity) }
-  let(:import) { FactoryGirl.build(:import, imported_for:entity)}
+  let(:import) { FactoryBot.build(:import, imported_for:entity)}
   let(:fields) { [] }
 
   context "when fields empty" do

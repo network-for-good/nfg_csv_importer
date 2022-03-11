@@ -6,7 +6,7 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPreprocessingForm do
   let(:pre_processing_files) { [signing_id] }
   let(:admin) {  create(:user) }
   let(:import_type) { 'some-type' }
-  let(:import) { FactoryGirl.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, status: 'pending') }
+  let(:import) { FactoryBot.build(:import, imported_for: entity, import_type: import_type, imported_by: admin, status: 'pending') }
   let(:import_file_validateable_host) { form }
   let(:params) { { pre_processing_files: pre_processing_files } }
   let(:record) { mock('record') }

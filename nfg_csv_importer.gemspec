@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", '~> 5.0'
+  s.add_dependency "rails", '~> 6.0'
   s.add_dependency "roo", '2.6.0'
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
@@ -41,12 +41,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'sassc', '~> 2.0.1'
 
-  s.add_development_dependency "sqlite3", '~> 1.3.0'
+  s.add_development_dependency "sqlite3", '~> 1.4'
   s.add_development_dependency "rails-controller-testing"
-  s.add_development_dependency "rspec-rails", '~> 3.5'
+  s.add_development_dependency "rspec-rails", '~> 4.0'
   s.add_development_dependency "rspec_junit_formatter"
   s.add_development_dependency "rspec-rails-mocha"
-  s.add_development_dependency "factory_girl_rails"
   s.add_development_dependency "capybara"
   s.add_development_dependency "capybara-screenshot"
   s.add_development_dependency "shoulda"
@@ -58,4 +57,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sidekiq"
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "puma"
+  s.add_development_dependency "factory_bot_rails"
 end

@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe NfgCsvImporter::Onboarder::OnboarderPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
-  let(:onboarding_session) { FactoryGirl.create(:onboarding_session, *traits) }
+  let(:onboarding_session) { FactoryBot.create(:onboarding_session, *traits) }
   let(:traits) { [:"#{current_step}_step"] } # auto-generate the correct onboarding session step
   let(:current_step) { 'file_origination_type_selection' }
   let(:onboarder_presenter) { described_class.new(onboarding_session, h) }

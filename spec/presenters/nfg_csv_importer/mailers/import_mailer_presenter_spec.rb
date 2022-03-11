@@ -5,7 +5,7 @@ require 'nfg_csv_importer/file_origination_types/self_import_csv_xls'
 describe NfgCsvImporter::Mailers::ImportMailerPresenter do
   let(:h) { ActionMailer::Base.new.view_context }
   let(:import_mailer_presenter) { described_class.new(import, h) }
-  let(:import) { FactoryGirl.create(:import, *import_traits) }
+  let(:import) { FactoryBot.create(:import, *import_traits) }
   let(:import_traits) { [] }
   let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(tested_type_sym, FileOriginationTypes::SelfImportCsvXls) }
   let(:tested_type_sym) { :self_import_csv_xls }

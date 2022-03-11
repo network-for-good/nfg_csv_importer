@@ -149,11 +149,11 @@ describe "Running through the full import process", js: true do
   describe "imports index page" do
     let(:file) { File.open('spec/fixtures/users_for_full_import_spec.xls')}
     let(:donation_file) { File.open('spec/fixtures/donations.xlsx')}
-    let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Jones") }
-    let!(:import) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
-    let!(:import2) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded") }
-    let!(:import3) { FactoryGirl.create(:import, imported_by: user_1, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
-    let!(:donation_import) { FactoryGirl.create(:import, import_type: "donation", imported_by: user_1, updated_at: 8.minutes.ago, import_file: donation_file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
+    let(:user_1) { FactoryBot.create(:user, first_name: "Pavan", last_name: "Jones") }
+    let!(:import) { FactoryBot.create(:import, imported_by: user_1, updated_at: 1.minute.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
+    let!(:import2) { FactoryBot.create(:import, imported_by: user_1, updated_at: 10.minutes.ago, import_file: file, imported_for: entity, status: "uploaded") }
+    let!(:import3) { FactoryBot.create(:import, imported_by: user_1, updated_at: 8.minutes.ago, import_file: file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
+    let!(:donation_import) { FactoryBot.create(:import, import_type: "donation", imported_by: user_1, updated_at: 8.minutes.ago, import_file: donation_file, imported_for: entity, status: "complete", processing_finished_at: 7.minutes.ago) }
 
     before do
       visit nfg_csv_importer.imports_path
@@ -189,7 +189,7 @@ describe "Running through the full import process", js: true do
       end
 
       context "when the user is NOT allowed to see certain files" do
-        let(:user_1) { FactoryGirl.create(:user, first_name: "Pavan", last_name: "Smith") }
+        let(:user_1) { FactoryBot.create(:user, first_name: "Pavan", last_name: "Smith") }
 
         # the import definition for the donation import excludes users with "Smith" as the last name
         it "should display all the imports sorted in recent order" do

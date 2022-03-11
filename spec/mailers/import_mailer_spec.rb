@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe NfgCsvImporter::ImportMailer, type: :mailer do
-  let(:import) { FactoryGirl.create(:import, *import_traits) }
+  let(:import) { FactoryBot.create(:import, *import_traits) }
 
   describe "#send_import_result" do
     before { @import = import } # for the view

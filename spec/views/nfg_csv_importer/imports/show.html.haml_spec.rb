@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:tested_import) { FactoryGirl.create(:import, *import_traits, import_type: 'paypal', status: status) }
+  let(:user) { FactoryBot.create(:user) }
+  let(:tested_import) { FactoryBot.create(:import, *import_traits, import_type: 'paypal', status: status) }
   let(:import_traits) { [] }
   let!(:import) { assign(:import, tested_import) }
   let(:status) { 'pending' }
@@ -18,6 +18,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
   describe "access to the the import's import_file" do
     context 'when pre_processing files are present' do
       let(:import_traits) { :with_pre_processing_files }
+
       it 'shows the system generated version of the file' do
         expect(subject).to have_css "[data-describe='system-generated-import-file']"
 

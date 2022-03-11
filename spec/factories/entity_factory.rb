@@ -1,5 +1,5 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :entity do
-    subdomain "test"
+    subdomain { "test" }
   end
 end

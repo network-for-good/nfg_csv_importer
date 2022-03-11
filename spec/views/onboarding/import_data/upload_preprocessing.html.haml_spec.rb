@@ -33,7 +33,7 @@ end
 RSpec.describe 'onboarding/import_data/upload_preprocessing.html.haml', type: :view do
   let(:onboarder_presenter) { NfgCsvImporter::Onboarder::Steps::UploadPreprocessingPresenter.new(onboarding_session, h) }
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
-  let(:onboarding_session) { FactoryGirl.create(:onboarding_session, :upload_preprocessing_step) }
+  let(:onboarding_session) { FactoryBot.create(:onboarding_session, :upload_preprocessing_step) }
 
   before do
     stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => fake_form

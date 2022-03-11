@@ -3,7 +3,7 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path("../test_app/config/environment.rb",  __FILE__)
 require 'rspec/rails'
 require 'rspec/rails/mocha'
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 require 'shoulda/matchers'
 require 'database_cleaner'
 require 'rails-controller-testing'
@@ -21,7 +21,7 @@ ActiveRecord::Migrator.migrations_paths = 'spec/test_app/db/migrate'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.mock_with :mocha
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
@@ -82,3 +82,10 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.server = :webrick
+
+FactoryBot::SyntaxRunner.class_eval do
+  include ActionDispatch::TestProcess
+  include ActiveSupport::Testing::FileFixtures
+
+  self.file_fixture_path = "spec/fixtures"
+end

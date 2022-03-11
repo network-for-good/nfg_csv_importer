@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'nfg_csv_importer/imports/_mapped_column_headers.html.haml' do
-  let!(:entity) { FactoryGirl.create(:entity) }
-  let!(:user) { FactoryGirl.create(:user) }
+  let!(:entity) { FactoryBot.create(:entity) }
+  let!(:user) { FactoryBot.create(:user) }
   let(:max_height) { nil }
-  let(:import) { FactoryGirl.create(:import) }
+  let(:import) { FactoryBot.create(:import) }
 
   subject { render partial: 'nfg_csv_importer/imports/mapped_column_headers', locals: { import: import, max_height: max_height } }
 
@@ -25,7 +25,7 @@ RSpec.describe 'nfg_csv_importer/imports/_mapped_column_headers.html.haml' do
   end
 
   describe 'mapped column headers listing' do
-    let(:import) { FactoryGirl.create(:import, fields_mapping: fields_mapping) }
+    let(:import) { FactoryBot.create(:import, fields_mapping: fields_mapping) }
     let(:original_header_name) { 'test' }
     let(:new_header_name) { 'test2' }
     let(:fields_mapping) { {} }

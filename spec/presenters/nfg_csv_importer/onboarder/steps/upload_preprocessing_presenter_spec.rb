@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe NfgCsvImporter::Onboarder::Steps::UploadPreprocessingPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
-  let(:onboarding_session) { FactoryGirl.create(:onboarding_session, *traits, current_step: current_step) }
+  let(:onboarding_session) { FactoryBot.create(:onboarding_session, *traits, current_step: current_step) }
   let(:traits) { [] }
   let(:current_step) { 'upload_preprocessing' }
   let(:onboarder_presenter) { NfgCsvImporter::Onboarder::OnboarderPresenter.build(onboarding_session, h) }

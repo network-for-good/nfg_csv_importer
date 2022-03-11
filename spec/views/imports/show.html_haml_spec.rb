@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "nfg_csv_importer/imports/show.html.haml", type: :view do
-  let(:current_user) { FactoryGirl.create(:user) }
+  let(:current_user) { FactoryBot.create(:user) }
   let(:pre_processing_files) { [file] }
   let(:file) { mock('file') }
   let(:import_file) { File.open("spec/fixtures/donations.xlsx") }
-  let(:import) { FactoryGirl.create(:import, import_file: import_file) }
+  let(:import) { FactoryBot.create(:import, import_file: import_file) }
 
   before do
     view.stubs(:current_user).returns(current_user)

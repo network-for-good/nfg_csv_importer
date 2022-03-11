@@ -11,7 +11,7 @@ describe "imports/new.html.haml" do
   end
 
   let(:entity) { create(:entity) }
-  let(:import) { FactoryGirl.build(:import, imported_for:entity)}
+  let(:import) { FactoryBot.build(:import, imported_for:entity)}
 
   it "should contain form with file input" do
     within("form") do |form_element|

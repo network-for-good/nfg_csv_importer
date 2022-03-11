@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_complete.html.haml", type: :view do
   let(:imports_listing_row_column_structure_class) { "col-md-2 m-b-half-down-sm" }
   let(:h) { NfgCsvImporter::ImportsController.new.view_context }
-  let!(:import) { FactoryGirl.create(:import, number_of_records_with_errors: '5') }
+  let!(:import) { FactoryBot.create(:import, number_of_records_with_errors: '5') }
   let(:import_presenter) { NfgCsvImporter::Mailers::ImportMailerPresenter.new(import, h) }
-  let(:recipient) { FactoryGirl.create(:user) }
+  let(:recipient) { FactoryBot.create(:user) }
 
   before do
     stub_template "nfg_csv_importer/import_mailer/send_import_result/_milestone.html.haml" => "<p></p>"

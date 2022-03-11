@@ -3,8 +3,8 @@ require 'rails_helper'
 describe PayPalPreprocessorService do
   include ActionDispatch::TestProcess
 
-  let(:import) { FactoryGirl.create(:import, :pending,
-                                    pre_processing_files: fixture_file_upload(File.open("spec/fixtures/#{file_name}")))}
+  let(:import) { FactoryBot.create(:import, :pending,
+                                    pre_processing_files: [fixture_file_upload(File.open("spec/fixtures/#{file_name}"))])}
   let(:service) { PayPalPreprocessorService.new(import) }
 
   describe '#process' do

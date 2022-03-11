@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe "nfg_csv_importer/imports/_imports.html.haml", type: :view do
   let(:imports_listing_row_column_structure_class) { "col-md-2 m-b-half-down-sm" }
   let(:h) { NfgCsvImporter::ImportsController.new.view_context }
-  let(:import) { FactoryGirl.create(:import, *import_traits, imported_by: imported_by) }
+  let(:import) { FactoryBot.create(:import, *import_traits, imported_by: imported_by) }
   let(:import_traits) { [:is_complete, :is_paypal, :with_pre_processing_files] }
   let(:import_presenter) { NfgCsvImporter::ImportPresenter.new(import, h) }
-  let(:current_user) { FactoryGirl.create(:user) }
+  let(:current_user) { FactoryBot.create(:user) }
   let(:imported_by) { current_user }
   let(:tested_can_be_viewed_by) { true }
   let(:disable_import_initiation_message) { nil }
