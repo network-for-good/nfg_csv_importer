@@ -8,7 +8,7 @@ module NfgCsvImporter
         end
 
         def logo_path
-          "nfg_csv_importer/file_origination_types/self_import_csv_xls.png"
+          "nfg_csv_importer/file_origination_types/self_import_csv_xls.svg"
         end
 
         def description
