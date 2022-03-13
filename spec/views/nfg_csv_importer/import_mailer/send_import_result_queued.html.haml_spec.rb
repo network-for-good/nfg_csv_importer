@@ -14,7 +14,7 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_queued.html.ha
     assign(:locales_scope,[:mailers, :nfg_csv_importer, :send_import_result_mailer])
   end
 
-  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_queued.html.haml' }
+  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_queued' }
 
   it 'renders step template' do
     expect(subject).to render_template 'nfg_csv_importer/import_mailer/send_import_result/_steps'

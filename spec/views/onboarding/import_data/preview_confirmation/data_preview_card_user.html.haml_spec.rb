@@ -17,7 +17,7 @@ RSpec.describe 'onboarding/import_data/preview_confirmation/data_preview_card_us
     { "full_name" => name, "email" => email, "home_phone" => phone, "address" => address, "address_2" => address_2, "city" => city }
   end
 
-  subject { render template: 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_data_preview_card_user.html.haml' }
+  subject { render template: 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_data_preview_card_user' }
 
   it 'should have the right buttons' do
     subject

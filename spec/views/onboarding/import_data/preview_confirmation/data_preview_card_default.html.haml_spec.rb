@@ -9,7 +9,7 @@ RSpec.describe 'onboarding/import_data/preview_confirmation/data_preview_card_de
   end
   let(:details) { %w[val, another_val] }
 
-  subject { render template: 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_data_preview_card_default.html.haml' }
+  subject { render template: 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_data_preview_card_default' }
 
   it 'should have the right buttons' do
     subject

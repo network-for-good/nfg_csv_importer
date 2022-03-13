@@ -16,7 +16,7 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_complete.html.
     assign(:locales_scope,[:mailers, :nfg_csv_importer, :send_import_result_mailer])
   end
 
-  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_complete.html.haml' }
+  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_complete' }
 
   it 'renders the right content pertaining to complete status' do
     expect(subject).to have_content I18n.t('mailers.nfg_csv_importer.send_import_result_mailer.body.introduction.complete')

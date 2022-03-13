@@ -26,7 +26,7 @@ RSpec.describe 'onboarding/sub_layout.html.haml' do
   let(:form) { mock('form')}
   let(:model_name) { mock('model_name') }
   let(:errors) { mock('errors', full_messages: []) }
-  subject { render template: 'nfg_csv_importer/onboarding/_sub_layout.html.haml' }
+  subject { render template: 'nfg_csv_importer/onboarding/_sub_layout' }
 
   context 'when there are flash messages' do
     it 'should show flash messages' do

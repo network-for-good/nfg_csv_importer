@@ -8,7 +8,7 @@ RSpec.describe 'onboarding/import_data/preview_confirmation/default_summary_data
     view.stubs(:i18n_scope).returns([:nfg_csv_importer, :onboarding, :import_data, step])
   end
 
-  let(:template) { 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_default_summary_data.html.haml' }
+  let(:template) { 'nfg_csv_importer/onboarding/import_data/preview_confirmation/_default_summary_data' }
   let(:step) { 'preview_confirmation' }
   let(:import) { mock('import') }
   let(:num_rows) { 11 }

@@ -15,7 +15,7 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_deleted.html.h
     assign(:locales_scope,[:mailers, :nfg_csv_importer, :send_import_result_mailer])
   end
 
-  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_deleted.html.haml' }
+  subject { render template: 'nfg_csv_importer/import_mailer/send_import_result_deleted' }
 
   it 'renders step template' do
     expect(subject).to have_content "Your import with id #{import.id} has been successfully deleted."
