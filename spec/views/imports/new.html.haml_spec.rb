@@ -7,7 +7,7 @@ describe "imports/new.html.haml" do
     view.extend NfgCsvImporter::ImportsHelper
     assign(:import, import)
     view.stubs(:import_type).returns(import.import_type)
-    render template: 'nfg_csv_importer/imports/new'
+    render template: 'nfg_csv_importer/imports/new.html.haml'
   end
 
   let(:entity) { create(:entity) }
