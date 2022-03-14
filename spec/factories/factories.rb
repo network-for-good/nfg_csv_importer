@@ -22,13 +22,13 @@ FactoryBot.define do
     end
 
     trait :with_pre_processing_files do
-      pre_processing_files { [fixture_file_upload("paypal_sample_file.xlsx")]  }
+      pre_processing_files { [fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx")]  }
     end
 
     trait :with_multiple_pre_processing_files do
       pre_processing_files do
-        [fixture_file_upload("paypal_sample_file.xlsx"),
-        fixture_file_upload("paypal_sample_file.xlsx")]
+        [fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx"),
+        fixture_file_upload("spec/fixtures/paypal_sample_file.xlsx")]
       end
     end
 
