@@ -14,7 +14,7 @@ describe "switching file origination types", js: true do
       and_by "adding a note to the session" do
         step_data = @import.onboarding_session.step_data
         step_data['import_data'][:upload_preprocessing]['note'] = 'some-note'
-        @import.onboarding_session.update(step_data: step_data)
+        @import.onboarding_session.update!(step_data: step_data)
       end
 
       page.find("[data-describe='file_origination_type_selection-step']").click

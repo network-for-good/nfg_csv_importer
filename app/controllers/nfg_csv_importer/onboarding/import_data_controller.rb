@@ -294,7 +294,7 @@ module NfgCsvImporter
         step_data = onboarding_session.step_data
         if step_data.dig('import_data', :upload_preprocessing, 'note')
           step_data['import_data'][:upload_preprocessing]['note'] = nil
-          onboarding_session.update(step_data: step_data)
+          onboarding_session.update!(step_data: step_data)
         end
       end
     end
