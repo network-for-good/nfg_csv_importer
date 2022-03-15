@@ -39,30 +39,26 @@ module NfgCsvImporter
       # each alias should be a hash with the field
       # name as the key and an array of aliases as the value
       # i.e. "first_name" => ["first", "donor first name", "contact first name"]
-      field = nil
 
-      aliases_for_mapping.each do |f, alias_values|
-        alias_values = Array(alias_values)
-        alias_values.map! { |v| Regexp.escape(v) } # handles field names with special characters
-
-        field_regex = alias_values.join('|')
-
-        break field = f if header_column.match(/#{ field_regex }/i)
+      field_alias_values_regexes.each do |f, alias_value_regex|
+        return f if header_column.match(alias_value_regex)
       end
 
-      field
+      nil # no header could be mapped to the alias
     end
 
     def column_headers_mapper
       mapped_fields.inject({}) do |hsh, (header_column, field)|
-        if field.blank? # we skip any field that has already been mapped
-          matching_field = column_header_mapped_to_previous_import_template(header_column)
-          matching_field = column_header_mapped_to_field_names(header_column) unless matching_field.present?
-          matching_field = column_header_mapped_to_humanized_field_names(header_column) unless matching_field.present?
-          matching_field = column_header_mapped_to_un_underscored_field_names(header_column) unless matching_field.present?
-          matching_field = column_header_mapped_to_aliases(header_column) unless matching_field.present?
-          hsh[header_column] = matching_field if matching_field
-        end
+        next hsh if field.present?  # we skip any field that has already been mapped
+        
+        matching_field = column_header_mapped_to_previous_import_template(header_column)
+        matching_field = column_header_mapped_to_field_names(header_column) unless matching_field.present?
+        matching_field = column_header_mapped_to_humanized_field_names(header_column) unless matching_field.present?
+        matching_field = column_header_mapped_to_un_underscored_field_names(header_column) unless matching_field.present?
+        matching_field = column_header_mapped_to_aliases(header_column) unless matching_field.present?
+
+        hsh[header_column] = matching_field if matching_field
+
         hsh
       end
     end
@@ -88,6 +84,20 @@ module NfgCsvImporter
 
     def imported_for
       import.imported_for
+    end
+
+    def field_alias_values_regexes
+      @field_alias_values_regexes ||= begin
+                                        aliases_for_mapping.inject({}) do |hsh, (field, alias_values)|
+                                          alias_values = Array(alias_values)
+                                          regex_components = alias_values.map { |v| Regexp.escape(v) } # handles field names with special characters
+
+                                          field_regex_str = regex_components.join('|')
+                                          field_regex = Regexp.new(field_regex_str, Regexp::IGNORECASE)
+
+                                          hsh.merge!(field => field_regex)
+                                        end
+                                      end
     end
   end
 end
