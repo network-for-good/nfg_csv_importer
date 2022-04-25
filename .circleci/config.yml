@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-       - image: circleci/ruby:2.5.8-node-browsers
+       - image: circleci/ruby:2.7.5-node-browsers
          environment:
            RAILS_ENV: test
        - image: circleci/redis:4
