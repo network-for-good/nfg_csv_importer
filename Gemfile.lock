@@ -1,13 +1,12 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: b85b04a9254968eb62ae9d16217cedc6fdb5fcb9
+  revision: 256f13f9a35694096fabbc669794f85997feadb5
   branch: rails_6
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
       execjs (= 2.7.0)
       haml
-      nfg_ui (~> 0.14.0)
       rails (~> 6.0)
       reform (= 2.2.4)
       simple_form
