@@ -17,6 +17,7 @@ PATH
       aws-sdk-s3 (~> 1.66)
       carrierwave
       coffee-script
+      execjs (= 2.7.0)
       haml
       jquery-rails
       nfg_onboarder (~> 0.0.3)
@@ -156,7 +157,7 @@ GEM
       uber (< 0.2.0)
     ejs (1.1.1)
     erubi (1.10.0)
-    execjs (2.8.1)
+    execjs (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.6.0)
