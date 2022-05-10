@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   # s.add_dependency "nfg_ui", "~> 0.14.0"
   # s.add_dependency "nfg_onboarder", "~> 0.0.3"
 
-  s.add_dependency "reform-rails", '~> 0.1.7'
+  s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
   s.add_dependency 'aws-sdk-s3', '~> 1.66'
   s.add_dependency 'rubyzip', '~> 1.3.0'
