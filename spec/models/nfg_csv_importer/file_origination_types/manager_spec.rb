@@ -62,6 +62,15 @@ RSpec.describe NfgCsvImporter::FileOriginationTypes::Manager do
           expect(subject.last.type_sym).to eq(default_file_type_sym)
         end
       end
+
+      context "and it includes  default file origination type" do
+        let(:file_types) { [NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM] }
+
+        it "does not duplicate the types" do
+          expect(subject.length).to eq(1)
+          expect(subject.first.type_sym).to eq(default_file_type_sym)
+        end
+      end
     end
   end
 

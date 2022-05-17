@@ -36,9 +36,13 @@ module NfgCsvImporter
 
       def types
         return @types if @types
+
         @types = additional_file_origination_types.map do |file_type|
           NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(file_type, file_origination_constant(file_type))
         end
+        # return if host app additional_file_origination_types list includes default file origination type
+        return @types if additional_file_origination_types.include?(DEFAULT_FILE_ORIGINATION_TYPE_SYM)
+
         @types << NfgCsvImporter::FileOriginationTypes::FileOriginationType.new(DEFAULT_FILE_ORIGINATION_TYPE_SYM, "NfgCsvImporter::FileOriginationTypes::#{DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s.camelcase}".constantize)
       end
 
