@@ -11,7 +11,7 @@ RSpec.describe 'nfg_csv_importer/imports/show.html.haml' do
 
   before do
     view.stubs(:current_user).returns(user)
-    view.stubs(:import_download_attachments_path).returns('some_path')
+    view.stubs(:download_attachments_import_path).returns('some_path')
     import.stubs(:can_be_deleted?).returns(false)
   end
 
