@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
-  s.add_dependency "sass-rails", "~> 5.0"
+  s.add_dependency "sass-rails", "~> 6.0"
 
   # nfg_ui and nfg_onboarder while using rails_6 branches and not master
   # are called from the Gemfile
