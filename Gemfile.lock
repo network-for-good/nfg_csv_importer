@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 98d3732fa054981bc61ea35ad23a0d6b0d5e66c4
-  branch: rails_6
+  revision: 2961d851e90b1ee9d0e17709a1e0bb3ab7f658b7
+  branch: feature/update_rails_6_nfg_ui_0_14_4_1
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: b7fd4dc410d96a967510718c46403b90de15edf2
+  revision: 19e0d1f779e8e9331f1ed049ee1902e78db8444c
   branch: rails_6
   specs:
-    nfg_ui (0.14.3.1)
+    nfg_ui (0.14.4.1)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
