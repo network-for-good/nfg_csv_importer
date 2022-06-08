@@ -204,7 +204,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.29.1.1)
       railties (>= 3.1)
-    nfg_ui (0.14.3.1)
+    nfg_ui (0.14.4.1)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
