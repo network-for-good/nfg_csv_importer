@@ -1,13 +1,16 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: fd593d1462111dd1ed38109b49c0cb225102daae
-  branch: rails_5
+  revision: dfaf0fcc03b5f4fe2d8299c5b73d929b752cb2d2
+  branch: feature/master_update_nfg_ui_0_14_6
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
+      execjs (= 2.7.0)
       haml
+      nfg_ui (~> 0.14.0)
       rails (~> 5.0)
-      reform
+      reform (= 2.2.4)
+      simple_form
       wicked
 
 PATH
@@ -142,7 +145,7 @@ GEM
       addressable
     database_cleaner (1.7.0)
     debug_inspector (0.0.3)
-    decent_exposure (3.0.2)
+    decent_exposure (3.0.4)
       activesupport (>= 4.0)
     declarative (0.0.10)
     declarative-builder (0.1.0)
@@ -204,7 +207,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.29.1.1)
       railties (>= 3.1)
-    nfg_ui (0.14.4.1)
+    nfg_ui (0.14.6)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -382,7 +385,7 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    wicked (1.3.4)
+    wicked (1.4.0)
       railties (>= 3.0.7)
     xpath (2.1.0)
       nokogiri (~> 1.3)
