@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: 0fc56d80885acc7abaf96d81778626536a7b6798
+  revision: bf76e0fadf25ea4d5d600e5d094f3c47327e4678
   branch: master
   specs:
     nfg_onboarder (0.0.3)
@@ -205,9 +205,9 @@ GEM
     minitest (5.14.4)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    momentjs-rails (2.29.1.1)
+    momentjs-rails (2.29.4.1)
       railties (>= 3.1)
-    nfg_ui (0.14.6)
+    nfg_ui (0.14.7)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
