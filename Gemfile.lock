@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: d4975860308a2a61c37ba0bee9fcd15bb8eb22ba
+  revision: 50b6d88e318820c7f0b2e68f8361d8ce95629a9a
   branch: feature/rails_6_update_nfg_ui_0_14_6_1
   specs:
     nfg_onboarder (0.0.3)
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: a12172bfd4db2cd8d1731b846f0002b4cb2db2b8
+  revision: 7459dba4fde2d6b50d7d36730af6ea91bd395387
   branch: rails_6
   specs:
-    nfg_ui (0.14.6.2)
+    nfg_ui (0.14.7)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -233,7 +233,7 @@ GEM
     minitest (5.15.0)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    momentjs-rails (2.29.1.1)
+    momentjs-rails (2.29.4.1)
       railties (>= 3.1)
     nio4r (2.5.8)
     nokogiri (1.13.5)
