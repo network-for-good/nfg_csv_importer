@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: 061dd23a17c77c3d922798a9e4cc95c721aafcca
-  branch: feature/update_master_nfg_ui_0_15
+  revision: aee6e3a760848ed264591227416cd2c7966e3447
+  branch: master
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
