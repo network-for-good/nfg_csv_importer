@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   # and re-enable this dependency.
   # Note added: 5/5/22
   #
-  # s.add_dependency "nfg_ui", "~> 0.14.0"
+  # s.add_dependency "nfg_ui", "~> 0.15.0"
   # s.add_dependency "nfg_onboarder", "~> 0.0.3"
 
   s.add_dependency "reform-rails", '~> 0.1.7'
