@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: cf647379fd4205ba1fdb8865e8065763bd53e750
-  branch: feature/update_rails_6_nfg_ui_0_15
+  revision: cd38139a1246ac6b47de481aa681180eec063509
+  branch: rails_6
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
