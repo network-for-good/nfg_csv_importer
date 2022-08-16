@@ -44,7 +44,7 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPostProcessingForm  do
 
     it "should add errors to base" do
       subject
-      expect(import_file_validateable_host.errors.messages[:base].first).to be_nil
+      expect(import_file_validateable_host.errors.messages[:base]).to be_nil
     end
   end
 end
