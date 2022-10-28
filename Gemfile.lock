@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 4ddce1c61304b164e94c6badda52f9a0a9a3acfd
-  branch: rails_6
+  revision: 96d6fbcc43c8e666b0231ab9e4ec76f98e94f070
+  branch: feature/update_nfg_ui_6_15_3
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 14509725dec500049878a0b807acabb3a9bd5d92
-  branch: rails_6
+  revision: 3eacc4c8d4e96ff33eff5e16a6ad998e225cf3b6
+  branch: feature/rails_6_add_button_to_v2
   specs:
-    nfg_ui (0.15.1)
+    nfg_ui (6.15.3)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -27,7 +27,7 @@ GIT
       jquery-rails (~> 4.3)
       momentjs-rails (~> 2.11, >= 2.11.1)
       nokogiri (>= 1.13.3)
-      rails (>= 4.2.0)
+      rails (~> 6.0)
       sass-rails (~> 6.0)
       select2-rails (~> 4.0)
 
@@ -241,7 +241,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.5-x86_64-darwin)
       racc (~> 1.4)
-    popper_js (1.16.0)
+    popper_js (1.16.1)
     premailer (1.16.0)
       addressable
       css_parser (>= 1.6.0)
@@ -390,7 +390,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    wicked (1.4.0)
+    wicked (2.0.0)
       railties (>= 3.0.7)
     xpath (2.1.0)
       nokogiri (~> 1.3)
