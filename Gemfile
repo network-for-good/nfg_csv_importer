@@ -10,8 +10,8 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'reform-rails', '~> 0.1.7'
-gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'feature/update_nfg_ui_6_15_3'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'feature/rails_6_add_button_to_v2'
+gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_6'
+gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'rails_6'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better
