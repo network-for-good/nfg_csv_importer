@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder.git
-  revision: 14836145a933dd8113a4ce876a1edc642cfde7e8
+  revision: 459053e184ff40efe5be42ec58f30d3c73f8ae4e
   branch: master
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
       execjs (= 2.7.0)
       haml
-      nfg_ui (~> 0.15.0)
+      nfg_ui (~> 5.0)
       rails (~> 5.0)
       reform (= 2.2.4)
       simple_form
@@ -23,8 +23,7 @@ PATH
       execjs (= 2.7.0)
       haml
       jquery-rails
-      nfg_onboarder (~> 0.0.3)
-      nfg_ui (~> 0.15.0)
+      nfg_ui (~> 5.0)
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 5.0)
       reform-rails (~> 0.1.7)
@@ -207,7 +206,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
-    nfg_ui (0.15.1)
+    nfg_ui (5.15.3)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -226,7 +225,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.13.4-x86_64-darwin)
       racc (~> 1.4)
-    popper_js (1.16.0)
+    popper_js (1.16.1)
     premailer (1.16.0)
       addressable
       css_parser (>= 1.6.0)
@@ -385,7 +384,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    wicked (1.4.0)
+    wicked (2.0.0)
       railties (>= 3.0.7)
     xpath (2.1.0)
       nokogiri (~> 1.3)
