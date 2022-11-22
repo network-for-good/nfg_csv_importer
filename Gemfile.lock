@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: c0fe17759ad6a448f146d1572787a67ba9a36444
+  revision: 3de25ba62de6fe25e1ff29185ed6e42c28d99d9b
   branch: rails_6
   specs:
     nfg_onboarder (0.0.3)
@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: https://github.com/network-for-good/nfg_ui
-  revision: 1d16fe32d525d6ee96567d29ac5eee7f4639202a
+  revision: da33296cb43dd4dce3afc899f4eafc101a205356
   branch: rails_6
   specs:
-    nfg_ui (6.15.4)
+    nfg_ui (6.15.6)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -26,7 +26,7 @@ GIT
       inky-rb (~> 1.3.7)
       jquery-rails (~> 4.3)
       momentjs-rails (~> 2.11, >= 2.11.1)
-      nokogiri (>= 1.13.3)
+      nokogiri (>= 1.13.9)
       rails (~> 6.0)
       sass-rails (~> 6.0)
       select2-rails (~> 4.0)
@@ -236,10 +236,10 @@ GEM
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
     nio4r (2.5.8)
-    nokogiri (1.13.5)
+    nokogiri (1.13.9)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    nokogiri (1.13.5-x86_64-darwin)
+    nokogiri (1.13.9-x86_64-darwin)
       racc (~> 1.4)
     popper_js (1.16.1)
     premailer (1.16.0)
