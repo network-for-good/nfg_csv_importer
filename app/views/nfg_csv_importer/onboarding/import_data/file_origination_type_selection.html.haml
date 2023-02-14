@@ -4,7 +4,7 @@
   .container.py-4
     .row
       .col.col-lg-10.mx-auto
-        %h2.text-center= t('header.message', locales_scope)
+        %h2.text-center= t('header.message', **locales_scope)
         .row
           - file_origination_types.each do |file_origination_type|
             = render partial: 'nfg_csv_importer/onboarding/import_data/file_origination_type_selection/file_origination_type_radio_button', locals: { f: f, file_origination_type: file_origination_type, onboarder_presenter: onboarder_presenter }
