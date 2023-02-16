@@ -22,6 +22,10 @@ module NfgCsvImporter
         def file_origination_type_title(file_origination_type:)
           I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_title.#{file_origination_type.type_sym}", default: file_origination_type.name)
         end
+
+        def file_origination_type_description(file_origination_type:)
+          I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_description.#{file_origination_type.type_sym}", default: file_origination_type.description)
+        end
       end
     end
   end
