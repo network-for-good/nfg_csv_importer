@@ -27,7 +27,7 @@ module NfgCsvImporter
         # Used add a custom file_origination_type description to the file origination type radio buttons.
         # The default file description content contains "contacts and donations" but it does not make sense
         # for all enclosing applications, for example in the case of auctions the bidder import description
-        # hould contain "bidders" instead of "donations" or "contacts".
+        # should contain "bidders" instead of "donations" or "contacts".
         # It falls back to the file_origination_type.description if no custom description is present.
         #
         def file_origination_type_description(file_origination_type:)
