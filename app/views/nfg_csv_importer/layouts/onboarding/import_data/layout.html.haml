@@ -6,7 +6,7 @@
     = render partial: 'nfg_ui/app_icons/icons'
     %title Data Import
     = stylesheet_link_tag "nfg_csv_importer/onboarding/application"
-    = javascript_include_tag "nfg_csv_importer/onboarding/application", "data-turbolinks-track" => "reload"
+    = javascript_include_tag "nfg_csv_importer/onboarding/application", "data-turbolinks-track": "reload", 'data-turbo-track': 'reload'
     = csrf_meta_tags
   %body{ class: "#{controller_path.gsub('/', '-')} #{try(:step).try(:to_s)} #{try(:file_origination_type).try(:type_sym)} builder-layout" }
     -# Allow host app to supply a partial for opening the page.
