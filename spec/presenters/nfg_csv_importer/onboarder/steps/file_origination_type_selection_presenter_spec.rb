@@ -42,7 +42,7 @@ describe NfgCsvImporter::Onboarder::Steps::FileOriginationTypeSelectionPresenter
       let(:traits) { [:self_import_csv_xls_file_origination_type] }
 
       it 'outputs the custom file origination type description' do
-        expect(subject).to eq I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_description.self_import_csv_xls")
+        expect(subject).to eq I18n.t('self_import_csv_xls', scope: %i[nfg_csv_importer onboarding import_data file_origination_type_selection file_origination_type_description])
       end
     end
 

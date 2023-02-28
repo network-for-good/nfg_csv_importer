@@ -40,7 +40,7 @@ module NfgCsvImporter
         #             self_import_csv_xls: "Import bidders from a CSV or XLS file."
         #
         def file_origination_type_description(file_origination_type:)
-          I18n.t("nfg_csv_importer.onboarding.import_data.file_origination_type_selection.file_origination_type_description.#{file_origination_type.type_sym}", default: file_origination_type.description)
+          I18n.t(file_origination_type.type_sym, scope: %i[nfg_csv_importer onboarding import_data file_origination_type_selection file_origination_type_description], default: file_origination_type.description)
         end
       end
     end
