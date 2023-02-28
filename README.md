@@ -121,6 +121,22 @@ To improve the styling of the imports new page, add a require statement to your 
 *= require nfg_csv_importer/application
 ````
 
+## Override the contents of the file origination type
+To add a custom file_origination_type contents to the file origination type radio buttons, add a `file_origination_type` heading to `nfg_csv_importer.onboarding.import_data.file_origination_type_selection` in your yml file in the parent app. This will be used as the label for the radio button. Then add an entry for each file_origination_type named after their #type_sym. The value of this entry should be the contents(title/description) of the file origination type.
+If nothing is passed, or if something is passed that is not callable, the default file origination type contents will be used.
+````
+Example: config/locales/import_data.yml
+
+en:
+  nfg_csv_importer:
+    onboarding:
+      import_data:
+        file_origination_type_selection:
+          file_origination_type_description:
+            self_import_csv_xls: 'Import users from a CSV file.'
+            paypal: 'Import PayPal Files'
+````
+
 # Development
 ## Running Specs
 If running specs for the first time, you will need to setup the test database

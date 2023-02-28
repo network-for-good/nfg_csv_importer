@@ -11,6 +11,8 @@ en:
         file_origination_type_selection:
           file_origination_type_title:
             paypal: "Import Your PayPal Files"
+          file_origination_type_description:
+            self_import_csv_xls: "Import your spreadsheet"
         upload_preprocessing:
           header:
             file_origination_type:

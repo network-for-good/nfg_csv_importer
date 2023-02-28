@@ -33,4 +33,26 @@ describe NfgCsvImporter::Onboarder::Steps::FileOriginationTypeSelectionPresenter
 
     end
   end
+
+  describe '#file_origination_type_description' do
+    subject { onboarder_presenter.file_origination_type_description(file_origination_type: file_origination_type) }
+
+    context 'when the file_origination_type_description is present' do
+      let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for('self_import_csv_xls') }
+      let(:traits) { [:self_import_csv_xls_file_origination_type] }
+
+      it 'outputs the custom file origination type description' do
+        expect(subject).to eq I18n.t('self_import_csv_xls', scope: %i[nfg_csv_importer onboarding import_data file_origination_type_selection file_origination_type_description])
+      end
+    end
+
+    context 'when the file_origination_type_description is not present' do
+      let(:traits) { [:paypal_file_origination_type] }
+      let(:file_origination_type) { NfgCsvImporter::FileOriginationTypes::Manager.new(NfgCsvImporter.configuration).type_for('paypal') }
+
+      it 'outputs the fallback default value of the file origination type #description' do
+        expect(subject).to eq file_origination_type.description
+      end
+    end
+  end
 end
