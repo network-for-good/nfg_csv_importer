@@ -39,7 +39,8 @@ module TestApp
       Symbol,
       Set,
       ActionController::Parameters,
-      ActiveSupport::HashWithIndifferentAccess
+      ActiveSupport::HashWithIndifferentAccess,
+      Spreadsheet::Link
     ]
   end
 end
