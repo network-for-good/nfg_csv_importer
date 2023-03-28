@@ -13,6 +13,8 @@ require "active_storage/engine"
 Bundler.require(*Rails.groups)
 require "nfg_csv_importer"
 
+require "spreadsheet"
+
 module TestApp
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -40,7 +42,9 @@ module TestApp
       Set,
       ActionController::Parameters,
       ActiveSupport::HashWithIndifferentAccess,
-      Spreadsheet::Link
+      Roo::Link,
+      Spreadsheet::Link,
+      ActionDispatch::Http::UploadedFile
     ]
   end
 end
