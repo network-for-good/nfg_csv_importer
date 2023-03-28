@@ -28,10 +28,10 @@
         %p= t 'alert.error', scope: @locales_scope
         %p
           You can download the error file
-          = link_to 'by clicking here.', import_url(@import, @url_options), id: 'error_link'
+          = link_to 'by clicking here.', NfgCsvImporter::Engine.routes.url_helpers.import_url(@import, @url_options), id: 'error_link'
 
     %spacer{ size: spacer(:base) }
-    = render partial: 'nfg_ui/email/button', locals: { url: import_url(@import, @url_options), text: t('buttons.visit_show_page', scope: @locales_scope), theme_color: theme_color(:primary) }
+    = render partial: 'nfg_ui/email/button', locals: { url: NfgCsvImporter::Engine.routes.url_helpers.import_url(@import, @url_options), text: t('buttons.visit_show_page', scope: @locales_scope), theme_color: theme_color(:primary) }
 
     %spacer{ size: spacer(:base) }
     %p
