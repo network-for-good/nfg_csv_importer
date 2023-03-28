@@ -12,6 +12,7 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_complete.html.
     assign(:recipient, recipient)
     assign(:import, import)
     assign(:import_mailer_presenter, import_presenter)
+    assign(:url_options, { host: 'lvh.me' })
     view.stubs(:import_url).returns('some-url')
     assign(:locales_scope,[:mailers, :nfg_csv_importer, :send_import_result_mailer])
   end
