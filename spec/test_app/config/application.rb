@@ -12,6 +12,7 @@ require "active_storage/engine"
 
 Bundler.require(*Rails.groups)
 require "nfg_csv_importer"
+require "spreadsheet"
 
 module TestApp
   class Application < Rails::Application
@@ -39,7 +40,10 @@ module TestApp
       Symbol,
       Set,
       ActionController::Parameters,
-      ActiveSupport::HashWithIndifferentAccess
+      ActiveSupport::HashWithIndifferentAccess,
+      Roo::Link,
+      Spreadsheet::Link,
+      ActionDispatch::Http::UploadedFile
     ]
 
   end

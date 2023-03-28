@@ -50,6 +50,6 @@
             Not ready to import
       - unless params[:iframe].present?
         %p.m-t-1
-          = link_to import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
+          = link_to NfgCsvImporter::Engine.routes.url_helpers.import_review_path(import), class: "btn btn-primary-outline #{ 'disabled' unless import.ready_to_import? }" do
             = fa_icon "chevron-right inverse", text: "Review & Confirm", right: true
 
