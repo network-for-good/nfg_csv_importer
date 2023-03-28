@@ -33,6 +33,14 @@ module TestApp
     config.action_view.raise_on_missing_translations = true
 
     config.active_record.sqlite3.represent_boolean_as_integer = true
+
+    # This is a list of classes that the YAML parser is allowed to deserialize
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol,
+      Set,
+      ActionController::Parameters,
+      ActiveSupport::HashWithIndifferentAccess
+    ]
   end
 end
 
