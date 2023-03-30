@@ -12,6 +12,7 @@ require "active_storage/engine"
 
 Bundler.require(*Rails.groups)
 require "nfg_csv_importer"
+require "spreadsheet"
 
 module TestApp
   class Application < Rails::Application
@@ -33,6 +34,18 @@ module TestApp
     # config.action_view.raise_on_missing_translations = true
 
     # config.active_record.sqlite3.represent_boolean_as_integer = true
+
+        # This is a list of classes that the YAML parser is allowed to deserialize
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol,
+      Set,
+      ActionController::Parameters,
+      ActiveSupport::HashWithIndifferentAccess,
+      Roo::Link,
+      Spreadsheet::Link,
+      ActionDispatch::Http::UploadedFile
+    ]
+
   end
 end
 

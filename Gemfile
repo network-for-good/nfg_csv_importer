@@ -11,12 +11,15 @@ gemspec
 # your gem to rubygems.org.
 gem 'reform-rails', '~> 0.1.7'
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_6'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'rails_6'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better
   gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
   gem 'factory_bot_rails'
+end
+
+source "https://rubygems.pkg.github.com/network-for-good" do
+  gem "nfg_ui", "~> 6.15.0"
 end
 
 # so we can play with the amount of time allowed before opening the browser

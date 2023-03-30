@@ -5,7 +5,7 @@
     = ui.nfg :page_header, title: "#{import_presenter.file_origination_type_name} Import", icon: 'cloud-upload', full_width: true, sticky: false do
       = ui.nfg :button, :link, href: nfg_csv_importer.imports_path, body: 'All Imports', class: 'mr-2', describe: 'page-header-back-button'
       = ui.nfg :button_group, render_if: @import.can_be_deleted?(current_user) do
-        = ui.nfg :button, (:lg unless browser.mobile?), :danger, href: import_path(@import), body: t(".buttons.delete"), icon: 'trash-o', method: :delete, data: { confirm: import_delete_confirmation(@import) }
+        = ui.nfg :button, (:lg unless browser.mobile?), :danger, href: nfg_csv_importer.import_path(@import), body: t(".buttons.delete"), icon: 'trash-o', method: :delete, data: { confirm: import_delete_confirmation(@import) }
 
   = ui.nfg :tile, class: 'mt-3' do
     = flash[:error]
@@ -98,7 +98,7 @@
             = ui.nfg :typeface, heading: 'Files'
           - if @import.pre_processing_files&.any?
             .col-auto
-              = ui.nfg :button, :secondary, :sm, href: download_attachments_import_path(@import), body: I18n.t('nfg_csv_importer.imports.show.body.download_all'), icon: 'download', describe: 'download-all', method: :post, download: true
+              = ui.nfg :button, :secondary, :sm, href: nfg_csv_importer.download_attachments_import_path(@import), body: I18n.t('nfg_csv_importer.imports.show.body.download_all'), icon: 'download', describe: 'download-all', method: :post, download: true
 
         = ui.nfg :slats, slat_actions: :lg, class: 'mt-2' do
 

@@ -5,6 +5,8 @@
 //= link_directory ../stylesheets/nfg_csv_importer .css
 //= link_directory ../stylesheets/nfg_csv_importer/font_awesome .css
 //= link_directory ../stylesheets/nfg_csv_importer/onboarding .css
+//= link_directory ../stylesheets/nfg_csv_importer/email .css
+
 
 //= link_directory ../fonts/nfg_csv_importer/ff_chartwell .eot
 //= link_directory ../fonts/nfg_csv_importer/ff_chartwell .woff

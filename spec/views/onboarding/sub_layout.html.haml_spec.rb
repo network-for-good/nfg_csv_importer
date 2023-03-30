@@ -23,7 +23,7 @@ RSpec.describe 'onboarding/sub_layout.html.haml' do
 
   let(:details) { %w[val, another_val] }
   let(:flash_messages) { {error: 'some-error'} }
-  let(:form) { mock('form')}
+  let(:form) { mock('form', end_with?: false) }
   let(:model_name) { mock('model_name') }
   let(:errors) { mock('errors', full_messages: []) }
   subject { render template: 'nfg_csv_importer/onboarding/_sub_layout' }

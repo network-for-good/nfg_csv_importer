@@ -52,7 +52,7 @@
                   %strong
                     = @import.column_stats[:column_count]
                     columns
-                  = link_to edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-1" do
+                  = link_to nfg_csv_importer.edit_import_path(@import), class: "btn btn-primary-outline btn-sm m-l-1" do
                     = fa_icon "pencil", text: "Edit Mapped Columns"
             .expandable{"data-max-height" => "300"}
               .row
@@ -94,9 +94,9 @@
 
             %hr
             .text-xs-center.p-t-1
-              = link_to import_process_path(@import.id), class: "btn btn-primary btn-lg m-b-1", method: :post do
+              = link_to nfg_csv_importer.import_process_path(@import.id), class: "btn btn-primary btn-lg m-b-1", method: :post do
                 = fa_icon "chevron-right", text: "I'm Ready, Let's Import", right: true
               %p.small or
               %p.small
-                = link_to imports_path do
+                = link_to nfg_csv_importer.imports_path do
                   = fa_icon "chevron-left", text: "Save & Come Back Later"
