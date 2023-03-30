@@ -17,6 +17,10 @@ group :development do
   gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
 end
 
+source "https://rubygems.pkg.github.com/network-for-good" do
+  gem "nfg_ui", "~> 5.15.0"
+end
+
 # so we can play with the amount of time allowed before opening the browser
 # gem 'konacha', github: "network-for-good/konacha", branch: 'master'
 
