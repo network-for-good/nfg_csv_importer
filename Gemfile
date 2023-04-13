@@ -11,7 +11,6 @@ gemspec
 # your gem to rubygems.org.
 gem 'reform-rails', '~> 0.2.3'
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_6_1'
-gem 'nfg_ui', git: 'https://github.com/network-for-good/nfg_ui', branch: 'rails_6'
 
 group :development do
   gem 'better_errors' # displays errors in the browser better
