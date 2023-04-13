@@ -18,10 +18,6 @@ group :development do
   gem 'factory_bot_rails'
 end
 
-source "https://rubygems.pkg.github.com/network-for-good" do
-  gem "nfg_ui", "~> 6.15.0"
-end
-
 # so we can play with the amount of time allowed before opening the browser
 # gem 'konacha', github: "network-for-good/konacha", branch: 'master'
 
