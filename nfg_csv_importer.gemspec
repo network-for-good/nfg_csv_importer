@@ -33,14 +33,14 @@ Gem::Specification.new do |s|
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 6.0"
+  s.add_dependency "nfg_ui", "~> 6.16.0"
 
-  # nfg_ui and nfg_onboarder while using rails_6 branches and not master
+  # nfg_onboarder while using rails_6 branches and not master
   # are called from the Gemfile
   # Once we move to rails_6 on master branches, remove from the Gemfile
   # and re-enable this dependency.
   # Note added: 5/5/22
   #
-  # s.add_dependency "nfg_ui", "~> 0.15.0"
   # s.add_dependency "nfg_onboarder", "~> 0.0.3"
 
   s.add_dependency "reform-rails", '~> 0.2.3'
