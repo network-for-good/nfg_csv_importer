@@ -4,7 +4,9 @@ module NfgCsvImporter
   class DestroyImportJob
     include Sidekiq::Worker
 
-    sidekiq_options queue: (NfgCsvImporter.configuration.default_queue_name || :default)
+    sidekiq_options(
+      { queue: NfgCsvImporter.configuration.default_queue_name }.merge(NfgCsvImporter.configuration.destroy_import_job_sidekiq_options)
+    )
 
     def perform(*args)
       batch = args.first

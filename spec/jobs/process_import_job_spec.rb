@@ -140,4 +140,6 @@ describe NfgCsvImporter::ProcessImportJob do
     let(:records_processed) { 1 }
     it { expect { process_import_job.perform(import.id) }.to change { User.count }.by(1) }
   end
+
+  it_behaves_like "setting custom configuration values"
 end
