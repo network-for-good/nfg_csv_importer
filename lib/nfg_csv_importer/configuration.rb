@@ -19,6 +19,7 @@ module NfgCsvImporter
       self.high_priority_queue_name = :high_priority
       self.default_queue_name = :default
       self.process_import_job_sidekiq_options = {}
+      self.destroy_import_job_sidekiq_options = {}
     end
 
     def imported_for_field
