@@ -98,7 +98,7 @@
             = ui.nfg :typeface, heading: 'Files'
           - if @import.pre_processing_files&.any?
             .col-auto
-              = ui.nfg :button, :secondary, :sm, href: download_attachments_import_path(@import), body: I18n.t('nfg_csv_importer.imports.show.body.download_all'), icon: 'download', describe: 'download-all', method: :post, download: true
+              = ui.nfg :button, :secondary, :sm, href: NfgCsvImporter::Engine.routes.url_helpers.download_attachments_import_path(@import), body: I18n.t('nfg_csv_importer.imports.show.body.download_all'), icon: 'download', describe: 'download-all', method: :post, download: true
 
         = ui.nfg :slats, slat_actions: :lg, class: 'mt-2' do
 

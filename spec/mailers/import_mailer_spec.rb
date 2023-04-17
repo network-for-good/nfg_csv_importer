@@ -128,7 +128,7 @@ describe NfgCsvImporter::ImportMailer, type: :mailer do
 
             and_it 'includes a link to download the error file' do
               expect(rendered_body).to have_css "a#error_link"
-              href = import_url(import, host: 'lvh.me', subdomain: import.imported_for.subdomain)
+              href = NfgCsvImporter::Engine.routes.url_helpers.import_url(import, host: 'lvh.me:3000', subdomain: import.imported_for.subdomain)
               expect(subject.body.encoded).to have_link('error_link', href: href)
               # expect(subject.body.encoded).to match(%Q{test.example.com})
               # expect(subject.body.encoded).to match("nfg_csv_importer/#{import.id}")

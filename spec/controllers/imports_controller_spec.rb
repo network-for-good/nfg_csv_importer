@@ -5,7 +5,7 @@ shared_examples_for "an action that requires authorization" do
     let(:can_be_viewed_by) { false }
 
     it "should redirect the user to the index page" do
-      expect(subject).to redirect_to(imports_path)
+      expect(subject).to redirect_to(NfgCsvImporter::Engine.routes.url_helpers.imports_path)
     end
   end
 end
@@ -15,7 +15,7 @@ shared_examples_for "an action that requires an uploading status" do
     before { import.processing! }
 
     it "should redirect the user to the import show page" do
-      expect(subject).to redirect_to(import_path(import))
+      expect(subject).to redirect_to(NfgCsvImporter::Engine.routes.url_helpers.import_path(import))
       expect(flash[:error]).to eq I18n.t('import.cant_edit_or_reprocess')
     end
   end
@@ -71,7 +71,7 @@ describe NfgCsvImporter::ImportsController do
 
       it "should redirect to the edit page and include the number of mapped columns in the url" do
         subject
-        expect(response).to redirect_to(edit_import_path(import, mapped_column_count: mapped_column_count))
+        expect(response).to redirect_to(NfgCsvImporter::Engine.routes.url_helpers.edit_import_path(import, mapped_column_count: mapped_column_count))
       end
 
       it "should assign the value of the fields mapper to the import" do
@@ -85,7 +85,7 @@ describe NfgCsvImporter::ImportsController do
       end
 
       it "should redirect to the edit import path with the column count included" do
-        expect(subject).to redirect_to(edit_import_path(import, mapped_column_count: import.column_stats[:mapped_column_count]))
+        expect(subject).to redirect_to(NfgCsvImporter::Engine.routes.url_helpers.edit_import_path(import, mapped_column_count: import.column_stats[:mapped_column_count]))
       end
 
     end
@@ -140,7 +140,7 @@ describe NfgCsvImporter::ImportsController do
 
     it 'redirects back to index with a success flash message' do
       subject
-      expect(response).to redirect_to imports_path
+      expect(response).to redirect_to NfgCsvImporter::Engine.routes.url_helpers.imports_path
       expect(flash[:success]).to eq I18n.t(:success, number_of_records: 3, scope: [:import, :destroy])
     end
 
@@ -188,7 +188,7 @@ describe NfgCsvImporter::ImportsController do
 
       it 'redirects back to show with an error flash message' do
         subject
-        expect(response).to redirect_to import_path(import)
+        expect(response).to redirect_to NfgCsvImporter::Engine.routes.url_helpers.import_path(import)
         expect(flash[:error]).to eq I18n.t(:cannot_delete, scope: [:import, :destroy])
       end
     end
