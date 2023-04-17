@@ -42,7 +42,7 @@ module TestApp
     # in config/environments, which are processed later.
     #
 
-    # since this is just a test application, 
+    # since this is just a test application, some of the hashes won't represent real life, so we need to list them here. 
     config.active_record.yaml_column_permitted_classes = [ActionController::Parameters, Symbol, ActiveSupport::HashWithIndifferentAccess, Set]
     # config.active_record.use_yaml_unsafe_load = true
   end

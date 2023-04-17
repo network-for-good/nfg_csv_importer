@@ -39,8 +39,21 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
         NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
       end
 
-      it 'changes the import imported_by to whoever submits it' do
-        expect { subject }.to change{ import.reload.imported_by_id }.from(imported_by_id).to(controller.current_user.id)
+      context "when a different user is completing the import than started it" do
+        before do
+          controller.stubs(:current_user).returns(current_user)
+          controller.stubs(:entity).returns(entity)
+          import.uploaded!
+        end
+        
+        let!(:import) { create(:import, :with_pre_processing_files, imported_by: original_user, imported_for: entity, import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
+        let(:original_user) { create(:user, entity: entity)  } 
+        let(:current_user) { create(:user, entity: entity)  }
+        let(:entity) { create(:entity) }
+        
+        it 'changes the import imported_by to whoever submits it' do
+          expect { subject }.to change{ import.reload.imported_by_id }.from(original_user.id).to(controller.current_user.id)
+        end
       end
     end
 

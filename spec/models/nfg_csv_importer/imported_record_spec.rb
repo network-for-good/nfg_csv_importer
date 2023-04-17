@@ -75,7 +75,7 @@ describe NfgCsvImporter::ImportedRecord do
     context "when the importable belongs to a different imported_for" do
       let(:other_imported_for) { create(:entity) }
       let!(:importable) { create(:user, entity: other_imported_for) }
-      let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
+      let!(:imported_record) { create(:imported_record, import: import, importable: importable, imported_for: imported_for) }
 
       it "does not destroy the importable" do
         imported_record.destroy_importable!
