@@ -12,8 +12,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
               }
      }
   end
-  let(:imported_by_id) { 10 }
-  let!(:import) { create(:import, :with_pre_processing_files, imported_by_id: imported_by_id, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
+  let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
   let(:current_step) { step }
   let(:file_origination_type) { mock('paypal') }
   let(:mapping) { { 'some' => 'mapping'} }

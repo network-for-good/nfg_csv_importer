@@ -25,7 +25,10 @@ describe NfgCsvImporter::ImportedRecord do
   describe "destroying imported records" do
     let(:imported_for) { create(:entity) }
     let!(:importable) { create(:user, entity: imported_for) }
-    let!(:imported_record) { create(:imported_record, importable: importable, imported_for: imported_for) }
+
+    let(:file_name) {"/subscribers.csv"}
+    let(:import) { FactoryBot.create(:import)}
+    let!(:imported_record) { create(:imported_record, import: import, importable: importable, imported_for: imported_for) }
 
     context "when the importable does not respond to #can_be_destroyed?" do
       it_behaves_like "deleting an imported record"
