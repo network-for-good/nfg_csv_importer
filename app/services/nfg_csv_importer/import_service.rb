@@ -304,7 +304,10 @@ module NfgCsvImporter
         next hsh if field == NfgCsvImporter::Import.ignore_column_value
 
         if hsh[field].nil?
-          hsh[field] = spreadsheet.row(i)[index]
+          # if the import file is a spreadsheet, the cell may contain a link, like to an email address, or a url. 
+          # we need to convert these to strings before processing, as it can cause issues when trying to store
+          # the row. 
+          hsh[field] = spreadsheet.row(i)[index].is_a?(Spreadsheet::Link) ? spreadsheet.row(i)[index].to_s : spreadsheet.row(i)[index]
         else
           hsh[field] << MERGE_FIELD_SEPARATOR # not sure if we always want a carriage return
           hsh[field] << spreadsheet.row(i)[index].to_s #in case the value is nil or a date field, we want to ensure it gets converted to a string
