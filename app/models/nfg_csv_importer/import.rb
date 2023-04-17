@@ -12,17 +12,20 @@ module NfgCsvImporter
     # ex: sending emails to the imported_by recipient at certain stages of import processing.
     PROCESSING_STATUS = :processing
     QUEUED_STATUS = :queued
+    REQUEUED_STATUS = :requeued
     COMPLETED_STATUS = :complete
     PENDING_STATUS = :pending
     CALCULATING_STATISTICS_STATUS = :calculating_statistics
 
-    STATUSES = [PENDING_STATUS, :uploaded, CALCULATING_STATISTICS_STATUS, :defined, QUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted]
+    STATUSES = [PENDING_STATUS, :uploaded, CALCULATING_STATISTICS_STATUS, :defined, QUEUED_STATUS, REQUEUED_STATUS, PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted].freeze
+    PROCESSING_AND_LATER_STATUSES = [PROCESSING_STATUS, COMPLETED_STATUS, :deleting, :deleted].freeze
+    EARLIER_THAN_PROCESSING_STATUSES = (STATUSES - PROCESSING_AND_LATER_STATUSES) - [REQUEUED_STATUS]
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
     serialize :statistics, JSON
 
-    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending, :killed]
+    enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending, :killed, :requeued]
     mount_uploader :import_file, ImportValidFileUploader
     mount_uploader :error_file, ImportErrorFileUploader
 
@@ -44,6 +47,7 @@ module NfgCsvImporter
     # the import file.
     validate :import_validation, on: [:create], if: :run_validations?
     validate :import_file_extension_validation, on: [:create], if: :run_validations?
+    validate :status_cannot_be_reverted_to_earlier_status
 
     before_update :populate_processing_finished_at, if: ->(r) { r.complete? }
 
@@ -252,6 +256,32 @@ module NfgCsvImporter
 
     def populate_processing_finished_at
       self.processing_finished_at = Time.zone.now
+    end
+
+    # validates a change in the status
+    # Statuses are only allowed to move forward once 
+    # the import has begun processing. For example, we
+    # don't allow a processing or completed import
+    # to be reset to queued. This helps ensure that
+    # an import cannot be processed multiple times.
+    # The only caveat to this is that an import
+    # can go from processing to requeued
+    def status_cannot_be_reverted_to_earlier_status
+      return unless status_changed?
+      return if status_was.nil? # we don't care when the initial value is nil
+      # we can return if the previous value of status was not in the group
+      # of statuses that are processing and later
+      return unless PROCESSING_AND_LATER_STATUSES.include? status_was.to_sym
+      # we can return if the current value of status is not in the group
+      # of statuses that come before processing. 
+      return unless EARLIER_THAN_PROCESSING_STATUSES.include? status.to_sym
+      # An import can only be requeued from processing
+      return if status_was.to_sym == PROCESSING_STATUS && status.to_sym == REQUEUED_STATUS
+
+      # if we are here, than the change to the status is not allowed, as
+      # it is trying to be changed from a status that comes after processing
+      # to one that comes before it. 
+      errors.add :status, "The status cannot be reverted to one comes before processing" 
     end
   end
 
