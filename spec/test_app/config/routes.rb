@@ -1,5 +1,3 @@
 Rails.application.routes.draw do
-
-  mount NfgCsvImporter::Engine => "/imports"
-  root 'nfg_csv_importer/imports#index'
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
