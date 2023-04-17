@@ -43,7 +43,7 @@ module TestApp
     #
 
     # since this is just a test application, 
-    config.active_record.yaml_column_permitted_classes = [ActionController::Parameters, Symbol, ActiveSupport::HashWithIndifferentAccess]
+    config.active_record.yaml_column_permitted_classes = [ActionController::Parameters, Symbol, ActiveSupport::HashWithIndifferentAccess, Set]
     # config.active_record.use_yaml_unsafe_load = true
   end
 end
