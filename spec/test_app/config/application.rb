@@ -39,6 +39,10 @@ module TestApp
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
+
+    # since this is just a test application, 
+    config.active_record.yaml_column_permitted_classes = [ActionController::Parameters, Symbol, ActiveSupport::HashWithIndifferentAccess]
+    # config.active_record.use_yaml_unsafe_load = true
   end
 end
 
