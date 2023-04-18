@@ -19,6 +19,9 @@ module TestApp
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    # load all of the configuration defaults up to and including Rails 6.1
+    config.load_defaults 6.1
+
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
@@ -33,6 +36,15 @@ module TestApp
     # config.action_view.raise_on_missing_translations = true
 
     # config.active_record.sqlite3.represent_boolean_as_integer = true
+    # Configuration for the application, engines, and railties goes here.
+    #
+    # These settings can be overridden in specific environments using the files
+    # in config/environments, which are processed later.
+    #
+
+    # since this is just a test application, some of the hashes won't represent real life, so we need to list them here. 
+    config.active_record.yaml_column_permitted_classes = [ActionController::Parameters, Symbol, ActiveSupport::HashWithIndifferentAccess, Set]
+    # config.active_record.use_yaml_unsafe_load = true
   end
 end
 

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe "Using the nfg_onboarder engine to import paypal transactions", js: true do
-  let(:entity) { create(:entity) }
-  let(:admin) {  create(:user) }
+  let!(:entity) { create(:entity) }
+  let!(:admin) {  create(:user, entity: entity) }
   let(:file_origination_type) { 'paypal' }
 
   it 'walks the user through selecting the paypal file and eventually imports the donors/donations in the file' do

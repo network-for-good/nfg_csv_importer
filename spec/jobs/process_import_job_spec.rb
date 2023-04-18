@@ -4,7 +4,7 @@ shared_examples_for "processing the import" do
   it { expect { subject }.to change { import.reload.number_of_records_with_errors } }
   it { expect { subject }.to change { import.reload.error_file.url } }
   it { expect { subject }.to change { import.reload.number_of_records } }
-  it { expect { subject }.to change { import.reload.status }.from(queued_status).to(completed_status) }
+  it { expect { subject }.to change { import.reload.status }.from(starting_status).to(completed_status) }
   it { expect { subject }.to change { import.reload.processing_finished_at }.from(nil) }
 
   it "should call import on import service" do
@@ -18,7 +18,10 @@ shared_examples_for "processing the import" do
   end
 
   it "creates a record for each row" do
-    expect { subject }.to change { User.count }.by(2)
+    # the import process may have already run, so there may
+    # have been records already processed. We remove from the total
+    # count of how may new records will be processed, i.e. Users created
+    expect { subject }.to change { User.count }.by(2 - (records_processed || 0))
   end
 end
 
@@ -31,6 +34,8 @@ end
 
 describe NfgCsvImporter::ProcessImportJob do
   let(:queued_status) { NfgCsvImporter::Import::QUEUED_STATUS.to_s }
+  let(:starting_status) { queued_status } 
+  let(:requeued_status) { NfgCsvImporter::Import::REQUEUED_STATUS.to_s }
   let(:completed_status) { NfgCsvImporter::Import::COMPLETED_STATUS.to_s }
   let(:processing_status) { NfgCsvImporter::Import::PROCESSING_STATUS.to_s }
   let(:user) { create(:user) }
@@ -56,6 +61,19 @@ describe NfgCsvImporter::ProcessImportJob do
   describe "statuses" do
     context "with a status of queued" do
       let(:status) { queued_status }
+
+      it "changes the status to processing" do
+        import.expects(:processing!).once
+        subject
+      end
+
+      it_behaves_like "processing the import"
+    end
+
+    context "with a status of requeued" do
+      let(:status) { requeued_status }
+      let(:starting_status) { requeued_status } 
+      let(:records_processed) { 1 } # requeued imports will have already processed some records
 
       it "changes the status to processing" do
         import.expects(:processing!).once
@@ -95,9 +113,9 @@ describe NfgCsvImporter::ProcessImportJob do
     before { $shutdown_pending = true }
     after { $shutdown_pending = nil }
 
-    it "raises Sidekiq::Shutdown and sets the import status back to queued" do
+    it "raises Sidekiq::Shutdown and sets the import status to requeued" do
       expect { subject }.to raise_error(Sidekiq::Shutdown)
-      expect(import.reload.status).to eql NfgCsvImporter::Import::QUEUED_STATUS.to_s
+      expect(import.reload.status).to eql NfgCsvImporter::Import::REQUEUED_STATUS.to_s
     end
   end
 

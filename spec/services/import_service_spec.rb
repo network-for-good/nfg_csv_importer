@@ -40,9 +40,9 @@ describe NfgCsvImporter::ImportService do
   let(:file_name) {"/subscribers.csv"}
   let!(:admin) {  FactoryBot.create(:user)}
   let(:import_service) { NfgCsvImporter::ImportService.new(imported_for: entity, type: import_type, file: file, imported_by: admin, import_record: import)}
-  let(:import) { FactoryBot.build(:import,
-                                    id: 1,
-                                    import_file: File.open("spec/fixtures#{file_name}"),
+  let(:import_file) { File.open("spec/fixtures#{file_name}") } 
+  let!(:import) { FactoryBot.create(:import,
+                                    import_file: import_file,
                                     fields_mapping: fields_mapping)}
   let(:fields_mapping) { { "email" => "email", "first_name" => "first_name", "last_name" => "last_name" } }
   let(:column_validator) { NfgCsvImporter::ColumnValidator.new({ type: "any", fields: ["first_name", "last_name"]}) }

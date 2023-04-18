@@ -29,8 +29,8 @@ RSpec.configure do |config|
   config.order = "random"
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
-  config.include Rails.application.routes.url_helpers
-  config.include NfgCsvImporter::Engine.routes.url_helpers
+  # config.include Rails.application.routes.url_helpers
+  # config.include NfgCsvImporter::Engine.routes.url_helpers
   config.mock_with :mocha
 
   # Traditional feature specs.

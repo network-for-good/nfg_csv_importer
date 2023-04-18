@@ -13,8 +13,8 @@ module NfgCsvImporter
       self.import = NfgCsvImporter::Import.find(import_id)
 
       import.with_lock do
-        if import.queued? or import.status.nil?
-          # If the import has a status of queued, that means it's safe to start processing it
+        if import.queued? || import.requeued? || import.status.nil?
+          # If the import has a status of queued or requeued, that means it's safe to start processing it
           log "processing queued import"
           import.processing!
 
@@ -42,7 +42,7 @@ module NfgCsvImporter
         end
       end
 
-      # We will only get here if the import originally had a status of queued
+      # We will only get here if the import originally had a status of queued or requeued
       import_service = import.service
 
       if import.records_processed.blank?
@@ -65,7 +65,7 @@ module NfgCsvImporter
       import.set_upload_error_file(errors_csv) if errors_csv.present?
 
       if $shutdown_pending
-        import.lock!.queued!
+        import.lock!.requeued!
         log "Shutdown detected, so quitting gracefully"
         raise Sidekiq::Shutdown
       end

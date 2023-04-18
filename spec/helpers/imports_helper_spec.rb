@@ -1,5 +1,5 @@
 require 'rails_helper'
-include NfgCsvImporter::Engine.routes.url_helpers
+# include NfgCsvImporter::Engine.routes.url_helpers
 
 describe NfgCsvImporter::ImportsHelper do
   describe "#index_alphabetize" do

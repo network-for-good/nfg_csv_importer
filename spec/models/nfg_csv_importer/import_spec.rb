@@ -90,6 +90,53 @@ describe NfgCsvImporter::Import do
   it { should delegate_method(:can_be_deleted_by?).to(:service)}
   it { should delegate_method(:fields_that_allow_multiple_mappings).to(:service)}
 
+  context "when the current status is processing or later" do
+    let(:status) {  NfgCsvImporter::Import::PENDING_STATUS } 
+    NfgCsvImporter::Import::PROCESSING_AND_LATER_STATUSES.each do |late_status|
+      NfgCsvImporter::Import::EARLIER_THAN_PROCESSING_STATUSES.each do |earlier_status|
+        context "and is changed to an earlier status, i.e. from #{late_status} to #{earlier_status}" do
+          it "is not valid" do
+            import = FactoryBot.create(:import, :with_pre_processing_files,
+              imported_for: entity,
+              import_type: import_type,
+              imported_by: admin,
+              import_file: file,
+              error_file: error_file,
+              status: late_status,
+              processing_started_at: processing_started_at,
+              processing_finished_at: processing_finished_at,
+              records_processed: records_processed,
+              statistics: stats,
+              file_origination_type: file_origination_type_name,
+              fields_mapping: fields_mapping
+            )
+            import.status = earlier_status
+            expect(import.valid?).to be false            
+          end
+        end
+      end
+    end
+  end
+  
+  it "allows the status to change from processing to requeued" do
+    import = FactoryBot.create(:import, :with_pre_processing_files,
+      imported_for: entity,
+      import_type: import_type,
+      imported_by: admin,
+      import_file: file,
+      error_file: error_file,
+      status: NfgCsvImporter::Import::PROCESSING_STATUS,
+      processing_started_at: processing_started_at,
+      processing_finished_at: processing_finished_at,
+      records_processed: records_processed,
+      statistics: stats,
+      file_origination_type: file_origination_type_name,
+      fields_mapping: fields_mapping
+    )
+    import.status = NfgCsvImporter::Import::REQUEUED_STATUS
+    expect(import.valid?).to be true
+  end
+  
   describe '#file_origination_type' do
     subject { import.file_origination_type }
 

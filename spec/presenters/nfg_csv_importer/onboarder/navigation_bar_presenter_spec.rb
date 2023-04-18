@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe NfgCsvImporter::Onboarder::Steps::NavigationBarPresenter do
+describe NfgCsvImporter::Onboarder::NavigationBarPresenter do
   let(:h) { NfgCsvImporter::Onboarding::ImportDataController.new.view_context }
   let(:navigation_bar_presenter) { described_class.new(onboarding_session, h) }
   let(:onboarding_session) { NfgOnboarder::Session.new(name: 'import_data', current_step: current_step) }
