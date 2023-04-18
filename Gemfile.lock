@@ -16,7 +16,7 @@ GIT
 PATH
   remote: .
   specs:
-    nfg_csv_importer (0.1.2.0)
+    nfg_csv_importer (0.1.3.0)
       aws-sdk-s3 (~> 1.66)
       carrierwave
       coffee-script
@@ -100,7 +100,7 @@ GEM
     autoprefixer-rails (9.4.9)
       execjs
     aws-eventstream (1.2.0)
-    aws-partitions (1.746.0)
+    aws-partitions (1.749.0)
     aws-sdk-core (3.171.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
