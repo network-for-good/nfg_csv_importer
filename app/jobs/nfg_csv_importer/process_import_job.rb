@@ -5,7 +5,9 @@ module NfgCsvImporter
     include Sidekiq::Worker
     attr_accessor :import
 
-    sidekiq_options queue: (NfgCsvImporter.configuration.high_priority_queue_name || :high_priority)
+    sidekiq_options(
+      { queue: NfgCsvImporter.configuration.high_priority_queue_name }.merge(NfgCsvImporter.configuration.process_import_job_sidekiq_options)
+    )
 
     def perform(import_id)
       self.import = NfgCsvImporter::Import.find(import_id)

@@ -6,6 +6,7 @@ describe NfgCsvImporter::DestroyImportJob do
   let(:user) { create(:user, entity: entity) }
   let(:import) { create(:import, imported_by: user, imported_for: entity) }
   let!(:imported_records) { create_list(:imported_record, number_of_imported_records, import: import, imported_for: entity) }
+  let(:number_of_imported_records) { 1 }
 
   subject { described_class.perform_async(batch, import.id) }
 
@@ -79,4 +80,6 @@ describe NfgCsvImporter::DestroyImportJob do
 
     it_behaves_like "destroying the imported record"
   end
+
+  it_behaves_like "setting custom configuration values"
 end
