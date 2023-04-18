@@ -281,7 +281,7 @@ module NfgCsvImporter
       # if we are here, than the change to the status is not allowed, as
       # it is trying to be changed from a status that comes after processing
       # to one that comes before it. 
-      errors.add :status, "The status cannot be reverted to one comes before processing" 
+      errors.add :status, "The status cannot be reverted to one that comes before processing" 
     end
   end
 
