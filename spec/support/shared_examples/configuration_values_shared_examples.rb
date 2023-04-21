@@ -10,7 +10,7 @@ shared_examples_for "setting custom configuration values" do
     end
 
     describe "process_import_job_sidekiq_options" do
-      let(:process_import_job_sidekiq_options) { { "unique_for" => 30.minutes } }
+      let(:process_import_job_sidekiq_options) { { "unique_for" => 20.minutes } }
       it { should include(process_import_job_sidekiq_options) }
     end
   end
