@@ -75,7 +75,7 @@ module NfgCsvImporter
         return
       elsif import_service.run_time_limit_reached?
         # We set the import status back to queued here so that the new job will be able to process it.
-        import.lock!.queued!
+        import.lock!.requeued!
         log "reached run time limit of #{NfgCsvImporter.configuration.max_run_time} at row #{import_service.current_row}"
         NfgCsvImporter::ProcessImportJob.perform_async(import_id)
       else
