@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: e91fe114448e32882d105ace47311f450837fdaa
+  revision: 4e2f7c84a8011ec52c3abd4c989a84890a355772
   branch: rails_6_1
   specs:
     nfg_onboarder (0.0.3)
@@ -443,4 +443,4 @@ DEPENDENCIES
   sqlite3 (~> 1.4)
 
 BUNDLED WITH
-   2.3.24
+   2.4.12
