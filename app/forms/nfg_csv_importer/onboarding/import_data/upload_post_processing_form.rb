@@ -32,9 +32,6 @@ module NfgCsvImporter
           model.time_zone
         end
 
-        def file_origination_type
-        end
-
         private
 
         def validate_max_number_of_rows_allowed
@@ -58,7 +55,7 @@ module NfgCsvImporter
 
         # This method is used to determine if the file origination type can bypass the max row limit
         def file_origination_type_allowed_to_bypass_max_row_limit?
-          NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit.include?(file_origination_type)
+          NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit.include?(model.file_origination_type)
         end
 
         def check_number_of_records(max_rows_allowed)
