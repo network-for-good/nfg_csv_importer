@@ -133,8 +133,14 @@ describe "Importing your own spreadsheet", js: true do
   end
 
   context 'when the file has more rows than allowed' do
-    before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 2 }
-    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
+    before do
+      NfgCsvImporter.configuration.max_number_of_rows_allowed = 2
+      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
+    end
+    after do
+      NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000
+      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
+    end
 
     context 'when the admin does not have permissions to bypass max row limit' do
       it 'Walks the admin through uploading/mapping/importing their own spreadsheet' do
