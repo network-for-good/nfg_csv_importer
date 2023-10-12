@@ -40,7 +40,7 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPostProcessingForm  do
     end
 
     context 'when the file origination type is allowed to bypass the max row limit' do
-      before { NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = [import.file_origination_type] }
+      before { NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = [import.file_origination_type.type_sym] }
       after { NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = [] }
 
       it "should not add errors to base" do
