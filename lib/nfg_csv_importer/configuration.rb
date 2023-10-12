@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NfgCsvImporter
   class Configuration
     attr_accessor :imported_for_class,
@@ -13,13 +15,15 @@ module NfgCsvImporter
                   :disable_import_initiation_message,
                   :max_number_of_rows_allowed,
                   :process_import_job_sidekiq_options,
-                  :destroy_import_job_sidekiq_options
+                  :destroy_import_job_sidekiq_options,
+                  :allowed_file_origination_types_to_bypass_max_row_limit
 
     def initialize
       self.high_priority_queue_name = :high_priority
       self.default_queue_name = :default
       self.process_import_job_sidekiq_options = {}
       self.destroy_import_job_sidekiq_options = {}
+      self.allowed_file_origination_types_to_bypass_max_row_limit = []
     end
 
     def imported_for_field
