@@ -14,7 +14,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
   end
   let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
   let(:current_step) { step }
-  let(:file_origination_type) { mock('paypal', type_sym: :paypal) }
+  let(:file_origination_type) { mock('paypal') }
   let(:mapping) { { 'some' => 'mapping'} }
   let(:requires_file) { true }
   let(:type_sym) { name }
@@ -23,6 +23,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
     file_origination_type.expects(:skip_steps).at_least_once
     file_origination_type.stubs(:requires_post_processing_file).returns(requires_file)
     file_origination_type.stubs(:formatted_type_sym).returns(type_sym)
+    file_origination_type.stubs(:type_sym).returns(type_sym)
   end
 
   render_views
