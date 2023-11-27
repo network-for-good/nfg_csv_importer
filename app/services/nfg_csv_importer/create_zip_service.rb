@@ -31,7 +31,7 @@ module NfgCsvImporter
     private
 
     def store_documents_in_tmp_user_folder(document, tmp_model_folder, filename)
-      download = open(document.service_url)
+      download = StringIO.new(document.download)
       IO.copy_stream(download, "#{tmp_model_folder}/#{filename}")
     end
 

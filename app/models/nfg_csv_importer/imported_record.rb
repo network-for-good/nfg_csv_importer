@@ -3,7 +3,10 @@ class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
 
   serialize :row_data, Hash
 
-  belongs_to :import
+  # Technically, this probably *should not* be optional, since an import_record
+  # should never exist without an import, but it was never coded as required, and
+  # I'm just preserving the existing behavior.
+  belongs_to :import, optional: true
   belongs_to :imported_by, class_name: NfgCsvImporter.configuration.imported_by_class, foreign_key: :imported_by_id
   belongs_to :imported_for, class_name: NfgCsvImporter.configuration.imported_for_class, foreign_key: :imported_for_id
   belongs_to :importable, polymorphic: true, dependent: :destroy
