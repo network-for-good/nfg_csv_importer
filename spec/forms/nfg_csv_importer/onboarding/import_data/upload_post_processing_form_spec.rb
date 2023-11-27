@@ -53,7 +53,7 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPostProcessingForm  do
     before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 10 }
     after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50_000 }
 
-    it "should not add errors to base" do
+    it "does not add errors to base" do
       subject
       expect(import_file_validateable_host.errors.messages[:base]).to be_nil
     end
