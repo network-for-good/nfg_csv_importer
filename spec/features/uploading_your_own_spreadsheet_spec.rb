@@ -137,6 +137,7 @@ describe "Importing your own spreadsheet", js: true do
       NfgCsvImporter.configuration.max_number_of_rows_allowed = 2
       NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
     end
+
     after do
       NfgCsvImporter.configuration.max_number_of_rows_allowed = 20_000
       NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
