@@ -727,4 +727,66 @@ describe NfgCsvImporter::Import do
       end
     end
   end
+
+  describe "#max_row_limit_exceeded?" do
+    subject { import.max_row_limit_exceeded? }
+    
+    context "when max_rows_allowed is nil" do
+      before do
+        NfgCsvImporter.configuration.stubs(:max_number_of_rows_allowed).returns(nil)
+      end
+
+      it "returns false" do
+        expect(import.max_row_limit_exceeded?).to eq(false)
+      end
+    end
+
+    context "when can_bypass_max_row_limit? is true" do
+      before do
+        import.stubs(:can_bypass_max_row_limit?).returns(true)
+      end
+
+      it "returns false" do
+        expect(import.max_row_limit_exceeded?).to eq(false)
+      end
+    end
+
+    context "when file_origination_type_allowed_to_bypass_max_row_limit? is true" do
+      before do
+        import.stubs(:file_origination_type_allowed_to_bypass_max_row_limit?).returns(true)
+      end
+
+      it "returns false" do
+        expect(import.max_row_limit_exceeded?).to eq(false)
+      end
+    end
+
+    context "when number of records is greater than max_rows_allowed" do
+      let(:max_rows_allowed) { NfgCsvImporter.configuration.max_number_of_rows_allowed }
+      
+      before do
+        import.stubs(:can_bypass_max_row_limit?).returns(false)
+        import.stubs(:file_origination_type_allowed_to_bypass_max_row_limit?).returns(false)
+        import.service.stubs(:no_of_records).returns(max_rows_allowed + 1)
+      end
+
+      it "returns true" do
+        expect(import.max_row_limit_exceeded?).to eq(true)
+      end
+    end
+
+    context "when number of records is not greater than max_rows_allowed" do
+      let(:max_rows_allowed) { NfgCsvImporter.configuration.max_number_of_rows_allowed }
+
+      before do
+        import.stubs(:can_bypass_max_row_limit?).returns(false)
+        import.stubs(:file_origination_type_allowed_to_bypass_max_row_limit?).returns(false)
+        import.service.stubs(:no_of_records).returns(max_rows_allowed - 1)
+      end
+
+      it "returns false" do
+        expect(import.max_row_limit_exceeded?).to eq(false)
+      end
+    end
+  end
 end
