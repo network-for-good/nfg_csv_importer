@@ -204,22 +204,21 @@ module NfgCsvImporter
 
     def max_row_limit_exceeded?
       max_rows_allowed = NfgCsvImporter.configuration.max_number_of_rows_allowed
-      return false if max_rows_allowed.nil? || can_bypass_max_row_limit? || file_origination_type_allowed_to_bypass_max_row_limit?
+      return false if should_not_check_row_limit?(max_rows_allowed)
 
       service.no_of_records.to_i > max_rows_allowed
     end
 
-    private
-    
-    #  This method is used to determine if the file origination type can bypass the max row limit
-    def file_origination_type_allowed_to_bypass_max_row_limit?
-      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit.include?(self["file_origination_type"].to_sym)
+    def should_not_check_row_limit?(max_rows_allowed)
+      import_file.nil? || max_rows_allowed.nil? || service.can_bypass_max_row_limit?(imported_by) || file_origination_type_allowed_to_bypass_max_row_limit?
     end
 
-    # This method is used to determine if the user can bypass the max row limit
-    def can_bypass_max_row_limit?
-      service.can_bypass_max_row_limit?(imported_by)
+    #  This method is used to determine if the file origination type can bypass the max row limit
+    def file_origination_type_allowed_to_bypass_max_row_limit?
+      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit.include?(file_origination_type_name.to_sym)
     end
+    
+    private
     
     def field_allowed_to_be_duplicated?(mapped_field)
       # fields can be duplicated if they are listed in the definition
