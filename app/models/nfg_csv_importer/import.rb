@@ -202,13 +202,6 @@ module NfgCsvImporter
       save!
     end
 
-    def max_row_limit_exceeded?
-      max_rows_allowed = NfgCsvImporter.configuration.max_number_of_rows_allowed
-      return false if should_not_check_row_limit?(max_rows_allowed)
-
-      service.no_of_records.to_i > max_rows_allowed
-    end
-
     def should_not_check_row_limit?(max_rows_allowed)
       import_file.nil? || max_rows_allowed.nil? || service.can_bypass_max_row_limit?(imported_by) || file_origination_type_allowed_to_bypass_max_row_limit?
     end

@@ -66,18 +66,11 @@ module NfgCsvImporter
       end
 
       def preview_confirmation_on_valid_step
-        # validate max row limit here as well for the case where post processing is skipped
-        if import.max_row_limit_exceeded?
-          max_rows_allowed = NfgCsvImporter.configuration.max_number_of_rows_allowed
-          flash[:error] = I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows', num_rows: max_rows_allowed)
-          reset_on_failure(step)
-        else
-          return unless import.uploaded_or_calculating_statistics? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
-          import.imported_by = imported_by
-          import.queued!
-          NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
-          NfgCsvImporter::ProcessImportJob.perform_async(import.id)
-        end
+        return unless import.uploaded_or_calculating_statistics? # only when the import is still in an 'uploaded' state should we attempt to enqueue it
+        import.imported_by = imported_by
+        import.queued!
+        NfgCsvImporter::ImportMailer.send_import_result(import).deliver_now
+        NfgCsvImporter::ProcessImportJob.perform_async(import.id)
       end
 
       def upload_post_processing_on_valid_step

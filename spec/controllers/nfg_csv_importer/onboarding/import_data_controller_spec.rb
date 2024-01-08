@@ -53,25 +53,6 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
           expect { subject }.to change{ import.reload.imported_by_id }.from(original_user.id).to(controller.current_user.id)
         end
       end
-
-      context "when the max row limit exceeded" do
-        before do
-          controller.stubs(:import).returns(import)
-          import.stubs(:max_row_limit_exceeded?).returns(true)
-        end
-
-        it "does not enqueue a queued status email" do
-          NfgCsvImporter::ImportMailer.expects(:send_import_result).never
-          NfgCsvImporter::ProcessImportJob.expects(:perform_async).never
-          subject
-        end
-
-        it "shows an error message" do
-          subject
-          max_rows_allowed = NfgCsvImporter.configuration.max_number_of_rows_allowed
-          expect(flash[:error]).to eq I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows', num_rows: max_rows_allowed)
-        end
-      end
     end
 
     context 'when the current step is upload_post_processing' do
