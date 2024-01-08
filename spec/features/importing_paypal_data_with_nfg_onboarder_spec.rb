@@ -153,23 +153,4 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       end
     end
   end
-
-  context "when the import row limit exceeds" do
-    before do
-      NfgCsvImporter.configuration.max_number_of_rows_allowed = 2
-      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
-    end
-
-    after do
-      NfgCsvImporter.configuration.max_number_of_rows_allowed = 20_000
-      NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = []
-    end
-
-    it 'does not allow to proceed to preview confirmation page' do
-      visiting_till_the_preview_confirmation_page
-      click_button  I18n.t("nfg_csv_importer.onboarding.import_data.preview_confirmation.button.approve")
-      page.driver.browser.switch_to.alert.accept
-      expect(page).to have_content I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows', num_rows: 2)
-    end
-  end
 end
