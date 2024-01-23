@@ -23,6 +23,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
     file_origination_type.expects(:skip_steps).at_least_once
     file_origination_type.stubs(:requires_post_processing_file).returns(requires_file)
     file_origination_type.stubs(:formatted_type_sym).returns(type_sym)
+    file_origination_type.stubs(:type_sym).returns(type_sym)
   end
 
   render_views
@@ -34,13 +35,10 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
 
 
     context 'when the step is preview confirmation' do
-      before do
-        NfgCsvImporter::ProcessImportJob.expects(:perform_async)
-        NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
-      end
-
       context "when a different user is completing the import than started it" do
         before do
+          NfgCsvImporter::ProcessImportJob.expects(:perform_async)
+          NfgCsvImporter::ImportMailer.expects(:send_import_result).returns(mock('mailer', deliver_now: nil))
           controller.stubs(:current_user).returns(current_user)
           controller.stubs(:entity).returns(entity)
           import.uploaded!

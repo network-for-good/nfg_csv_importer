@@ -1,3 +1,3 @@
 module NfgCsvImporter
-  VERSION = "0.1.3.0"
+  VERSION = "6.1.0.row.length.validation"
 end

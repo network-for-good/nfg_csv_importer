@@ -27,22 +27,33 @@ describe NfgCsvImporter::Onboarding::ImportData::UploadPostProcessingForm  do
   # the shared file above is used for import_spec as well
   # import.rb does its own validations by calling similar validations as upload-post_processing_form.rb
   # so the shared example works for both. However,
-  # in this case we only want 50k max row limit on post_processing, so we are not adding 50k max row limit to import.rb
+  # in this case we only want 20k max row limit on post_processing, so we are not adding 20k max row limit to import.rb
   context 'when number of rows is greater than the maximum number of rows allowed' do
     before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 2 }
-    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
+    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50_000 }
 
     it "should add errors to base" do
       subject
       expect(import_file_validateable_host.errors.messages[:base].first).to eq I18n.t('nfg_csv_importer.onboarding.import_data.invalid_number_of_rows', num_rows: 2)
     end
+
+    context 'when the file origination type is allowed to bypass the max row limit' do
+      before { NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = [import.file_origination_type.type_sym] }
+
+      after { NfgCsvImporter.configuration.allowed_file_origination_types_to_bypass_max_row_limit = [] }
+
+      it "does not add errors to base" do
+        subject
+        expect(import_file_validateable_host.errors.messages[:base]).to be_nil
+      end
+    end
   end
 
   context 'when number of rows is less than the maximum number of rows allowed' do
     before { NfgCsvImporter.configuration.max_number_of_rows_allowed = 10 }
-    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50000 }
+    after { NfgCsvImporter.configuration.max_number_of_rows_allowed = 50_000 }
 
-    it "should add errors to base" do
+    it "does not add errors to base" do
       subject
       expect(import_file_validateable_host.errors.messages[:base]).to be_nil
     end

@@ -9,14 +9,13 @@ Gem::Specification.new do |s|
   s.version     = NfgCsvImporter::VERSION
   s.authors     = ["Pavan Kuttagula", "Timothy King"]
   s.email       = ["pavan.kuttagula@effone.com", "timothy.king@networkforgood.com"]
-  s.homepage    = "http://www.networkforgood.com"
+  s.homepage    = "https://github.com/network-for-good/nfg_csv_importer"
   s.summary     = "A CSV importer for NFG Rails applications."
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
-
   if s.respond_to?(:metadata)
-    s.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+    s.metadata['allowed_push_host'] = "https://rubygems.pkg.github.com/network-for-good"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
