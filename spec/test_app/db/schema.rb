@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_17_152038) do
+ActiveRecord::Schema.define(version: 2024_01_29_183412) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2023_04_17_152038) do
     t.boolean "deleted", default: false
     t.text "row_data"
     t.index ["import_id"], name: "index_nfg_csv_importer_imported_records_on_import_id"
+    t.index ["importable_id", "importable_type"], name: "idx_imported_records_on_importables"
   end
 
   create_table "nfg_csv_importer_imports", force: :cascade do |t|
