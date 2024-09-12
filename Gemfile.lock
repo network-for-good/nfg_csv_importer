@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 53d7518859b0a01acbe6dc3f54ba738ab6f56e02
-  branch: rails_6_1
+  revision: 5d5b517f271358bbc62b086d123aa221edeaa27b
+  branch: feature/NFG-654-move-the-recently-added-dm-application-styles-and-the-select-2-fix-to-the-nfg-ui-gem
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
       execjs (= 2.7.0)
       haml (>= 5.1.2, < 6.0.0)
-      nfg_ui (~> 6.17)
+      nfg_ui (~> 6.17.2)
       rails (~> 6.0)
       reform-rails (~> 0.2.3)
       simple_form
@@ -22,7 +22,7 @@ PATH
       coffee-script
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
-      nfg_ui (~> 6.17)
+      nfg_ui (~> 6.17.2)
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 6.1.0)
       reform-rails (~> 0.2.3)
@@ -100,17 +100,17 @@ GEM
     autoprefixer-rails (9.4.9)
       execjs
     aws-eventstream (1.3.0)
-    aws-partitions (1.969.0)
-    aws-sdk-core (3.202.1)
+    aws-partitions (1.974.0)
+    aws-sdk-core (3.205.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.9)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.88.0)
-      aws-sdk-core (~> 3, >= 3.201.0)
+    aws-sdk-kms (1.91.0)
+      aws-sdk-core (~> 3, >= 3.205.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.159.0)
-      aws-sdk-core (~> 3, >= 3.201.0)
+    aws-sdk-s3 (1.162.0)
+      aws-sdk-core (~> 3, >= 3.205.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.9.1)
@@ -204,7 +204,7 @@ GEM
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    logger (1.6.0)
+    logger (1.6.1)
     loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -224,7 +224,7 @@ GEM
       metaclass (~> 0.0.1)
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
-    net-imap (0.4.15)
+    net-imap (0.4.16)
       date
       net-protocol
     net-pop (0.1.2)
@@ -233,7 +233,7 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
-    nfg_ui (6.17.1)
+    nfg_ui (6.17.2)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
