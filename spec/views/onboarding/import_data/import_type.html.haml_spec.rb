@@ -2,8 +2,7 @@ require "rails_helper"
 
 RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
   before do
-    stub_template "onboarding/import_data/import_type.html.haml" => "= render 'nfg_csv_importer/onboarding/sub_layout'"
-    stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => "= yield"
+    stub_template "onboarding/import_data/import_type.html.haml" => "= ui.nfg(title: @title)"
     view.stubs(:f).returns(stub("FormBuilder", radio_button: true))
     @mock_ui = mock("UIHelper")
     view.stubs(:ui).returns(@mock_ui)
@@ -15,10 +14,11 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
 
     before do
       view.stubs(:import_definitions).returns({ example_import_type: definition })
+      assign(:title, import_type.to_s.pluralize.titleize)
     end
 
     it "calls ui.nfg with the title as the pluralized and titleized import_type" do
-      @mock_ui.expects(:nfg).with(has_entry(title: import_type.to_s.pluralize.titleize))
+      @mock_ui.expects(:nfg).with(has_entry(title: "Example Import Types"))
       render
     end
   end
@@ -29,10 +29,11 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
 
     before do
       view.stubs(:import_definitions).returns({ example_import_type: definition })
+      assign(:title, import_title)
     end
 
     it "calls ui.nfg with the title as definition.import_title" do
-      @mock_ui.expects(:nfg).with(has_entry(title: import_title))
+      @mock_ui.expects(:nfg).with(has_entry(title: "Custom Import Title"))
       render
     end
   end
