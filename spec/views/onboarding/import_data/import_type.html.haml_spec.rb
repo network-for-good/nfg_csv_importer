@@ -5,7 +5,8 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     stub_template "onboarding/import_data/import_type.html.haml" => "= render 'nfg_csv_importer/onboarding/sub_layout'"
     stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => "= yield"
     view.stubs(:f).returns(stub("FormBuilder", radio_button: true))
-    view.stubs(:ui).returns(stub("UIHelper", nfg: nil))
+    @mock_ui = mock("UIHelper")
+    view.stubs(:ui).returns(@mock_ui)
   end
 
   context "when definition.import_title is nil" do
@@ -17,7 +18,7 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     end
 
     it "calls ui.nfg with the title as the pluralized and titleized import_type" do
-      view.ui.expects(:nfg).with(has_entry(title: import_type.to_s.pluralize.titleize))
+      @mock_ui.expects(:nfg).with(has_entry(title: import_type.to_s.pluralize.titleize))
       render
     end
   end
@@ -31,7 +32,7 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     end
 
     it "calls ui.nfg with the title as definition.import_title" do
-      view.ui.expects(:nfg).with(has_entry(title: import_title))
+      @mock_ui.expects(:nfg).with(has_entry(title: import_title))
       render
     end
   end
