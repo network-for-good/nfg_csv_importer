@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
   before do
+    stub_template "onboarding/import_data/import_type.html.haml" => "= render 'nfg_csv_importer/onboarding/sub_layout'"
     stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => "= yield"
     view.stubs(:f).returns(stub("FormBuilder", radio_button: true))
     view.stubs(:ui).returns(stub("UIHelper", nfg: nil))
