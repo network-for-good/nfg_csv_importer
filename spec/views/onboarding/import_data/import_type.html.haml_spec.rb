@@ -1,41 +1,50 @@
 require "rails_helper"
 
-RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
+def fake_form
+  # the sublayout needs to supply a form that is passed
+  # to its children. The text block below returns
+  # a fake version of the the sublayout which requires
+  # a lot more setup than is healthy for a simple view
+  # spec. So we return this fake form below which
+  # mimics what the real sub_layout does, but without
+  # all of the overhead
+  %Q{
+  - import = NfgCsvImporter::Import.new
+  - form = NfgCsvImporter::Onboarding::ImportData::ImportTypeForm.new(import)
+  = form_for(form, url: '/path') do |f|
+    = yield f
+  }
+end
+
+RSpec.describe "nfg_csv_importer/onboarding/import_data/import_type.html.haml", type: :view do
   before do
-    engine_root = NfgCsvImporter::Engine.root
-    view.lookup_context.view_paths.push(engine_root.join('app', 'views'))
-    view.stubs(:f).returns(stub("FormBuilder", radio_button: ''))
-    view.stubs(:t).returns('')  # Stub translation helper
+    stub_template "nfg_csv_importer/onboarding/_sub_layout.html.haml" => fake_form
+
     view.stubs(:onboarder_presenter).returns(stub('Presenter', render_google_tag_manager: ''))
-    view.stubs(:ui).returns(stub('UIHelper', nfg: '<nfg output>'))
+    view.stubs(:import_definitions).returns({ import_type => definition } )
+    render
   end
 
+  let(:import_type) { "example_import_type" }
+  let(:form) { stub("form") }
+
   context "when definition.import_title is nil" do
-    let(:import_type) { "example_import_type" }
     let(:definition) { OpenStruct.new(import_title: nil, headline: "Example Headline") }
 
-    before do
-      assign(:import_definitions, { import_type => definition })
-    end
-
     it "displays the pluralized and titleized import_type as the title" do
-      render
-      expect(rendered).to include("Example Import Types")
+      within(".custom-control-label") do |stuff|
+        expect(stuff).to include(import_type.pluralize.titleize)
+      end
     end
   end
 
   context "when definition.import_title has a value" do
-    let(:import_type) { "example_import_type" }
-    let(:import_title) { "Custom Import Title" }
-    let(:definition) { OpenStruct.new(import_title: import_title, headline: "Example Headline") }
-
-    before do
-      assign(:import_definitions, { import_type => definition })
-    end
+    let(:definition) { OpenStruct.new(import_title: "Custom Import Title", headline: "Example Headline") }
 
     it "displays definition.import_title as the title" do
-      render
-      expect(rendered).to include("Custom Import Title")
+      within(".custom-control-label") do |stuff|
+        expect(stuff).to include(definition.import_title)
+      end
     end
   end
 end
