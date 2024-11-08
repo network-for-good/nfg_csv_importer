@@ -19,8 +19,7 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     end
 
     it "calls ui.nfg with the title as the pluralized and titleized import_type" do
-      expect(@title).to eq("Example Import Types")
-      @mock_ui.expects(:nfg).with(has_entry(title: "Example Import Types"))
+      expect(@mock_ui).to receive(:nfg).with(has_entry(title: "Example Import Types"))
       render
     end
   end
@@ -36,8 +35,7 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     end
 
     it "calls ui.nfg with the title as definition.import_title" do
-      expect(@title).to eq("Custom Import Title")
-      @mock_ui.expects(:nfg).with(has_entry(title: "Custom Import Title"))
+      expect(@mock_ui).to receive(:nfg).with(has_entry(title: "Custom Import Title"))
       render
     end
   end
