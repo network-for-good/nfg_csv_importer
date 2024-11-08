@@ -15,11 +15,10 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     before do
       view.stubs(:import_definitions).returns({ example_import_type: definition })
       @title = import_type.to_s.pluralize.titleize
-      assign(:title, @title)
     end
 
     it "calls ui.nfg with the title as the pluralized and titleized import_type" do
-      @mock_ui.expects(:nfg).with(has_entry(title: "Example Import Types"))
+      @mock_ui.expects(:nfg).with(has_entry(title: "Example Import Types")).once
       render
     end
   end
@@ -31,11 +30,10 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     before do
       view.stubs(:import_definitions).returns({ example_import_type: definition })
       @title = import_title
-      assign(:title, @title)
     end
 
     it "calls ui.nfg with the title as definition.import_title" do
-      @mock_ui.expects(:nfg).with(has_entry(title: "Custom Import Title"))
+      @mock_ui.expects(:nfg).with(has_entry(title: "Custom Import Title")).once
       render
     end
   end
