@@ -22,6 +22,7 @@ RSpec.describe "nfg_csv_importer/onboarding/import_data/import_type.html.haml", 
 
     view.stubs(:onboarder_presenter).returns(stub('Presenter', render_google_tag_manager: ''))
     view.stubs(:import_definitions).returns({ import_type => definition } )
+    form.stubs(:import_type).returns(nil)
     render
   end
 
