@@ -2,10 +2,9 @@ require "rails_helper"
 
 RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
   before do
-    stub_template "onboarding/import_data/import_type.html.haml" => "= ui.nfg(title: @title)"
-    view.stubs(:f).returns(stub("FormBuilder", radio_button: true))
-    @mock_ui = mock("UIHelper")
-    view.stubs(:ui).returns(@mock_ui)
+    view.stubs(:f).returns(stub("FormBuilder", radio_button: ''))
+    view.stubs(:t).returns('')  # Stub translation helper
+    view.stubs(:onboarder_presenter).returns(stub('Presenter', render_google_tag_manager: ''))
   end
 
   context "when definition.import_title is nil" do
@@ -13,13 +12,12 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     let(:definition) { OpenStruct.new(import_title: nil, headline: "Example Headline") }
 
     before do
-      view.stubs(:import_definitions).returns({ example_import_type: definition })
-      @title = import_type.to_s.pluralize.titleize
+      assign(:import_definitions, { example_import_type => definition })
     end
 
-    it "calls ui.nfg with the title as the pluralized and titleized import_type" do
-      @mock_ui.expects(:nfg).with(has_entry(title: "Example Import Types")).once
+    it "displays the pluralized and titleized import_type as the title" do
       render
+      expect(rendered).to include("Example Import Types")
     end
   end
 
@@ -28,13 +26,12 @@ RSpec.describe "onboarding/import_data/import_type.html.haml", type: :view do
     let(:definition) { OpenStruct.new(import_title: import_title, headline: "Example Headline") }
 
     before do
-      view.stubs(:import_definitions).returns({ example_import_type: definition })
-      @title = import_title
+      assign(:import_definitions, { example_import_type: definition })
     end
 
-    it "calls ui.nfg with the title as definition.import_title" do
-      @mock_ui.expects(:nfg).with(has_entry(title: "Custom Import Title")).once
+    it "displays definition.import_title as the title" do
       render
+      expect(rendered).to include("Custom Import Title")
     end
   end
 end
