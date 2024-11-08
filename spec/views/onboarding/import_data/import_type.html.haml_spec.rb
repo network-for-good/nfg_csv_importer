@@ -10,21 +10,20 @@ RSpec.describe "nfg_csv_importer/onboarding/import_data/import_type.html.haml", 
   end
 
   let(:import_type) { "example_import_type" }
-  let(:form) { stub("form") }
   let(:fake_form) do
-     # the sublayout needs to supply a form that is passed
-      # to its children. The text block below returns
-      # a fake version of the the sublayout which requires
-      # a lot more setup than is healthy for a simple view
-      # spec. So we return this fake form below which
-      # mimics what the real sub_layout does, but without
-      # all of the overhead
-        %Q{
-    - import = NfgCsvImporter::Import.new
-    - form = NfgCsvImporter::Onboarding::ImportData::ImportTypeForm.new(import)
-    = form_for(form, url: '/path') do |f|
-      = yield f
-      }
+    # the sublayout needs to supply a form that is passed
+    # to its children. The text block below returns
+    # a fake version of the the sublayout which requires
+    # a lot more setup than is healthy for a simple view
+    # spec. So we return this fake form below which
+    # mimics what the real sub_layout does, but without
+    # all of the overhead
+    %Q{
+- import = NfgCsvImporter::Import.new
+- form = NfgCsvImporter::Onboarding::ImportData::ImportTypeForm.new(import)
+= form_for(form, url: '/path') do |f|
+  = yield f
+  }
   end
 
   context "when definition.import_title is nil" do
