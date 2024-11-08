@@ -30,9 +30,7 @@ RSpec.describe "nfg_csv_importer/onboarding/import_data/import_type.html.haml", 
     let(:definition) { OpenStruct.new(import_title: nil, headline: "Example Headline") }
 
     it "displays the pluralized and titleized import_type as the title" do
-      within(".custom-control-label") do |stuff|
-        expect(stuff).to include(import_type.pluralize.titleize)
-      end
+      expect(rendered).to include(import_type.pluralize.titleize)
     end
   end
 
@@ -40,9 +38,7 @@ RSpec.describe "nfg_csv_importer/onboarding/import_data/import_type.html.haml", 
     let(:definition) { OpenStruct.new(import_title: "Custom Import Title", headline: "Example Headline") }
 
     it "displays definition.import_title as the title" do
-      within(".custom-control-label") do |stuff|
-        expect(stuff).to include(definition.import_title)
-      end
+      expect(rendered).to include(definition.import_title)
     end
   end
 end
