@@ -7,10 +7,17 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-       - image: circleci/ruby:2.7.5-node-browsers
-         environment:
-           RAILS_ENV: test
-       - image: circleci/redis:4
+      - image: cimg/ruby:3.1.4-browsers
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          PGPASSWORD: ""
+          NODE_ENV: test
+          PAGER: cat
+          RAILS_ENV: test
+          TZ: /usr/share/zoneinfo/US/Eastern
+          DISABLE_SPRING: true
+      - image: cimg/redis:6.2.6
 
     working_directory: ~/repo
 
