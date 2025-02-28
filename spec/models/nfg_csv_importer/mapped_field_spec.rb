@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe NfgCsvImporter::MappedField do
-  let(:mapped_field) { NfgCsvImporter::MappedField.new(mapped_field_params) }
+  let(:mapped_field) { NfgCsvImporter::MappedField.new(**mapped_field_params) }
   let(:header_column) { "first_name" }
   let(:default_params) { { header_column: header_column, field: field } }
   let(:mapped_field_params) { default_params }

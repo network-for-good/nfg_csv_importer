@@ -75,7 +75,7 @@ class PayPalPreprocessorService
 
   def save_data_to_csv(data, temp_file)
 
-    CSV.open(temp_file, 'w', {:col_sep => ','}) do |csv|
+    CSV.open(temp_file, 'w', col_sep: ',') do |csv|
       csv << data.first.keys
       data.each { |r| csv << r.values }
     end

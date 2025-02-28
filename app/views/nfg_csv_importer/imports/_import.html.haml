@@ -8,7 +8,7 @@
     = ui.nfg :slat_body do
       = ui.nfg :slat_item, id: "#{dom_id(import)}_name" do
         = ui.nfg :typeface, subheading: import.imported_by_name, describe: 'imported-by-name'
-        = ui.nfg :typeface, caption: import.updated_at&.to_s(:abrev_month_yyyy), class: 'mb-0'
+        = ui.nfg :typeface, caption: import.updated_at&.to_formatted_s(:abrev_month_yyyy), class: 'mb-0'
       = ui.nfg :slat_item, :md do
         = ui.nfg :typeface, subheading: import_presenter.file_origination_type_name, describe: 'file-origination-type'
         = ui.nfg :typeface, caption: import_status_link(import), class: 'mb-0'
