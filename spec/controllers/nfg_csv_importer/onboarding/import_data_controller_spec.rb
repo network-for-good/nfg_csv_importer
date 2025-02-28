@@ -4,12 +4,10 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
 
   let(:params) do
     {
-      params: {
-                import_id: import.id,
-                use_route: :nfg_csv_importer,
-                id: step,
-                nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name}
-              }
+      import_id: import.id,
+      use_route: :nfg_csv_importer,
+      id: step,
+      nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name }
      }
   end
   let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
@@ -31,7 +29,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
   describe "#update" do
     let(:step) { 'preview_confirmation' }
     let(:name) { 'test.csv' }
-    subject { put :update, params }
+    subject { put :update, params: params }
 
 
     context 'when the step is preview confirmation' do
@@ -82,7 +80,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
       let(:file_origination_type) { mock('file_origination_type') }
       let(:requires_file) { false }
       let(:type_sym) { 'some-name' }
-      subject { put :update, params }
+      subject { put :update, params: params }
 
       it 'should reset import attributes' do
         expect(import.reload.import_file.file.present?).to be_truthy

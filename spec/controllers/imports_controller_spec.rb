@@ -47,12 +47,12 @@ describe NfgCsvImporter::ImportsController do
   render_views
 
   it "create action should render new template on import error" do
-    post :create, params
+    post :create, params: params
     expect(response).to render_template(:new)
   end
 
   describe "#create" do
-    subject { post :create, params }
+    subject { post :create, params: params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -119,7 +119,7 @@ describe NfgCsvImporter::ImportsController do
       session[:onboarding_import_data_import_id] = import_id
     end
 
-    subject { delete :destroy, params }
+    subject { delete :destroy, params: params }
 
     it_behaves_like "an action that requires authorization"
 

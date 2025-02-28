@@ -1,7 +1,7 @@
 class NfgCsvImporter::ImportedRecord < ActiveRecord::Base
   attr_accessor :destroy_stats
 
-  serialize :row_data, Hash
+  serialize :row_data, type: Hash
 
   # Technically, this probably *should not* be optional, since an import_record
   # should never exist without an import, but it was never coded as required, and
