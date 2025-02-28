@@ -228,7 +228,7 @@ module NfgCsvImporter
 
     def open_spreadsheet
       Time.zone = import_record.time_zone
-      file_path = File.exists?(file.path) ? file.path : file.url
+      file_path = File.exist?(file.path) ? file.path : file.url
       case file_extension
       when ".csv" then Roo::CSV.new(file_path)
       when ".xls" then Roo::Excel.new(file_path, {:packed => nil, :file_warning => :ignore})

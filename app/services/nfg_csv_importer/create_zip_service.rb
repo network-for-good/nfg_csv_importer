@@ -13,7 +13,7 @@ module NfgCsvImporter
     def call
       tmp_user_folder =  "tmp/archive_#{@user_id}"
       tmp_model_folder = "#{tmp_user_folder}/#{tmp_dir_name}"
-      FileUtils.remove_dir(tmp_user_folder) if Dir.exists?(tmp_user_folder)
+      FileUtils.remove_dir(tmp_user_folder) if Dir.exist?(tmp_user_folder)
       FileUtils.mkdir_p(tmp_model_folder)
       submitted_files = @model.send(@attr)
       if submitted_files&.any?

@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 4e2f7c84a8011ec52c3abd4c989a84890a355772
-  branch: rails_6_1
+  revision: db82667e96807b356efba8ca954642403342ce9d
+  branch: ruby_upgrade
   specs:
     nfg_onboarder (0.0.3)
       decent_exposure
       execjs (= 2.7.0)
       haml (>= 5.1.2, < 6.0.0)
-      nfg_ui (~> 6.16.0)
+      nfg_ui (~> 6.17.3)
       rails (~> 6.0)
       reform-rails (~> 0.2.3)
       simple_form
@@ -16,13 +16,13 @@ GIT
 PATH
   remote: .
   specs:
-    nfg_csv_importer (6.1.0.row.length.validation)
+    nfg_csv_importer (6.1.0.imported.records.index)
       aws-sdk-s3 (~> 1.66)
       carrierwave
       coffee-script
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
-      nfg_ui (~> 6.16.0)
+      nfg_ui (~> 6.17.3)
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 6.1.0)
       reform-rails (~> 0.2.3)
@@ -119,15 +119,15 @@ GEM
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
+    binding_of_caller (1.0.1)
+      debug_inspector (>= 1.2.0)
     bootstrap (4.3.1)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
     browser (2.7.1)
     builder (3.2.4)
-    byebug (9.0.6)
+    byebug (11.1.3)
     capybara (2.18.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -160,7 +160,7 @@ GEM
       addressable
     database_cleaner (1.7.0)
     date (3.3.3)
-    debug_inspector (0.0.3)
+    debug_inspector (1.2.0)
     decent_exposure (3.0.4)
       activesupport (>= 4.0)
     declarative (0.0.20)
@@ -232,7 +232,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nfg_ui (6.16.1)
+    nfg_ui (6.17.3)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -264,8 +264,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.4.2)
-      byebug (~> 9.0)
+    pry-byebug (3.8.0)
+      byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (4.0.6)
     puma (6.2.1)
@@ -392,7 +392,9 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.4.2)
+    sqlite3 (2.6.0)
+      mini_portile2 (~> 2.8.0)
+    sqlite3 (2.6.0-x86_64-darwin)
     ssrf_filter (1.1.1)
     temple (0.8.2)
     thor (1.2.1)
@@ -419,7 +421,8 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
-  binding_of_caller
+  binding_of_caller (= 1.0.1)
+  byebug (~> 11.1)
   capybara
   capybara-screenshot
   database_cleaner
@@ -440,7 +443,7 @@ DEPENDENCIES
   shoulda
   shoulda-matchers
   sidekiq
-  sqlite3 (~> 1.4)
+  sqlite3 (~> 2.6)
 
 BUNDLED WITH
    2.4.12

@@ -12,7 +12,7 @@ RSpec.describe NfgCsvImporter::CreateZipService do
     let(:folder) { "tmp/archive_#{user.id}"}
     subject { create_zip_service.call }
 
-    after { FileUtils.remove_dir(folder) if Dir.exists?(folder) }
+    after { FileUtils.remove_dir(folder) if Dir.exist?(folder) }
 
     context 'when pre_processing_files exist' do
       before do

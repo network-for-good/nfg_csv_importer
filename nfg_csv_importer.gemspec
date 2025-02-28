@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
-  s.add_dependency "nfg_ui", "~> 6.16.0"
+  s.add_dependency "nfg_ui", "~> 6.17.3"
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'sassc', '~> 2.0.1'
 
-  s.add_development_dependency "sqlite3", '~> 1.4'
+  s.add_development_dependency "sqlite3", '~> 2.6'
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "rspec-rails", '~> 4.0'
   s.add_development_dependency "rspec_junit_formatter"
@@ -58,6 +58,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "shoulda"
   s.add_development_dependency "shoulda-matchers"
   s.add_development_dependency "pry"
+  s.add_development_dependency "byebug", '~> 11.1'
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "ejs"
   s.add_development_dependency "selenium-webdriver"
