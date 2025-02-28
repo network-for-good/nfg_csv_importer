@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'sassc', '~> 2.0.1'
 
-  s.add_development_dependency "sqlite3", '~> 2.6'
+  s.add_development_dependency "sqlite3", '~> 1.4'
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "rspec-rails", '~> 4.0'
   s.add_development_dependency "rspec_junit_formatter"
@@ -57,7 +57,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "capybara-screenshot"
   s.add_development_dependency "shoulda"
   s.add_development_dependency "shoulda-matchers"
-  s.add_development_dependency "pry"
+  s.add_development_dependency "pry", '~> 0.14.2'
   s.add_development_dependency "byebug", '~> 11.1'
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "ejs"
