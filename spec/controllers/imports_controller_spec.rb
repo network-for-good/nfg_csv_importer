@@ -47,12 +47,12 @@ describe NfgCsvImporter::ImportsController do
   render_views
 
   it "create action should render new template on import error" do
-    post :create, params: params
+    post :create, **params
     expect(response).to render_template(:new)
   end
 
   describe "#create" do
-    subject { post :create, params: params }
+    subject { post :create, **params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -119,7 +119,7 @@ describe NfgCsvImporter::ImportsController do
       session[:onboarding_import_data_import_id] = import_id
     end
 
-    subject { delete :destroy, params: params }
+    subject { delete :destroy, **params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -196,7 +196,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#new" do
 
-    subject { get :new, params }
+    subject { get :new, **params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -220,7 +220,7 @@ describe NfgCsvImporter::ImportsController do
     let!(:import) { create(:import, imported_for: entity) }
     let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
-    subject { patch :update, params}
+    subject { patch :update, **params}
 
     it_behaves_like "an action that requires authorization"
     it_behaves_like "an action that requires an uploading status"
@@ -230,14 +230,14 @@ describe NfgCsvImporter::ImportsController do
     let!(:import) { create(:import, imported_for: entity) }
     let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
 
-    subject { get :edit, params}
+    subject { get :edit, **params}
 
     it_behaves_like "an action that requires authorization"
     it_behaves_like "an action that requires an uploading status"
   end
 
   describe "#template" do
-    subject { get :template, params}
+    subject { get :template, **params}
 
     it "generate CSV" do
       subject
@@ -247,7 +247,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#reset_onboarder_session" do
-    subject { get :reset_onboarder_session, params }
+    subject { get :reset_onboarder_session, **params }
 
     let(:session_id) { 234 }
     let(:import_id) { 123 }
