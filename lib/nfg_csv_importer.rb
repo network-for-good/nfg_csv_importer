@@ -1,4 +1,4 @@
-require "nfg_csv_importer/engine"
+require_relative "nfg_csv_importer/engine"
 require "roo"
 require "carrierwave"
 require "haml"
