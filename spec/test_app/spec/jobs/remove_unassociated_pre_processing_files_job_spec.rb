@@ -28,5 +28,5 @@ RSpec.describe RemoveUnassociatedPreProcessingFilesJob, type: :job do
 end
 
 def create_blob(data: "Hello NFG!", filename: "hello.txt", content_type: "text/plain")
-  ActiveStorage::Blob.create_after_upload! io: StringIO.new(data), filename: filename, content_type: content_type
+  ActiveStorage::Blob.create_and_upload! io: StringIO.new(data), filename: filename, content_type: content_type
 end
