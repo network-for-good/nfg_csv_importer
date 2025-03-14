@@ -132,6 +132,7 @@ describe NfgCsvImporter::ProcessImportJob do
   end
 
   describe "sending the notification email" do
+    include ActiveJob::TestHelper
     let(:processing_email_subject) { "Your import is processing!" }
     let(:complete_email_subject) { "Your import is complete!" }
 
@@ -142,14 +143,14 @@ describe NfgCsvImporter::ProcessImportJob do
     context "The first time the job is placed on the queue" do
       let(:records_processed) { nil }
 
-      before { process_import_job.perform(import.id) }
+      before { perform_enqueued_jobs { process_import_job.perform(import.id) } }
 
       it { should contain_exactly(processing_email_subject, complete_email_subject) }
     end
 
     context "When the job is enqueued subsequent times" do
       let(:records_processed) { 3 }
-      before { process_import_job.perform(import.id) }
+      before { perform_enqueued_jobs { process_import_job.perform(import.id) } }
       it { should contain_exactly(complete_email_subject) }
     end
   end
