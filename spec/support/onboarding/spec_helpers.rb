@@ -158,7 +158,7 @@ def navigating_from_overview_to_finish(import:, expected_user_count:)
 
   and_by 'reviewing the details and summary of the file and submitting the import' do
     # preview_confirmation
-    expect(page).to have_content("TOTAL ROWS 3")
+    expect(page.text.squish).to have_content("TOTAL ROWS 3")
 
     expect do
       click_next_button_for('preview_confirmation')
