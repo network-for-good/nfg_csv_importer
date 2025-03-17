@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'aws-sdk-s3', '~> 1.66'
   s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'sassc', '~> 2.0.1'
+  s.add_dependency "webrick", "~> 1.9"
 
   s.add_development_dependency "sqlite3", '~> 1.4'
   s.add_development_dependency "rails-controller-testing"
@@ -60,6 +61,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pry", '~> 0.14.2'
   s.add_development_dependency "byebug", '~> 11.1'
   s.add_development_dependency "pry-byebug"
+  s.add_development_dependency "pry-rails"
   s.add_development_dependency "ejs"
   s.add_development_dependency "selenium-webdriver"
   s.add_development_dependency "sidekiq"

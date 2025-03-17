@@ -120,6 +120,7 @@ def navigating_till_user_import_type
     # we save the import record when the user selects the import type
     expect do
       click_next_button_for('import_type')
+      sleep 1
     end.to change(NfgCsvImporter::Import, :count).by(1)
   end
 end
