@@ -57,8 +57,8 @@ describe "Running through the full import process", js: true do
       expect(page.find('#card_header_other .label-danger')).to be
 
       within("#importer_header_stats") do
-        expect(page).to have_content("1 IGNORED COLUMNS")
-        expect(page).to have_content("0 UNMAPPED COLUMNS")
+        expect(page).to have_content("1\nIGNORED COLUMNS")
+        expect(page).to have_content("0\nUNMAPPED COLUMNS")
         expect(page).to have_content("Ready to import")
       end
       within("div[data-column-name='other']") do
