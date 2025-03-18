@@ -1,5 +1,6 @@
 require_relative "nfg_csv_importer/engine"
 require "roo"
+require "csv"
 require "carrierwave"
 require "haml"
 require "simple_form"

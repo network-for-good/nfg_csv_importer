@@ -24,7 +24,8 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", '~> 6.1.0'
-  s.add_dependency "roo", '2.10.0'
+  s.add_dependency 'csv'
+  s.add_dependency "roo", '~> 2.10', '>= 2.10.1'
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
@@ -48,6 +49,12 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'sassc', '~> 2.0.1'
   s.add_dependency "webrick", "~> 1.9"
+  s.add_dependency "observer"
+  s.add_dependency "bigdecimal"
+  s.add_dependency "mutex_m"
+  s.add_dependency 'drb'
+  s.add_dependency "ostruct"
+  s.add_dependency "sprockets"
 
   s.add_development_dependency "sqlite3", '~> 1.4'
   s.add_development_dependency "rails-controller-testing"
