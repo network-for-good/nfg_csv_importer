@@ -16,7 +16,7 @@ GIT
 PATH
   remote: .
   specs:
-    nfg_csv_importer (6.1.0.imported.records.index)
+    nfg_csv_importer (7.2.0.uat.1)
       aws-sdk-s3 (~> 1.66)
       carrierwave
       coffee-script
