@@ -14,5 +14,5 @@
             %h4.card-title.m-b-1= t("jumbotron.import_types", scope: language_scope, import_type: import_type.to_s.pluralize.titleize)
             .card-text.m-b-1
               = simple_format(definition.headline)
-            = link_to NfgCsvImporter::Engine.routes.url_helpers.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
+            = link_to nfg_csv_importer.new_import_path(import_type: import_type.to_s), class: "btn btn-primary", id: "begin_import_#{ import_type }" do
               = fa_icon "chevron-right", text: t("links.begin_import", scope: language_scope), right: true
