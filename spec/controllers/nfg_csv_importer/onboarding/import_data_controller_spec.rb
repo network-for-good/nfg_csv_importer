@@ -80,10 +80,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
       let(:file_origination_type) { mock('file_origination_type') }
       let(:requires_file) { false }
       let(:type_sym) { 'some-name' }
-<<<<<<< HEAD
-=======
 
->>>>>>> ruby_upgrade_3_2_5
       subject { put :update, params: params }
 
       it 'should reset import attributes' do
