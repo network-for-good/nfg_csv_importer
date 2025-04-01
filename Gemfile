@@ -15,7 +15,7 @@ gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', b
 group :development do
   gem 'listen'
   gem 'better_errors' # displays errors in the browser better
-  gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
+  gem "binding_of_caller", "1.0.1"  # allows for initialization of a REPL at the location of the error
   gem 'factory_bot_rails'
 end
 

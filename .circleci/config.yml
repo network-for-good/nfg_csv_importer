@@ -6,8 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: cimg/ruby:3.1.4-browsers
+      - image: cimg/ruby:3.4.2-browsers
         environment:
           PGHOST: 127.0.0.1
           PGUSER: postgres
@@ -17,6 +16,9 @@ jobs:
           RAILS_ENV: test
           TZ: /usr/share/zoneinfo/US/Eastern
           DISABLE_SPRING: true
+      - image: cimg/postgres:11.12
+        environment:
+          POSTGRES_HOST_AUTH_METHOD: trust
       - image: cimg/redis:6.2.6
 
     working_directory: ~/repo

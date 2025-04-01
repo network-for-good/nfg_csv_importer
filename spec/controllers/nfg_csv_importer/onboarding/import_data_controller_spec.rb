@@ -8,7 +8,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
       use_route: :nfg_csv_importer,
       id: step,
       nfg_csv_importer_onboarding_import_data_file_origination_type_selection: { file_origination_type: name }
-     }
+    }
   end
   let!(:import) { create(:import, :with_pre_processing_files, status: 'uploaded', import_file: File.open("spec/fixtures/individual_donation.csv" ), fields_mapping: mapping) }
   let(:current_step) { step }
@@ -29,6 +29,7 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
   describe "#update" do
     let(:step) { 'preview_confirmation' }
     let(:name) { 'test.csv' }
+
     subject { put :update, params: params }
 
 
@@ -75,11 +76,14 @@ describe NfgCsvImporter::Onboarding::ImportDataController do
     end
 
     context 'when the file origination type changes' do
-
       let(:step) { 'file_origination_type_selection'}
       let(:file_origination_type) { mock('file_origination_type') }
       let(:requires_file) { false }
       let(:type_sym) { 'some-name' }
+<<<<<<< HEAD
+=======
+
+>>>>>>> ruby_upgrade_3_2_5
       subject { put :update, params: params }
 
       it 'should reset import attributes' do

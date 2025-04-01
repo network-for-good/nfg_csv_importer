@@ -28,7 +28,7 @@ describe NfgCsvImporter::ImportsController do
   let(:import_type) { 'users' }
   let(:file_name) {"spec/fixtures/subscribers.csv"}
   let(:import) { assigns(:import) }
-  let(:params) { { params: { import_type: import_type, use_route: :nfg_csv_importer } } }
+  let(:params) { { import_type: import_type, use_route: :nfg_csv_importer } }
   let(:file) do
     extend ActionDispatch::TestProcess
     fixture_file_upload(file_name, 'text/csv')
@@ -47,12 +47,12 @@ describe NfgCsvImporter::ImportsController do
   render_views
 
   it "create action should render new template on import error" do
-    post :create, **params
+    post :create, params: params
     expect(response).to render_template(:new)
   end
 
   describe "#create" do
-    subject { post :create, **params }
+    subject { post :create, params: params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -107,7 +107,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#destroy" do
     let(:import) { create(:import, imported_for: entity, imported_by: user, status: 'complete') }
-    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
     let!(:imported_records) { create_list(:imported_record, 3, import: import) }
     let(:session_id) { '123' }
     let(:import_id) { import.id }
@@ -119,7 +119,7 @@ describe NfgCsvImporter::ImportsController do
       session[:onboarding_import_data_import_id] = import_id
     end
 
-    subject { delete :destroy, **params }
+    subject { delete :destroy, params: params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -196,7 +196,7 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#new" do
 
-    subject { get :new, **params }
+    subject { get :new, params: params }
 
     it_behaves_like "an action that requires authorization"
 
@@ -218,9 +218,9 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#update" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
 
-    subject { patch :update, **params}
+    subject { patch :update, params: params}
 
     it_behaves_like "an action that requires authorization"
     it_behaves_like "an action that requires an uploading status"
@@ -228,16 +228,16 @@ describe NfgCsvImporter::ImportsController do
 
   describe "#edit" do
     let!(:import) { create(:import, imported_for: entity) }
-    let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
+    let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
 
-    subject { get :edit, **params}
+    subject { get :edit, params: params}
 
     it_behaves_like "an action that requires authorization"
     it_behaves_like "an action that requires an uploading status"
   end
 
   describe "#template" do
-    subject { get :template, **params}
+    subject { get :template, params: params}
 
     it "generate CSV" do
       subject
@@ -247,7 +247,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe "#reset_onboarder_session" do
-    subject { get :reset_onboarder_session, **params }
+    subject { get :reset_onboarder_session, params: params }
 
     let(:session_id) { 234 }
     let(:import_id) { 123 }
@@ -271,7 +271,7 @@ describe NfgCsvImporter::ImportsController do
   end
 
   describe '#download_attachments' do
-    let(:params) { { params: { import_id: import.id } } }
+    let(:params) { { import_id: import.id } }
     let!(:import) { create(:import, :with_pre_processing_files, imported_for_id: entity.id) }
 
     subject { post :download_attachments, params: { import_id: import.id, import_type: import_type, use_route: :nfg_csv_importer } }
