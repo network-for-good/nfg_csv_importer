@@ -11,6 +11,7 @@ require 'capybara-screenshot/rspec'
 require 'action_dispatch/testing/test_process'
 require 'sidekiq/testing'
 require 'byebug'
+require 'pry'
 
 Rails.backtrace_cleaner.remove_silencers!
 Rails::Controller::Testing.install

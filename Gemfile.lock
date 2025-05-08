@@ -18,11 +18,17 @@ PATH
   specs:
     nfg_csv_importer (7.2.0.uat.2)
       aws-sdk-s3 (~> 1.66)
+      bigdecimal
       carrierwave
       coffee-script
+      csv
+      drb
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
-      nfg_ui (~> 7.0)
+      mutex_m
+      nfg_ui (~> 7.1)
+      observer
+      ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
       rails (~> 7.2)
       reform-rails (~> 0.2.3)
@@ -32,6 +38,8 @@ PATH
       sass-rails (~> 6.0)
       sassc (~> 2.0.1)
       simple_form
+      sprockets
+      webrick (~> 1.9)
 
 GEM
   remote: https://rubygems.org/
@@ -112,7 +120,7 @@ GEM
     autoprefixer-rails (9.4.9)
       execjs
     aws-eventstream (1.3.1)
-    aws-partitions (1.1056.0)
+    aws-partitions (1.1058.0)
     aws-sdk-core (3.219.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -175,6 +183,7 @@ GEM
     crass (1.0.6)
     css_parser (1.21.0)
       addressable
+    csv (3.3.2)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.0)
@@ -199,8 +208,14 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    ffi (1.17.1)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-aarch64-linux-musl)
+    ffi (1.17.1-arm-linux-gnu)
+    ffi (1.17.1-arm-linux-musl)
+    ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-musl)
     font-awesome-rails (4.7.0.9)
       railties (>= 3.2, < 9.0)
     foundation_emails (2.2.1.0)
@@ -257,6 +272,7 @@ GEM
       ruby2_keywords (>= 0.0.5)
     momentjs-rails (2.29.4.1)
       railties (>= 3.1)
+    mutex_m (0.3.0)
     net-imap (0.5.6)
       date
       net-protocol
@@ -266,7 +282,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nfg_ui (7.0.0)
+    nfg_ui (7.1.3)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
@@ -283,8 +299,20 @@ GEM
     nokogiri (1.18.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    nokogiri (1.18.3-arm-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.3-arm-linux-musl)
+      racc (~> 1.4)
+    nokogiri (1.18.3-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.3-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.3-x86_64-linux-gnu)
+      racc (~> 1.4)
+    nokogiri (1.18.3-x86_64-linux-musl)
+      racc (~> 1.4)
+    observer (0.1.2)
+    ostruct (0.6.1)
     popper_js (1.16.1)
     pp (0.6.2)
       prettyprint
@@ -303,6 +331,8 @@ GEM
     pry-byebug (3.10.1)
       byebug (~> 11.0)
       pry (>= 0.13, < 0.15)
+    pry-rails (0.3.11)
+      pry (>= 0.13.0)
     psych (5.2.3)
       date
       stringio
@@ -475,16 +505,25 @@ GEM
       railties (>= 3.0.7)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.18)
+    zeitwerk (2.7.2)
 
 PLATFORMS
-  ruby
-  x86_64-darwin-18
-  x86_64-darwin-19
+  aarch64-linux
+  aarch64-linux-gnu
+  aarch64-linux-musl
+  arm-linux
+  arm-linux-gnu
+  arm-linux-musl
+  arm64-darwin
+  x86_64-darwin
+  x86_64-linux
+  x86_64-linux-gnu
+  x86_64-linux-musl
 
 DEPENDENCIES
   better_errors
-  binding_of_caller
+  binding_of_caller (= 1.0.1)
+  byebug (~> 11.1)
   capybara
   capybara-screenshot
   database_cleaner
@@ -493,8 +532,9 @@ DEPENDENCIES
   listen
   nfg_csv_importer!
   nfg_onboarder!
-  pry
+  pry (~> 0.14.2)
   pry-byebug
+  pry-rails
   puma
   rails-controller-testing
   reform-rails (~> 0.2.3)
@@ -509,4 +549,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.4.12
+   2.6.5

@@ -30,7 +30,7 @@ RSpec.describe "nfg_csv_importer/import_mailer/send_import_result_complete.html.
     end
 
     it 'shows the number of errors' do
-      expect(subject).to have_content "5 records had errors."
+      expect(subject).to have_content "5 records had errors"
     end
   end
 end

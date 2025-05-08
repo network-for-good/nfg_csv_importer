@@ -19,12 +19,12 @@ module NfgCsvImporter
 
       def import_validation
         begin
-          if import_file.blank?
-            errors.add :base, "Please select a file to upload."
-            return false
-          end
-          validate_empty_columns
-          validate_duplicate_headers
+        if import_file.blank?
+          errors.add :base, "Please select a file to upload."
+          return false
+        end
+        validate_empty_columns
+        validate_duplicate_headers
         rescue => e
           errors.add :base, "We weren't able to parse your spreadsheet.  Please ensure the first sheet contains your headers and import data and retry.  Contact us if you continue to have problems and we'll help troubleshoot."
           Rails.logger.error e.message

@@ -2,6 +2,8 @@ require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
+
+require 'logger'
 require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
