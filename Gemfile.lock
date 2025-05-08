@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 40660b96d93eb79626d66b8eea11e925ba1ef54e
+  revision: 4bbb24059adf3602a4543f22ccee0fb2d15ac467
   branch: rails_7_2
   specs:
-    nfg_onboarder (0.0.3)
+    nfg_onboarder (7.2.1)
       bigdecimal
       decent_exposure
       execjs (= 2.7.0)
