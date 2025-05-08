@@ -1,3 +1,3 @@
 module NfgCsvImporter
-  VERSION = "7.2.0.uat.2"
+  VERSION = "7.2.1"
 end
