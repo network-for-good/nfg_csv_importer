@@ -4,3 +4,10 @@
 //= link nfg_ui/app_icon/site.webmanifest
 //= link nfg_ui/app_icon/browserconfig.xml
 //= link nfg_csv_importer/email/application.css
+//= link nfg_csv_importer/onboarding/application.css
+//= link nfg_csv_importer/illustrations/finish_success.png
+//= link nfg_csv_importer/email/disabled-circle-2.png
+//= link nfg_csv_importer/email/disabled-circle-3.png
+//= link nfg_csv_importer/illustrations/import_queued.png
+//= link nfg_csv_importer/illustrations/empty_imports_lg.png
+//= link nfg_csv_importer/illustrations/setup_success.png

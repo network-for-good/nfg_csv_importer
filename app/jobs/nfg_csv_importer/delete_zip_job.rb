@@ -6,7 +6,7 @@ module NfgCsvImporter
     sidekiq_options queue: (NfgCsvImporter.configuration.default_queue_name || :default)
 
     def perform(tmp_user_folder, guard_minutes = 10)
-      return unless Dir.exists?(tmp_user_folder)
+      return unless Dir.exist?(tmp_user_folder)
       # we do not want to delete a file if it was created moments ago
       return if File.ctime(tmp_user_folder) > guard_minutes.to_i.minutes.ago
 

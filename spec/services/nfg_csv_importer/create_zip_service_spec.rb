@@ -12,13 +12,12 @@ RSpec.describe NfgCsvImporter::CreateZipService do
     let(:folder) { "tmp/archive_#{user.id}"}
     subject { create_zip_service.call }
 
-    after { FileUtils.remove_dir(folder) if Dir.exists?(folder) }
+    after { FileUtils.remove_dir(folder) if Dir.exist?(folder) }
 
     context 'when pre_processing_files exist' do
       before do
         NfgCsvImporter::DeleteZipJob.stubs(:perform_in)
         ActiveStorage::Attachment.any_instance.expects(:download).returns(fake_string_from_file)
-        Object.any_instance.expects(:open).returns(File.open("spec/fixtures/individual_donation.csv")).times(3)
       end
 
       let!(:import) { create(:import, :with_pre_processing_files) }

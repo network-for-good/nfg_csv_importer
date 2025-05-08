@@ -96,7 +96,7 @@ def visiting_till_the_history_page
     # since the import has already completed (which will unlikely be the case in production)
     # we show how many records were added
     # In production, we will likely have different messages depending on the status of the import
-    expect(page).to have_content "You've finished this import! There were a total of 4 records"
+    expect(page).to have_content "You've finished this import!\nThere were a total of 4 records"
   end
 end
 
@@ -120,6 +120,7 @@ def navigating_till_user_import_type
     # we save the import record when the user selects the import type
     expect do
       click_next_button_for('import_type')
+      sleep 1
     end.to change(NfgCsvImporter::Import, :count).by(1)
   end
 end
@@ -158,7 +159,7 @@ def navigating_from_overview_to_finish(import:, expected_user_count:)
 
   and_by 'reviewing the details and summary of the file and submitting the import' do
     # preview_confirmation
-    expect(page).to have_content("TOTAL ROWS 3")
+    expect(page).to have_content("TOTAL ROWS\n3")
 
     expect do
       click_next_button_for('preview_confirmation')

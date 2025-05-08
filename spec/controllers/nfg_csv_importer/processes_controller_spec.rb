@@ -3,13 +3,13 @@ require 'rails_helper'
 describe NfgCsvImporter::ProcessesController do
 
   let(:entity) { create(:entity) }
-  let(:params) { { params: { id: import.id, use_route: :nfg_csv_importer } } }
+  let(:params) { { id: import.id, use_route: :nfg_csv_importer } }
   let!(:import) { create(:import, imported_for: entity, status: 'uploaded') }
 
   render_views
 
   describe "#create" do
-    subject { post :create, params }
+    subject { post :create, params: params }
 
     context "when the import is valid" do
       it 'enqueues a queued status email' do

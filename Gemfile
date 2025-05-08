@@ -10,12 +10,12 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'reform-rails', '~> 0.2.3'
-gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'feature/NFG-654-move-the-recently-added-dm-application-styles-and-the-select-2-fix-to-the-nfg-ui-gem'
+gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'ruby_upgrade'
 
 group :development do
   gem 'listen'
   gem 'better_errors' # displays errors in the browser better
-  gem "binding_of_caller" # allows for initialization of a REPL at the location of the error
+  gem "binding_of_caller", "1.0.1"  # allows for initialization of a REPL at the location of the error
   gem 'factory_bot_rails'
 end
 
