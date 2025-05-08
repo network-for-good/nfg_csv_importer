@@ -18,7 +18,7 @@ GIT
 PATH
   remote: .
   specs:
-    nfg_csv_importer (7.2.1)
+    nfg_csv_importer (7.2.2)
       aws-sdk-s3 (~> 1.66)
       bigdecimal
       carrierwave
