@@ -49,6 +49,12 @@ jobs:
       - run: cp spec/test_app/config/redis.yml-example spec/test_app/config/redis.yml
       - run: cd spec/test_app && bundle exec rake db:create db:migrate db:schema:load
 
+      # Precompile assets
+      - run:
+          name: precompile assets
+          command: |
+            cd spec/test_app && bundle exec rake assets:precompile
+
       - run:
           name: flakey specs
           command: |
