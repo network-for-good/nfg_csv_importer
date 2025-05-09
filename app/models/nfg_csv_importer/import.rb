@@ -23,7 +23,7 @@ module NfgCsvImporter
 
     IGNORE_COLUMN_VALUE = "ignore_column"
     serialize :fields_mapping
-    serialize :statistics, JSON
+    serialize :statistics, coder: JSON
 
     enum status: [:queued, :processing, :complete, :deleting, :deleted, :uploaded, :calculating_statistics, :defined, :pending, :killed, :requeued]
     mount_uploader :import_file, ImportValidFileUploader

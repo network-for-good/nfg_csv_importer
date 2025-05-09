@@ -47,7 +47,7 @@ describe "Using the nfg_onboarder engine to import paypal transactions", js: tru
       # since the import has already completed (which will unlikely be the case in production)
       # we show how many records were added
       # In production, we will likely have different messages depending on the status of the import
-      expect(page).to have_content "You've finished this import!\nThere were a total of 4 records"
+      expect(page.text.squish).to have_content "You've finished this import! There were a total of 4 records"
     end
 
     and_by 'returning to the imports index page' do

@@ -84,7 +84,7 @@ FactoryBot.define do
   # before { h.controller.stubs(:params).returns(id: current_step) }
   #
   # Note: `h` is view_context, like: ApplicationController.new.view_context
-  factory :onboarding_session, class: NfgOnboarder::Session do
+  factory :onboarding_session, class: Onboarding::Session do
     name { 'import_data' }
     association :owner, factory: :user
     association :entity, factory: :entity

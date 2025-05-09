@@ -18,9 +18,7 @@
       = @import.number_of_records
       records added.
       - if @import_mailer_presenter.errors?
-        %span#error_records_count_of_total.text-alert
-          = pluralize(@import.number_of_records_with_errors.to_i, 'record')
-          had errors.
+        %span#error_records_count_of_total.text-alert=  "#{pluralize(@import.number_of_records_with_errors.to_i, 'record')} had errors."
 
     - if @import_mailer_presenter.errors?
       %spacer{ size: spacer(:base) }

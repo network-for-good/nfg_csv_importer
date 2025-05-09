@@ -1,3 +1,3 @@
 module NfgCsvImporter
-  VERSION = "6.1.0.imported.records.index"
+  VERSION = "7.2.3"
 end

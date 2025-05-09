@@ -10,7 +10,7 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'reform-rails', '~> 0.2.3'
-gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'ruby_upgrade'
+gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_7_2'
 
 group :development do
   gem 'listen'

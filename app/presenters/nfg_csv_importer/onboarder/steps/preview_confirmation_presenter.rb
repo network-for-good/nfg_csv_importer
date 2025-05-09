@@ -42,7 +42,7 @@ module NfgCsvImporter
         # parse
         def donation_date(donated_at)
           donation_date = donated_at.is_a?(String) ? (Time.zone.parse(donated_at) rescue nil) : donated_at
-          donation_date.try(:to_s, :month_day_yyyy) || donated_at
+          donation_date.try(:to_formatted_s, :month_day_yyyy) || donated_at
         end
 
         private

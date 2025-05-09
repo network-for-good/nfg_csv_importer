@@ -23,13 +23,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", '~> 6.1.0'
+  s.add_dependency "rails", '~> 7.2'
   s.add_dependency 'csv'
-  s.add_dependency "roo", '~> 2.10', '>= 2.10.1'
+  s.add_dependency "roo", '2.10.0'
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
-  s.add_dependency "nfg_ui", "~> 6.17.3"
+  s.add_dependency "nfg_ui", "~> 7.2.1"
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
@@ -58,7 +58,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "sqlite3", '~> 1.4'
   s.add_development_dependency "rails-controller-testing"
-  s.add_development_dependency "rspec-rails", '~> 4.0'
+  s.add_development_dependency "rspec-rails", '~> 6.1'
   s.add_development_dependency "rspec_junit_formatter"
   s.add_development_dependency "rspec-rails-mocha"
   s.add_development_dependency "capybara"
@@ -75,4 +75,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "database_cleaner"
   s.add_development_dependency "puma"
   s.add_development_dependency "factory_bot_rails"
+  s.add_development_dependency "webrick"
 end
