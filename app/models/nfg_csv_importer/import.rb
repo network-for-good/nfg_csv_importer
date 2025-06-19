@@ -49,6 +49,7 @@ module NfgCsvImporter
     validate :import_file_extension_validation, on: [:create], if: :run_validations?
     validate :status_cannot_be_reverted_to_earlier_status
 
+    before_validation :set_default_file_origination_type, on: :create
     before_update :populate_processing_finished_at, if: ->(r) { r.complete? }
 
     scope :order_by_recent, lambda { order("updated_at DESC") }
@@ -291,6 +292,10 @@ module NfgCsvImporter
       # it is trying to be changed from a status that comes after processing
       # to one that comes before it. 
       errors.add :status, "The status cannot be reverted to one that comes before processing" 
+    end
+
+    def set_default_file_origination_type
+      self.file_origination_type = NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM.to_s if file_origination_type.blank?
     end
   end
 
