@@ -86,7 +86,7 @@
         = ui.nfg :illustration, :lg, image: 'nfg_csv_importer/illustrations/empty_imports_lg.png'
         = ui.nfg :typeface, heading: 'We have successfully received your files.', class: 'mt-2'
 
-    - if @import.file_origination_type.collect_note_with_pre_processing_files
+    - if @import.file_origination_type&.collect_note_with_pre_processing_files
       #note
         = ui.nfg :typeface, heading: 'Your notes'
         = ui.nfg :typeface, body: simple_format(import_presenter.import_note)
@@ -125,7 +125,7 @@
                   = ui.nfg :slat_item, body: file.filename&.to_s
                 = ui.nfg :slat_actions, button: true, menu: false, body: 'Download', href: rails_blob_path(file, disposition: "attachment"), describe: 'download-pre-processing'
 
-  - if @import.file_origination_type.display_mappings
+  - if @import.file_origination_type&.display_mappings
     = ui.nfg :tile, describe: 'column-mappings' do
       = ui.nfg :typeface, :heading, class: 'mb-3' do
         = @import.column_stats[:mapped_column_count]
