@@ -174,7 +174,7 @@ module NfgCsvImporter
         # the type is selected by the user. That selection may change which type the user wants to
         # to submit, so it may be different from what was previously stored in the session
         params[:nfg_csv_importer_onboarding_import_data_file_origination_type_selection].try(:[],:file_origination_type) ||
-        onboarding_session.step_data['import_data'].try(:[], :file_origination_type_selection).try(:[], 'file_origination_type')
+        onboarding_session.step_data['import_data'].try(:[], "file_origination_type_selection").try(:[], 'file_origination_type')
       end
 
       def get_file_origination_type
@@ -219,6 +219,7 @@ module NfgCsvImporter
       end
 
       def get_import_type
+        binding.pry
         params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
         onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type') ||
         import_definitions.keys.first
