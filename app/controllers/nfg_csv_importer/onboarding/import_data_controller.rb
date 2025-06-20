@@ -226,7 +226,7 @@ module NfgCsvImporter
 
       def get_note
         params[:nfg_csv_importer_onboarding_import_data_upload_preprocessing].try(:[],:note) ||
-        onboarding_session.step_data['import_data'].try(:[], "upload_preprocessing").try(:[], 'note')
+        onboarding_session.step_data['import_data'].try(:[], :upload_preprocessing).try(:[], 'note')
       end
 
       def new_onboarding_session
@@ -259,7 +259,7 @@ module NfgCsvImporter
 
       def set_steps
         self.steps = if file_origination_type.nil?
-                      ["file_origination_type_selection"]
+                      [:file_origination_type_selection]
                     else
                       self.class.step_list.reject {|step| file_origination_type.skip_steps&.include? step}
                     end
@@ -292,8 +292,8 @@ module NfgCsvImporter
           params[:nfg_csv_importer_onboarding_import_data_upload_preprocessing][:note] = nil
         end
         step_data = onboarding_session.step_data
-        if step_data.dig('import_data', "upload_preprocessing", 'note')
-          step_data['import_data']["upload_preprocessing"]['note'] = nil
+        if step_data.dig('import_data', :upload_preprocessing, 'note')
+          step_data['import_data'][:upload_preprocessing]['note'] = nil
           onboarding_session.update!(step_data: step_data)
         end
       end
