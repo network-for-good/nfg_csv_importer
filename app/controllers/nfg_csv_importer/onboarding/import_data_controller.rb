@@ -219,7 +219,6 @@ module NfgCsvImporter
       end
 
       def get_import_type
-        binding.pry
         params[:nfg_csv_importer_onboarding_import_data_import_type].try(:[],:import_type) ||
         onboarding_session.step_data['import_data'].try(:[], :import_type).try(:[], 'import_type') ||
         import_definitions.keys.first
