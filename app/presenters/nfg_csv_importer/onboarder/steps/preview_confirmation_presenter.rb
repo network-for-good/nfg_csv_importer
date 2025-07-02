@@ -48,7 +48,9 @@ module NfgCsvImporter
         private
 
         def calculate_percentage(amount:, total:)
-          ((amount.to_f / total.to_f) * 100).ceil
+          return 0 if total.to_i == 0
+
+          ((amount.to_f / total) * 100).round
         end
 
         # Chartwell piecharts are out of a total of 100
@@ -57,6 +59,8 @@ module NfgCsvImporter
         #
         # Example: if the amount is 75% (75.0). This will return 25.0
         def calculate_remainder(amount:, total:)
+          return 100 if total.to_i == 0
+
           100 - calculate_percentage(amount: amount, total: total)
         end
       end
