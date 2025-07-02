@@ -50,7 +50,7 @@ module NfgCsvImporter
         def calculate_percentage(amount:, total:)
           return 0 if total.to_i == 0
 
-          ((amount.to_f / total) * 100).round
+          ((amount.to_f / total) * 100).ceil
         end
 
         # Chartwell piecharts are out of a total of 100
