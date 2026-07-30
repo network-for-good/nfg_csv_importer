@@ -143,8 +143,9 @@ describe NfgCsvImporter::Import do
     context 'when the file_origination_type has not been set' do
       let(:file_origination_type_name) { nil }
 
-      it 'should be nil' do
-        expect(subject).to be_nil
+      it 'defaults to the default file origination type' do
+        expect(subject).to be_an_instance_of(NfgCsvImporter::FileOriginationTypes::FileOriginationType)
+        expect(subject.type_sym).to eq(NfgCsvImporter::FileOriginationTypes::Manager::DEFAULT_FILE_ORIGINATION_TYPE_SYM)
       end
     end
 
