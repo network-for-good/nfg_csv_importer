@@ -1,1 +1,1 @@
-Rails.application.config.default_coder = NfgCsvImporter::StepDataCoder
+Rails.application.config.default_coder = YAML

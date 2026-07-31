@@ -14,7 +14,6 @@ require "sass-rails"
 require "font-awesome-rails"
 require "nfg_ui"
 require "nfg_csv_importer/configuration"
-require "nfg_csv_importer/step_data_coder"
 require "premailer/rails"
 
 module NfgCsvImporter
