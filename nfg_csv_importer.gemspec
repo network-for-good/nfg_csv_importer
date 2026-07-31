@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.email       = ["pavan.kuttagula@effone.com", "timothy.king@networkforgood.com"]
   s.homepage    = "https://github.com/network-for-good/nfg_csv_importer"
   s.summary     = "A CSV importer for NFG Rails applications."
+  s.description = "A CSV importer for NFG Rails applications."
+  s.license     = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
@@ -22,7 +24,6 @@ Gem::Specification.new do |s|
 
   tracked_files = `git ls-files -z`.split("\x0")
   s.files = tracked_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/") || f == "Rakefile" || f == "README.rdoc" }
-  s.test_files = tracked_files.select { |f| f.start_with?("spec/") }
 
   s.add_dependency "rails", '7.2.3.1'
   s.add_dependency 'csv'
