@@ -20,8 +20,9 @@ Gem::Specification.new do |s|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
 
-  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["spec/**/*"]
+  tracked_files = `git ls-files -z`.split("\x0")
+  s.files = tracked_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/") || f == "Rakefile" || f == "README.rdoc" }
+  s.test_files = tracked_files.select { |f| f.start_with?("spec/") }
 
   s.add_dependency "rails", '7.2.3.1'
   s.add_dependency 'csv'
