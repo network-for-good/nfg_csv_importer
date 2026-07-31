@@ -18,6 +18,9 @@ Gem::Specification.new do |s|
   # delete this section to allow pushing this gem to any host.
   if s.respond_to?(:metadata)
     s.metadata['allowed_push_host'] = "https://rubygems.pkg.github.com/network-for-good"
+    # Links published packages to this repo so they inherit its permissions
+    # (private packages are invisible to CI tokens without this).
+    s.metadata['github_repo'] = "ssh://github.com/network-for-good/nfg_csv_importer"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
