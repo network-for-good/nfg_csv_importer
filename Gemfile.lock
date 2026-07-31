@@ -546,6 +546,7 @@ DEPENDENCIES
   listen
   nfg_csv_importer!
   nfg_onboarder!
+  nfg_ui!
   pry (~> 0.14.2)
   pry-byebug
   pry-rails

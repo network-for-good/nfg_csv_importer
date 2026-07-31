@@ -10,6 +10,7 @@ gemspec
 # specify a gem's source.
 source 'https://rubygems.pkg.github.com/network-for-good' do
   gem 'nfg_onboarder'
+  gem 'nfg_ui'
 end
 
 # so we can play with the amount of time allowed before opening the browser
