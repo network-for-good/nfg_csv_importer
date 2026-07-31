@@ -58,6 +58,12 @@ Gem::Specification.new do |s|
   s.add_dependency "sprockets"
 
   s.add_development_dependency "sqlite3", '~> 1.4'
+  # Gives ExecJS a MiniRacer (embedded V8) runtime, which it prefers over
+  # Node.js. Without it, assets:precompile picks Node, and autoprefixer-rails
+  # 9.4.9 (pinned by nfg_ui) crashes: it evals `process.version` to check the
+  # Node version, but ExecJS's node_runner.js sandboxes `process` out of that
+  # eval, so the read throws instead of returning a version string.
+  s.add_development_dependency "mini_racer"
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "rspec-rails", '~> 6.1'
   s.add_development_dependency "rspec_junit_formatter"

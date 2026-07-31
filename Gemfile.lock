@@ -238,6 +238,13 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
+    libv8-node (24.12.0.1)
+    libv8-node (24.12.0.1-aarch64-linux)
+    libv8-node (24.12.0.1-aarch64-linux-musl)
+    libv8-node (24.12.0.1-arm64-darwin)
+    libv8-node (24.12.0.1-x86_64-darwin)
+    libv8-node (24.12.0.1-x86_64-linux)
+    libv8-node (24.12.0.1-x86_64-linux-musl)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -259,6 +266,8 @@ GEM
       logger
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
+    mini_racer (0.21.4)
+      libv8-node (~> 24.12.0.1)
     minitest (5.27.0)
     mocha (2.7.1)
       ruby2_keywords (>= 0.0.5)
@@ -544,6 +553,7 @@ DEPENDENCIES
   ejs
   factory_bot_rails
   listen
+  mini_racer
   nfg_csv_importer!
   nfg_onboarder!
   nfg_ui!
