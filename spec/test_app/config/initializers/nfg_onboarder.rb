@@ -1,1 +1,1 @@
-Rails.application.config.default_coder = JSON
+Rails.application.config.default_coder = NfgCsvImporter::StepDataCoder
