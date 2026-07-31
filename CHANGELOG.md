@@ -7,7 +7,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 ## [7.2.3.1.uat1] - 2026-07-31
 ### Changed
 - Upgraded Rails from `7.2.2.1` to `7.2.3.1` (patch release; resolves several Rails CVEs, including a critical Active Storage advisory and a high-severity Active Storage path traversal advisory both patched at `7.2.3.1`/`7.2.2.2`).
-- Switched the `nfg_onboarder` dependency from a git branch (`rails_7_2`) to the published `7.2.3.1.uat1` gem version, fetched from the [network-for-good GitHub Packages registry](https://rubygems.pkg.github.com/network-for-good).
+- Switched the `nfg_onboarder` dependency from a git branch (`rails_7_2`) to the published `7.2.3.1.uat2` gem version, fetched from the [network-for-good GitHub Packages registry](https://rubygems.pkg.github.com/network-for-good).
 - Moved gem dependencies that were declared directly in the `Gemfile` (`nfg_onboarder`, `reform-rails`, `listen`, `better_errors`, `binding_of_caller`) into `nfg_csv_importer.gemspec`, so the gemspec is the single source of truth for the gem's dependencies.
 
 ### Added

@@ -11,7 +11,7 @@ PATH
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
       mutex_m
-      nfg_onboarder (= 7.2.3.1.uat1)
+      nfg_onboarder (= 7.2.3.1.uat2)
       nfg_ui (~> 7.2.1)
       observer
       ostruct
@@ -498,7 +498,7 @@ GEM
 GEM
   remote: https://rubygems.pkg.github.com/network-for-good/
   specs:
-    nfg_onboarder (7.2.3.1.uat1)
+    nfg_onboarder (7.2.3.1.uat2)
       decent_exposure
       haml (>= 5.1.2, < 6.0.0)
       nfg_ui (~> 7.2.1)
