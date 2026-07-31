@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", '~> 7.2'
+  s.add_dependency "rails", '7.2.3.1'
   s.add_dependency 'csv'
   s.add_dependency "roo", '2.10.0'
   s.add_dependency "roo-xls"
@@ -35,13 +35,9 @@ Gem::Specification.new do |s|
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 6.0"
 
-  # nfg_onboarder while using rails_6 branches and not master
-  # are called from the Gemfile
-  # Once we move to rails_6 on master branches, remove from the Gemfile
-  # and re-enable this dependency.
-  # Note added: 5/5/22
-  #
-  # s.add_dependency "nfg_onboarder", "~> 0.0.3"
+  # nfg_onboarder is published to GitHub Packages, so its source is
+  # declared in the Gemfile (a gemspec cannot specify a gem's source).
+  s.add_dependency "nfg_onboarder", "7.2.3.1.uat1"
 
   s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
@@ -76,4 +72,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "puma"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "webrick"
+  s.add_development_dependency "listen"
+  s.add_development_dependency "better_errors" # displays errors in the browser better
+  s.add_development_dependency "binding_of_caller", "1.0.1" # allows for initialization of a REPL at the location of the error
 end

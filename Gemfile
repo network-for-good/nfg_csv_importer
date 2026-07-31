@@ -5,18 +5,11 @@ source "https://rubygems.org"
 # development dependencies will be added by default to the :development group.
 gemspec
 
-# Declare any dependencies that are still in development here instead of in
-# your gemspec. These might include edge Rails or gems from your path or
-# Git. Remember to move these dependencies to your gemspec before releasing
-# your gem to rubygems.org.
-gem 'reform-rails', '~> 0.2.3'
-gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_7_2'
-
-group :development do
-  gem 'listen'
-  gem 'better_errors' # displays errors in the browser better
-  gem "binding_of_caller", "1.0.1"  # allows for initialization of a REPL at the location of the error
-  gem 'factory_bot_rails'
+# nfg_onboarder's version is declared in the gemspec; this block only
+# tells bundler which source to fetch it from, since a gemspec cannot
+# specify a gem's source.
+source 'https://rubygems.pkg.github.com/network-for-good' do
+  gem 'nfg_onboarder'
 end
 
 # so we can play with the amount of time allowed before opening the browser
