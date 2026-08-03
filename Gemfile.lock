@@ -12,7 +12,7 @@ PATH
       jquery-rails
       mutex_m
       nfg_onboarder (= 7.2.3.1.uat2)
-      nfg_ui (~> 7.2.1)
+      nfg_ui (~> 7.2.4)
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
