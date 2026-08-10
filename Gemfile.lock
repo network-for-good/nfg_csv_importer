@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nfg_csv_importer (7.2.3.1.uat1)
+    nfg_csv_importer (7.2.3.1.uat3)
       aws-sdk-s3 (~> 1.66)
       bigdecimal
       carrierwave
@@ -16,7 +16,7 @@ PATH
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
-      rails (= 7.2.3.1)
+      rails (~> 7.2.0)
       reform-rails (~> 0.2.3)
       roo (= 2.10.0)
       roo-xls
