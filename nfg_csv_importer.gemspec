@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   end
 
   tracked_files = `git ls-files -z`.split("\x0")
-  s.files = tracked_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/") || f == "Rakefile" || f == "README.rdoc" }
+  s.files = tracked_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/", "vendor/") || f == "Rakefile" || f == "README.rdoc" }
 
   s.add_dependency 'rails', '~> 7.2.0'
   s.add_dependency 'csv'
