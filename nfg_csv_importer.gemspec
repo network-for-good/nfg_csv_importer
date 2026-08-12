@@ -56,7 +56,7 @@ Gem::Specification.new do |s|
   s.add_dependency "ostruct"
   s.add_dependency "sprockets"
 
-  s.add_development_dependency "sqlite3", '~> 1.4'
+  s.add_development_dependency "sqlite3", '~> 2.9'
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "rspec-rails", '~> 6.1'
   s.add_development_dependency "rspec_junit_formatter"
