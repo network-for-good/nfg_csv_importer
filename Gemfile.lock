@@ -138,7 +138,7 @@ GEM
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.11.0)
       aws-eventstream (~> 1, >= 1.0.2)
-    base64 (0.2.0)
+    base64 (0.3.0)
     benchmark (0.4.0)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
@@ -501,7 +501,7 @@ GEM
     useragent (0.16.11)
     webrick (1.9.1)
     websocket (1.2.11)
-    websocket-driver (0.7.7)
+    websocket-driver (0.8.2)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
