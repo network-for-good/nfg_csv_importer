@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
 
   # nfg_onboarder is published to GitHub Packages, so its source is
   # declared in the Gemfile (a gemspec cannot specify a gem's source).
-  s.add_dependency "nfg_onboarder", "7.2.3.1.uat3"
+  s.add_dependency "nfg_onboarder", ">= 7.2.3.1.uat4", "< 7.2.4"
 
   s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
