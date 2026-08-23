@@ -5,7 +5,7 @@ require "carrierwave"
 require "haml"
 require "simple_form"
 require "coffee-script"
-require "sass-rails"
+require "dartsass-sprockets" # migrated from sass-rails
 require "font-awesome-rails"
 require "nfg_ui"
 require "nfg_csv_importer/configuration"

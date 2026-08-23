@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
-  s.add_dependency "sass-rails", "~> 6.0"
+  # s.add_dependency "sass-rails", "~> 6.0" # removed: not used by this gem; project migrated to dartsass-sprockets
 
   # nfg_onboarder while using rails_6 branches and not master
   # are called from the Gemfile
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
   s.add_dependency 'aws-sdk-s3', '~> 1.66'
   s.add_dependency 'rubyzip', '~> 1.3.0'
-  s.add_dependency 'sassc', '~> 2.0.1'
+  # s.add_dependency 'sassc', '>= 2.0.1' # removed: not used by this gem; project migrated to sass-embedded
   s.add_dependency "webrick", "~> 1.9"
   s.add_dependency "observer"
   s.add_dependency "bigdecimal"
