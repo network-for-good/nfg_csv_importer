@@ -12,6 +12,16 @@ gemspec
 gem 'reform-rails', '~> 0.2.3'
 gem 'nfg_onboarder', git: 'https://github.com/network-for-good/nfg_onboarder', branch: 'rails_7_2'
 
+# Security floors for SCA root causes (NFG-4218). Each entry is the gem the CVE
+# actually lives in, not the direct parent Snyk attributed it to. Pinned here so a
+# future `bundle update` cannot silently regress the lockfile below the fix.
+gem 'rails', '~> 7.2.0', '>= 7.2.3.2' # CVE-2026-66066, CVE-2026-33174, CVE-2026-33195, CVE-2025-24293: Active Storage / Action Pack
+gem 'net-imap', '>= 0.5.15'           # CVE-2026-47240, CVE-2026-42246, CVE-2026-42256, CVE-2026-42257
+gem 'websocket-driver', '>= 0.8.2'    # CVE-2026-61666
+gem 'rack', '>= 3.1.21'               # CVE-2026-34830, CVE-2026-34230, CVE-2026-34826 (3.0.x has no fix line)
+gem 'thor', '>= 1.4.0'                # CVE-2025-54314 (disputed upstream; bump is free)
+gem 'nokogiri', '>= 1.19.4'           # vendored libxml2/libxslt: CVE-2025-49794/95/96, CVE-2025-6021, CVE-2025-24928, CVE-2024-56171, CVE-2024-34459
+
 group :development do
   gem 'listen'
   gem 'better_errors' # displays errors in the browser better
