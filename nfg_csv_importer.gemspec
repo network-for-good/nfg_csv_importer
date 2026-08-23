@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"]
 
-  s.add_dependency "rails", '~> 7.2'
+  s.add_dependency "rails", '~> 7.2', '>= 7.2.3.1' # NFG-4293: floor for activesupport CVE fix
   s.add_dependency 'csv'
   s.add_dependency "roo", '2.10.0'
   s.add_dependency "roo-xls"

@@ -16,3 +16,5 @@ spec/test_app/config/api-keys.yml
 .idea/
 .idea/*
 .byebug_history
+.specify/
+specs/
