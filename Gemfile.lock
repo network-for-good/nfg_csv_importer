@@ -8,7 +8,7 @@ GIT
       decent_exposure
       execjs (= 2.7.0)
       haml (>= 5.1.2, < 6.0.0)
-      nfg_ui (~> 7.2.1)
+      nfg_ui (= 7.3.0.pre.uat)
       observer
       rails (~> 7.2.0)
       reform-rails (~> 0.2.3)
@@ -28,7 +28,7 @@ PATH
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
       mutex_m
-      nfg_ui (~> 7.2.1)
+      nfg_ui (= 7.3.0.pre.uat)
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
@@ -284,7 +284,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nfg_ui (7.2.1)
+    nfg_ui (7.3.0.pre.uat)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)
