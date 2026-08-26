@@ -25,8 +25,12 @@ Gem::Specification.new do |s|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
 
-  tracked_files = `git ls-files -z`.split("\x0")
-  s.files = tracked_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/", "vendor/") || f == "Rakefile" || f == "README.rdoc" }
+  # `git ls-files` returns nothing (rather than raising) when run outside a
+  # git checkout, e.g. building from a source archive - fall back to a plain
+  # glob so the gem doesn't silently ship without its runtime files.
+  tracked_files = `git ls-files -z 2>/dev/null`.split("\x0")
+  all_files = tracked_files.empty? ? Dir["**/*"].reject { |f| File.directory?(f) } : tracked_files
+  s.files = all_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/", "vendor/") || f == "Rakefile" || f == "README.md" || f == "README.rdoc" || f == "CHANGELOG.md" }
 
   s.add_dependency 'rails', '~> 7.2.0'
   s.add_dependency 'csv'
