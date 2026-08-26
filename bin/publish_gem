@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Build and publish nfg_csv_importer to the network-for-good GitHub Packages registry.
+#
+# Usage: bin/publish_gem
+#
+# Requires a `:github` entry in ~/.gem/credentials with a GitHub personal
+# access token that has the `write:packages` scope:
+#   :github: Bearer <token>
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+GEM_HOST="https://rubygems.pkg.github.com/network-for-good"
+VERSION="$(ruby -r ./lib/nfg_csv_importer/version -e 'puts NfgCsvImporter::VERSION')"
+GEM_FILE="pkg/nfg_csv_importer-${VERSION}.gem"
+
+if ! grep -q '^:github:' "${HOME}/.gem/credentials" 2>/dev/null; then
+  echo "ERROR: no :github key found in ~/.gem/credentials" >&2
+  echo "Add a line like ':github: Bearer <token>' (token needs write:packages scope)." >&2
+  exit 1
+fi
+
+mkdir -p pkg
+echo "Building nfg_csv_importer ${VERSION}..."
+gem build nfg_csv_importer.gemspec -o "${GEM_FILE}"
+
+echo "Pushing ${GEM_FILE} to ${GEM_HOST}..."
+gem push --key github --host "${GEM_HOST}" "${GEM_FILE}"
