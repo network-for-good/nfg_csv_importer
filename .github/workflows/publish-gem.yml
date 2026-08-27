@@ -1,0 +1,40 @@
+name: Publish gem to GitHub Packages
+
+# Triggered by pushing a gem-v* tag rather than workflow_dispatch: push
+# triggers run whatever workflow file exists on the pushed ref, so this
+# works from any branch without first being merged to the default branch
+# (workflow_dispatch only runs workflow files already on the default
+# branch). Runs with the workflow's own GITHUB_TOKEN, which (unlike a
+# personal access token) is allowed to create a brand-new package under
+# this repo even when org policy restricts members from creating packages
+# themselves.
+on:
+  push:
+    tags:
+      - 'gem-v*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.2'
+
+      - name: Configure gem credentials
+        run: |
+          mkdir -p ~/.gem
+          cat > ~/.gem/credentials <<CREDS
+          ---
+          :github: Bearer ${{ secrets.GITHUB_TOKEN }}
+          CREDS
+          chmod 0600 ~/.gem/credentials
+
+      - name: Build and publish
+        run: bin/publish_gem

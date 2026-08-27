@@ -11,37 +11,42 @@ Gem::Specification.new do |s|
   s.email       = ["pavan.kuttagula@effone.com", "timothy.king@networkforgood.com"]
   s.homepage    = "https://github.com/network-for-good/nfg_csv_importer"
   s.summary     = "A CSV importer for NFG Rails applications."
+  s.description = "A CSV importer for NFG Rails applications."
+  s.license     = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if s.respond_to?(:metadata)
     s.metadata['allowed_push_host'] = "https://rubygems.pkg.github.com/network-for-good"
+    # Links published packages to this repo so they inherit its permissions
+    # (private packages are invisible to CI tokens without this).
+    s.metadata['github_repo'] = "ssh://github.com/network-for-good/nfg_csv_importer"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes." unless ENV['TDDIUM']
   end
 
-  s.files = Dir["{app,config,db,lib}/**/*", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["spec/**/*"]
+  # `git ls-files` returns nothing (rather than raising) when run outside a
+  # git checkout, e.g. building from a source archive - fall back to a plain
+  # glob so the gem doesn't silently ship without its runtime files.
+  tracked_files = `git ls-files -z 2>/dev/null`.split("\x0")
+  all_files = tracked_files.empty? ? Dir["**/*"].reject { |f| File.directory?(f) } : tracked_files
+  s.files = all_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/", "vendor/") || f == "Rakefile" || f == "README.md" || f == "README.rdoc" || f == "CHANGELOG.md" }
 
-  s.add_dependency "rails", '~> 7.2'
+  s.add_dependency 'rails', '~> 7.2.0'
   s.add_dependency 'csv'
   s.add_dependency "roo", '2.10.0'
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
-  s.add_dependency "nfg_ui", "= 7.3.0.pre.uat"
+  s.add_dependency "nfg_ui", ">= 7.2.4.1"
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
   s.add_dependency "sass-rails", "~> 6.0"
 
-  # nfg_onboarder while using rails_6 branches and not master
-  # are called from the Gemfile
-  # Once we move to rails_6 on master branches, remove from the Gemfile
-  # and re-enable this dependency.
-  # Note added: 5/5/22
-  #
-  # s.add_dependency "nfg_onboarder", "~> 0.0.3"
+  # nfg_onboarder is published to GitHub Packages, so its source is
+  # declared in the Gemfile (a gemspec cannot specify a gem's source).
+  s.add_dependency "nfg_onboarder", ">= 7.2.3.1"
 
   s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
@@ -57,6 +62,12 @@ Gem::Specification.new do |s|
   s.add_dependency "sprockets"
 
   s.add_development_dependency "sqlite3", '~> 1.4'
+  # Gives ExecJS a MiniRacer (embedded V8) runtime, which it prefers over
+  # Node.js. Without it, assets:precompile picks Node, and autoprefixer-rails
+  # 9.4.9 (pinned by nfg_ui) crashes: it evals `process.version` to check the
+  # Node version, but ExecJS's node_runner.js sandboxes `process` out of that
+  # eval, so the read throws instead of returning a version string.
+  s.add_development_dependency "mini_racer"
   s.add_development_dependency "rails-controller-testing"
   s.add_development_dependency "rspec-rails", '~> 6.1'
   s.add_development_dependency "rspec_junit_formatter"
@@ -76,4 +87,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "puma"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "webrick"
+  s.add_development_dependency "listen"
+  s.add_development_dependency "better_errors" # displays errors in the browser better
+  s.add_development_dependency "binding_of_caller", "1.0.1" # allows for initialization of a REPL at the location of the error
 end
