@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nfg_csv_importer (7.2.3.2.pre.uat1)
+    nfg_csv_importer (7.2.3.2.pre.uat2)
       aws-sdk-s3 (~> 1.66)
       bigdecimal
       carrierwave
@@ -11,8 +11,8 @@ PATH
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
       mutex_m
-      nfg_onboarder (>= 7.2.3.1)
-      nfg_ui (>= 7.2.4.1)
+      nfg_onboarder (>= 7.2.3.2.pre.uat2)
+      nfg_ui (~> 7.2.4)
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
@@ -507,16 +507,16 @@ GEM
 GEM
   remote: https://rubygems.pkg.github.com/network-for-good/
   specs:
-    nfg_onboarder (7.2.3.2.pre.uat1)
+    nfg_onboarder (7.2.3.2.pre.uat2)
       decent_exposure
       haml (>= 5.1.2, < 6.0.0)
-      nfg_ui (>= 7.2.4)
+      nfg_ui (~> 7.2.4)
       observer
       rails (~> 7.2.0)
       reform-rails (~> 0.2.3)
       simple_form
       wicked
-    nfg_ui (7.3.0.pre.uat)
+    nfg_ui (7.2.4.1.pre.uat1)
       autoprefixer-rails (= 9.4.9)
       bootstrap (= 4.3.1)
       browser (~> 2.7.1)

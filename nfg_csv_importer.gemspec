@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency "roo-xls"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
-  s.add_dependency "nfg_ui", ">= 7.2.4.1"
+  s.add_dependency "nfg_ui", '~> 7.2.4'
   s.add_dependency "jquery-rails"
   s.add_dependency "simple_form"
   s.add_dependency "coffee-script"
@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
 
   # nfg_onboarder is published to GitHub Packages, so its source is
   # declared in the Gemfile (a gemspec cannot specify a gem's source).
-  s.add_dependency "nfg_onboarder", ">= 7.2.3.1"
+  s.add_dependency "nfg_onboarder", ">= 7.2.3.2.pre.uat2"
 
   s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
