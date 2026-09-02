@@ -1,4 +1,9 @@
 require_relative "nfg_csv_importer/engine"
+# Loads Reform::Rails::Railtie, which wires ActiveModel validations
+# (`validates` etc.) into Reform::Form at app boot. Without this require
+# the reform-rails gem is installed but never loaded, since gemspec
+# dependencies are not auto-required by Bundler.
+require "reform/rails"
 require "roo"
 require "csv"
 require "carrierwave"

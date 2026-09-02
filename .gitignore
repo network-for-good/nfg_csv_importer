@@ -1,6 +1,7 @@
 .bundle/
 log/*.log
 pkg/
+*.gem
 spec/test_app/db/*.sqlite3
 spec/test_app/db/*.sqlite3-journal
 spec/test_app/db/*.sqlite3-shm
@@ -10,6 +11,7 @@ spec/test_app/tmp/
 spec/test_app/.sass-cache
 vendor/bundle
 spec/test_app/public/uploads
+spec/test_app/public/assets
 spec/test_app/storage/*
 spec/test_app/config/api-keys.yml
 .solano*

@@ -1,20 +1,3 @@
-GIT
-  remote: https://github.com/network-for-good/nfg_onboarder
-  revision: 4bbb24059adf3602a4543f22ccee0fb2d15ac467
-  branch: rails_7_2
-  specs:
-    nfg_onboarder (7.2.1)
-      bigdecimal
-      decent_exposure
-      execjs (= 2.7.0)
-      haml (>= 5.1.2, < 6.0.0)
-      nfg_ui (~> 7.2.1)
-      observer
-      rails (~> 7.2.0)
-      reform-rails (~> 0.2.3)
-      simple_form
-      wicked
-
 PATH
   remote: .
   specs:
@@ -28,7 +11,8 @@ PATH
       haml (>= 5.1.2, < 6.0.0)
       jquery-rails
       mutex_m
-      nfg_ui (~> 7.2.1)
+      nfg_onboarder (>= 7.2.3.1)
+      nfg_ui (~> 7.2.4)
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
@@ -208,20 +192,20 @@ GEM
     ejs (1.1.1)
     erb (6.0.7)
     erubi (1.13.1)
-    execjs (2.7.0)
+    execjs (2.10.1)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    ffi (1.17.2-aarch64-linux-gnu)
-    ffi (1.17.2-aarch64-linux-musl)
-    ffi (1.17.2-arm-linux-gnu)
-    ffi (1.17.2-arm-linux-musl)
-    ffi (1.17.2-arm64-darwin)
-    ffi (1.17.2-x86_64-darwin)
-    ffi (1.17.2-x86_64-linux-gnu)
-    ffi (1.17.2-x86_64-linux-musl)
+    ffi (1.17.4-aarch64-linux-gnu)
+    ffi (1.17.4-aarch64-linux-musl)
+    ffi (1.17.4-arm-linux-gnu)
+    ffi (1.17.4-arm-linux-musl)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux-musl)
     font-awesome-rails (4.7.0.9)
       railties (>= 3.2, < 9.0)
     foundation_emails (2.2.1.0)
@@ -246,7 +230,7 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     jmespath (1.6.2)
-    jquery-rails (4.6.0)
+    jquery-rails (4.6.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -254,6 +238,13 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
+    libv8-node (24.12.0.1)
+    libv8-node (24.12.0.1-aarch64-linux)
+    libv8-node (24.12.0.1-aarch64-linux-musl)
+    libv8-node (24.12.0.1-arm64-darwin)
+    libv8-node (24.12.0.1-x86_64-darwin)
+    libv8-node (24.12.0.1-x86_64-linux)
+    libv8-node (24.12.0.1-x86_64-linux-musl)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -275,6 +266,8 @@ GEM
       logger
     mini_mime (1.1.5)
     mini_portile2 (2.8.8)
+    mini_racer (0.21.4)
+      libv8-node (~> 24.12.0.1)
     minitest (5.27.0)
     mocha (2.7.1)
       ruby2_keywords (>= 0.0.5)
@@ -290,19 +283,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nfg_ui (7.2.1)
-      autoprefixer-rails (= 9.4.9)
-      bootstrap (= 4.3.1)
-      browser (~> 2.7.1)
-      coffee-script (~> 2.4)
-      font-awesome-rails (~> 4.7)
-      inky-rb (~> 1.3.7)
-      jquery-rails (~> 4.3)
-      momentjs-rails (~> 2.11, >= 2.11.1)
-      nokogiri (>= 1.13.10)
-      rails (~> 7.2)
-      sass-rails (~> 6.0)
-      select2-rails (~> 4.0)
+    nio4r (2.7.5)
     nio4r (2.7.5)
     nokogiri (1.19.4-aarch64-linux-gnu)
       racc (~> 1.4)
@@ -484,9 +465,9 @@ GEM
       logger
       rack (>= 2.2.4)
       redis-client (>= 0.22.2)
-    simple_form (5.3.1)
-      actionpack (>= 5.2)
-      activemodel (>= 5.2)
+    simple_form (5.4.1)
+      actionpack (>= 7.0)
+      activemodel (>= 7.0)
     spreadsheet (1.3.3)
       bigdecimal
       ruby-ole
@@ -502,9 +483,9 @@ GEM
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.7.3-x86_64-darwin)
     ssrf_filter (1.2.0)
-    temple (0.10.3)
+    temple (0.10.4)
     thor (1.5.0)
-    tilt (2.6.0)
+    tilt (2.8.0)
     timeout (0.6.1)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
@@ -523,6 +504,32 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.8.3)
+
+GEM
+  remote: https://rubygems.pkg.github.com/network-for-good/
+  specs:
+    nfg_onboarder (7.2.3.1)
+      decent_exposure
+      haml (>= 5.1.2, < 6.0.0)
+      nfg_ui (~> 7.2.1)
+      observer
+      rails (~> 7.2.0)
+      reform-rails (~> 0.2.3)
+      simple_form
+      wicked
+    nfg_ui (7.2.4)
+      autoprefixer-rails (= 9.4.9)
+      bootstrap (= 4.3.1)
+      browser (~> 2.7.1)
+      coffee-script (~> 2.4)
+      font-awesome-rails (~> 4.7)
+      inky-rb (~> 1.3.7)
+      jquery-rails (~> 4.3)
+      momentjs-rails (~> 2.11, >= 2.11.1)
+      nokogiri (>= 1.13.10)
+      rails (~> 7.2)
+      sass-rails (~> 6.0)
+      select2-rails (~> 4.0)
 
 PLATFORMS
   aarch64-linux
@@ -547,14 +554,15 @@ DEPENDENCIES
   ejs
   factory_bot_rails
   listen
+  mini_racer
   nfg_csv_importer!
   nfg_onboarder!
+  nfg_ui!
   pry (~> 0.14.2)
   pry-byebug
   pry-rails
   puma
   rails-controller-testing
-  reform-rails (~> 0.2.3)
   rspec-rails (~> 6.1)
   rspec-rails-mocha
   rspec_junit_formatter
