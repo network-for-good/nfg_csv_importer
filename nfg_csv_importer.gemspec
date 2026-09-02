@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   all_files = tracked_files.empty? ? Dir["**/*"].reject { |f| File.directory?(f) } : tracked_files
   s.files = all_files.select { |f| f.start_with?("app/", "config/", "db/", "lib/", "vendor/") || f == "Rakefile" || f == "README.md" || f == "README.rdoc" || f == "CHANGELOG.md" }
 
-  s.add_dependency "rails", '~> 7.2', '>= 7.2.3.1' # NFG-4293: floor for activesupport CVE fix
+  s.add_dependency "rails", '~> 7.2', '>= 7.2.3.2' # NFG-4293: floor for actionpack/activesupport CVE fix
   s.add_dependency 'csv'
   s.add_dependency "roo", '2.10.0'
   s.add_dependency "roo-xls"

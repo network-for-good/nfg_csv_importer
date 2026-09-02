@@ -16,7 +16,7 @@ PATH
       observer
       ostruct
       premailer-rails (~> 1.9, >= 1.9.6)
-      rails (~> 7.2, >= 7.2.3.1)
+      rails (~> 7.2, >= 7.2.3.2)
       reform-rails (~> 0.2.3)
       roo (= 2.10.0)
       roo-xls
@@ -283,7 +283,6 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nio4r (2.7.5)
     nio4r (2.7.5)
     nokogiri (1.19.4-aarch64-linux-gnu)
       racc (~> 1.4)
