@@ -34,8 +34,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '~> 7.2.0'
   s.add_dependency 'csv'
-  s.add_dependency "roo", '2.10.0'
+  s.add_dependency "roo", '3.0.0'
   s.add_dependency "roo-xls"
+  s.add_dependency "addressable", ">= 2.9.0"
   s.add_dependency "carrierwave"
   s.add_dependency "haml", ">= 5.1.2", "< 6.0.0"
   s.add_dependency "nfg_ui", "~> 7.2.4"
@@ -51,7 +52,7 @@ Gem::Specification.new do |s|
   s.add_dependency "reform-rails", '~> 0.2.3'
   s.add_dependency "premailer-rails", "~> 1.9", ">= 1.9.6"
   s.add_dependency 'aws-sdk-s3', '~> 1.66'
-  s.add_dependency 'rubyzip', '~> 1.3.0'
+  s.add_dependency 'rubyzip', '~> 3.4'
   s.add_dependency 'sassc', '~> 2.0.1'
   s.add_dependency "webrick", "~> 1.9"
   s.add_dependency "observer"
