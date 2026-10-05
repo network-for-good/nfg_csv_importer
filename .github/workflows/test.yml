@@ -1,0 +1,71 @@
+name: Test
+
+# Runs the gem's RSpec suite on every PR targeting main, so a failing test
+# blocks merge instead of only being caught by CircleCI after the fact.
+#
+# Only Redis is provisioned as a service: spec/test_app/config/database.yml
+# is sqlite3-only and the gemspec has no `pg` dependency, so the Postgres
+# container CircleCI's job starts is unused there and isn't replicated here.
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  RAILS_ENV: test
+  NODE_ENV: test
+  TZ: US/Eastern
+  DISABLE_SPRING: "true"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis:6.2.6
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.2'
+          bundler-cache: true
+        env:
+          # Needed for `bundle install` to resolve nfg_onboarder/nfg_ui from
+          # the network-for-good GitHub Packages registry (see Gemfile).
+          BUNDLE_RUBYGEMS__PKG__GITHUB__COM: ${{ secrets.BUNDLE_RUBYGEMS__PKG__GITHUB__COM }}
+
+      - name: Configure test_app
+        run: |
+          cp spec/test_app/config/api-keys.yml.example spec/test_app/config/api-keys.yml
+          cp spec/test_app/config/redis.yml-example spec/test_app/config/redis.yml
+
+      - name: Set up test database
+        working-directory: spec/test_app
+        run: bundle exec rake db:create db:migrate db:schema:load
+
+      - name: Precompile assets
+        working-directory: spec/test_app
+        run: bundle exec rake assets:precompile
+
+      - name: Run test suite
+        run: |
+          mkdir -p tmp/test-results
+          bundle exec rspec --format progress --format RspecJunitFormatter --out tmp/test-results/rspec.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rspec-results
+          path: tmp/test-results
