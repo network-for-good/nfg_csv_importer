@@ -183,11 +183,14 @@ Note: this policy is not fully semver — a breaking change to the gem's own API
 
 Historical exception: `7.2.3.1` (preceded by prerelease iterations `7.2.3.1.uat1` through `.uat5`) mirrors the full Rails patch version during a security upgrade that also moved the `nfg_onboarder` dependency from a git branch to a published gem version; releases after it follow the policy above.
 
-## Releasing
+## CI and Releasing
 
-To release a new version:
+Every pull request against `main` runs the gem's RSpec suite via the [test workflow](.github/workflows/test.yml); a failing test blocks merge. (CircleCI also still runs on push/PR during the transition to GitHub Actions — it will be retired once the GitHub Actions workflow has a track record of passing builds.)
 
-1. Update the version number in `lib/nfg_csv_importer/version.rb` (see Versioning above).
-2. Add an entry to `CHANGELOG.md`.
-3. Run `bin/publish_gem`, which builds the gem into `pkg/` and pushes it to the [network-for-good GitHub Packages registry](https://rubygems.pkg.github.com/network-for-good) (requires a `:github` key in `~/.gem/credentials` with a token that has the `write:packages` scope).
-4. Tag the release: `git tag gem-v<version> && git push --tags` (the [publish-gem workflow](.github/workflows/publish-gem.yml) triggers on `gem-v*` tags).
+Releasing is automatic and merge-triggered — there's no local `gem push` step:
+
+1. As part of your PR, decide whether the change warrants a release per the Versioning policy above, and if so, bump `lib/nfg_csv_importer/version.rb` and add an entry to `CHANGELOG.md`. This is a judgment call (Rails-series bump vs. gem-only fix vs. no release yet), so it isn't inferred from commit messages.
+2. On merge to `main`, the [publish-gem workflow](.github/workflows/publish-gem.yml) checks whether the current `VERSION` already has a matching `gem-v<version>` tag. If it does (i.e. the merge didn't change the version), it does nothing — no new package is published.
+3. Otherwise it builds the gem, pushes it to the [network-for-good GitHub Packages registry](https://rubygems.pkg.github.com/network-for-good) using its own `GITHUB_TOKEN`, and pushes the `gem-v<version>` tag itself.
+
+`bin/publish_gem` (what the workflow runs under the hood) still works for a manual/local release as a break-glass fallback — see the script for the required `~/.gem/credentials` entry — but it shouldn't be needed for normal releases.
