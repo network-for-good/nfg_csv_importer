@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'open-uri'
+require 'shellwords'
 
 module NfgCsvImporter
   class CreateZipService
@@ -18,7 +19,7 @@ module NfgCsvImporter
       submitted_files = @model.send(@attr)
       if submitted_files&.any?
         submitted_files.each do |document|
-          filename = "#{document.blob.filename.base}_#{document.blob.id}.#{document.blob.filename.extension}"
+          filename = File.basename("#{document.blob.filename.base}_#{document.blob.id}.#{document.blob.filename.extension}")
           store_documents_in_tmp_user_folder(document, tmp_model_folder, filename)
         end
         create_zip_from_tmp_user_folder(tmp_model_folder)
@@ -36,7 +37,7 @@ module NfgCsvImporter
     end
 
     def create_zip_from_tmp_user_folder(tmp_model_folder)
-      `zip -rj "#{tmp_model_folder}.zip" "#{tmp_model_folder}"`
+      `zip -rj #{Shellwords.escape("#{tmp_model_folder}.zip")} #{Shellwords.escape(tmp_model_folder)}`
     end
 
     def tmp_dir_name
