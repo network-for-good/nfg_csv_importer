@@ -6,7 +6,7 @@
     - if @import.errors.any?
       .container-fluid.container-flush
         .alert.alert-danger.m-b-0
-          = f.error_notification message: @import.errors.full_messages.join("<br/>").html_safe
+          = f.error_notification message: safe_join(@import.errors.full_messages, tag.br)
 
     .container-fluid.container-flush
       .jumbotron.jumbotron-fluid.jumbotron-clouds.m-b-0
@@ -14,7 +14,7 @@
           .row
             .col-md-10.offset-md-1.col-xs-12
               %h1.text-xs-center
-                = t("jumbotron.headline", scope: language_scope, import_type: (params[:import_type].humanize.pluralize.downcase if params[:import_type])).html_safe
+                = t("jumbotron.headline", scope: language_scope, import_type: (ERB::Util.html_escape(params[:import_type].humanize.pluralize.downcase) if params[:import_type])).html_safe
               %p= t("jumbotron.sub_headline", scope: language_scope).html_safe
 
     .container-new-import.container-flush.blue.p-b-3
