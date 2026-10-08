@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    nfg_csv_importer (7.2.3.2)
+    nfg_csv_importer (7.2.4)
       addressable (>= 2.9.0)
       aws-sdk-s3 (~> 1.66)
       bigdecimal

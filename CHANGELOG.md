@@ -4,6 +4,14 @@ All notable changes to this gem are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project uses the version declared in `lib/nfg_csv_importer/version.rb`. Versioning policy: the version tracks the Rails major.minor series the gem supports, while the patch segment is the gem's own release counter — see the Versioning section in the README.
 
+## [7.2.4] - 2026-10-08
+
+### Changed
+- Widened `rubyzip` from `~> 1.3.0` to `~> 3.4` (resolved `rubyzip` 3.6.0), resolving CVE-2026-85396 (directory traversal) in host apps.
+- Upgraded `roo` from `2.10.0` to `3.0.0` (required for `rubyzip` >= 3) and `roo-xls` to `2.0.0`.
+- Added `addressable` `>= 2.9.0` as a direct dependency, resolving CVE-2026-35611 (ReDoS in `addressable` 2.8.7).
+- Bumped `selenium-webdriver` (development/test) to `4.49.0` so its `rubyzip` cap no longer blocks `rubyzip` 3.x in this gem's own lockfile.
+
 ## [7.2.3.1] - 2026-08-26
 Released as `7.2.3.1.uat1` through `.uat5` during UAT, then finalized as `7.2.3.1`.
 
