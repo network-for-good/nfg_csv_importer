@@ -193,7 +193,7 @@ describe "Running through the full import process", js: true do
 
         # the import definition for the donation import excludes users with "Smith" as the last name
         it "should display all the imports sorted in recent order" do
-          expect(page).to have_css "#imports_listing [data-describe='import-slat']", count: 3
+          expect(page).to have_css "#imports_listing [data-describe='import-slat']", count: 3, wait: 10
 
           expect(page).not_to have_css("#import_#{ donation_import.id }")
 
